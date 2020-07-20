@@ -3,7 +3,7 @@
     <div class="nav-bar">
       <div class="logo-searchbar">
         <div class="logo">
-          <Router-link class="logo-text" to="/test">
+          <Router-link class="logo-text" to="/">
             TWL
           </Router-link>
         </div>
@@ -21,14 +21,12 @@
     </div>
     <div class="aside disabled">
       <div class="aside-menu">
+        <GoogleLogin/>
+        <GithubLogin/>
         <div>
-          Sign In Google
-        </div>
-        <div>
-          Sign In Github
-        </div>
-        <div>
-          Sign In other way
+          <Router-link class="emailogin-text" :to="{name: 'Login'}">
+            Email Login
+          </Router-link>
         </div>
       </div>
     </div>
@@ -36,8 +34,14 @@
 </template>
 
 <script>
+  import GoogleLogin from "./GoogleLogin";
+  import GithubLogin from "./GithubLogin";
   export default {
     name: "NavBar",
+    components: {
+      GoogleLogin,
+      GithubLogin
+    },
     methods: {
       asideBarToggle() {
         const aside = document.querySelector(".aside")
@@ -157,10 +161,29 @@
   .aside-menu {
     width: 300px;
     border: 1px solid black;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-right: 1rem;
   }
   .aside-menu > div {
-    border: 1px solid black;
     margin: 10px;
+  }
+  .aside-menu > div:nth-child(3) {
+    width: 250px;
+    height: 50px;
+    border-radius: 3px;
+    background-color: rgb(204, 93, 65);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .emailogin-text {
+    text-decoration: none;
+    color: white;
+    font-weight: bolder;
   }
   .disabled {
     display: none;
