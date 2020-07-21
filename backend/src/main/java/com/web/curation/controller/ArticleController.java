@@ -45,17 +45,22 @@ public class ArticleController {
 
     @ApiOperation(value = "리스트 조회")
 	@ResponseBody
-    @GetMapping("/article?page={page}")
-    public ResponseEntity<Map<String, Object>> getArticleList(@PathVariable int page) {
+    @GetMapping("/article/page={page}")
+    public Object getArticleList(@PathVariable int page) {
 
+        System.out.println("in!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         List<Article> list = articleDao.findAll();
 
+        System.out.println("###########" +list.get(0));
+
+        final BasicResponse result = new BasicResponse();
+
+        result.status = true;
+        result.data = "success";
+        result.object = list;
         
-		Map<String, Object> ret = new HashMap<>();
-		ret.put("list", list);
+        return new ResponseEntity<>(result, HttpStatus.OK);
 
-
-		return new ResponseEntity<Map<String, Object>>(ret, HttpStatus.OK);
 	}
 
 }
