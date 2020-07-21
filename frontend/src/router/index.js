@@ -4,6 +4,7 @@ import Home from '../views/Home.vue'
 import Login from "../views/Login";
 import Signup from "../views/Signup";
 import ChangePwd from "../views/ChangePwd";
+import SelectSkills from "../views/SelectSkills";
 
 Vue.use(VueRouter)
 
@@ -31,7 +32,7 @@ Vue.use(VueRouter)
   {
     path: '/selectskills',
     name: 'SelectSkills',
-    component: ChangePwd
+    component: SelectSkills
   },
 ]
 
