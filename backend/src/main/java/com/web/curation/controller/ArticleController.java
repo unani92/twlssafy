@@ -1,23 +1,19 @@
 package com.web.curation.controller;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
 import com.web.curation.dao.ArticleDao;
-import com.web.curation.dao.user.InterestDao;
-import com.web.curation.dao.user.UserDao;
+import com.web.curation.dao.KeywordsDao;
+import com.web.curation.dao.user.SkillsDao;
 import com.web.curation.model.Article;
 import com.web.curation.model.BasicResponse;
-import com.web.curation.model.user.Interest;
+import com.web.curation.model.Keywords;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -34,19 +30,23 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
 @Api("Article Controller")
-
 @ApiResponses(value = { @ApiResponse(code = 401, message = "Unauthorized", response = BasicResponse.class),
         @ApiResponse(code = 403, message = "Forbidden", response = BasicResponse.class),
         @ApiResponse(code = 404, message = "Not Found", response = BasicResponse.class),
         @ApiResponse(code = 500, message = "Failure", response = BasicResponse.class) })
-
 @CrossOrigin
 @RestController
 public class ArticleController {
 
-
     @Autowired
     ArticleDao articleDao;
+
+    @Autowired
+    SkillsDao skillsDao;
+
+    @Autowired
+    KeywordsDao keywordsDao;
+
 
     @ApiOperation(value = "리스트 조회")
 	@ResponseBody
@@ -75,7 +75,7 @@ public class ArticleController {
             "title" : "qwerty@gmail.com",
             "content":"내용내용",
             "image_URL":"/media/picture.jpg",
-            keyword : [{"c"},{"java"}]
+            keyword : [{"skill" : "C"},{"skill" : "Ajax"}]
             }
 
         */
@@ -87,23 +87,34 @@ public class ArticleController {
         String content = (String) request.get("content");
         String imgurl = (String) request.get("imgUrl");
         
-
-        List<String> keywords = (List<String>) request.get("keyword");
-
+        
         Article article = new Article();
         article.setTitle(title);
         article.setContent(content);
         article.setEmail(email);
         article.setNickname(nickname);
         article.setImgurl(imgurl);
-
+        
         articleDao.save(article);
-
+        
         final BasicResponse result = new BasicResponse();
-
+        
         result.status = true;
         result.data = "success";
         
+
+        List<Map<String,String>> keywords = (List<Map<String,String>>) request.get("keyword");
+        
+        for(Map<String,String> k : keywords){
+
+            String skill = k.get("skill");
+
+            Keywords keyword = new Keywords();
+            keyword.setArticleid(ano);
+            keyword.setSno(skillsDao.findSkillByName(skill).getSno());
+            keywordsDao.save(keyword);
+        }
+
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 }

@@ -43,6 +43,6 @@ public class User {
     private String info;
 
     @Column(insertable = false, updatable = false)
-    private LocalDateTime createDate;
+    private LocalDateTime createdate;
 
 }
