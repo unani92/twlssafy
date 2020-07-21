@@ -33,5 +33,6 @@
     font-weight: bolder;
     background-color: #2c3e50;
     padding: 3px;
+    z-index: -1;
   }
 </style>

@@ -60,7 +60,7 @@
     align-items: center;
     justify-content: space-between;
     position: fixed;
-    z-index: 2;
+    z-index: 4;
   }
   .logo-searchbar {
     display: flex;
@@ -156,7 +156,7 @@
     position: absolute;
     top: 0;
     right: 0;
-    z-index: 0;
+    z-index: 3;
   }
   .aside-menu {
     width: 300px;
