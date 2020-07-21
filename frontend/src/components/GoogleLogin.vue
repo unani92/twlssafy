@@ -1,7 +1,7 @@
 <template>
   <div class="google">
     <i class="fab fa-google"></i>
-    <span>google 로그인</span>
+    <span>Google 로그인</span>
   </div>
 </template>
 

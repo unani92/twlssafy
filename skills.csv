@@ -1,474 +1,474 @@
-﻿skill
-"3Ds Max"
-"ABBYY Real-Time Recognition SDK"
-"Adobe Fuse"
-"Adobe XD"
-"AEM(Adobe Experience Manager)"
-Ajax
-"Amazon Kinesis"
-ANSYS
-Apache
-"Apache Airflow"
-"Apache Bigtop"
-"Apache Bloodhound"
-"Apache BookKeeper"
-"Apache Buildr"
-"Apache Cordova"
-"Apache Eagle"
-"Apache Falcon"
-"Apache Felix"
-"Apache Hadoop"
-"Apache Hama"
-"Apache HAWQ"
-"Apache Hive"
-"Apache Isis"
-"Apache jclouds"
-"Apache JSPWiki"
-"Apache jUDDI"
-"Apache Juneau"
-"Apache Kafka"
-"Apache Karaf"
-"Apache Knox"
-"Apache Kylin"
-"Apache Lens"
-"Apache Logging"
-"Apache Lucene.Net"
-"Apache MADlib"
-"Apache Mnemonic"
-"Apache Mynewt"
-"Apache Nifi"
-"Apache Nutch"
-"Apache ODE"
-"Apache Olingo"
-"Apache OODT"
-"Apache Open Climate Workbench"
-"Apache OpenJPA"
-"Apache OpenWebBeans"
-"Apache OpenWhisk"
-"Apache Perl"
-"Apache Phoenix"
-"Apache Pulsar"
-"Apache Qpid"
-"Apache REEF"
-"Apache Samza"
-"Apache Sling"
-"Apache Sqoop"
-"Apache Storm"
-"Apache Syncope"
-"Apache Tajo"
-"Apache Thrift"
-"Apache Tika"
-"Apache Traffic Control"
-"Apache Trafodion"
-"Apache Twill"
-"Apache UIMA"
-"Apache Unomi"
-"Apache Usergrid"
-"Apache Web Services"
-"Apache Whimsy"
-"Apache Wicket"
-"Apache Xalan"
-"Apache Xerces"
-"Apache XML Graphics"
-"Apache XMLBeans"
-"Apache Yetus"
-"Apache Zeppelin"
-"Apache ZooKeeper"
-"App Inventor"
-Appium
-ArcGIS
-"ATL(ATL Transformation Language)"
-Auth0
-AutoCAD
-"AWS Alexa"
-"AWS Alexa Skills"
-"AWS Application Discovery Service"
-"AWS Backup"
-"AWS Budgets"
-"AWS EFS"
-"AWS Elastic Transcoder"
-"AWS ElastiCache"
-"AWS ElasticBeanstalk"
-"AWS Elasticsearch Service"
-"AWS Forecast"
-"AWS IAM"
-"AWS Inspector"
-"AWS IoT Analytics"
-"AWS IoT Core"
-"AWS IoT Events"
-"AWS Kinesis"
-"AWS License Manager"
-"AWS MediaConvert"
-"AWS MediaPackage"
-"AWS Migration Hub"
-"AWS Mobile Hub"
-"AWS QuickSight"
-"AWS RDS"
-"AWS Rekognition"
-"AWS Route 53"
-"AWS Simple Notification Service(AWS SNS)"
-"AWS Simple Queue Service(AWS SQS)"
-"AWS WorkSpaces"
-"AWS X-Ray"
-"Azure API Management"
-"Azure Batch"
-"Azure Bing Image Search"
-"Azure Bing Visual Search"
-"Azure Bing Web Search"
-"Azure Bot Service"
-"Azure Computer Vision"
-"Azure Container Registry"
-"Azure Content Delivery Network"
-"Azure Content Protection"
-"Azure Data Catalog"
-"Azure Data Explorer"
-"Azure Data Lake Analytics"
-"Azure Data Lake Storage"
-"Azure Database for MySQL"
-"Azure Dedicated HSM"
-"Azure Digital Twins"
-"Azure File Storage"
-"Azure Functions"
-"Azure IoT Hub"
-"Azure Key Vault"
-"Azure Kinect DK"
-"Azure Kubernetes Service (AKS)"
-"Azure Language Understanding"
-"Azure Linguistic Analysis"
-"Azure Load Balancer"
-"Azure Maps"
-"Azure Migrate"
-"Azure Mobile Apps"
-"Azure Network Watcher"
-"Azure Notification Hubs"
-"Azure QnA Maker"
-"Azure Queue Storage"
-"Azure R Server for HDInsight"
-"Azure Remote Rendering"
-"Azure SAP HANA on Large Instances"
-"Azure Time Series Insights"
-"Azure Virtual Machine Scale Sets"
-"Azure Virtual Network"
-"Azure Virtual WAN"
-"Azure Web Apps"
-"Azure Xamarin"
-Babylon.js
-Backbone.js
-"Battery Management System(BMS)"
-"Big Data"
-billboard.js
-BitBucket
-BlueZ
-Bottle
-C
-C#
-C++
-C3.js
-"Caffe(Convolutional Architecture for Fast Feature Embedding)"
-CAPL
-CATIA
-centOS
-"Chrome Extension"
-CircleCI
-Codeception
-CodeIgniter
-Composer
-"Constrained Application Protocol(CoAP)"
-Consul
-Dagger2
-Dart
-"Data Binding"
-"Data visualization"
-Db2
-"Deep Learning"
-DigitalOcean
-Django
-"Django Channels"
-Docker
-Drupal
-"DSP(Digital Signal Processing)"
-EJS
-"Element UI"
-"Entity Framework"
-Enzyme
-ESLint
-Esper
-Expo
-ExpressJS
-EXTJS
-Fastly
-FeathersJS
-Filebeat
-Finagle
-Finatra
-Firebase
-Flask
-flutter
-Framework7
-"Functional JS"
-Git
-GitHub
-"Google Access Transparency"
-"Google Adwords"
-"Google AI Hub"
-"Google Apigee API Platform"
-"Google Apigee healthcare APIx"
-"Google BigQuery"
-"Google Binary Authorization"
-"Google Cloud Build"
-"Google Cloud Dataprep"
-"Google Cloud Dataproc"
-"Google Cloud Deep Learning VM Image"
-"Google Cloud Deployment Manager"
-"Google Cloud Endpoints"
-"Google Cloud Functions"
-"Google Cloud Healthcare API"
-"Google Cloud HSM"
-"Google Cloud Identity-Aware Proxy"
-"Google Cloud Inference API"
-"Google Cloud IoT Edge"
-"Google Cloud Key Management Service"
-"Google Cloud Natural Language"
-"Google Cloud Shell"
-"Google Cloud Source Repositories"
-"Google Cloud Storage Transfer Service"
-"Google Cloud Test Lab"
-"Google Cloud Tools for IntelliJ"
-"Google Cloud TPU"
-"Google Compute Engine"
-"Google Cost management"
-"Google CSP Config Management"
-"Google Dialogflow"
-"Google Error Reporting"
-"Google Fastbase"
-"Google Gradle App Engine Plugin"
-"Google Graphics Processing Unit"
-"Google Istio on GKE"
-"Google Knative"
-"Google Logging"
-"Google Maps API"
-"Google Orbitera White-Label Marketplace"
-"Google Play Game Service"
-"Google Profiler"
-"Google Tag Manager"
-"Google Trace"
-"Google Transparent Service Level Indicators"
-"Google Velostrata"
-"Google VM Migration"
-"Google VPC Service Controls"
-"Google Zync Render"
-GPUImage
-"Grails Framework"
-Grapevine
-GraphQL
-gRPC
-"H2 Database"
-Hapi.js
-Haskell
-Heroku
-Hexagon.js
-Hibernate
-"HLS(HTTP Live Streaming)"
-HLSL
-HTML
-"IBM Cloud"
-"IBM High Performance Services"
-"IBM SPSS Amos"
-"IBM Watson APIs"
-INFORMIX
-ITK
-Jabbix
-Jade
-"Java Persistence API"
-"JDBC(Java Database Connectivity)"
-Jenkins
-Jest
-Jetpack
-JFace
-Jinja
-"JNI(Java Native Interface)"
-Jooq
-"JPA(Java Persistent API)"
-jQuery
-"jQuery Mobile"
-Jsoup
-JSP
-JSS
-JSX
-JUnit
-Jupyter
-"Kakao Map API"
-"KakaoLink API"
-"KakaoMoment API"
-"KakaoTalk API"
-"Kendo UI"
-Kepware
-Kibana
-Klaytn
-Knockout.js
-Koa.js
-Koin
-Kubernetes
-LabVIEW
-Leaflet
-LibROSA
-libseccomp
-Lodash
-Logback
-LustreFs
-"Machine Learning"
-"ML Kit"
-Mobius
-MobX
-Mocha
-MVC
-"Naver Clova API"
-"Naver Map API"
-Ndk
-Neo4j
-Neos
-NestJS
-"New Relic"
-Next.js
-Nexus
-nGrinder
-NgRx
-"NHN Toast Compute"
-"NMS(Network Management System)"
-Node.js
-NoSQL
-Numpy
-OAuth
-"OGRE(Object-Oriented Graphics Rendering Engine)"
-OkHttp
-OOP
-OpenCL
-OpenCV
-OpenFlow
-OpenMP
-openpyxl
-OpenShift
-OpenStack
-Oracle
-"Oracle Forms"
-OrmLite
-"Parse Server"
-Passport.js
-"Phalcon Framework"
-Phaser
-PHP
-Physijs
-Physx
-"PKI(Public key infrastructure)"
-"PlusFriend API"
-Poco
-"POSIX Library"
-Pygame
-PySpark
-Python
-PyTorch
-QML
-Qt
-Quartz
-"Quasar Framework"
-Qubicle
-Querydsl
-R
-RabbitMQ
-"React Native"
-"React Native Router"
-"Red Hat Ceph Storage"
-Redux-Thunk
-"Responsive Web"
-Retrofit
-Retrofit2
-RTCMultiConnection
-Ruby
-"Ruby Motion"
-RxJS
-SAS
-"SDL(Simple DirectMedia Layer)"
-Selenium
-"Semantic UI"
-SOAP
-SockJS
-Spring
-SQL
-STS
-"Super Resolution"
-"SVN(Apache Subversion)"
-Swagger
-Swift
-"SWT(Standard Widget Toolkit)"
-"Sybase IQ"
-"T map API"
-Tacotron
-"Tesseract OCR"
-TestFX
-ThreeJS
-Truffle
-TrustZone
-"TrustZone API"
-Ubuntu
-uDebug
-Ultralight
-UML
-Underscore.js
-Unity
-"Unity ML-Agents"
-Unix
-"Unreal Engine"
-"Upbit API"
-Urwid
-UWP
-uWSGI
-Vagrant
-"VB .NET"
-VBScript
-VHDL
-"Visual Basic"
-Voxel
-VR
-VTK
-"Vue CLI"
-Vue.js
-VuePress
-Vuetify.js
-Vuex
-Vuforia
-Web3.py
-web3j
-web3Swift
-WebFlux
-WebGL
-WebGPU
-WebRTC
-WebSocket
-"Windows Embedded"
-"WIPI(Wireless Internet Platform for Interoperability)"
-Wireframe
-wsgi
-Xamarin
-XAML
-XGBoost
-XML
-XMPP
-Xplatform
-XpressEngine
-Xtext
-Yara
-Yarn
-"Yii PHP Framework"
-"Yocto Project"
-YOLO
-Yona
-"YouTube Data API"
-"YTS.AG API"
-Zappa
-ZEIT
-Zephyr
-Zeplin
-Zeroboard
-ZeroMQ
-Zuul
-ZXing
+sno,skill
+1,3Ds Max
+2,ABBYY Real-Time Recognition SDK
+3,Adobe Fuse
+4,Adobe XD
+5,AEM(Adobe Experience Manager)
+6,Ajax
+7,Amazon Kinesis
+8,ANSYS
+9,Apache
+10,Apache Airflow
+11,Apache Bigtop
+12,Apache Bloodhound
+13,Apache BookKeeper
+14,Apache Buildr
+15,Apache Cordova
+16,Apache Eagle
+17,Apache Falcon
+18,Apache Felix
+19,Apache Hadoop
+20,Apache Hama
+21,Apache HAWQ
+22,Apache Hive
+23,Apache Isis
+24,Apache jclouds
+25,Apache JSPWiki
+26,Apache jUDDI
+27,Apache Juneau
+28,Apache Kafka
+29,Apache Karaf
+30,Apache Knox
+31,Apache Kylin
+32,Apache Lens
+33,Apache Logging
+34,Apache Lucene.Net
+35,Apache MADlib
+36,Apache Mnemonic
+37,Apache Mynewt
+38,Apache Nifi
+39,Apache Nutch
+40,Apache ODE
+41,Apache Olingo
+42,Apache OODT
+43,Apache Open Climate Workbench
+44,Apache OpenJPA
+45,Apache OpenWebBeans
+46,Apache OpenWhisk
+47,Apache Perl
+48,Apache Phoenix
+49,Apache Pulsar
+50,Apache Qpid
+51,Apache REEF
+52,Apache Samza
+53,Apache Sling
+54,Apache Sqoop
+55,Apache Storm
+56,Apache Syncope
+57,Apache Tajo
+58,Apache Thrift
+59,Apache Tika
+60,Apache Traffic Control
+61,Apache Trafodion
+62,Apache Twill
+63,Apache UIMA
+64,Apache Unomi
+65,Apache Usergrid
+66,Apache Web Services
+67,Apache Whimsy
+68,Apache Wicket
+69,Apache Xalan
+70,Apache Xerces
+71,Apache XML Graphics
+72,Apache XMLBeans
+73,Apache Yetus
+74,Apache Zeppelin
+75,Apache ZooKeeper
+76,App Inventor
+77,Appium
+78,ArcGIS
+79,ATL(ATL Transformation Language)
+80,Auth0
+81,AutoCAD
+82,AWS Alexa
+83,AWS Alexa Skills
+84,AWS Application Discovery Service
+85,AWS Backup
+86,AWS Budgets
+87,AWS EFS
+88,AWS Elastic Transcoder
+89,AWS ElastiCache
+90,AWS ElasticBeanstalk
+91,AWS Elasticsearch Service
+92,AWS Forecast
+93,AWS IAM
+94,AWS Inspector
+95,AWS IoT Analytics
+96,AWS IoT Core
+97,AWS IoT Events
+98,AWS Kinesis
+99,AWS License Manager
+100,AWS MediaConvert
+101,AWS MediaPackage
+102,AWS Migration Hub
+103,AWS Mobile Hub
+104,AWS QuickSight
+105,AWS RDS
+106,AWS Rekognition
+107,AWS Route 53
+108,AWS Simple Notification Service(AWS SNS)
+109,AWS Simple Queue Service(AWS SQS)
+110,AWS WorkSpaces
+111,AWS X-Ray
+112,Azure API Management
+113,Azure Batch
+114,Azure Bing Image Search
+115,Azure Bing Visual Search
+116,Azure Bing Web Search
+117,Azure Bot Service
+118,Azure Computer Vision
+119,Azure Container Registry
+120,Azure Content Delivery Network
+121,Azure Content Protection
+122,Azure Data Catalog
+123,Azure Data Explorer
+124,Azure Data Lake Analytics
+125,Azure Data Lake Storage
+126,Azure Database for MySQL
+127,Azure Dedicated HSM
+128,Azure Digital Twins
+129,Azure File Storage
+130,Azure Functions
+131,Azure IoT Hub
+132,Azure Key Vault
+133,Azure Kinect DK
+134,Azure Kubernetes Service (AKS)
+135,Azure Language Understanding
+136,Azure Linguistic Analysis
+137,Azure Load Balancer
+138,Azure Maps
+139,Azure Migrate
+140,Azure Mobile Apps
+141,Azure Network Watcher
+142,Azure Notification Hubs
+143,Azure QnA Maker
+144,Azure Queue Storage
+145,Azure R Server for HDInsight
+146,Azure Remote Rendering
+147,Azure SAP HANA on Large Instances
+148,Azure Time Series Insights
+149,Azure Virtual Machine Scale Sets
+150,Azure Virtual Network
+151,Azure Virtual WAN
+152,Azure Web Apps
+153,Azure Xamarin
+154,Babylon.js
+155,Backbone.js
+156,Battery Management System(BMS)
+157,Big Data
+158,billboard.js
+159,BitBucket
+160,BlueZ
+161,Bottle
+162,C
+163,C#
+164,C++
+165,C3.js
+166,Caffe(Convolutional Architecture for Fast Feature Embedding)
+167,CAPL
+168,CATIA
+169,centOS
+170,Chrome Extension
+171,CircleCI
+172,Codeception
+173,CodeIgniter
+174,Composer
+175,Constrained Application Protocol(CoAP)
+176,Consul
+177,Dagger2
+178,Dart
+179,Data Binding
+180,Data visualization
+181,Db2
+182,Deep Learning
+183,DigitalOcean
+184,Django
+185,Django Channels
+186,Docker
+187,Drupal
+188,DSP(Digital Signal Processing)
+189,EJS
+190,Element UI
+191,Entity Framework
+192,Enzyme
+193,ESLint
+194,Esper
+195,Expo
+196,ExpressJS
+197,EXTJS
+198,Fastly
+199,FeathersJS
+200,Filebeat
+201,Finagle
+202,Finatra
+203,Firebase
+204,Flask
+205,flutter
+206,Framework7
+207,Functional JS
+208,Git
+209,GitHub
+210,Google Access Transparency
+211,Google Adwords
+212,Google AI Hub
+213,Google Apigee API Platform
+214,Google Apigee healthcare APIx
+215,Google BigQuery
+216,Google Binary Authorization
+217,Google Cloud Build
+218,Google Cloud Dataprep
+219,Google Cloud Dataproc
+220,Google Cloud Deep Learning VM Image
+221,Google Cloud Deployment Manager
+222,Google Cloud Endpoints
+223,Google Cloud Functions
+224,Google Cloud Healthcare API
+225,Google Cloud HSM
+226,Google Cloud Identity-Aware Proxy
+227,Google Cloud Inference API
+228,Google Cloud IoT Edge
+229,Google Cloud Key Management Service
+230,Google Cloud Natural Language
+231,Google Cloud Shell
+232,Google Cloud Source Repositories
+233,Google Cloud Storage Transfer Service
+234,Google Cloud Test Lab
+235,Google Cloud Tools for IntelliJ
+236,Google Cloud TPU
+237,Google Compute Engine
+238,Google Cost management
+239,Google CSP Config Management
+240,Google Dialogflow
+241,Google Error Reporting
+242,Google Fastbase
+243,Google Gradle App Engine Plugin
+244,Google Graphics Processing Unit
+245,Google Istio on GKE
+246,Google Knative
+247,Google Logging
+248,Google Maps API
+249,Google Orbitera White-Label Marketplace
+250,Google Play Game Service
+251,Google Profiler
+252,Google Tag Manager
+253,Google Trace
+254,Google Transparent Service Level Indicators
+255,Google Velostrata
+256,Google VM Migration
+257,Google VPC Service Controls
+258,Google Zync Render
+259,GPUImage
+260,Grails Framework
+261,Grapevine
+262,GraphQL
+263,gRPC
+264,H2 Database
+265,Hapi.js
+266,Haskell
+267,Heroku
+268,Hexagon.js
+269,Hibernate
+270,HLS(HTTP Live Streaming)
+271,HLSL
+272,HTML
+273,IBM Cloud
+274,IBM High Performance Services
+275,IBM SPSS Amos
+276,IBM Watson APIs
+277,INFORMIX
+278,ITK
+279,Jabbix
+280,Jade
+281,Java Persistence API
+282,JDBC(Java Database Connectivity)
+283,Jenkins
+284,Jest
+285,Jetpack
+286,JFace
+287,Jinja
+288,JNI(Java Native Interface)
+289,Jooq
+290,JPA(Java Persistent API)
+291,jQuery
+292,jQuery Mobile
+293,Jsoup
+294,JSP
+295,JSS
+296,JSX
+297,JUnit
+298,Jupyter
+299,Kakao Map API
+300,KakaoLink API
+301,KakaoMoment API
+302,KakaoTalk API
+303,Kendo UI
+304,Kepware
+305,Kibana
+306,Klaytn
+307,Knockout.js
+308,Koa.js
+309,Koin
+310,Kubernetes
+311,LabVIEW
+312,Leaflet
+313,LibROSA
+314,libseccomp
+315,Lodash
+316,Logback
+317,LustreFs
+318,Machine Learning
+319,ML Kit
+320,Mobius
+321,MobX
+322,Mocha
+323,MVC
+324,Naver Clova API
+325,Naver Map API
+326,Ndk
+327,Neo4j
+328,Neos
+329,NestJS
+330,New Relic
+331,Next.js
+332,Nexus
+333,nGrinder
+334,NgRx
+335,NHN Toast Compute
+336,NMS(Network Management System)
+337,Node.js
+338,NoSQL
+339,Numpy
+340,OAuth
+341,OGRE(Object-Oriented Graphics Rendering Engine)
+342,OkHttp
+343,OOP
+344,OpenCL
+345,OpenCV
+346,OpenFlow
+347,OpenMP
+348,openpyxl
+349,OpenShift
+350,OpenStack
+351,Oracle
+352,Oracle Forms
+353,OrmLite
+354,Parse Server
+355,Passport.js
+356,Phalcon Framework
+357,Phaser
+358,PHP
+359,Physijs
+360,Physx
+361,PKI(Public key infrastructure)
+362,PlusFriend API
+363,Poco
+364,POSIX Library
+365,Pygame
+366,PySpark
+367,Python
+368,PyTorch
+369,QML
+370,Qt
+371,Quartz
+372,Quasar Framework
+373,Qubicle
+374,Querydsl
+375,R
+376,RabbitMQ
+377,React Native
+378,React Native Router
+379,Red Hat Ceph Storage
+380,Redux-Thunk
+381,Responsive Web
+382,Retrofit
+383,Retrofit2
+384,RTCMultiConnection
+385,Ruby
+386,Ruby Motion
+387,RxJS
+388,SAS
+389,SDL(Simple DirectMedia Layer)
+390,Selenium
+391,Semantic UI
+392,SOAP
+393,SockJS
+394,Spring
+395,SQL
+396,STS
+397,Super Resolution
+398,SVN(Apache Subversion)
+399,Swagger
+400,Swift
+401,SWT(Standard Widget Toolkit)
+402,Sybase IQ
+403,T map API
+404,Tacotron
+405,Tesseract OCR
+406,TestFX
+407,ThreeJS
+408,Truffle
+409,TrustZone
+410,TrustZone API
+411,Ubuntu
+412,uDebug
+413,Ultralight
+414,UML
+415,Underscore.js
+416,Unity
+417,Unity ML-Agents
+418,Unix
+419,Unreal Engine
+420,Upbit API
+421,Urwid
+422,UWP
+423,uWSGI
+424,Vagrant
+425,VB .NET
+426,VBScript
+427,VHDL
+428,Visual Basic
+429,Voxel
+430,VR
+431,VTK
+432,Vue CLI
+433,Vue.js
+434,VuePress
+435,Vuetify.js
+436,Vuex
+437,Vuforia
+438,Web3.py
+439,web3j
+440,web3Swift
+441,WebFlux
+442,WebGL
+443,WebGPU
+444,WebRTC
+445,WebSocket
+446,Windows Embedded
+447,WIPI(Wireless Internet Platform for Interoperability)
+448,Wireframe
+449,wsgi
+450,Xamarin
+451,XAML
+452,XGBoost
+453,XML
+454,XMPP
+455,Xplatform
+456,XpressEngine
+457,Xtext
+458,Yara
+459,Yarn
+460,Yii PHP Framework
+461,Yocto Project
+462,YOLO
+463,Yona
+464,YouTube Data API
+465,YTS.AG API
+466,Zappa
+467,ZEIT
+468,Zephyr
+469,Zeplin
+470,Zeroboard
+471,ZeroMQ
+472,Zuul
+473,ZXing
