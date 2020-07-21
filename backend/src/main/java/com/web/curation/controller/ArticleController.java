@@ -47,11 +47,7 @@ public class ArticleController {
 	@ResponseBody
     @GetMapping("/article/page={page}")
     public Object getArticleList(@PathVariable int page) {
-
-        System.out.println("in!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         List<Article> list = articleDao.findAll();
-
-        System.out.println("###########" +list.get(0));
 
         final BasicResponse result = new BasicResponse();
 
@@ -61,7 +57,46 @@ public class ArticleController {
         
         return new ResponseEntity<>(result, HttpStatus.OK);
 
-	}
+    }
+    
+    @ApiOperation(value = "글쓰기")
+    @ResponseBody
+    @PostMapping("/article")
+    public Object writeArticle (@RequestBody(required = true) final Map<String,Object> request){
 
+        /*
+        {
+            "title" : "qwerty@gmail.com",
+            "content":"내용내용",
+            "image_URL":"/media/picture.jpg",
+            keyword : [{"c"},{"java"}]
+            }
+
+        */
+
+        String email = (String) request.get("email");
+        String nickname = (String) request.get("nickname");
+        String title = (String) request.get("title");
+        String content = (String) request.get("content");
+        String img_url = (String) request.get("img_url");
+
+        List<String> keywords = (List<String>) request.get("keyword");
+
+        Article article = new Article();
+        article.setTitle(title);
+        article.setContent(content);
+        article.setEmail(email);
+        article.setNickname(nickname);
+        article.setImg_url(img_url);
+
+        articleDao.save(article);
+
+        final BasicResponse result = new BasicResponse();
+
+        result.status = true;
+        result.data = "success";
+        
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
 }
 
