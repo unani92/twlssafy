@@ -28,6 +28,11 @@
             Email Login
           </Router-link>
         </div>
+        <div>
+          <Router-link :to="{name: 'Signup'}">
+            회원가입
+          </Router-link>
+        </div>
       </div>
     </div>
   </div>
