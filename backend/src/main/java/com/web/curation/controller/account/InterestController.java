@@ -3,7 +3,6 @@ package com.web.curation.controller.account;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import com.web.curation.dao.user.InterestDao;
 import com.web.curation.dao.user.SkillsDao;
@@ -31,7 +30,7 @@ import io.swagger.annotations.ApiResponses;
 
 @CrossOrigin
 @RestController
-public class TmpController {
+public class InterestController {
 
     @Autowired
     InterestDao interestDao;
@@ -42,14 +41,11 @@ public class TmpController {
     @Autowired
     UserDao userDao;
 
-    @PostMapping("/account/interest")
-    @ApiOperation(value = "관심 분야 선택")
+    @PostMapping("/account/interest/register")
+    @ApiOperation(value = "관심사 등록")
     public Object interest(@RequestBody(required = true) final Map<String, Object> request) {
 
-        // List<String>으로 넘어오나 skills가?
-
         String email = (String) request.get("email");
-        // int no = userDao.findUserByEmail(email).get().getNo();
 
         List<Object> list = new ArrayList<>();
         list = (List<Object>) request.get("skill");
@@ -67,12 +63,6 @@ public class TmpController {
             test.add(i);
         }
 
-
-        // {
-        //     "email" : "seow0124@naver.com"
-        //     "skill" : [c, java, python] - List <String> / String [] / Object
-        // }
-
         final BasicResponse result = new BasicResponse();
 
         result.status = true;
@@ -84,31 +74,25 @@ public class TmpController {
     }
 
 
-    @PostMapping("/account/interestDelete")
+    @PostMapping("/account/interest/delete")
     @ApiOperation(value = "관심 분야 선택")
     public Object interestDelete (@RequestBody(required = true) final Map<String,Object> request){
-
-        // List<String>으로 넘어오나 skills가?
 
         String email  = (String) request.get("email");
         // int no = userDao.findUserByEmail(email).get().getNo();
 
-        List <Object> list = new ArrayList<>();
-        list = (List<Object>) request.get("skill");
-        
-        List <Object> test = new ArrayList<>();
+        Object test = new ArrayList<>();
 
-        for(Object s : list) {
+     
             Skills skill = new Skills();
-            skill = skillsDao.findSkillByName((String) s);
+            skill = skillsDao.findSkillByName((String) request.get("skill"));
 
             Interest i = new Interest();
             i.setEmail(email);
             i.setSno(skill.getSno());
             interestDao.delete(i);
 
-            test.add(i);
-        }
+        ((List<Object>) test).add(i);
 
 
         final BasicResponse result = new BasicResponse();
