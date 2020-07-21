@@ -23,8 +23,10 @@ create table `member` (
 
 -- 복합키
 create table interest(
+  `interest_id` int auto_increment not null,
 `email`  varchar(128) DEFAULT NULL,
 `skill` char(128) not null,
-foreign key (`email`) references user(`email`) on delete cascade,
-primary key (`email`,`skill`)
+foreign key (`email`) references member(`email`) on delete cascade,
+primary key (`email`,`skill`),
+UNIQUE key `interest_id` (`interest_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

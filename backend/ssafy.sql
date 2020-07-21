@@ -1,6 +1,7 @@
 create table `article` (
 	`article_id` int auto_increment not null,
-    `email` varchar(128) default null,
+    `email` varchar(128),
+    `nickname` char(20) NOT NULL,
     `title` varchar(128) default null,
     `content` text default null,
     `img_url` text default null,
@@ -9,7 +10,6 @@ create table `article` (
     foreign key(`email`) references `member`(`email`),
     primary key(`article_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-desc article;
 
 create table pin(
   `pin_id` int auto_increment not null,
