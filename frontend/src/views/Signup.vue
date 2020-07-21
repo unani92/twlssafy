@@ -23,7 +23,6 @@ export default {
   margin-right: auto;
   padding-bottom: 1rem;
   border-radius: 3px;
-  background-color: white;
   text-align: left;
   display: flex;
   justify-content: center;
