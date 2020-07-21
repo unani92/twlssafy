@@ -3,11 +3,14 @@ package com.web.curation.controller.account;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import com.web.curation.dao.user.InterestDao;
+import com.web.curation.dao.user.SkillsDao;
 import com.web.curation.dao.user.UserDao;
 import com.web.curation.model.BasicResponse;
 import com.web.curation.model.user.Interest;
+import com.web.curation.model.user.Skills;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -30,32 +33,35 @@ import io.swagger.annotations.ApiResponses;
 @RestController
 public class TmpController {
 
-
     @Autowired
     InterestDao interestDao;
 
+    @Autowired
+    SkillsDao skillsDao;
 
     @Autowired
     UserDao userDao;
 
     @PostMapping("/account/interest")
     @ApiOperation(value = "관심 분야 선택")
-    public Object interest (@RequestBody(required = true) final Map<String,Object> request){
+    public Object interest(@RequestBody(required = true) final Map<String, Object> request) {
 
         // List<String>으로 넘어오나 skills가?
 
-        String email  = (String) request.get("email");
+        String email = (String) request.get("email");
         // int no = userDao.findUserByEmail(email).get().getNo();
 
-        List <Object> list = new ArrayList<>();
+        List<Object> list = new ArrayList<>();
         list = (List<Object>) request.get("skill");
-        
-        List <Object> test = new ArrayList<>();
 
-        for(Object s : list) {
+        List<Object> test = new ArrayList<>();
+
+        for (Object s : list) {
+            Skills skill = new Skills();
+            skill = skillsDao.findSkillByName((String) s);
             Interest i = new Interest();
             i.setEmail(email);
-            i.setSkill((String)s);
+            i.setSno(skill.getSno());;
             interestDao.save(i);
 
             test.add(i);
@@ -93,9 +99,12 @@ public class TmpController {
         List <Object> test = new ArrayList<>();
 
         for(Object s : list) {
+            Skills skill = new Skills();
+            skill = skillsDao.findSkillByName((String) s);
+
             Interest i = new Interest();
             i.setEmail(email);
-            i.setSkill((String)s);
+            i.setSno(skill.getSno());
             interestDao.delete(i);
 
             test.add(i);
