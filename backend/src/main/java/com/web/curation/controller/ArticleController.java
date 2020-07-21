@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+
 import com.web.curation.dao.ArticleDao;
 import com.web.curation.dao.user.InterestDao;
 import com.web.curation.dao.user.UserDao;
@@ -13,6 +14,10 @@ import com.web.curation.model.BasicResponse;
 import com.web.curation.model.user.Interest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -47,13 +52,14 @@ public class ArticleController {
 	@ResponseBody
     @GetMapping("/article/page={page}")
     public Object getArticleList(@PathVariable int page) {
-        List<Article> list = articleDao.findAll();
+        // List<Article> list = articleDao.findAll();
 
+        Page<Article> articles = articleDao.findAll(PageRequest.of(page, 10, Sort.Direction.DESC,"articleid"));
         final BasicResponse result = new BasicResponse();
 
         result.status = true;
         result.data = "success";
-        result.object = list;
+        result.object = articles;
         
         return new ResponseEntity<>(result, HttpStatus.OK);
 
@@ -74,11 +80,13 @@ public class ArticleController {
 
         */
 
+
         String email = (String) request.get("email");
         String nickname = (String) request.get("nickname");
         String title = (String) request.get("title");
         String content = (String) request.get("content");
-        String img_url = (String) request.get("img_url");
+        String imgurl = (String) request.get("imgUrl");
+        
 
         List<String> keywords = (List<String>) request.get("keyword");
 
@@ -87,7 +95,7 @@ public class ArticleController {
         article.setContent(content);
         article.setEmail(email);
         article.setNickname(nickname);
-        article.setImg_url(img_url);
+        article.setImgurl(imgurl);
 
         articleDao.save(article);
 

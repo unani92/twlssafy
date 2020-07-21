@@ -1,4 +1,3 @@
-// 하단 DB 설정 부분은 Sub PJT II에서 데이터베이스를 구성한 이후에 주석을 해제하여 사용.
 
 package com.web.curation.model;
 
@@ -14,7 +13,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.time.LocalDateTime;
@@ -29,19 +27,21 @@ import java.time.LocalDateTime;
 public class Article {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int article_id;
+    private int articleid;
 
+    @Column(name = "email")
     private String email;
     private String nickname;
     
     private String title;
     private String content;
-    private String img_url;
+    
+    private String imgurl;
 
-    @Column(insertable = false, updatable = true, name = "updated_at")
-    private LocalDateTime updateDate;
+    @Column(insertable = false)
+    private LocalDateTime updatedat;
 
-    @Column(insertable = false, updatable = false, name = "created_at")
-    private LocalDateTime createDate;
+    @Column(insertable = false, updatable = false)
+    private LocalDateTime createdat;
 
 }
