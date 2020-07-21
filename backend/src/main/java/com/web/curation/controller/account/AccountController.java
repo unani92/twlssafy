@@ -48,7 +48,6 @@ public class AccountController {
 
         String email = (String)request.get("email");
         int password = ((String)request.get("password")).hashCode();
-        //String password = (String)request.get("password");
 
         final Optional<User> userOpt = userDao.findUserByEmailAndPassword(email, password);
 
@@ -79,8 +78,6 @@ public class AccountController {
     @PostMapping("/account/signup")
     @ApiOperation(value = "가입하기")
     public Object signup(@Valid @RequestBody final SignupRequest request) {
-        // 이메일, 닉네임 중복처리 필수
-        // 회원가입단을 생성해 보세요
 
         String email = request.getEmail();
         int password = ((String)request.getPassword()).hashCode();

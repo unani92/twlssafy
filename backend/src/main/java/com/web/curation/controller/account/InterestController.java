@@ -5,9 +5,11 @@ import java.util.List;
 import java.util.Map;
 
 import com.web.curation.dao.user.InterestDao;
+import com.web.curation.dao.user.SkillsDao;
 import com.web.curation.dao.user.UserDao;
 import com.web.curation.model.BasicResponse;
 import com.web.curation.model.user.Interest;
+import com.web.curation.model.user.Skills;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,44 +30,38 @@ import io.swagger.annotations.ApiResponses;
 
 @CrossOrigin
 @RestController
-public class TmpController {
-
+public class InterestController {
 
     @Autowired
     InterestDao interestDao;
 
+    @Autowired
+    SkillsDao skillsDao;
 
     @Autowired
     UserDao userDao;
 
-    @PostMapping("/account/interest")
-    @ApiOperation(value = "관심 분야 선택")
-    public Object interest (@RequestBody(required = true) final Map<String,Object> request){
+    @PostMapping("/account/interest/register")
+    @ApiOperation(value = "관심사 등록")
+    public Object interest(@RequestBody(required = true) final Map<String, Object> request) {
 
-        // List<String>으로 넘어오나 skills가?
+        String email = (String) request.get("email");
 
-        String email  = (String) request.get("email");
-        // int no = userDao.findUserByEmail(email).get().getNo();
-
-        List <Object> list = new ArrayList<>();
+        List<Object> list = new ArrayList<>();
         list = (List<Object>) request.get("skill");
-        
-        List <Object> test = new ArrayList<>();
 
-        for(Object s : list) {
+        List<Object> test = new ArrayList<>();
+
+        for (Object s : list) {
+            Skills skill = new Skills();
+            skill = skillsDao.findSkillByName((String) s);
             Interest i = new Interest();
             i.setEmail(email);
-            i.setSkill((String)s);
+            i.setSno(skill.getSno());;
             interestDao.save(i);
 
             test.add(i);
         }
-
-
-        // {
-        //     "email" : "seow0124@naver.com"
-        //     "skill" : [c, java, python] - List <String> / String [] / Object
-        // }
 
         final BasicResponse result = new BasicResponse();
 
@@ -78,28 +74,25 @@ public class TmpController {
     }
 
 
-    @PostMapping("/account/interestDelete")
+    @PostMapping("/account/interest/delete")
     @ApiOperation(value = "관심 분야 선택")
     public Object interestDelete (@RequestBody(required = true) final Map<String,Object> request){
-
-        // List<String>으로 넘어오나 skills가?
 
         String email  = (String) request.get("email");
         // int no = userDao.findUserByEmail(email).get().getNo();
 
-        List <Object> list = new ArrayList<>();
-        list = (List<Object>) request.get("skill");
-        
-        List <Object> test = new ArrayList<>();
+        Object test = new ArrayList<>();
 
-        for(Object s : list) {
+     
+            Skills skill = new Skills();
+            skill = skillsDao.findSkillByName((String) request.get("skill"));
+
             Interest i = new Interest();
             i.setEmail(email);
-            i.setSkill((String)s);
+            i.setSno(skill.getSno());
             interestDao.delete(i);
 
-            test.add(i);
-        }
+        ((List<Object>) test).add(i);
 
 
         final BasicResponse result = new BasicResponse();
