@@ -28,6 +28,11 @@ Vue.use(VueRouter)
     name: 'ChangePwd',
     component: ChangePwd
   },
+  {
+    path: '/selectskills',
+    name: 'SelectSkills',
+    component: ChangePwd
+  },
 ]
 
 const router = new VueRouter({
