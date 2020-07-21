@@ -6,9 +6,22 @@
       <GoogleLogin/>
     </div>
     <div class="emailogin">
-      <input type="email" placeholder="이메일을 입력하세요">
-      <input type="password" placeholder="비밀번호를 입력하세요">
-      <button class="login-btn">Login</button>
+      <div class="email">
+        <input @focusout="emailCheckForm" v-model="email" type="email" placeholder="이메일을 입력하세요">
+        <div class="error-message" v-if="error.email">
+          <span>{{error.email}}</span>
+        </div>
+      </div>
+      <div class="password">
+        <input @input="pwdCheckForm" v-model="password" type="password" placeholder="비밀번호를 입력하세요">
+      </div>
+      <div class="error-message" v-if="error.password">
+          <span>{{error.password}}</span>
+      </div>
+      <button @click="login"
+              class="login-btn"
+              :class="{disabled : !isSubmit}">
+        Login</button>
       <button @click="$router.push('/signup')" class="signup-btn">Sign Up</button>
       <Router-link to="/changepwd" style="text-decoration: none; color: black">비밀번호를 잊으셨나요?</Router-link>
     </div>
@@ -16,13 +29,87 @@
 </template>
 
 <script>
+  import axios from 'axios'
+  import PV from "password-validator";
+  import * as EmailValidator from "email-validator";
   import GithubLogin from "../components/GithubLogin";
   import GoogleLogin from "../components/GoogleLogin";
+
+  const baseURL = 'http://localhost:8080/account/login'
   export default {
     name: "Login",
+    created() {
+      this.passwordSchema
+        .is()
+        .min(8)
+        .is()
+        .max(100)
+        .has()
+        .digits()
+        .has()
+        .letters();
+    },
+    data() {
+      return {
+        email: null,
+        password: null,
+        passwordSchema: new PV(),
+        error: {
+          email: null,
+          password: null,
+        },
+        canLogin: {
+          email: false,
+          password: false
+        },
+        isSubmit: false
+      }
+    },
     components: {
       GithubLogin,
       GoogleLogin
+    },
+    methods: {
+      emailCheckForm() {
+        if (EmailValidator.validate(this.email)) {
+          this.error.email = false
+          this.canLogin.email = true
+        } else {
+          this.error.email = "이메일 형식이 아닙니다."
+          this.canLogin.email = false
+        }
+      },
+      pwdCheckForm() {
+        setTimeout(() => {
+          if (this.password.length >= 0 && !this.passwordSchema.validate(this.password)) {
+            this.error.password = "영문,숫자 포함 8 자리이상이어야 합니다. 2글자 이상 중복은 불가합니다."
+            this.canLogin.password = false
+        } else {
+            this.error.password = false
+            this.canLogin.password = true
+          }
+        }, 1000)
+      },
+      login() {
+        const params = {
+          email: this.email,
+          password: this.password
+        }
+        if (this.isSubmit) {
+          axios.post(baseURL,params)
+            .then(res => {
+              console.log(res)
+              this.$router.push('/')
+            })
+            .catch(err => console.log(err))
+        }
+      },
+      changeBtn() {
+      this.isSubmit = this.canLogin.email && this.canLogin.password
+      }
+    },
+    updated() {
+      this.changeBtn();
     }
   }
 </script>
@@ -91,5 +178,13 @@
     .login-btn, .signup-btn, input {
       width: 200px;
     }
+  }
+  .error-message {
+    color: crimson;
+    margin: 3px;
+  }
+  .disabled {
+    cursor: default;
+    background-color: rgb(237, 155, 104);
   }
 </style>
