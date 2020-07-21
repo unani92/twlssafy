@@ -23,10 +23,8 @@
       <div class="aside-menu">
         <GoogleLogin/>
         <GithubLogin/>
-        <div>
-          <Router-link class="emailogin-text" :to="{name: 'Login'}">
-            Email Login
-          </Router-link>
+        <div @click="goToEmailLogin" class="emailogin-text">
+          Email Login
         </div>
       </div>
     </div>
@@ -45,6 +43,11 @@
     methods: {
       asideBarToggle() {
         const aside = document.querySelector(".aside")
+        aside.classList.toggle("disabled")
+      },
+      goToEmailLogin() {
+        const aside = document.querySelector(".aside")
+        this.$router.push({name: "Login"})
         aside.classList.toggle("disabled")
       }
     }
@@ -181,7 +184,7 @@
     justify-content: center;
   }
   .emailogin-text {
-    text-decoration: none;
+    cursor: pointer;
     color: white;
     font-weight: bolder;
   }
