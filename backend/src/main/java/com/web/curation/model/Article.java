@@ -38,9 +38,6 @@ public class Article {
     private String content;
     private String img_url;
 
-    @Column(name="info")
-    private String info;
-
     @Column(insertable = false, updatable = true, name = "updated_at")
     private LocalDateTime updateDate;
 
