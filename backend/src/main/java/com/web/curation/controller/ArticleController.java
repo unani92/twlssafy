@@ -1,7 +1,10 @@
 package com.web.curation.controller;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+
+import javax.transaction.Transactional;
 
 import com.web.curation.dao.ArticleDao;
 import com.web.curation.dao.KeywordsDao;
@@ -17,10 +20,11 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -28,6 +32,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import org.springframework.web.bind.annotation.PutMapping;
 
 @Api("Article Controller")
 @ApiResponses(value = { @ApiResponse(code = 401, message = "Unauthorized", response = BasicResponse.class),
@@ -49,11 +54,9 @@ public class ArticleController {
 
 
     @ApiOperation(value = "리스트 조회")
-	@ResponseBody
-    @GetMapping("/article/page={page}")
-    public Object getArticleList(@PathVariable int page) {
-        // List<Article> list = articleDao.findAll();
-
+    @GetMapping("/article")
+    public Object getArticleList(@RequestParam(value = "page") final int page) {
+    
         Page<Article> articles = articleDao.findAll(PageRequest.of(page, 10, Sort.Direction.DESC,"articleid"));
         final BasicResponse result = new BasicResponse();
 
@@ -72,7 +75,9 @@ public class ArticleController {
 
         /*
         {
-            "title" : "qwerty@gmail.com",
+            "email" : "email@email.com",
+            "nickname" : "nickname",
+            "title" : "제목제목",
             "content":"내용내용",
             "image_URL":"/media/picture.jpg",
             keyword : [{"skill" : "C"},{"skill" : "Ajax"}]
@@ -103,6 +108,10 @@ public class ArticleController {
         result.data = "success";
         
 
+        if(request.get("keyword")==null)
+            return new ResponseEntity<>(result, HttpStatus.OK);
+
+
         List<Map<String,String>> keywords = (List<Map<String,String>>) request.get("keyword");
         
         for(Map<String,String> k : keywords){
@@ -115,6 +124,87 @@ public class ArticleController {
             keywordsDao.save(keyword);
         }
 
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @Transactional
+    @ApiOperation(value = "글삭제")
+    @DeleteMapping("/article")
+    public Object deleteArticle (@RequestParam(required = true) final int no){
+        
+        final BasicResponse result = new BasicResponse();
+        if(articleDao.deleteByArticleid(no) > 0){
+            result.status = true;
+            result.data = "삭제 성공";
+            
+        }
+        else {
+            result.status = false;
+            result.data = "삭제 실패";
+            
+        }
+        
+        
+        
+        return new ResponseEntity<>(result, HttpStatus.OK);
+        
+    }
+    
+    @Transactional
+    @ApiOperation(value = "글수정")
+    @PutMapping(value="/article")
+    public Object updateArticle (@RequestBody(required = true) final Map<String,Object> request) {
+
+
+        /*
+        {
+        "articleId" : "2",
+        "title" : "제목",
+        "content":"내용내용",
+        "image_URL":"/media/picture.jpg",
+        "keyword" : [{"skill" : "Ajax"},{"skill" : "EJS"}]
+        }
+        */
+
+        int articleId = Integer.parseInt((String)request.get("articleId"));
+        
+        Article article = articleDao.findByArticleid(articleId);
+
+        article.setContent((String)request.get("content"));
+        article.setTitle((String)request.get("title"));
+        article.setImgurl((String)request.get("imgUrl"));
+        article.setUpdatedat(LocalDateTime.now());
+
+        final BasicResponse result = new BasicResponse();
+        if(articleDao.save(article) != null){
+
+            if(keywordsDao.deleteByArticleid(articleId)<0){
+                result.data = "수정 실패";
+                result.status = false;
+                return new ResponseEntity<>(result, HttpStatus.OK);
+            }
+            List<Map<String,String>> keywords = (List<Map<String, String>>) request.get("keyword");
+            for(Map<String,String> k : keywords){
+                Keywords keyword = new Keywords();
+                keyword.setArticleid(articleId);
+                keyword.setSno(skillsDao.findSkillByName(k.get("skill")).getSno());
+                if(keywordsDao.save(keyword) ==null){
+                    result.data = "수정 실패";
+                    result.status = false;
+                    return new ResponseEntity<>(result, HttpStatus.OK);
+                }
+            }
+
+            result.status = true;
+            result.data = "수정 성공";
+        }
+        else {
+            result.data = "수정 실패";
+            result.status = false;
+        }
+
+        
+    
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 }

@@ -136,7 +136,7 @@ public class AccountController {
     @Autowired
     JavaMailSender javaMailSender;
     
-    public String sendMail(String email) throws MessagingException {
+    public String sendMail(final String email) throws MessagingException {
         //인증 번호 랜덤 생성
         StringBuffer ranString = new StringBuffer();
         Random ran = new Random();
