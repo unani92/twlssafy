@@ -21,8 +21,8 @@ function login(params) {
 function createArticle(params) {
   return instance.post("article/create", params);
 }
-function fetchArticles(page) {
-  return instance.post(`article/page=${page.page}`);
+function fetchArticles(params) {
+  return instance.get(`article/page=${params.page}`, params);
 }
 
 export {

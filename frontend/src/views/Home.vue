@@ -35,7 +35,7 @@ export default {
     return {
       articles: [],
       isLoading: false,
-      page: 1,
+      page: 0,
     };
   },
   methods: {
