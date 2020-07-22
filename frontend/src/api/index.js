@@ -21,5 +21,15 @@ function login(params) {
 function createArticle(params) {
   return instance.post("article/create", params);
 }
+function fetchArticles(params) {
+  return instance.get(`article/page=${params.page}`, params);
+}
 
-export { checkEmail, checkNickname, registerUser, login, createArticle };
+export {
+  checkEmail,
+  checkNickname,
+  registerUser,
+  login,
+  createArticle,
+  fetchArticles,
+};
