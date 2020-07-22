@@ -6,9 +6,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ArticleDao extends JpaRepository<Article, String> {
     Article save(Article article);
-    // void delete(Article article);
-
+	int deleteByArticleid(int articleid);
+    
     Article findFirstByEmailOrderByArticleidDesc(String email);
-	void deleteByArticleid(int articleid);
+	Article findByArticleid(int articleId);
 
 }

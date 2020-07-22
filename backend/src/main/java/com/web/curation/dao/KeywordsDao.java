@@ -8,5 +8,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface KeywordsDao extends JpaRepository<Keywords, String> {
     Keywords save(Keywords keyword);
     void delete(Keywords keyword);
+	int deleteByArticleid(int articleId);
 
 }

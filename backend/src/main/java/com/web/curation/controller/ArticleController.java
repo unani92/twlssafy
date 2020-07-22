@@ -1,5 +1,6 @@
 package com.web.curation.controller;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -31,6 +32,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import org.springframework.web.bind.annotation.PutMapping;
 
 @Api("Article Controller")
 @ApiResponses(value = { @ApiResponse(code = 401, message = "Unauthorized", response = BasicResponse.class),
@@ -53,7 +55,7 @@ public class ArticleController {
 
     @ApiOperation(value = "리스트 조회")
     @GetMapping("/article")
-    public Object getArticleList(@RequestParam(value = "page") int page) {
+    public Object getArticleList(@RequestParam(value = "page") final int page) {
     
         Page<Article> articles = articleDao.findAll(PageRequest.of(page, 10, Sort.Direction.DESC,"articleid"));
         final BasicResponse result = new BasicResponse();
@@ -129,16 +131,81 @@ public class ArticleController {
     @ApiOperation(value = "글삭제")
     @DeleteMapping("/article")
     public Object deleteArticle (@RequestParam(required = true) final int no){
-
-        articleDao.deleteByArticleid(no);
-
+        
         final BasicResponse result = new BasicResponse();
-
-        result.status = true;
-        result.data = "success";
+        if(articleDao.deleteByArticleid(no) > 0){
+            result.status = true;
+            result.data = "삭제 성공";
+            
+        }
+        else {
+            result.status = false;
+            result.data = "삭제 실패";
+            
+        }
+        
+        
         
         return new ResponseEntity<>(result, HttpStatus.OK);
+        
+    }
+    
+    @Transactional
+    @ApiOperation(value = "글수정")
+    @PutMapping(value="/article")
+    public Object updateArticle (@RequestBody(required = true) final Map<String,Object> request) {
 
+
+        /*
+        {
+        "articleId" : "2",
+        "title" : "제목",
+        "content":"내용내용",
+        "image_URL":"/media/picture.jpg",
+        "keyword" : [{"skill" : "Ajax"},{"skill" : "EJS"}]
+        }
+        */
+
+        int articleId = Integer.parseInt((String)request.get("articleId"));
+        
+        Article article = articleDao.findByArticleid(articleId);
+
+        article.setContent((String)request.get("content"));
+        article.setTitle((String)request.get("title"));
+        article.setImgurl((String)request.get("imgUrl"));
+        article.setUpdatedat(LocalDateTime.now());
+
+        final BasicResponse result = new BasicResponse();
+        if(articleDao.save(article) != null){
+
+            if(keywordsDao.deleteByArticleid(articleId)<0){
+                result.data = "수정 실패";
+                result.status = false;
+                return new ResponseEntity<>(result, HttpStatus.OK);
+            }
+            List<Map<String,String>> keywords = (List<Map<String, String>>) request.get("keyword");
+            for(Map<String,String> k : keywords){
+                Keywords keyword = new Keywords();
+                keyword.setArticleid(articleId);
+                keyword.setSno(skillsDao.findSkillByName(k.get("skill")).getSno());
+                if(keywordsDao.save(keyword) ==null){
+                    result.data = "수정 실패";
+                    result.status = false;
+                    return new ResponseEntity<>(result, HttpStatus.OK);
+                }
+            }
+
+            result.status = true;
+            result.data = "수정 성공";
+        }
+        else {
+            result.data = "수정 실패";
+            result.status = false;
+        }
+
+        
+    
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 }
 
