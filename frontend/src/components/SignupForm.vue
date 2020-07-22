@@ -2,6 +2,7 @@
   <div class="wrapper">
     <h1 class="title">환영합니다.</h1>
     <p>회원가입을 하고 배운 지식을 친구들과 공유해보세요</p>
+
     <form @submit.prevent="submitForm" class="form">
       <!-- email(email) 
           0. 형식 검증
@@ -9,6 +10,10 @@
           2. 메일 인증 요청 및 인증 코드 입력
           -->
       <div class="form">
+        <div class="inputfield">
+          <GithubLogin />
+          <GoogleLogin />
+        </div>
         <p class="join-warning guide-text">{{ logMessage.email }}</p>
         <div class="inputfield">
           <input
@@ -114,6 +119,8 @@
 </template>
 
 <script>
+import GithubLogin from "../components/GithubLogin";
+import GoogleLogin from "../components/GoogleLogin";
 import { validateEmail, validatePassword } from "@/utils/validation";
 import { checkEmail, checkNickname, registerUser } from "@/api/index";
 
@@ -138,6 +145,11 @@ export default {
       confirmedEmail: false,
       nicknameDoubleCheck: false,
     };
+  },
+
+  components: {
+    GithubLogin,
+    GoogleLogin,
   },
   computed: {
     isemailValid() {
