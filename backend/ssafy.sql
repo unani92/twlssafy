@@ -10,6 +10,8 @@ create table `member` (
   UNIQUE KEY `nickname` (`nickname`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+-----------------------------------------------------------------
+
 create table `article` (
 	`articleid` int auto_increment not null,
     `email` varchar(128) default null,
@@ -23,7 +25,8 @@ create table `article` (
     foreign key(`nickname`) references `member`(`nickname`) on delete cascade,
     primary key(`articleid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-desc article;
+
+-----------------------------------------------------------------
 
 create table pin(
   `pinId` int auto_increment not null,
@@ -34,6 +37,8 @@ create table pin(
   primary key(`email`,`articleid`),
   unique key `pinId` (`pinId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-----------------------------------------------------------------
 
 create table comment (
   `commentId` int auto_increment not null,
@@ -47,6 +52,7 @@ create table comment (
   primary key `commentId` (`commentId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+-----------------------------------------------------------------
 
 create table likes (
   `likesId` int auto_increment not null,
@@ -58,6 +64,7 @@ create table likes (
   unique key `likesId` (`likesId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+-----------------------------------------------------------------
 
 -- skills.csv import필요
 create table `skills` (
@@ -66,6 +73,7 @@ create table `skills` (
  PRIMARY KEY (`sno`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+-----------------------------------------------------------------
 
 create table `interest`(
  `interestId` int auto_increment NOT NULL,
@@ -77,18 +85,21 @@ primary key (`email`,`sno`),
 unique key `interestId` (`interestId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+-----------------------------------------------------------------
 
 create table `follow` (
  `followId` int auto_increment NOT NULL,
  `email` varchar(128) DEFAULT NULL,
  `followEmail` varchar(128) DEFAULT NULL,
- PRIMARY KEY (`followId`),
+ PRIMARY KEY (`email`,`followEmail`),
  FOREIGN KEY (`email`) REFERENCES member(`email`)
  ON DELETE CASCADE ON UPDATE CASCADE,
  FOREIGN KEY (`followEmail`) REFERENCES member(`email`)
- ON DELETE CASCADE ON UPDATE CASCADE
+ ON DELETE CASCADE ON UPDATE CASCADE,
+ unique key (`followid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+-----------------------------------------------------------------
 
 create table keyword (
   `keywordId` int auto_increment not null,
@@ -99,3 +110,32 @@ create table keyword (
   on delete cascade on update cascade,
   foreign key (`sno`) references skills(`sno`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+-----------------------------------------------------------------
+
+DELIMITER $$
+DROP PROCEDURE IF EXISTS loopInsert$$
+ 
+CREATE PROCEDURE loopInsert()
+BEGIN
+    DECLARE i INT DEFAULT 1;
+        
+    WHILE i <= 100 DO
+        INSERT INTO article(email,nickname,title,content)
+          VALUES('qwer@qwer.com', 'Qwerty!23', concat('제목',i), concat('내용',i));
+      insert into keyword(articleId,sno) values ((select articleid from article order by articleid desc limit 1),  i+234);
+        SET i = i + 1;
+    END WHILE;
+END$$
+DELIMITER $$
+
+call loopInsert();
+
+select article.*, keyword.sno, skills.name
+from article, keyword, skills
+where article.articleid = keyword.articleid
+and skills.sno = keyword.sno
+order by articleid desc;
+
+-----------------------------------------------------------------
