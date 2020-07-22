@@ -7,4 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface SkillsDao extends JpaRepository<Skills, String> {
 
     Skills findSkillByName(String name);
+    Skills findSkillBySno(int sno);
 }

@@ -1,6 +1,8 @@
 package com.web.curation.controller;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -22,6 +24,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -203,9 +206,35 @@ public class ArticleController {
             result.status = false;
         }
 
-        
-    
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
+
+    @ApiOperation(value = "리스트 조회")
+    @GetMapping("/article/{no}")
+    public Object getArticle(@PathVariable final int no) {
+    
+        Article article = articleDao.findByArticleid(no);
+
+        List<Keywords> keywords = keywordsDao.findAllByArticleid(no);
+        
+        List<String> keywordList = new ArrayList<>();
+        for(Keywords k : keywords){
+            keywordList.add(skillsDao.findSkillBySno(k.getSno()).getName());        
+        }
+
+        final BasicResponse result = new BasicResponse();
+
+        result.status = true;
+        result.data = "success";
+
+        Map<String,Object> object = new HashMap<>();
+        object.put("article", article);
+        object.put("keyword", keywordList);
+        result.object = object;
+        
+        return new ResponseEntity<>(result, HttpStatus.OK);
+
+    }
+    
 }
 
