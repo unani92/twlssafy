@@ -29,7 +29,6 @@ public class Article {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int articleid;
 
-    @Column(name = "email")
     private String email;
     private String nickname;
     
