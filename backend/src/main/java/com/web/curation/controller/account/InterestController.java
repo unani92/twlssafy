@@ -5,11 +5,11 @@ import java.util.List;
 import java.util.Map;
 
 import com.web.curation.dao.user.InterestDao;
-import com.web.curation.dao.user.SkillsDao;
+import com.web.curation.dao.SkillsDao;
 import com.web.curation.dao.user.UserDao;
 import com.web.curation.model.BasicResponse;
 import com.web.curation.model.user.Interest;
-import com.web.curation.model.user.Skills;
+import com.web.curation.model.Skills;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

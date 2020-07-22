@@ -8,5 +8,4 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface InterestDao extends JpaRepository<Interest, MultiId> {
     Interest save(MultiId id);
     void delete(Interest id);
-    //Optional<Interest> findSkillByEmail(String email);
 }
