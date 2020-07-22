@@ -22,7 +22,7 @@ function createArticle(params) {
   return instance.post("article/create", params);
 }
 function fetchArticles(params) {
-  return instance.get(`article/page=${params.page}`, params);
+  return instance.get(`article?page=${params.page}`);
 }
 
 export {

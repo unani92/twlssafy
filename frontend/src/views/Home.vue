@@ -45,10 +45,8 @@ export default {
       };
       this.isLoading = true;
       const { data } = await fetchArticles(params);
-      console.log(data);
       this.isLoading = false;
-      this.articles = data.object.content;
-      console.log(data.object.content);
+      this.articles = data.object.article.content;
     },
   },
   created() {
