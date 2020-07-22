@@ -3,6 +3,8 @@ package com.web.curation.controller;
 import java.util.List;
 import java.util.Map;
 
+import javax.transaction.Transactional;
+
 import com.web.curation.dao.ArticleDao;
 import com.web.curation.dao.KeywordsDao;
 import com.web.curation.dao.user.SkillsDao;
@@ -17,6 +19,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -49,7 +52,6 @@ public class ArticleController {
 
 
     @ApiOperation(value = "리스트 조회")
-    @ResponseBody   
     @GetMapping("/article")
     public Object getArticleList(@RequestParam(value = "page") int page) {
     
@@ -71,7 +73,9 @@ public class ArticleController {
 
         /*
         {
-            "title" : "qwerty@gmail.com",
+            "email" : "email@email.com",
+            "nickname" : "nickname",
+            "title" : "제목제목",
             "content":"내용내용",
             "image_URL":"/media/picture.jpg",
             keyword : [{"skill" : "C"},{"skill" : "Ajax"}]
@@ -119,6 +123,22 @@ public class ArticleController {
         }
 
         return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @Transactional
+    @ApiOperation(value = "글삭제")
+    @DeleteMapping("/article")
+    public Object deleteArticle (@RequestParam(required = true) final int no){
+
+        articleDao.deleteByArticleid(no);
+
+        final BasicResponse result = new BasicResponse();
+
+        result.status = true;
+        result.data = "success";
+        
+        return new ResponseEntity<>(result, HttpStatus.OK);
+
     }
 }
 
