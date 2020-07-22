@@ -11,7 +11,7 @@
       </div>
       <div class="article-icon">
         <div class="article">
-          <button class="btn">write a post</button>
+          <button @click="$router.push('/create')" class="btn">write a post</button>
         </div>
         <div class="icon">
           <i class="far fa-bell" />

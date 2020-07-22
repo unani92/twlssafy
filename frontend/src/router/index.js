@@ -5,6 +5,7 @@ import Login from "../views/Login";
 import Signup from "../views/Signup";
 import ChangePwd from "../views/ChangePwd";
 import SelectSkills from "../views/SelectSkills";
+import ArticleCreate from "../views/ArticleCreate";
 
 Vue.use(VueRouter)
 
@@ -33,6 +34,11 @@ Vue.use(VueRouter)
     path: '/selectskills',
     name: 'SelectSkills',
     component: SelectSkills
+  },
+  {
+    path: '/create',
+    name: 'ArticleCreate',
+    component: ArticleCreate
   },
 ]
 
