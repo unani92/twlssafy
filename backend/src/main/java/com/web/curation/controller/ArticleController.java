@@ -18,9 +18,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -49,11 +49,10 @@ public class ArticleController {
 
 
     @ApiOperation(value = "리스트 조회")
-	@ResponseBody
-    @GetMapping("/article/page={page}")
-    public Object getArticleList(@PathVariable int page) {
-        // List<Article> list = articleDao.findAll();
-
+    @ResponseBody   
+    @GetMapping("/article")
+    public Object getArticleList(@RequestParam(value = "page") int page) {
+    
         Page<Article> articles = articleDao.findAll(PageRequest.of(page, 10, Sort.Direction.DESC,"articleid"));
         final BasicResponse result = new BasicResponse();
 
@@ -102,6 +101,10 @@ public class ArticleController {
         result.status = true;
         result.data = "success";
         
+
+        if(request.get("keyword")==null)
+            return new ResponseEntity<>(result, HttpStatus.OK);
+
 
         List<Map<String,String>> keywords = (List<Map<String,String>>) request.get("keyword");
         
