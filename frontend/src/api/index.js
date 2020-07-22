@@ -14,4 +14,12 @@ function registerUser(userData) {
   return instance.post("account/signup", userData);
 }
 
-export { checkEmail, checkNickname, registerUser };
+function login(params) {
+  return instance.post("account/login",params);
+}
+
+function createArticle(params) {
+  return instance.post("article/create",params)
+}
+
+export { checkEmail, checkNickname, registerUser, login, createArticle };

@@ -29,13 +29,12 @@
 </template>
 
 <script>
-  import axios from 'axios'
   import PV from "password-validator";
   import * as EmailValidator from "email-validator";
   import GithubLogin from "../components/GithubLogin";
   import GoogleLogin from "../components/GoogleLogin";
+  import { login } from "../api";
 
-  const baseURL = 'http://localhost:8080/account/login'
   export default {
     name: "Login",
     created() {
@@ -96,10 +95,19 @@
           password: this.password
         }
         if (this.isSubmit) {
-          axios.post(baseURL,params)
+          login(params)
             .then(res => {
-              console.log(res)
-              this.$router.push('/')
+              const { data: {data} } = res
+              if (data === 'success') {
+                const{ email, nickname } = res.data.object
+                this.$store.commit("setUsername", email);
+                this.$store.commit("setNickname", nickname);
+                this.$router.push('/')
+              } else if (data === "비밀번호가 일치하지 않습니다.") {
+                this.error.password = '비밀번호가 일치하지 않습니다.'
+              } else {
+                this.error.email = '이메일이 일치하지 않습니다.'
+              }
             })
             .catch(err => console.log(err))
         }
@@ -182,6 +190,7 @@
   .error-message {
     color: crimson;
     margin: 3px;
+    text-align: center;
   }
   .disabled {
     cursor: default;
