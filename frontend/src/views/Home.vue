@@ -1,37 +1,68 @@
 <template>
   <div class="home">
-    <div class="main">
-      <div>
-        <HomeNav/>
-      </div>
-      <div>
-        <HashTag/>
-      </div>
-    </div>
-    <div style="height: 10000px">
+    <LoadingSpinner v-if="isLoading"></LoadingSpinner>
 
+    <div v-else>
+      <div>
+        <HomeNav />
+      </div>
+      <div>
+        <HashTag />
+      </div>
+      <div class="primary">
+        <ArticleCardList :articles="articles"></ArticleCardList>
+      </div>
+      <div style="height: 10000px"></div>
     </div>
   </div>
 </template>
 
 <script>
-  import HomeNav from "../components/HomeNav";
-  import HashTag from "../components/HashTag";
-  export default {
-    name: "Home",
-    components: {
-      HomeNav,
-      HashTag
-    }
-  }
+import HomeNav from "../components/HomeNav";
+import HashTag from "../components/HashTag";
+import ArticleCardList from "@/components/article/ArticleCardList.vue";
+import LoadingSpinner from "@/components/common/LoadingSpinner.vue";
+import { fetchArticles } from "@/api/index";
+
+export default {
+  components: {
+    HomeNav,
+    HashTag,
+    ArticleCardList,
+    LoadingSpinner,
+  },
+  data() {
+    return {
+      articles: [],
+      isLoading: false,
+      page: 1,
+    };
+  },
+  methods: {
+    async fetchData() {
+      const params = {
+        page: this.page++,
+      };
+      this.isLoading = true;
+      const { data } = await fetchArticles(params);
+      console.log(data);
+      this.isLoading = false;
+      this.articles = data.object.content;
+      console.log(data.object.content);
+    },
+  },
+  created() {
+    this.fetchData();
+  },
+};
 </script>
 
 <style scoped>
-  .home {
-    padding-top: 60px;
-  }
-  .main {
-    display: flex;
-    justify-content: space-between;
-  }
+.home {
+  padding-top: 60px;
+}
+.main {
+  display: flex;
+  justify-content: space-between;
+}
 </style>
