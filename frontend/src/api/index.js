@@ -19,7 +19,7 @@ function login(params) {
 }
 
 function createArticle(params) {
-  return instance.post("article/create", params);
+  return instance.post("article", params);
 }
 function fetchArticles(params) {
   return instance.get(`article?page=${params.page}`);

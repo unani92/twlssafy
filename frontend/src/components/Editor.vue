@@ -26,7 +26,16 @@ export default {
       initialEditType: "markdown",
       previewStyle: "vertical",
       height: "500px",
-      plugins: [[codeSyntaxHightlight, { hljs }]]
+      plugins: [[codeSyntaxHightlight, { hljs }]],
+      // hooks: {
+      //   addImageBlobHook: (blob, callback) => {
+      //     const customDescription = `foo`;
+      //     callback(blob, "alt text");
+      //     console.log(blob)
+      //     console.log(callback)
+      //     return false
+      //   }
+      // }
     })
     editor
   }
