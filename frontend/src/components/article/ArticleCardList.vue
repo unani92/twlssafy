@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="article-list-body">
     <ArticleCard
       v-for="article in articles"
       :key="article._id"

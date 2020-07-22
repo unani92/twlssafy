@@ -14,7 +14,7 @@
             {{ article.content }}
           </div>
           <button>PIN</button>
-          <button>❤</button>
+          <button>LIKE</button>
         </div>
       </div>
     </div>
@@ -45,6 +45,7 @@ export default {
   justify-content: center;
   font-family: "Fira Sans", sans-serif;
   margin-bottom: 1rem;
+  width: 100%;
 }
 .blog-card {
   height: 370px;
@@ -116,5 +117,10 @@ export default {
   outline: none;
   border: 1px solid #fd3535;
   background: linear-gradient(147deg, #fe8a39 0%, #fd3838 74%);
+}
+@media (max-width: 376px) {
+  .content {
+    display: none;
+  }
 }
 </style>

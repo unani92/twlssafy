@@ -6,35 +6,9 @@
       <div>
         <HomeNav class="home-nav" />
       </div>
-      <div class="secondary secondary-a ">
-        <li class="user-item friend-item">
-          <figure
-            class="user-photo"
-            style="background-image: url('https://i.pravatar.cc/100?u=배유진');"
-          ></figure>
-          <p class="user-name">
-            배유진
-          </p>
-        </li>
-        <li class="user-item friend-item">
-          <figure
-            class="user-photo"
-            style="background-image: url('https://i.pravatar.cc/100?u=전해인');"
-          ></figure>
-          <p class="user-name">
-            전혜인
-          </p>
-        </li>
-        <li class="user-item friend-item">
-          <figure
-            class="user-photo"
-            style="background-image: url('https://i.pravatar.cc/100?u=신영찬');"
-          ></figure>
-          <p class="user-name">
-            신영찬
-          </p>
-        </li>
-      </div>
+      <!-- <div class="secondary secondary-a ">
+        <Friends />
+      </div> -->
       <div class="primary">
         <ArticleCardList :articles="articles"></ArticleCardList>
       </div>
@@ -95,32 +69,25 @@ export default {
 .home {
   padding-top: 60px;
 }
+/* .main {
+  display: flex;
+  justify-content: space-between;
+} */
 .primary {
   padding: 1rem;
-  padding-top: 0;
-  width: 100%;
-  height: 100vh;
-  overflow-y: scroll; /* Add the ability to scroll */
+  padding-top: 70px;
 }
 .secondary-a {
-  background: lightgray;
+  background: white;
 }
 .secondary-b {
   /* background: #666666; */
-  color: lightgray;
+  color: white;
   width: 300px;
 }
 .secondary {
   padding: 1rem;
   padding-top: 70px;
-}
-.secondary-a {
-  display: none;
-}
-@media (max-width: 414px) {
-  .home-nav {
-    font-size: 0.75rem;
-  }
 }
 @media (min-width: 1024px) {
   .home {
@@ -138,7 +105,6 @@ export default {
   }
   .secondary-a {
     order: 1;
-    display: block;
   }
   .secondary-b {
     order: 3;
@@ -146,7 +112,6 @@ export default {
   .primary {
     order: 2;
     width: 60%;
-    padding-top: 70px;
   }
   .footer {
     order: 4;
@@ -165,13 +130,17 @@ export default {
     /* fixed된 형태로 배치되고 싶다면 width를 사용하기를 추천한다. 줄바꿈이 상관 없다면 -예를 들면, 해쉬태그- flex로 유연하게 하는 것이 좋음 */
   }
 }
-
 /* scroll */
+.primary {
+  background-color: #eee;
+  width: 60%;
+  height: 100vh;
+  overflow-y: scroll; /* Add the ability to scroll */
+}
 
 /* Hide scrollbar for Chrome, Safari and Opera */
 .primary::-webkit-scrollbar {
-  /* display: none; */
-  opacity: 0.5;
+  display: none;
 }
 
 /* Hide scrollbar for IE, Edge and Firefox */
@@ -196,31 +165,5 @@ export default {
 .secondary {
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
-}
-
-.user-item {
-  margin: 1rem 0;
-  display: flex;
-}
-
-.user-photo {
-  width: 50px;
-  height: 50px;
-  flex-shrink: 0;
-  border: 2px solid #333;
-  border-radius: 50%;
-  background-color: rgb(144, 153, 240);
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: 100%;
-  margin-right: 0.5em;
-}
-.friend-item {
-  align-items: center;
-}
-.user-name {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
 }
 </style>
