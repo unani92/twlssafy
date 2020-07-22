@@ -1,10 +1,11 @@
-package com.web.curation.model.user;
+package com.web.curation.model.pinlikesfollow;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.io.Serializable;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -16,22 +17,25 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 
 
 @Entity
-@Data
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@IdClass(MultiId.class)
+@IdClass(FollowMultiId.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class Interest {
+public class Follow implements Serializable{
 
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
     @Id
     private String email;
     @Id
-    private int sno;
+    private String followemail;
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int interest_id;
+    private int followid;
 
 
 }

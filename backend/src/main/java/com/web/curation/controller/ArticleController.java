@@ -10,7 +10,7 @@ import javax.transaction.Transactional;
 
 import com.web.curation.dao.ArticleDao;
 import com.web.curation.dao.KeywordsDao;
-import com.web.curation.dao.user.SkillsDao;
+import com.web.curation.dao.SkillsDao;
 import com.web.curation.model.Article;
 import com.web.curation.model.BasicResponse;
 import com.web.curation.model.Keywords;

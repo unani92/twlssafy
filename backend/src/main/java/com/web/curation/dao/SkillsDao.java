@@ -1,6 +1,5 @@
-package com.web.curation.dao.user;
-
-import com.web.curation.model.user.Skills;
+package com.web.curation.dao;
+import com.web.curation.model.Skills;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
