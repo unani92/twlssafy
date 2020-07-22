@@ -18,4 +18,8 @@ function login(params) {
   return instance.post("account/login",params);
 }
 
-export { checkEmail, checkNickname, registerUser, login };
+function createArticle(params) {
+  return instance.post("article/create",params)
+}
+
+export { checkEmail, checkNickname, registerUser, login, createArticle };

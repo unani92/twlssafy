@@ -122,7 +122,8 @@
   .autocomplete {
     border: 1px solid black;
     width: 300px;
-    height: 300px;
+    height: 150px;
+    overflow-y: auto;
   }
   .skill-badge {
     color: white;
