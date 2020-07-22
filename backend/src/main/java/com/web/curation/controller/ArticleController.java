@@ -54,57 +54,68 @@ public class ArticleController {
 
     @Autowired
     KeywordsDao keywordsDao;
-
-
+    
+    
     @ApiOperation(value = "리스트 조회")
     @GetMapping("/article")
     public Object getArticleList(@RequestParam(value = "page") final int page) {
+        final BasicResponse result = new BasicResponse();
+        result.status = false;
+        result.data = "글 조회 실패";
     
+        // 게시글 페이징 10개 단위
         Page<Article> articles = articleDao.findAll(PageRequest.of(page, 10, Sort.Direction.DESC,"articleid"));
 
-        List<List<String>> list = new ArrayList<>();
-        for(Article a : articles){
-            List<Keywords> tmpKeyword = keywordsDao.findAllByArticleid(a.getArticleid()); //
-            List<String> tmplist = null;
-            tmplist =  new ArrayList<>();
-            for(Keywords k : tmpKeyword){
-                tmplist.add(skillsDao.findSkillBySno(k.getSno()).getName());
-            }
-            list.add(tmplist);
+        //  keywords list - "keyword": [ ["Swift","Swagger"], ["C"], ["STS", "SQL"], ...]
+        if(articles==null){
+            return new ResponseEntity<>(result, HttpStatus.OK);
         }
 
-        final BasicResponse result = new BasicResponse();
-
-        result.status = true;
-        result.data = "success";
-
+        List<List<String>> keywordsList = new ArrayList<>();
+        for(Article a : articles){
+            // 게시글 번호를 이용해 이 글의 키워드 리스트를 받아옴 (ex. 1번글의 키워드 c, c++)
+            List<Keywords> tmpKeyword = keywordsDao.findAllByArticleid(a.getArticleid());
+            if(tmpKeyword!=null){ // 임시리스트 만들어서 키워드들 넣고, 최종 리스트에 담음
+                List<String> tmplist = new ArrayList<>();
+                for(Keywords k : tmpKeyword){
+                    tmplist.add(skillsDao.findSkillBySno(k.getSno()).getName());
+                }
+                keywordsList.add(tmplist);
+                result.status = true;
+                result.data = "글 조회 성공";
+            }
+            else return new ResponseEntity<>(result, HttpStatus.OK); // 글에 keyword 없으면 false return
+        }
+        
         Map<String,Object> object = new HashMap<>();
         object.put("article", articles);
-        object.put("keyword", list);
+        object.put("keyword", keywordsList);
 
         result.object = object;
         
         return new ResponseEntity<>(result, HttpStatus.OK);
-
     }
     
     @ApiOperation(value = "글쓰기")
     @ResponseBody
     @PostMapping("/article")
     public Object writeArticle (@RequestBody(required = true) final Map<String,Object> request){
-
+        
         /*
         {
-            "email" : "email@email.com",
-            "nickname" : "nickname",
+            "email" : "asdf@asdf.com",
+            "nickname" : "asdf",
             "title" : "제목제목",
             "content":"내용내용",
-            "image_URL":"/media/picture.jpg",
-            "keyword" : [{"skill" : "C"},{"skill" : "Ajax"}]
-            }
-
+            "imgUrl":"/media/picture.jpg",
+            "keyword" : ["C","Nexus","DB2"]
+        }
+        
         */
-
+        final BasicResponse result = new BasicResponse();
+        result.status = false;
+        result.data = "글쓰기 실패";
+        
 
         String email = (String) request.get("email");
         String nickname = (String) request.get("nickname");
@@ -120,32 +131,38 @@ public class ArticleController {
         article.setNickname(nickname);
         article.setImgurl(imgurl);
         
-        articleDao.save(article);
+        if(articleDao.save(article)==null){
+            result.data = "글쓰기 실패 - DB 저장 실패";
+            return new ResponseEntity<>(result,HttpStatus.OK);   
+        }
         
-        final BasicResponse result = new BasicResponse();
+        List<String> keywords = (List<String>) request.get("keyword"); 
         
-        result.status = true;
-        result.data = "success";
-        
-
-        if(request.get("keyword")==null)
+        // keyword 설정 안 하면 글 못씀
+        if(keywords == null){
+            result.data = "글쓰기 실패 - 키워드 설정 안함";
+            articleDao.delete(articleDao.findFirstByEmailOrderByArticleidDesc(email));
             return new ResponseEntity<>(result, HttpStatus.OK);
+        }
+            
+            for(String k : keywords){
+                Keywords keyword = new Keywords();
+                keyword.setArticleid(articleDao.findFirstByEmailOrderByArticleidDesc(email).getArticleid());
+                keyword.setSno(skillsDao.findSkillByName(k).getSno());
+                if(keywordsDao.save(keyword) == null){ // keyword 저장 못 하면 글 못씀
+                    result.data = "글쓰기 실패 - 키워드 DB 저장 실패";
+                    articleDao.delete(articleDao.findFirstByEmailOrderByArticleidDesc(email));
+                    return new ResponseEntity<>(result, HttpStatus.OK);
+                }
 
-
-        List<String> keywords = (List<String>) request.get("keyword");
-        
-        for(String k : keywords){
-
-            Keywords keyword = new Keywords();
-            keyword.setArticleid(articleDao.findFirstByEmailOrderByArticleidDesc(email).getArticleid());
-            System.out.println(k);
-            keyword.setSno(skillsDao.findSkillByName(k).getSno());
-            keywordsDao.save(keyword);
         }
 
+        result.status = true;
+        result.data = "글쓰기 성공";
+        
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
-
+    
     @Transactional
     @ApiOperation(value = "글삭제")
     @DeleteMapping("/article")
@@ -163,8 +180,6 @@ public class ArticleController {
             
         }
         
-        
-        
         return new ResponseEntity<>(result, HttpStatus.OK);
         
     }
@@ -181,8 +196,8 @@ public class ArticleController {
         "title" : "제목",
         "content":"내용내용",
         "image_URL":"/media/picture.jpg",
-        "keyword" : [{"skill" : "Ajax"},{"skill" : "EJS"}]
-        }
+        "keyword" : ["C","Python","DB2"]
+       }
         */
 
         int articleId = Integer.parseInt((String)request.get("articleId"));
@@ -195,21 +210,22 @@ public class ArticleController {
         article.setUpdatedat(LocalDateTime.now());
 
         final BasicResponse result = new BasicResponse();
+            result.data = "수정 실패";
+            result.status = false;
+
         if(articleDao.save(article) != null){
 
             if(keywordsDao.deleteByArticleid(articleId)<0){
-                result.data = "수정 실패";
-                result.status = false;
+                result.data = "수정 실패 - 글 번호 오류";
                 return new ResponseEntity<>(result, HttpStatus.OK);
             }
-            List<Map<String,String>> keywords = (List<Map<String, String>>) request.get("keyword");
-            for(Map<String,String> k : keywords){
+            List<String> keywords = (List<String>) request.get("keyword");
+            for(String k : keywords){
                 Keywords keyword = new Keywords();
                 keyword.setArticleid(articleId);
-                keyword.setSno(skillsDao.findSkillByName(k.get("skill")).getSno());
+                keyword.setSno(skillsDao.findSkillByName(k).getSno());
                 if(keywordsDao.save(keyword) ==null){
-                    result.data = "수정 실패";
-                    result.status = false;
+                    result.data = "수정 실패 - 키워드 저장 실패";
                     return new ResponseEntity<>(result, HttpStatus.OK);
                 }
             }
@@ -217,10 +233,7 @@ public class ArticleController {
             result.status = true;
             result.data = "수정 성공";
         }
-        else {
-            result.data = "수정 실패";
-            result.status = false;
-        }
+        
 
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
@@ -228,20 +241,26 @@ public class ArticleController {
     @ApiOperation(value = "상세 조회")
     @GetMapping("/article/{no}")
     public Object getArticle(@PathVariable final int no) {
+
+        final BasicResponse result = new BasicResponse();
+        result.status = false;
+        result.data = "상세 조회 실패";
     
         Article article = articleDao.findByArticleid(no);
-
         List<Keywords> keywords = keywordsDao.findAllByArticleid(no);
+
+        if(article == null || keywords == null){
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        }
         
         List<String> keywordList = new ArrayList<>();
         for(Keywords k : keywords){
             keywordList.add(skillsDao.findSkillBySno(k.getSno()).getName());        
         }
 
-        final BasicResponse result = new BasicResponse();
 
         result.status = true;
-        result.data = "success";
+        result.data = "상세 조회 성공";
 
         Map<String,Object> object = new HashMap<>();
         object.put("article", article);
