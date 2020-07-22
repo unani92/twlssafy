@@ -61,11 +61,28 @@ public class ArticleController {
     public Object getArticleList(@RequestParam(value = "page") final int page) {
     
         Page<Article> articles = articleDao.findAll(PageRequest.of(page, 10, Sort.Direction.DESC,"articleid"));
+
+        List<List<String>> list = new ArrayList<>();
+        for(Article a : articles){
+            List<Keywords> tmpKeyword = keywordsDao.findAllByArticleid(a.getArticleid()); //
+            List<String> tmplist = null;
+            tmplist =  new ArrayList<>();
+            for(Keywords k : tmpKeyword){
+                tmplist.add(skillsDao.findSkillBySno(k.getSno()).getName());
+            }
+            list.add(tmplist);
+        }
+
         final BasicResponse result = new BasicResponse();
 
         result.status = true;
         result.data = "success";
-        result.object = articles;
+
+        Map<String,Object> object = new HashMap<>();
+        object.put("article", articles);
+        object.put("keyword", list);
+
+        result.object = object;
         
         return new ResponseEntity<>(result, HttpStatus.OK);
 
@@ -83,7 +100,7 @@ public class ArticleController {
             "title" : "제목제목",
             "content":"내용내용",
             "image_URL":"/media/picture.jpg",
-            keyword : [{"skill" : "C"},{"skill" : "Ajax"}]
+            "keyword" : [{"skill" : "C"},{"skill" : "Ajax"}]
             }
 
         */
@@ -115,15 +132,14 @@ public class ArticleController {
             return new ResponseEntity<>(result, HttpStatus.OK);
 
 
-        List<Map<String,String>> keywords = (List<Map<String,String>>) request.get("keyword");
+        List<String> keywords = (List<String>) request.get("keyword");
         
-        for(Map<String,String> k : keywords){
-
-            String skill = k.get("skill");
+        for(String k : keywords){
 
             Keywords keyword = new Keywords();
             keyword.setArticleid(articleDao.findFirstByEmailOrderByArticleidDesc(email).getArticleid());
-            keyword.setSno(skillsDao.findSkillByName(skill).getSno());
+            System.out.println(k);
+            keyword.setSno(skillsDao.findSkillByName(k).getSno());
             keywordsDao.save(keyword);
         }
 
@@ -209,7 +225,7 @@ public class ArticleController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @ApiOperation(value = "리스트 조회")
+    @ApiOperation(value = "상세 조회")
     @GetMapping("/article/{no}")
     public Object getArticle(@PathVariable final int no) {
     
