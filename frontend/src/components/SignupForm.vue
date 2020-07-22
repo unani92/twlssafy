@@ -1,32 +1,34 @@
 <template>
-  <div class="signup-form">
-    <h1>환영합니다.</h1>
+  <div class="wrapper">
+    <h1 class="title">환영합니다.</h1>
     <p>회원가입을 하고 배운 지식을 친구들과 공유해보세요</p>
-    <form @submit.prevent="submitForm" class="">
+    <form @submit.prevent="submitForm" class="form">
       <!-- email(email) 
           0. 형식 검증
           1. 중복 확인
           2. 메일 인증 요청 및 인증 코드 입력
           -->
-      <div class="form-input">
-        <div class="data-input">
-          <label for="email"></label>
+      <div class="form">
+        <p class="join-warning guide-text">{{ logMessage.email }}</p>
+        <div class="inputfield">
           <input
+            class="input"
             id="email"
             type="email"
             placeholder="email"
             v-model="email"
             @focusout="emailDoubleCheck"
           />
-          <p class="join-warning guide-text">{{ logMessage.email }}</p>
+
           <!-- <button :disabled="!isemailValid">
             이메일 인증 받기
           </button> -->
         </div>
-        <div v-if="confirmedEmail" class="data-input">
-          <div class="emailValidation-form">
-            <label for="validationCode"></label>
+        <p class="guide-text">{{ logMessage.validationNumber }}</p>
+        <div v-if="confirmedEmail" style="margin-bottom:1rem;">
+          <div class="emailValidation-form inputfield">
             <input
+              class="input"
               type="text"
               v-focus
               ref="validationCode"
@@ -34,78 +36,77 @@
               @focusout="checkValidationCode"
               v-model="validationNumber"
             />
-            <p class="guide-text">{{ logMessage.validationNumber }}</p>
           </div>
         </div>
         <!-- nickname
         중복확인 -->
-        <div class="data-input">
-          <label for="nickname"></label>
+        <p class="join-warning guide-text">{{ logMessage.nickname }}</p>
+        <div class="inputfield">
           <input
+            class="input"
             id="nickname"
             type="text"
             v-model="nickname"
             @focusout="nicknameCheck"
             placeholder="nickname"
           />
-          <p class="join-warning guide-text">{{ logMessage.nickname }}</p>
         </div>
         <!-- password
         형식 검증 -->
-        <div class="data-input">
-          <label for="password"></label>
+        <p class="join-warning guide-text">{{ logMessage.password }}</p>
+        <div class="inputfield">
           <input
+            class="input"
             id="password"
             type="password"
             placeholder="password"
             v-model="password"
             @focusout="checkPasswordForm"
           />
-          <p class="join-warning guide-text">{{ logMessage.password }}</p>
         </div>
 
         <!-- password confirm OK -->
-        <div class="data-input">
-          <label for="password comfirm"></label>
+        <p class="join-warning guide-text">{{ logMessage.passwordConfirm }}</p>
+        <div class="inputfield">
           <input
+            class="input"
             id="passwordConfirm"
             type="password"
             placeholder="password comfirm"
             v-model="passwordConfirm"
             @focusout="checkPasswordConfirm"
           />
-          <p class="join-warning guide-text">
-            {{ logMessage.passwordConfirm }}
-          </p>
         </div>
 
-        <div class="data-input">
-          <label for="info"></label>
+        <div class="inputfield">
           <input
+            class="input"
             id="info"
             type="text"
             placeholder="한 줄 소개 부탁해요"
             v-model="info"
           />
-          <p class="join-warning guide-text">
-            {{ logMessage.info }}
-          </p>
         </div>
+        <p class="join-warning guide-text">
+          {{ logMessage.info }}
+        </p>
         <!-- 버튼 활성화 OK -->
-        <button
-          type="submit"
-          class="btn data-input"
-          :disabled="
-            !(
-              checkValidationCode &&
-              isSamePassword &&
-              nicknameDoubleCheck &&
-              isPasswordValid
-            )
-          "
-        >
-          회원 가입
-        </button>
+        <div class="inputfield">
+          <button
+            type="submit"
+            class="btn"
+            :disabled="
+              !(
+                checkValidationCode &&
+                isSamePassword &&
+                nicknameDoubleCheck &&
+                isPasswordValid
+              )
+            "
+          >
+            회원 가입
+          </button>
+        </div>
       </div>
     </form>
     <p class="log"></p>
@@ -166,7 +167,7 @@ export default {
         const res = await checkEmail(params);
         if (res.data.status) {
           this.logMessage.validationNumber =
-            "인증번호를 발송했습니다.(유효시간 30분) \n인증번호가 오지 않으면 입력하신 정보가 정확한지 확인하여 주세요. \n이미 가입된 번호이거나, 가상전화번호는 인증번호를 받을 수 없습니다.";
+            "인증번호를 발송했습니다. \n인증번호가 오지 않으면 입력하신 정보가 정확한지 확인하여 주세요. \n이미 가입된 메일은 가상전화번호는 인증번호를 받을 수 없습니다.";
           this.validationNumberFromBE = res.data.object.code;
           this.confirmedEmail = true;
         } else {
@@ -248,75 +249,190 @@ export default {
 </script>
 
 <style scoped>
-h1 {
-  font-size: 45px;
+@import url("https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Montserrat", sans-serif;
 }
-input {
-  /* margin-top: 2rem; */
+body {
+  background: #e6837a;
+  padding: 0 10px;
+}
+.wrapper {
+  max-width: 500px;
+  width: 100%;
+  background: #fff;
+  margin: 20px auto;
+  box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.125);
+  padding: 30px;
+}
+
+.wrapper .title {
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 25px;
+  color: #e6837a;
+  text-transform: uppercase;
   text-align: center;
-  font-size: 1rem;
-  border: 0;
-  outline: 0;
-  background: transparent;
-  border-bottom: 3px solid black;
-  width: 100%;
-  margin-top: 1.5rem;
 }
-button {
-  background-color: rgb(204, 93, 65);
+
+.wrapper .form {
   width: 100%;
-  border-radius: 3px;
-  color: white;
-  font-weight: bolder;
-  font-size: 1rem;
-  border-style: none;
-  outline: none;
-  height: 50px;
-  cursor: pointer;
-  margin-top: 1rem;
-  margin-bottom: 1rem;
 }
-.signup-form {
-  width: 100%;
+
+.wrapper .form .inputfield {
+  margin-bottom: 15px;
   display: flex;
-  flex-direction: column;
-  margin-left: auto;
-  margin-right: auto;
-}
-.form-input {
-  background-color: white;
-  display: flex;
-  flex-direction: column;
   align-items: center;
 }
-.data-input {
-  width: 75%;
+
+.wrapper .form .inputfield label {
+  width: 200px;
+  color: #757575;
+  margin-right: 10px;
+  font-size: 14px;
 }
-input:disabled {
-  border-bottom: 3px solid lightgrey;
+
+.wrapper .form .inputfield .input,
+.wrapper .form .inputfield .textarea {
+  width: 100%;
+  outline: none;
+  border: 1px solid #d5dbd9;
+  font-size: 15px;
+  padding: 8px 10px;
+  border-radius: 3px;
+  transition: all 0.3s ease;
+}
+
+.wrapper .form .inputfield .textarea {
+  width: 100%;
+  height: 125px;
+  resize: none;
+}
+
+.wrapper .form .inputfield .custom_select {
+  position: relative;
+  width: 100%;
+  height: 37px;
+}
+
+.wrapper .form .inputfield .custom_select:before {
+  content: "";
+  position: absolute;
+  top: 12px;
+  right: 10px;
+  border: 8px solid;
+  border-color: #d5dbd9 transparent transparent transparent;
+  pointer-events: none;
+}
+
+.wrapper .form .inputfield .custom_select select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  outline: none;
+  width: 100%;
+  height: 100%;
+  border: 0px;
+  padding: 8px 10px;
+  font-size: 15px;
+  border: 1px solid #d5dbd9;
+  border-radius: 3px;
+}
+
+.wrapper .form .inputfield .input:focus,
+.wrapper .form .inputfield .textarea:focus,
+.wrapper .form .inputfield .custom_select select:focus {
+  border: 1px solid #e6837a;
+}
+
+.wrapper .form .inputfield p {
+  font-size: 14px;
+  color: #757575;
+}
+.wrapper .form .inputfield .check {
+  width: 15px;
+  height: 15px;
+  position: relative;
+  display: block;
+  cursor: pointer;
+}
+.wrapper .form .inputfield .check input[type="checkbox"] {
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0;
+}
+.wrapper .form .inputfield .check .checkmark {
+  width: 15px;
+  height: 15px;
+  border: 1px solid #e6837a;
+  display: block;
+  position: relative;
+}
+.wrapper .form .inputfield .check .checkmark:before {
+  content: "";
+  position: absolute;
+  top: 1px;
+  left: 2px;
+  width: 5px;
+  height: 2px;
+  border: 2px solid;
+  border-color: transparent transparent #fff #fff;
+  transform: rotate(-45deg);
+  display: none;
+}
+.wrapper .form .inputfield .check input[type="checkbox"]:checked ~ .checkmark {
+  background: #e6837a;
+}
+
+.wrapper
+  .form
+  .inputfield
+  .check
+  input[type="checkbox"]:checked
+  ~ .checkmark:before {
+  display: block;
+}
+
+.wrapper .form .inputfield .btn {
+  width: 100%;
+  padding: 8px 10px;
+  font-size: 15px;
+  border: 0px;
+  background: #e6837a;
+  color: #fff;
+  cursor: pointer;
+  border-radius: 3px;
+  outline: none;
+}
+
+.wrapper .form .inputfield .btn:hover {
+  background: #e6837a;
+}
+
+.wrapper .form .inputfield:last-child {
+  margin-bottom: 0;
 }
 .join-warning {
   color: red;
-  text-align: start;
 }
 .guide-text {
   font-size: 0.75rem;
 }
-.btn:disabled {
-  background-color: lightgray;
-  cursor: not-allowed;
-}
-p {
-  margin: 0;
-  padding: 0;
-}
-@media (min-width: 415px) {
-  .socialogin {
-    display: flex;
-    justify-content: center;
+@media (max-width: 420px) {
+  .wrapper .form .inputfield {
+    flex-direction: column;
+    align-items: flex-start;
   }
-  input {
-    width: 100%;
+  .wrapper .form .inputfield label {
+    margin-bottom: 5px;
+  }
+  .wrapper .form .inputfield.terms {
+    flex-direction: row;
   }
 }
 </style>
