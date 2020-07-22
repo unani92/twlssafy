@@ -11,7 +11,7 @@ function checkNickname(nickname) {
 }
 
 function registerUser(userData) {
-  return instance.post("account/signup", userData);
+  return instance.post("signup", userData);
 }
 
 function login(params) {
