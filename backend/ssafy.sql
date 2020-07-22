@@ -19,8 +19,8 @@ create table `article` (
     `imgUrl` text default null,
     `updatedAt` datetime default now(),
     `createdAt` datetime default now(),
-    foreign key(`email`) references `member`(`email`),
-    foreign key(`nickname`) references `member`(`nickname`),
+    foreign key(`email`) references `member`(`email`) on delete cascade,
+    foreign key(`nickname`) references `member`(`nickname`) on delete cascade,
     primary key(`articleid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 desc article;
@@ -41,9 +41,9 @@ create table comment (
   `articleid` int,
   `content` text,
   `updatedAt` datetime default now(),
-  `createdAt` datetime default now(),
-  foreign key (`email`) references `member`(`email`),
-  foreign key (`articleid`) references article(`articleid`),
+  `createdAt` datetime default now(), 
+  foreign key (`email`) references `member`(`email`) on delete cascade,
+  foreign key (`articleid`) references article(`articleid`) on delete cascade,
   primary key `commentId` (`commentId`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

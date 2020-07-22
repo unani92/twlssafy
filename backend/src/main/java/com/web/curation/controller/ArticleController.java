@@ -110,7 +110,7 @@ public class ArticleController {
             String skill = k.get("skill");
 
             Keywords keyword = new Keywords();
-            keyword.setArticleid(ano);
+            keyword.setArticleid(articleDao.findFirstByEmailOrderByArticleidDesc(email).getArticleid());
             keyword.setSno(skillsDao.findSkillByName(skill).getSno());
             keywordsDao.save(keyword);
         }
