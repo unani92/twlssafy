@@ -11,7 +11,9 @@
       </div>
       <div class="article-icon">
         <div class="article">
-          <button @click="$router.push('/create')" class="btn">write a post</button>
+          <button @click="$router.push('/create')" class="btn">
+            write a post
+          </button>
         </div>
         <div class="icon">
           <i class="far fa-bell" />
@@ -163,9 +165,8 @@ i:hover {
   }
 }
 .aside {
-  padding-top: 70px;
   position: absolute;
-  top: 0;
+  top: 120px;
   right: 0;
   z-index: 3;
 }

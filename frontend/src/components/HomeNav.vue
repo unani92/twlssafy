@@ -61,6 +61,7 @@ export default {
   position: fixed;
   background-color: aliceblue;
   width: 100%;
+  z-index: 7;
 }
 .home-nav > span {
   margin: 1rem;
@@ -73,9 +74,8 @@ export default {
   color: blueviolet;
 }
 .interest {
-  padding-top: 70px;
   position: absolute;
-  top: 0;
+  top: 70px;
   right: 0;
   z-index: 3;
 }
@@ -88,6 +88,7 @@ export default {
   justify-content: center;
   align-items: center;
   margin-right: 1rem;
+  z-index: 2;
 }
 .interest-menu > li {
   margin: 10px;
