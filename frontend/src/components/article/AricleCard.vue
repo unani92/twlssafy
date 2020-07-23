@@ -11,7 +11,7 @@
           <div class="title">
             {{ article.title }}
             <br>
-            <span class = "keywords" v-for="k in keywords" :key="k">#{{k}} </span>
+            <span class = "keywords" v-for="k in keywords" :key="k"><a href="#" style="text-decoration: none;"> #{{k}} </a> </span>
           </div>
           <div class="text">
             {{ article.content }} 
@@ -101,19 +101,14 @@ export default {
   margin-left: 50px;
   transition: 0.6s;
 }
-/* .content span {
-  display: block;
-  color: #7b7992;
-  margin-bottom: 15px;
-  font-size: 22px;
-  font-weight: 500;
-} */
 .content .title {
   font-size: 25px;
   font-weight: 700;
   color: #0d0925;
   margin-bottom: 30px;
   margin-top: 10px;
+  height: 65px;
+  overflow: hidden;
 }
 .content .text {
   color: #4e4a67;
@@ -125,19 +120,28 @@ export default {
   overflow: hidden;
 }
 .content button {
+  width  : 35px;
+  align-items: center;
+  justify-content: center;
   display: inline-flex;
-  padding: 5px 10px;
+  padding: 5px 0 5px;
+  margin : 1px;
   border: none;
   font-size: 16px;
   text-transform: uppercase;
-  color: #fff0e6;
+  /* color: #fff0e6; */
+  color: white;
   font-weight: 600;
   letter-spacing: 1px;
   border-radius: 50px;
   cursor: pointer;
   outline: none;
+/* 
   border: 1px solid #fd3535;
   background: linear-gradient(147deg, #fe8a39 0%, #fd3838 74%);
+   */
+  border: 1px soli pink;
+  background: hotpink;
 }
 
 .keywords {
@@ -145,6 +149,7 @@ export default {
   margin-bottom: 0px;
   font-size: 15px;
   font-weight: 500;
+  overflow: hidden;
 }
 @media (max-width: 630px) {
   .inner-part{
