@@ -67,7 +67,7 @@ export default {
 }
 .blog-card {
   height: 370px;
-  width: 95%;
+  width: 96%;
   max-width: 850px;
   margin: auto;
   border-radius: 25px;
@@ -98,7 +98,7 @@ export default {
 .content {
   padding: 0 20px 0 0;
   width: 530px;
-  margin-left: 50px;
+  margin-left: 30px;
   transition: 0.6s;
 }
 /* .content span {
@@ -114,30 +114,36 @@ export default {
   color: #0d0925;
   margin-bottom: 30px;
   margin-top: 10px;
+  height : 60px;
+  overflow: hidden;
 }
 .content .text {
   color: #4e4a67;
-  font-size: 18px;
-  margin-bottom: 30px;
+  font-size: 16px;
+  margin-bottom: 10px;
   line-height: 1.5em;
   text-align: justify;
-  height : 80px;
+  height : 90px;
   overflow: hidden;
 }
 .content button {
   display: inline-flex;
-  padding: 5px 10px;
   border: none;
   font-size: 16px;
   text-transform: uppercase;
-  color: #fff0e6;
-  font-weight: 600;
-  letter-spacing: 1px;
+  color: white;
+  margin : 1px;
+  width : 32px;
+  height : 25px;
+  /* font-weight: 600; */
+  /* letter-spacing: 1px; */
+  align-items: center;
+  justify-content: center;
   border-radius: 50px;
   cursor: pointer;
   outline: none;
-  border: 1px solid #fd3535;
-  background: linear-gradient(147deg, #fe8a39 0%, #fd3838 74%);
+  border: hotpink;
+  background: hotpink;
 }
 
 .keywords {
@@ -161,7 +167,7 @@ export default {
 
   }
 .content .text {
-  font-size: 18px;
+  font-size: 16px;
 }
   .content .title {
     font-size: 22px;
