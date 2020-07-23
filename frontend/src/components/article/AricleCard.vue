@@ -107,11 +107,6 @@ export default {
   color: #0d0925;
   margin-bottom: 30px;
   margin-top: 10px;
-<<<<<<< HEAD
-  height: 65px;
-=======
-  height : 60px;
->>>>>>> e26b3c05eea05e58112e000ccc4ffbde69dc17a1
   overflow: hidden;
 }
 .content .text {
@@ -128,25 +123,6 @@ export default {
   align-items: center;
   justify-content: center;
   display: inline-flex;
-<<<<<<< HEAD
-  padding: 5px 0 5px;
-  margin : 1px;
-  border: none;
-  font-size: 16px;
-  text-transform: uppercase;
-  /* color: #fff0e6; */
-  color: white;
-  font-weight: 600;
-  letter-spacing: 1px;
-  border-radius: 50px;
-  cursor: pointer;
-  outline: none;
-/* 
-  border: 1px solid #fd3535;
-  background: linear-gradient(147deg, #fe8a39 0%, #fd3838 74%);
-   */
-  border: 1px soli pink;
-=======
   border: none;
   font-size: 16px;
   text-transform: uppercase;
