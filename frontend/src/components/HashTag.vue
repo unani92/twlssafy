@@ -1,7 +1,11 @@
 <template>
   <div class="hashtag">
-    <h4 style="text-align: center">주요기술</h4>
-    <div class="stack" v-for="stack in stacks" :key="stack"># {{ stack }}</div>
+    <p class="title">👀 Attention 👀</p>
+    <div class="stacks">
+      <div class="stack" v-for="stack in stacks" :key="stack">
+        # {{ stack }}
+      </div>
+    </div>
   </div>
 </template>
 
@@ -29,21 +33,31 @@ export default {
 <style scoped>
 .hashtag {
   border-radius: 4px;
-  background-color: white;
-  /* margin: 3rem; */
-  /* position: fixed; */
-  /* right: 0; */
-  /* padding: 10px; */
-  /* top: 100px; */
+  position: fixed;
+  width: inherit;
+  margin-right: 100px;
+  padding-right: 100px;
 }
+.title {
+  padding-bottom: 1rem;
+  color: black;
+}
+/* .stacks {
+  background-color: white;
+} */
 .stack {
   font-size: 1rem;
+  color: black;
   margin-bottom: 1rem;
   border-radius: 6rem;
-  color: white;
   font-weight: bolder;
-  background-color: #2c3e50;
   padding: 3px;
   z-index: -1;
+  width: 100%;
+  text-transform: uppercase;
+}
+.stack:hover {
+  cursor: pointer;
+  border: 1px black solid;
 }
 </style>

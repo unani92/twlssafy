@@ -7,44 +7,46 @@
         <HomeNav class="home-nav" />
       </div>
       <div class="secondary secondary-a ">
-        <li class="user-item friend-item">
-          <figure
-            class="user-photo"
-            style="background-image: url('https://i.pravatar.cc/100?u=배유진');"
-          ></figure>
-          <p class="user-name">
-            배유진
-          </p>
-        </li>
-        <li class="user-item friend-item">
-          <figure
-            class="user-photo"
-            style="background-image: url('https://i.pravatar.cc/100?u=전해인');"
-          ></figure>
-          <p class="user-name">
-            전혜인
-          </p>
-        </li>
-        <li class="user-item friend-item">
-          <figure
-            class="user-photo"
-            style="background-image: url('https://i.pravatar.cc/100?u=신영찬');"
-          ></figure>
-          <p class="user-name">
-            신영찬
-          </p>
-        </li>
+        <div class="friends">
+          <p>💌 Friends 💌</p>
+          <li class="user-item friend-item">
+            <figure
+              class="user-photo"
+              style="background-image: url('https://i.pravatar.cc/100?u=배유진');"
+            ></figure>
+            <p class="user-name">
+              배유진
+            </p>
+          </li>
+          <li class="user-item friend-item">
+            <figure
+              class="user-photo"
+              style="background-image: url('https://i.pravatar.cc/100?u=전해인');"
+            ></figure>
+            <p class="user-name">
+              전혜인
+            </p>
+          </li>
+          <li class="user-item friend-item">
+            <figure
+              class="user-photo"
+              style="background-image: url('https://i.pravatar.cc/100?u=신영찬');"
+            ></figure>
+            <p class="user-name">
+              신영찬
+            </p>
+          </li>
+        </div>
       </div>
       <div class="primary">
-        <br>
-        <br>
-        <ArticleCardList :articles="articles" :keywords="keywords"></ArticleCardList>
+        <p>⚡ News ⚡</p>
+        <br />
+        <ArticleCardList :articles="articles"></ArticleCardList>
       </div>
       <div class="secondary secondary-b ">
         <HashTag />
       </div>
     </div>
-    <div id="bottomSensor"></div>
   </div>
 </template>
 
@@ -54,8 +56,6 @@ import HomeNav from "../components/HomeNav";
 import HashTag from "../components/HashTag";
 import ArticleCardList from "@/components/article/ArticleCardList.vue";
 import LoadingSpinner from "@/components/common/LoadingSpinner.vue";
-import { fetchArticles } from "@/api/index";
-import scrollMonitor from "scrollmonitor";
 
 export default {
   components: {
@@ -63,44 +63,6 @@ export default {
     HashTag,
     ArticleCardList,
     LoadingSpinner,
-  },
-  data() {
-    return {
-      articles: [],
-      keywords:[],
-      isLoading: false,
-      page: 0,
-    };
-  },
-  methods: {
-    async fetchData() {
-      console.log("ACTION!!!!!!!!!!!!");
-      const params = {
-        page: this.page++,
-      };
-      this.isLoading = true;
-      const { data } = await fetchArticles(params);
-      this.isLoading = false;
-      this.keywords = data.object.keyword;
-      this.articles = [...this.articles, ...data.object.article.content];
-    },
-    addScrollWatcher() {
-      // const bottomSensor = document.querySelector(
-      // ".card-body:nth-last-child(3)"
-      // );
-      const bottomSensor = document.querySelector("#bottomSensor");
-      console.log(bottomSensor);
-      const watcher = scrollMonitor.create(bottomSensor);
-      watcher.enterViewport(() => {
-        this.fetchData();
-      });
-    },
-  },
-  created() {
-    this.fetchData();
-  },
-  mounted() {
-    setTimeout(() => this.addScrollWatcher(), 1000);
   },
 };
 </script>
@@ -116,12 +78,16 @@ export default {
 .home {
   padding-top: 60px;
 }
+.friends {
+  position: fixed;
+  width: inherit;
+}
 .primary {
   padding: 1rem;
   padding-top: 0;
   width: 100%;
   height: 100vh;
-  overflow-y: scroll; /* Add the ability to scroll */
+  /*overflow-y: scroll; /* Add the ability to scroll */
 }
 .secondary-a {
   background: lightgray;
@@ -187,36 +153,8 @@ export default {
   }
 }
 
-/* scroll */
-
-/* Hide scrollbar for Chrome, Safari and Opera */
-.primary::-webkit-scrollbar {
-  /* display: none; */
-  opacity: 0.5;
-}
-
-/* Hide scrollbar for IE, Edge and Firefox */
-.primary {
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
-}
-
 .secondary {
   background-color: #eee;
-  /* width: 60%; */
-  height: 100%;
-  overflow-y: scroll; /* Add the ability to scroll */
-}
-
-/* Hide scrollbar for Chrome, Safari and Opera */
-.secondary::-webkit-scrollbar {
-  display: none;
-}
-
-/* Hide scrollbar for IE, Edge and Firefox */
-.secondary {
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
 }
 
 .user-item {
