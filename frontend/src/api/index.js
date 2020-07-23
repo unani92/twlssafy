@@ -24,6 +24,9 @@ function createArticle(params) {
 function fetchArticles(params) {
   return instance.get(`article?page=${params.page}`);
 }
+function fetchArticle(id) {
+  return instance.get(`article/${id}`)
+}
 
 export {
   checkEmail,
@@ -32,4 +35,5 @@ export {
   login,
   createArticle,
   fetchArticles,
+  fetchArticle
 };
