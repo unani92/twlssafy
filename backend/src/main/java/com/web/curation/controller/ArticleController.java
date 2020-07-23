@@ -144,10 +144,10 @@ public class ArticleController {
             articleDao.delete(articleDao.findFirstByEmailOrderByArticleidDesc(email));
             return new ResponseEntity<>(result, HttpStatus.OK);
         }
-            
+            int articleId = articleDao.findFirstByEmailOrderByArticleidDesc(email).getArticleid();
             for(String k : keywords){
                 Keywords keyword = new Keywords();
-                keyword.setArticleid(articleDao.findFirstByEmailOrderByArticleidDesc(email).getArticleid());
+                keyword.setArticleid(articleId);
                 keyword.setSno(skillsDao.findSkillByName(k).getSno());
                 if(keywordsDao.save(keyword) == null){ // keyword 저장 못 하면 글 못씀
                     result.data = "글쓰기 실패 - 키워드 DB 저장 실패";
@@ -159,6 +159,7 @@ public class ArticleController {
 
         result.status = true;
         result.data = "글쓰기 성공";
+        result.object = articleId;
         
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
