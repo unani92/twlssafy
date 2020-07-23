@@ -10,9 +10,11 @@
           
           <div class="title">
             {{ article.title }}
+            <br>
+            <span class = "keywords" v-for="k in keywords" :key="k">#{{k}} </span>
           </div>
           <div class="text">
-            {{ article.content }}
+            {{ article.content }} 
           </div>
           <div style="font-size : 14px; text-align : right; margin-bottom : 10px;">{{ article.createdat }}</div>
           <div class = "nicknamePinLikes">
@@ -40,6 +42,10 @@ export default {
       type: Object,
       required: true,
     },
+    keywords : {
+      type : Array,
+      required : true,
+    }
   },
 };
 </script>
@@ -90,20 +96,20 @@ export default {
   transition: 0.6s;
 }
 .content {
-  padding: 0 20px 0 35px;
+  padding: 0 20px 0 0;
   width: 530px;
   margin-left: 50px;
   transition: 0.6s;
 }
-.content span {
+/* .content span {
   display: block;
   color: #7b7992;
   margin-bottom: 15px;
   font-size: 22px;
   font-weight: 500;
-}
+} */
 .content .title {
-  font-size: 30px;
+  font-size: 25px;
   font-weight: 700;
   color: #0d0925;
   margin-bottom: 30px;
@@ -111,11 +117,12 @@ export default {
 }
 .content .text {
   color: #4e4a67;
-  font-size: 19px;
+  font-size: 18px;
   margin-bottom: 30px;
   line-height: 1.5em;
   text-align: justify;
   height : 80px;
+  overflow: hidden;
 }
 .content button {
   display: inline-flex;
@@ -132,6 +139,13 @@ export default {
   border: 1px solid #fd3535;
   background: linear-gradient(147deg, #fe8a39 0%, #fd3838 74%);
 }
+
+.keywords {
+  color: #7b7992;
+  margin-bottom: 0px;
+  font-size: 15px;
+  font-weight: 500;
+}
 @media (max-width: 630px) {
   .inner-part{
     display:block;
@@ -146,18 +160,18 @@ export default {
     width : 100%;
 
   }
-  .text {
-    height : 40px;
-  }
+.content .text {
+  font-size: 18px;
+}
   .content .title {
-  margin-bottom: 10px;
-  margin-top: 0px;
+    font-size: 22px;
+    margin-bottom: 10px;
+    margin-top: 0px;
   }
 
   .content button {
   display: inline-block;
   }
- 
 }
 @media (min-width: 1024px) {
 
