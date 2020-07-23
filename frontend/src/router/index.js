@@ -6,6 +6,7 @@ import Signup from "../views/Signup";
 import ChangePwd from "../views/ChangePwd";
 import SelectSkills from "../views/SelectSkills";
 import ArticleCreate from "../views/ArticleCreate";
+import ArticleDetail from "../views/ArticleDetail";
 
 Vue.use(VueRouter)
 
@@ -39,6 +40,11 @@ Vue.use(VueRouter)
     path: '/create',
     name: 'ArticleCreate',
     component: ArticleCreate
+  },
+  {
+    path: '/:id',
+    name: 'ArticleDetail',
+    component: ArticleDetail
   },
 ]
 
