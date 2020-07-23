@@ -36,7 +36,9 @@
         </li>
       </div>
       <div class="primary">
-        <ArticleCardList :articles="articles"></ArticleCardList>
+        <br>
+        <br>
+        <ArticleCardList :articles="articles" :keywords="keywords"></ArticleCardList>
       </div>
       <div class="secondary secondary-b ">
         <HashTag />
@@ -65,6 +67,7 @@ export default {
   data() {
     return {
       articles: [],
+      keywords:[],
       isLoading: false,
       page: 0,
     };
@@ -78,6 +81,7 @@ export default {
       this.isLoading = true;
       const { data } = await fetchArticles(params);
       this.isLoading = false;
+      this.keywords = data.object.keyword;
       this.articles = [...this.articles, ...data.object.article.content];
     },
     addScrollWatcher() {
