@@ -6,7 +6,7 @@
         <label style="font-size: 20px; font-weight: bold" for="title">제목</label>
       </div>
       <div>
-        <input v-model="content.content" id="title" type="text">
+        <input v-model="content.title" id="title" type="text">
       </div>
       <div>
         <label style="font-size: 20px; font-weight: bold" for="skills">키워드</label>
@@ -30,7 +30,7 @@
       </div>
     </div>
     <div class="editor">
-      <Editor @change="console.log(true)"/>
+      <Editor/>
     </div>
     <button @click="submitArticle">Submit</button>
   </div>
