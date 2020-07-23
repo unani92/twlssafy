@@ -138,7 +138,6 @@ export default {
   cursor: pointer;
   outline: none;
   border: hotpink;
->>>>>>> e26b3c05eea05e58112e000ccc4ffbde69dc17a1
   background: hotpink;
 }
 
