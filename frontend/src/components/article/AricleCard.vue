@@ -107,6 +107,7 @@ export default {
   color: #0d0925;
   margin-bottom: 30px;
   margin-top: 10px;
+  height: 60px;
   overflow: hidden;
 }
 .content .text {
@@ -146,7 +147,6 @@ export default {
   margin-bottom: 0px;
   font-size: 15px;
   font-weight: 500;
-  overflow: hidden;
 }
 @media (max-width: 630px) {
   .inner-part{

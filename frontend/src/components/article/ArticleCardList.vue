@@ -37,18 +37,16 @@ export default {
   },
   methods: {
     async fetchData() {
-      console.log("ACTION!!!!!!!!!!!!");
       const params = {
         page: this.page++,
       };
       const { data } = await fetchArticles(params);
       this.isLoading = false;
-      this.keywords = data.object.keyword;
+      this.keywords = [...this.keywords, ...data.object.keyword];
       this.articles = [...this.articles, ...data.object.article.content];
     },
     addScrollWatcher() {
       const bottomSensor = document.querySelector("#bottomSensor");
-      console.log(bottomSensor);
       const watcher = scrollMonitor.create(bottomSensor);
       watcher.enterViewport(() => {
         this.fetchData();
