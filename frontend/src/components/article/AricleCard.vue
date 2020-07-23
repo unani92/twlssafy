@@ -11,7 +11,7 @@
           <div class="title">
             {{ article.title }}
             <br>
-            <span class = "keywords" v-for="k in keywords" :key="k">#{{k}} </span>
+            <span class = "keywords" v-for="k in keywords" :key="k"><a href="#" style="text-decoration: none;"> #{{k}} </a> </span>
           </div>
           <div class="text">
             {{ article.content }} 
@@ -101,20 +101,12 @@ export default {
   margin-left: 30px;
   transition: 0.6s;
 }
-/* .content span {
-  display: block;
-  color: #7b7992;
-  margin-bottom: 15px;
-  font-size: 22px;
-  font-weight: 500;
-} */
 .content .title {
   font-size: 25px;
   font-weight: 700;
   color: #0d0925;
   margin-bottom: 30px;
   margin-top: 10px;
-  height : 60px;
   overflow: hidden;
 }
 .content .text {
@@ -127,6 +119,9 @@ export default {
   overflow: hidden;
 }
 .content button {
+  width  : 35px;
+  align-items: center;
+  justify-content: center;
   display: inline-flex;
   border: none;
   font-size: 16px;
@@ -151,6 +146,7 @@ export default {
   margin-bottom: 0px;
   font-size: 15px;
   font-weight: 500;
+  overflow: hidden;
 }
 @media (max-width: 630px) {
   .inner-part{
