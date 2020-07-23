@@ -42,15 +42,18 @@
         <HashTag />
       </div>
     </div>
+    <div id="bottomSensor"></div>
   </div>
 </template>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/scrollmonitor/1.2.0/scrollMonitor.js"></script>
 <script>
 import HomeNav from "../components/HomeNav";
 import HashTag from "../components/HashTag";
 import ArticleCardList from "@/components/article/ArticleCardList.vue";
 import LoadingSpinner from "@/components/common/LoadingSpinner.vue";
 import { fetchArticles } from "@/api/index";
+import scrollMonitor from "scrollmonitor";
 
 export default {
   components: {
@@ -68,18 +71,32 @@ export default {
   },
   methods: {
     async fetchData() {
+      console.log("ACTION!!!!!!!!!!!!");
       const params = {
         page: this.page++,
       };
       this.isLoading = true;
       const { data } = await fetchArticles(params);
       this.isLoading = false;
-      this.articles = data.object.article.content;
-      console.log(this.articles);
+      this.articles = [...this.articles, ...data.object.article.content];
+    },
+    addScrollWatcher() {
+      // const bottomSensor = document.querySelector(
+      // ".card-body:nth-last-child(3)"
+      // );
+      const bottomSensor = document.querySelector("#bottomSensor");
+      console.log(bottomSensor);
+      const watcher = scrollMonitor.create(bottomSensor);
+      watcher.enterViewport(() => {
+        this.fetchData();
+      });
     },
   },
   created() {
     this.fetchData();
+  },
+  mounted() {
+    setTimeout(() => this.addScrollWatcher(), 1000);
   },
 };
 </script>
