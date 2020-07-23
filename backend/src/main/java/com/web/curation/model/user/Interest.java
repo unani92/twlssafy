@@ -31,7 +31,7 @@ public class Interest {
     private int sno;
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int interest_id;
+    private int interestid;
 
 
 }

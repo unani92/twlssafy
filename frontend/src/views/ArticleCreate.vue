@@ -2,6 +2,12 @@
   <div class="article-create">
     <h1>게시글 작성</h1>
     <div class="article-title-skills" >
+      <div class="title">
+        <label style="font-size: 20px; font-weight: bold" for="title">제목</label>
+      </div>
+      <div>
+        <input v-model="content.content" id="title" type="text">
+      </div>
       <div>
         <label style="font-size: 20px; font-weight: bold" for="skills">키워드</label>
       </div>
@@ -15,12 +21,6 @@
           <i @click="removeStack" style="cursor:pointer;" class="fas fa-times"></i>
         </div>
       </div>
-      <div class="title">
-        <label style="font-size: 20px; font-weight: bold" for="title">제목</label>
-      </div>
-      <div>
-        <input v-model="content.content" id="title" type="text">
-      </div>
       <div class="autocomplete disabled">
         <div @click="searchSkillAdd"
              v-for="res in result"
@@ -30,7 +30,7 @@
       </div>
     </div>
     <div class="editor">
-      <Editor/>
+      <Editor @change="console.log(true)"/>
     </div>
     <button @click="submitArticle">Submit</button>
   </div>
@@ -39,7 +39,7 @@
 <script>
   import Editor from '@/components/Editor.vue'
   import skills from "../skills";
-  // import { createArticle } from "../api";
+  import { createArticle } from "../api";
 
   export default {
     name: "ArticleCreate",
@@ -83,15 +83,25 @@
         })
       },
       submitArticle() {
+        const codeMirror = document.querySelector(".CodeMirror-code")
+        this.content.content = codeMirror.innerText
         const params = {
           email: this.$store.state.username,
-
+          nickname: this.$store.state.nickname,
+          title: this.content.title,
+          content: this.content.content,
+          keyword: this.content.keywords
         }
-        // createArticle(params)
-        //   .then(this.$router.push('/'))
-        //   .catch(err => console.log(err))
+        createArticle(params)
+          .then(res=> {
+            console.log(res.data)
+            this.$router.push('/')
+          })
+          .catch(err => console.log(err))
         console.log(params)
-      }
+      },
+    },
+    updated() {
     }
   }
 </script>

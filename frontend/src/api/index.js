@@ -11,15 +11,25 @@ function checkNickname(nickname) {
 }
 
 function registerUser(userData) {
-  return instance.post("signup", userData);
+  return instance.post("account/signup", userData);
 }
 
 function login(params) {
-  return instance.post("account/login",params);
+  return instance.post("account/login", params);
 }
 
 function createArticle(params) {
-  return instance.post("article/create",params)
+  return instance.post("article", params);
+}
+function fetchArticles(params) {
+  return instance.get(`article?page=${params.page}`);
 }
 
-export { checkEmail, checkNickname, registerUser, login, createArticle };
+export {
+  checkEmail,
+  checkNickname,
+  registerUser,
+  login,
+  createArticle,
+  fetchArticles,
+};

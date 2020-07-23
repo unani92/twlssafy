@@ -1,9 +1,10 @@
 <template>
-  <div>
+  <div class="article-list-body">
     <ArticleCard
-      v-for="article in articles"
+      v-for="(article,index) in articles"
       :key="article._id"
       :article="article"
+      :keywords="keywords[index]"
     ></ArticleCard>
   </div>
 </template>
@@ -17,9 +18,13 @@ export default {
   },
   props: {
     articles: {
-      type: Object,
+      type: Array,
       required: true,
     },
+    keywords : {
+      type : Array,
+      required: true,
+    }
   },
 };
 </script>
