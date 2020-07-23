@@ -1,5 +1,9 @@
 <template>
-  <div class="article-list-body">
+<div>
+  <div v-if="isLoading">
+<LoadingSpinner></LoadingSpinner>
+  </div>
+  <div>
     <ArticleCard
       v-for="(article, index) in articles"
       :key="article._id"
@@ -8,16 +12,19 @@
     ></ArticleCard>
     <div id="bottomSensor"></div>
   </div>
+  </div>
 </template>
 
 <script>
 import ArticleCard from "@/components/article/AricleCard.vue";
+import LoadingSpinner from "@/components/common/LoadingSpinner.vue";
 import { fetchArticles } from "@/api/index";
 import scrollMonitor from "scrollmonitor";
 
 export default {
   components: {
     ArticleCard,
+    LoadingSpinner,
   },
 
   data() {

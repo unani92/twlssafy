@@ -1,8 +1,7 @@
 <template>
   <div>
-    <LoadingSpinner v-if="isLoading"></LoadingSpinner>
 
-    <div v-else class="home">
+    <div class="home">
       <div>
         <HomeNav class="home-nav" />
       </div>
@@ -41,7 +40,7 @@
       <div class="primary">
         <p>⚡ News ⚡</p>
         <br />
-        <ArticleCardList :articles="articles"></ArticleCardList>
+        <ArticleCardList></ArticleCardList>
       </div>
       <div class="secondary secondary-b ">
         <HashTag />
@@ -55,14 +54,12 @@
 import HomeNav from "../components/HomeNav";
 import HashTag from "../components/HashTag";
 import ArticleCardList from "@/components/article/ArticleCardList.vue";
-import LoadingSpinner from "@/components/common/LoadingSpinner.vue";
 
 export default {
   components: {
     HomeNav,
     HashTag,
     ArticleCardList,
-    LoadingSpinner,
   },
 };
 </script>
