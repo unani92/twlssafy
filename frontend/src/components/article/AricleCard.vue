@@ -5,16 +5,27 @@
         <label for="imgTap" class="img">
           <img class="img-1" src="https://picsum.photos/300/200" />
         </label>
+        <p><br></p>
         <div class="content content-1">
-          <span>{{ article.createdat }}</span>
+          
           <div class="title">
-            {{ article.articleid }}
+            {{ article.title }}
           </div>
           <div class="text">
             {{ article.content }}
           </div>
-          <button>PIN</button>
-          <button>LIKE</button>
+          <div style="font-size : 14px; text-align : right; margin-bottom : 10px;">{{ article.createdat }}</div>
+          <div class = "nicknamePinLikes">
+            <div style="float : left; ">
+              {{article.nickname}}
+            </div>
+            <div class = "btns" style="text-align : right;">
+              <button class="firstBtn"><i class="far fa-bookmark"></i></button>
+              <!-- <button class="firstBtn"><i class="fas fa-bookmark"></i></button> -->
+              <!-- <button><i class="far fa-heart"></i></button> -->
+              <button><i class="fas fa-heart"></i></button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -22,6 +33,7 @@
 </template>
 
 <script>
+
 export default {
   props: {
     article: {
@@ -94,7 +106,8 @@ export default {
   font-size: 30px;
   font-weight: 700;
   color: #0d0925;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
+  margin-top: 10px;
 }
 .content .text {
   color: #4e4a67;
@@ -102,10 +115,11 @@ export default {
   margin-bottom: 30px;
   line-height: 1.5em;
   text-align: justify;
+  height : 80px;
 }
 .content button {
   display: inline-flex;
-  padding: 15px 20px;
+  padding: 5px 10px;
   border: none;
   font-size: 16px;
   text-transform: uppercase;
@@ -118,9 +132,34 @@ export default {
   border: 1px solid #fd3535;
   background: linear-gradient(147deg, #fe8a39 0%, #fd3838 74%);
 }
-@media (max-width: 376px) {
-  .content {
-    display: none;
+@media (max-width: 630px) {
+  .inner-part{
+    display:block;
+    height : 200px;
+    padding: 20px;
   }
+  .blog-card{
+    height : 450px;
+  }
+  .content {
+    margin: 0%;
+    width : 100%;
+
+  }
+  .text {
+    height : 40px;
+  }
+  .content .title {
+  margin-bottom: 10px;
+  margin-top: 0px;
+  }
+
+  .content button {
+  display: inline-block;
+  }
+ 
+}
+@media (min-width: 1024px) {
+
 }
 </style>
