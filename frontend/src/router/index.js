@@ -7,6 +7,7 @@ import ChangePwd from "../views/ChangePwd";
 import SelectSkills from "../views/SelectSkills";
 import ArticleCreate from "../views/ArticleCreate";
 import ArticleDetail from "../views/ArticleDetail";
+import ArticleUpdate from "../views/ArticleUpdate";
 
 Vue.use(VueRouter)
 
@@ -45,6 +46,12 @@ Vue.use(VueRouter)
     path: '/:id',
     name: 'ArticleDetail',
     component: ArticleDetail
+  },
+  {
+    path: '/:id/update',
+    name: 'ArticleUpdate',
+    component: ArticleUpdate,
+    props: true
   },
 ]
 

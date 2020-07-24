@@ -1,6 +1,6 @@
 <template>
   <div class="article-create">
-    <h1 style="margin: 1rem 0 1rem 0;">게시글 작성</h1>
+    <h1 style="margin: 1rem 0 1rem 0;">게시글 수정</h1>
     <div class="article-title-skills" >
       <div class="title">
         <label style="font-size: 20px; font-weight: bold" for="title">제목</label>
@@ -32,30 +32,43 @@
       </div>
     </div>
     <div class="editor">
-      <Editor/>
+      <div id="editor"/>
     </div>
     <button @click="submitArticle">Submit</button>
   </div>
 </template>
 
-<script>
-  import Editor from '@/components/Editor.vue'
-  import skills from "../skills";
-  import { createArticle } from "../api";
 
+<script>
+  import Editor from '@toast-ui/editor';
+  import skills from "../skills";
+  import { updateArticle } from "../api";
+  import codeSyntaxHightlight from "@toast-ui/editor-plugin-code-syntax-highlight";
+  import hljs from "highlight.js";
   export default {
-    name: "ArticleCreate",
-    components: {
-      Editor
+    name: "ArticleUpdate",
+    props: {
+      id: {
+        type: String,
+      },
+      keywords: {
+        type: Array
+      },
+      title: {
+        type: String
+      },
+      article: {
+        type: String
+      }
     },
     data() {
       return {
         skillInput: null,
         result: null,
         content: {
-          title: null,
-          keywords: [],
-          content: null
+          title: this.title,
+          keywords: this.keywords,
+          content: this.article
         }
       }
     },
@@ -88,20 +101,31 @@
         const codeMirror = document.querySelector(".CodeMirror-code")
         this.content.content = codeMirror.innerText
         const params = {
-          email: this.$store.state.username,
-          nickname: this.$store.state.nickname,
+          articleId: this.id,
           title: this.content.title,
           content: this.content.content,
           keyword: this.content.keywords
         }
-        createArticle(params)
+        updateArticle(params)
           .then(res=> {
-            this.$router.push({name: "ArticleDetail", params: {id:res.data.object}})
+            console.log(res)
+            this.$router.push({name: "ArticleDetail", params: {id:this.id}})
           })
           .catch(err => console.log(err))
         console.log(params)
       },
     },
+    mounted() {
+      new Editor({
+        el: document.querySelector("#editor"),
+        initialEditType: "markdown",
+        initialValue: this.article,
+        previewStyle: "vertical",
+        height: "500px",
+        plugins: [[codeSyntaxHightlight, { hljs }]],
+
+      })
+    }
   }
 </script>
 

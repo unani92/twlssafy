@@ -21,6 +21,11 @@ function login(params) {
 function createArticle(params) {
   return instance.post("article", params);
 }
+
+function updateArticle(params) {
+  return instance.put("article",params)
+}
+
 function fetchArticles(params) {
   return instance.get(`article?page=${params.page}`);
 }
@@ -34,6 +39,7 @@ export {
   registerUser,
   login,
   createArticle,
+  updateArticle,
   fetchArticles,
   fetchArticle
 };

@@ -6,8 +6,25 @@
     <div class="article">
       <h1 class="title">{{ title }}</h1>
       <div class="username-date">
-        <span>{{ nickname }}</span>
+        <span @click="userToggle"
+              style="cursor: pointer">
+          {{ nickname }}
+        </span>
         <span>{{ updatedAt }}</span>
+      </div>
+      <div class="dropdown disabled">
+        <div>
+          <Router-link
+            :to="{
+              name: 'ArticleUpdate',
+              params: { id, keywords, title, article  }
+          }">
+            수정하기
+          </Router-link>
+        </div>
+        <div>
+          <Router-link to="">삭제하기</Router-link>
+        </div>
       </div>
       <div class="keywords">
         <span v-for="keyword in keywords"
@@ -38,8 +55,8 @@
     data() {
       return {
         id: this.$route.params.id,
-        keywords: null,
         nickname: null,
+        keywords: null,
         title: null,
         article: null,
         updatedAt: null,
@@ -65,6 +82,13 @@
             plugins: [[codeSyntaxHightlight, { hljs }]]
           })
         })
+      },
+      userToggle(event) {
+        const dropdown = document.querySelector(".dropdown")
+        const loginUser = this.$store.state.nickname
+        if (event.target.innerText === loginUser) {
+          dropdown.classList.toggle("disabled")
+        }
       }
     },
     created() {
@@ -111,5 +135,17 @@
     border-radius: 3px;
     color: white;
     background-color: #e6837a;
+  }
+  .dropdown {
+    padding: 3px;
+    border: 1px solid black;
+    margin-bottom: 1rem;
+    width: 70px;
+  }
+  .dropdown > div {
+    cursor: pointer;
+  }
+  .disabled {
+    display: none;
   }
 </style>

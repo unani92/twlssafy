@@ -26,7 +26,7 @@
   blockquote {
     border-left-width: 4px !important;
     border-left-style: solid !important;
-    border-left-color: crimson !important;
+    border-left-color: #e6837a !important;
     background-color: #d5dbd9;
   }
   blockquote > p {
