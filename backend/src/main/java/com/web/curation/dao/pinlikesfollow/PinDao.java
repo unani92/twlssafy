@@ -1,5 +1,7 @@
 package com.web.curation.dao.pinlikesfollow;
 
+import java.util.List;
+
 import com.web.curation.model.pinlikesfollow.Pin;
 import com.web.curation.model.pinlikesfollow.PinMultiId;
 
@@ -10,5 +12,5 @@ public interface PinDao extends JpaRepository<Pin, PinMultiId> {
     // void delete(Pin id);
     int deleteByEmailAndArticleid(String email, int articleid);
 	Pin findByEmailAndArticleid(String email, int articleid);
-
+    List<Pin> findAllByEmail(String email);
 }
