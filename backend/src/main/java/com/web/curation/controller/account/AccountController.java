@@ -1,6 +1,5 @@
 package com.web.curation.controller.account;
 
-import java.net.URL;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
