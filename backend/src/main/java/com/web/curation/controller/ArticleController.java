@@ -265,6 +265,8 @@ public class ArticleController {
     
         Article article = articleDao.findByArticleid(no);
         List<Keywords> keywords = keywordsDao.findAllByArticleid(no);
+        int cntLikes = likesDao.countByArticleid(no);
+        int cntPin = pinDao.countByArticleid(no);
 
         if(article == null || keywords == null){
             return new ResponseEntity<>(result, HttpStatus.OK);
@@ -282,6 +284,8 @@ public class ArticleController {
         Map<String,Object> object = new HashMap<>();
         object.put("article", article);
         object.put("keyword", keywordList);
+        object.put("cntLikes", cntLikes);
+        object.put("cntPin", cntPin);
         result.object = object;
         
         return new ResponseEntity<>(result, HttpStatus.OK);
