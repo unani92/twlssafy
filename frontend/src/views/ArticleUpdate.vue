@@ -49,7 +49,7 @@
     name: "ArticleUpdate",
     props: {
       id: {
-        type: String,
+        type: String || Number,
       },
       keywords: {
         type: Array
@@ -101,7 +101,7 @@
         const codeMirror = document.querySelector(".CodeMirror-code")
         this.content.content = codeMirror.innerText
         const params = {
-          articleId: this.id,
+          articleId: String(this.id),
           title: this.content.title,
           content: this.content.content,
           keyword: this.content.keywords
