@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
+import java.time.LocalDateTime;
 import java.util.Map;
 
 import com.web.curation.dao.CommentDao;
@@ -18,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -86,5 +88,32 @@ public class CommentController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
+    @Transactional
+    @ApiOperation(value="댓글 수정")
+    @PutMapping("/article/comment")
+    public Object updateComment(@RequestBody(required = true) final Map<String, Object> request) {
+        /*
+        {
+        "commentId" : "5",
+        "content":"내용내용"
+       }
+        */
+
+        int commentId = Integer.parseInt((String) request.get("commentId"));
+        
+        Comment comment = commentDao.findByCommentid(commentId);
+        comment.setContent((String) request.get("content"));
+        comment.setUpdatedat(LocalDateTime.now());
+
+        final BasicResponse result = new BasicResponse();
+        result.data = "수정 실패";
+        result.status = false;
+
+        if(commentDao.save(comment) != null) {
+            result.data = "수정 성공";
+            result.status = true;
+        }
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
     
 }
