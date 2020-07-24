@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Random;
+import java.util.TreeMap;
 
 import javax.mail.Message;
 import javax.mail.MessagingException;
@@ -12,6 +13,9 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.validation.Valid;
 
+import com.web.curation.dao.pinlikesfollow.FollowDao;
+import com.web.curation.dao.pinlikesfollow.LikesDao;
+import com.web.curation.dao.pinlikesfollow.PinDao;
 import com.web.curation.dao.user.UserDao;
 import com.web.curation.model.BasicResponse;
 import com.web.curation.model.user.SignupRequest;
@@ -41,6 +45,15 @@ public class AccountController {
 
     @Autowired
     UserDao userDao;
+    
+    @Autowired
+    FollowDao followDao;
+
+    @Autowired
+    PinDao pinDao;
+
+    @Autowired
+    LikesDao likesDao;
 
     @PostMapping("/account/login")
     @ApiOperation(value = "로그인")
@@ -56,8 +69,16 @@ public class AccountController {
         final BasicResponse result = new BasicResponse();
         if (userOpt.isPresent()) { // id/pw 다 맞을 때
             result.status = true;
-            result.data = "success";
-            result.object = userOpt.get();                     
+            result.data = "success"; 
+
+            // 로그인 한 사람의 팔로우, 좋아요, 핀 정보 배열
+            Map<String, Object> userInfo = new TreeMap<>();
+            userInfo.put("email", userOpt);
+            userInfo.put("pinList", pinDao.findAllByEmail(email));
+            userInfo.put("followList", followDao.findAllByEmail(email));
+            userInfo.put("likesList", likesDao.findAllByEmail(email));
+
+            result.object = userInfo;
 
         } else { // id/pw 둘 중 하나라도 안 맞으면
             Optional<User> emailOpt = userDao.findUserByEmail(email);
