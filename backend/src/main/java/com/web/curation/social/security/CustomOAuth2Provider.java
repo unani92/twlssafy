@@ -1,4 +1,4 @@
-package com.web.social.security;
+package com.web.curation.social.security;
 
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;

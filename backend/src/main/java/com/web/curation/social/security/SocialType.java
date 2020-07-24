@@ -1,8 +1,8 @@
-package com.web.social.security;
+package com.web.curation.social.security;
 
 public enum SocialType {
-    FACEBOOK("facebook"), GOOGLE("google");
-    // , KAKAO("kakao"), NAVER("naver");
+    FACEBOOK("facebook"), GOOGLE("google")
+    , KAKAO("kakao"), NAVER("naver");
 
     private final String ROLE_PREFIX = "ROLE_";
     private String name;

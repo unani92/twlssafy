@@ -1,4 +1,4 @@
-package com.web.social.service;
+package com.web.curation.social.service;
 
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.core.convert.converter.Converter;
