@@ -23,4 +23,13 @@
     background-color: rgb(237, 239, 242);
     margin: 0 auto;
   }
+  blockquote {
+    border-left-width: 4px !important;
+    border-left-style: solid !important;
+    border-left-color: #e6837a !important;
+    background-color: #d5dbd9;
+  }
+  blockquote > p {
+    color: #0d0925 !important;
+  }
 </style>

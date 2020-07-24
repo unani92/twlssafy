@@ -21,6 +21,15 @@ function login(params) {
 function createArticle(params) {
   return instance.post("article", params);
 }
+
+function updateArticle(params) {
+  return instance.put("article",params)
+}
+
+function deleteArticle(id) {
+  return instance.delete(`article?no=${id}`)
+}
+
 function fetchArticles(params) {
   return instance.get(`article?page=${params.page}`);
 }
@@ -44,6 +53,8 @@ export {
   registerUser,
   login,
   createArticle,
+  updateArticle,
+  deleteArticle,
   fetchArticles,
   fetchArticle,
   likeArticle,
