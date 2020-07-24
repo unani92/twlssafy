@@ -41,7 +41,7 @@ create table pin(
 -----------------------------------------------------------------
 
 create table comment (
-  `commentId` int auto_increment not null,
+  `commentid` int auto_increment not null,
   `email` varchar(128) default null,
   `articleid` int,
   `content` text,
@@ -49,7 +49,7 @@ create table comment (
   `createdAt` datetime default now(), 
   foreign key (`email`) references `member`(`email`) on delete cascade,
   foreign key (`articleid`) references article(`articleid`) on delete cascade,
-  primary key `commentId` (`commentId`)
+  primary key `commentid` (`commentid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -----------------------------------------------------------------
