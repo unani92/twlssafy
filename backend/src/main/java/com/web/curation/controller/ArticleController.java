@@ -9,12 +9,14 @@ import java.util.Map;
 import javax.transaction.Transactional;
 
 import com.web.curation.dao.ArticleDao;
+import com.web.curation.dao.CommentDao;
 import com.web.curation.dao.KeywordsDao;
 import com.web.curation.dao.SkillsDao;
 import com.web.curation.dao.pinlikesfollow.LikesDao;
 import com.web.curation.dao.pinlikesfollow.PinDao;
 import com.web.curation.model.Article;
 import com.web.curation.model.BasicResponse;
+import com.web.curation.model.Comment;
 import com.web.curation.model.Keywords;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,6 +64,9 @@ public class ArticleController {
 
     @Autowired
     PinDao pinDao;
+
+    @Autowired
+    CommentDao commentDao;
     
     @ApiOperation(value = "리스트 조회")
     @GetMapping("/article")
@@ -277,6 +282,9 @@ public class ArticleController {
             keywordList.add(skillsDao.findSkillBySno(k.getSno()).getName());        
         }
 
+        // 해당 글의 댓글 list 저장
+        List<Comment> commentList = commentDao.findAllByArticleid(no);
+
 
         result.status = true;
         result.data = "상세 조회 성공";
@@ -286,6 +294,7 @@ public class ArticleController {
         object.put("keyword", keywordList);
         object.put("cntLikes", cntLikes);
         object.put("cntPin", cntPin);
+        object.put("commentList", commentList);
         result.object = object;
         
         return new ResponseEntity<>(result, HttpStatus.OK);
