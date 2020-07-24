@@ -11,6 +11,7 @@ import javax.transaction.Transactional;
 import com.web.curation.dao.ArticleDao;
 import com.web.curation.dao.KeywordsDao;
 import com.web.curation.dao.SkillsDao;
+import com.web.curation.dao.pinlikesfollow.LikesDao;
 import com.web.curation.model.Article;
 import com.web.curation.model.BasicResponse;
 import com.web.curation.model.Keywords;
@@ -55,6 +56,8 @@ public class ArticleController {
     @Autowired
     KeywordsDao keywordsDao;
     
+    @Autowired
+    LikesDao likesDao;
     
     @ApiOperation(value = "리스트 조회")
     @GetMapping("/article")
@@ -72,6 +75,7 @@ public class ArticleController {
         }
 
         List<List<String>> keywordsList = new ArrayList<>();
+        List<Integer> likesList = new ArrayList<>();
         for(Article a : articles){
             // 게시글 번호를 이용해 이 글의 키워드 리스트를 받아옴 (ex. 1번글의 키워드 c, c++)
             List<Keywords> tmpKeyword = keywordsDao.findAllByArticleid(a.getArticleid());
@@ -85,11 +89,15 @@ public class ArticleController {
                 result.data = "글 조회 성공";
             }
             else return new ResponseEntity<>(result, HttpStatus.OK); // 글에 keyword 없으면 false return
+
+           likesList.add(likesDao.countByArticleid(a.getArticleid()));
+
         }
         
         Map<String,Object> object = new HashMap<>();
         object.put("article", articles);
         object.put("keyword", keywordsList);
+        object.put("likesList", likesList);
 
         result.object = object;
         

@@ -13,5 +13,5 @@ public interface LikesDao extends JpaRepository<Likes, LikesMultiId> {
     int deleteByEmailAndArticleid(String email, int articleid);
 	Likes findByEmailAndArticleid(String email, int articleid);
 	List<Likes> findAllByEmail(String email);
-
+    int countByArticleid(int articleid);
 }
