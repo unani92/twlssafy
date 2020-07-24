@@ -26,6 +26,10 @@ function updateArticle(params) {
   return instance.put("article",params)
 }
 
+function deleteArticle(id) {
+  return instance.delete(`article?no=${id}`)
+}
+
 function fetchArticles(params) {
   return instance.get(`article?page=${params.page}`);
 }
@@ -40,6 +44,7 @@ export {
   login,
   createArticle,
   updateArticle,
+  deleteArticle,
   fetchArticles,
   fetchArticle
 };

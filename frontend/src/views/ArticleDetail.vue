@@ -1,5 +1,5 @@
 <template>
-  <div class="article-detail" style="height: 10000px;">
+  <div class="article-detail">
     <div class="left-sidemenu">
       <ArticleDetailSideMenu/>
     </div>
@@ -22,8 +22,8 @@
             수정하기
           </Router-link>
         </div>
-        <div>
-          <Router-link to="">삭제하기</Router-link>
+        <div @click="removeArticle">
+          삭제하기
         </div>
       </div>
       <div class="keywords">
@@ -39,9 +39,9 @@
 </template>
 
 <script>
-  import { fetchArticle } from "../api";
-  import '@toast-ui/editor/dist/toastui-editor-viewer.css'; // Viewer's Style
-  import 'highlight.js/styles/github.css'; // code block highlight 스타일
+  import { fetchArticle, deleteArticle } from "../api";
+  import '@toast-ui/editor/dist/toastui-editor-viewer.css';
+  import 'highlight.js/styles/github.css';
   import Viewer from '@toast-ui/editor/dist/toastui-editor-viewer';
   import ArticleDetailSideMenu from "../components/ArticleDetailSideMenu";
   import codeSyntaxHightlight from '@toast-ui/editor-plugin-code-syntax-highlight';
@@ -71,7 +71,7 @@
         this.title = article.title
         this.article = article.content
         this.updatedAt = article.updatedat
-        console.log(articleInfo)
+
         return article.content
       },
       getViewer() {
@@ -89,9 +89,12 @@
         if (event.target.innerText === loginUser) {
           dropdown.classList.toggle("disabled")
         }
+      },
+      removeArticle() {
+        deleteArticle(this.id)
+          .then(() => this.$router.push('/'))
+          .catch(err => console.log(err))
       }
-    },
-    created() {
     },
     mounted() {
       this.getViewer()
@@ -115,6 +118,7 @@
   }
   #viewer {
     display: block;
+    margin-bottom: 2rem;
   }
   .title {
     font-size: 60px;
@@ -147,5 +151,17 @@
   }
   .disabled {
     display: none;
+  }
+  @media (max-width: 414px) {
+    .left-sidemenu {
+      display: none;
+    }
+    .article {
+      width: 100%;
+
+    }
+    .title {
+      font-size: 40px;
+    }
   }
 </style>
