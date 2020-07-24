@@ -2,6 +2,9 @@ package com.web.curation.dao;
 
 import com.web.curation.model.Article;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ArticleDao extends JpaRepository<Article, String> {
@@ -9,6 +12,7 @@ public interface ArticleDao extends JpaRepository<Article, String> {
 	int deleteByArticleid(int articleid);
     
     Article findFirstByEmailOrderByArticleidDesc(String email);
-	Article findByArticleid(int articleId);
+    Article findByArticleid(int articleId);
+    Page<Article> findAllByNickname(Pageable pageable, String nickname);
 
 }
