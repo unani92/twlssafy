@@ -5,27 +5,32 @@
         <label for="imgTap" class="img">
           <img class="img-1" src="https://picsum.photos/300/200" />
         </label>
-        <p><br></p>
+        <p>
+          <br />
+        </p>
         <div class="content content-1">
-          
           <div class="title">
             {{ article.title }}
-            <br>
-            <span class = "keywords" v-for="k in keywords" :key="k"><a href="#" style="text-decoration: none;"> #{{k}} </a> </span>
+            <br />
+            <span class="keywords" v-for="k in keywords" :key="k">
+              <a href="#" style="text-decoration: none;">#{{k}}</a>
+            </span>
           </div>
-          <div class="text">
-            {{ article.content }} 
-          </div>
-          <div style="font-size : 14px; text-align : right; margin-bottom : 10px;">{{ article.createdat }}</div>
-          <div class = "nicknamePinLikes">
-            <div style="float : left; ">
-              {{article.nickname}}
-            </div>
-            <div class = "btns" style="text-align : right;">
-              <button class="firstBtn"><i class="far fa-bookmark"></i></button>
+          <div class="text">{{ article.content }}</div>
+          <div class="createdat-text">{{ article.createdat }}</div>
+          <div class="nicknamePinLikes">
+            <div style="float : left; ">{{article.nickname}}</div>
+            <div class="btns">
+              <button @click="pin" class="firstBtn">
+                <i v-if="isPinned" class="fas fa-bookmark"></i>
+                <i v-else class="far fa-bookmark"></i>
+              </button>
               <!-- <button class="firstBtn"><i class="fas fa-bookmark"></i></button> -->
               <!-- <button><i class="far fa-heart"></i></button> -->
-              <button><i class="fas fa-heart"></i></button>
+              <button @click="like">
+                <i v-if="isliked" class="fas fa-heart"></i>
+                <i v-else class="far fa-heart"></i>
+              </button>
             </div>
           </div>
         </div>
@@ -35,17 +40,104 @@
 </template>
 
 <script>
-
+import { likeArticle, pinArticle } from "@/api/index.js";
 export default {
+  methods: {
+    async like() {
+      if (this.isLogin) {
+        const params = {
+          article_id: this.article.articleid,
+          email: this.$store.state.username,
+        };
+        const { data } = await likeArticle(params);
+        console.log(data);
+        //프런트에서 스토어 값 갱신
+        const likeList = this.$store.state.likeList;
+        if (data.data === "likes 설정") {
+          likeList.push(this.article);
+        } else {
+          //좋아요 목록에서 삭제 로직
+          // const idx = likeList.indexOf(this.article);
+          const len = likeList.length;
+          for (let i = 0; i < len; i++) {
+            if (this.article.articleid === likeList[i].articleid) {
+              likeList.splice(i, 1);
+            }
+          }
+        }
+        this.$store.commit("setLikeList", likeList);
+        console.log("현재 상태는", this.$store.state.likeList);
+      } else {
+        if (confirm("좋아요 하시려면 로그인 해야 합니다. 하시겠습니까")) {
+          this.$router.push("/login");
+        }
+      }
+    },
+    async pin() {
+      if (this.isLogin) {
+        const params = {
+          article_id: this.article.articleid,
+          email: this.$store.state.username,
+        };
+        const { data } = await pinArticle(params);
+        console.log(data);
+        //프런트에서 스토어 값 갱신
+        const pinList = this.$store.state.pinList;
+        if (data.data === "pin 설정") {
+          pinList.push(this.article);
+        } else {
+          //좋아요 목록에서 삭제 로직
+          const len = pinList.length;
+          for (let i = 0; i < len; i++) {
+            if (this.article.articleid === pinList[i].articleid) {
+              pinList.splice(i, 1);
+            }
+          }
+        }
+        this.$store.commit("setPinList", pinList);
+        console.log("현재 상태는", this.$store.state.pinList);
+      } else {
+        if (confirm("좋아요 하시려면 로그인 해야 합니다. 하시겠습니까")) {
+          this.$router.push("/login");
+        }
+      }
+    },
+  },
+  computed: {
+    isLogin() {
+      return this.$store.state.username !== "";
+    },
+    isliked() {
+      const likeList = this.$store.state.likeList;
+      const len = likeList.length;
+      for (let i = 0; i < len; i++) {
+        if (this.article.articleid === likeList[i].articleid) {
+          return true;
+        }
+      }
+      return false;
+    },
+    isPinned() {
+      const pinList = this.$store.state.pinList;
+      const len = pinList.length;
+      for (let i = 0; i < len; i++) {
+        if (this.article.articleid === pinList[i].articleid) {
+          return true;
+        }
+      }
+      return false;
+    },
+  },
+  // },
   props: {
     article: {
       type: Object,
       required: true,
     },
-    keywords : {
-      type : Array,
-      required : true,
-    }
+    keywords: {
+      type: Array,
+      required: true,
+    },
   },
 };
 </script>
@@ -116,11 +208,11 @@ export default {
   margin-bottom: 10px;
   line-height: 1.5em;
   text-align: justify;
-  height : 90px;
+  height: 90px;
   overflow: hidden;
 }
 .content button {
-  width  : 35px;
+  width: 35px;
   align-items: center;
   justify-content: center;
   display: inline-flex;
@@ -128,9 +220,9 @@ export default {
   font-size: 16px;
   text-transform: uppercase;
   color: white;
-  margin : 1px;
-  width : 32px;
-  height : 25px;
+  margin: 1px;
+  width: 32px;
+  height: 25px;
   /* font-weight: 600; */
   /* letter-spacing: 1px; */
   align-items: center;
@@ -148,23 +240,30 @@ export default {
   font-size: 15px;
   font-weight: 500;
 }
+.createdat-text {
+  font-size: 14px;
+  text-align: right;
+  margin-bottom: 10px;
+}
+.btns {
+  text-align: right;
+}
 @media (max-width: 630px) {
-  .inner-part{
-    display:block;
-    height : 200px;
+  .inner-part {
+    display: block;
+    height: 200px;
     padding: 20px;
   }
-  .blog-card{
-    height : 450px;
+  .blog-card {
+    height: 450px;
   }
   .content {
     margin: 0%;
-    width : 100%;
-
+    width: 100%;
   }
-.content .text {
-  font-size: 16px;
-}
+  .content .text {
+    font-size: 16px;
+  }
   .content .title {
     font-size: 22px;
     margin-bottom: 10px;
@@ -172,10 +271,9 @@ export default {
   }
 
   .content button {
-  display: inline-block;
+    display: inline-block;
   }
 }
 @media (min-width: 1024px) {
-
 }
 </style>
