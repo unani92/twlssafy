@@ -13,4 +13,5 @@ public interface PinDao extends JpaRepository<Pin, PinMultiId> {
     int deleteByEmailAndArticleid(String email, int articleid);
 	Pin findByEmailAndArticleid(String email, int articleid);
     List<Pin> findAllByEmail(String email);
+	Integer countByArticleid(int articleid);
 }
