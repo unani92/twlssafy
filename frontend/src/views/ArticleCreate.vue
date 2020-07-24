@@ -1,6 +1,6 @@
 <template>
   <div class="article-create">
-    <h1>게시글 작성</h1>
+    <h1 style="margin: 1rem 0 1rem 0;">게시글 작성</h1>
     <div class="article-title-skills" >
       <div class="title">
         <label style="font-size: 20px; font-weight: bold" for="title">제목</label>
@@ -8,6 +8,8 @@
       <div>
         <input v-model="content.title" id="title" type="text">
       </div>
+    </div>
+    <div class="article-title-skills">
       <div>
         <label style="font-size: 20px; font-weight: bold" for="skills">키워드</label>
       </div>
@@ -158,5 +160,15 @@
   }
   .title {
     margin-top: 1rem;
+  }
+  button {
+    margin: 1rem 0 1rem 0;
+    width: 100px;
+    height: 30px;
+    border-radius: 3px;
+    border-style: none;
+    cursor: pointer;
+    background-color: #e6837a;
+    color: white;
   }
 </style>
