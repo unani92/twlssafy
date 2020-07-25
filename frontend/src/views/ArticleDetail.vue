@@ -5,35 +5,45 @@
     </div>
     <div class="article">
       <h1 class="title">{{ title }}</h1>
-      <div class="username-date">
-        <span @click="userToggle"
-              style="cursor: pointer">
-          {{ nickname }}
-        </span>
-        <span>{{ updatedAt }}</span>
-      </div>
-      <div class="dropdown disabled">
-        <div>
-          <Router-link
-            :to="{
-              name: 'ArticleUpdate',
-              params: { id, keywords, title, content  }
-          }">
-            수정하기
-          </Router-link>
+      <div class="nickname-keyword">
+        <div class="username-date">
+          <span @click="userToggle"
+                style="cursor: pointer">
+            {{ nickname }}
+          </span>
+          <span>{{ updatedAt }}</span>
         </div>
-        <div @click="removeArticle">
-          삭제하기
+        <div class="dropdown disabled">
+          <div>
+            <Router-link
+              :to="{
+                name: 'ArticleUpdate',
+                params: { id, keywords, title, content  }
+            }">
+              수정하기
+            </Router-link>
+          </div>
+          <div @click="removeArticle">
+            삭제하기
+          </div>
+        </div>
+        <div class="keywords">
+          <span v-for="keyword in keywords"
+                :key="keyword"
+                class="keyword">
+            # {{ keyword }}
+          </span>
         </div>
       </div>
-      <div class="keywords">
-        <span v-for="keyword in keywords"
-              :key="keyword"
-              class="keyword">
-          # {{ keyword }}
-        </span>
+      <div class="nickname-keyword markdown">
+        <div id="viewer"/>
       </div>
-      <div id="viewer"/>
+      <div class="nickname-keyword" v-if="article">
+        <ArticleDetailProfile :article="article"/>
+      </div>
+      <div v-if="article" class="nickname-keyword">
+        <CommentCreate :article="article" :commentList="sideMenu.commentList"/>
+      </div>
     </div>
   </div>
 </template>
@@ -43,14 +53,17 @@
   import '@toast-ui/editor/dist/toastui-editor-viewer.css';
   import 'highlight.js/styles/github.css';
   import Viewer from '@toast-ui/editor/dist/toastui-editor-viewer';
-  import ArticleDetailSideMenu from "../components/ArticleDetailSideMenu";
   import codeSyntaxHightlight from '@toast-ui/editor-plugin-code-syntax-highlight';
   import hljs from 'highlight.js';
-
+  import ArticleDetailSideMenu from "../components/article/ArticleDetailSideMenu";
+  import ArticleDetailProfile from "../components/article/ArticleDetailProfile";
+  import CommentCreate from "../components/article/CommentCreate";
   export default {
     name: "ArticleDetail",
     components: {
       ArticleDetailSideMenu,
+      ArticleDetailProfile,
+      CommentCreate
     },
     computed: {
       likeList() {
@@ -85,7 +98,7 @@
         this.nickname = article.nickname
         this.title = article.title
         this.content = article.content
-        this.updatedAt = article.updatedat
+        this.updatedAt = this.$moment(article.updatedat).fromNow()
         this.sideMenu.commentList = commentList
         this.sideMenu.cntLikes = cntLikes
         this.sideMenu.cntPin = cntPin
@@ -123,14 +136,20 @@
 <style scoped>
   .article-detail{
     display: flex;
+    justify-content: space-around;
   }
   .article {
     padding-top: 100px;
     width: 80%;
   }
+  .nickname-keyword {
+    padding: 1rem;
+    margin-bottom: 1rem;
+    background-color: white;
+    border-radius: 10px;
+  }
   .left-sidemenu {
-    padding-top: 100px;
-    margin-left: 1rem;
+    padding-top: 300px;
     width: 10%;
     display: block;
   }
@@ -176,10 +195,10 @@
     }
     .article {
       width: 100%;
-
     }
     .title {
       font-size: 40px;
     }
   }
+
 </style>
