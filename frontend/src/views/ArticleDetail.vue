@@ -1,7 +1,7 @@
 <template>
   <div class="article-detail">
     <div class="left-sidemenu">
-      <ArticleDetailSideMenu/>
+      <ArticleDetailSideMenu :article="article" :sideMenu="sideMenu"/>
     </div>
     <div class="article">
       <h1 class="title">{{ title }}</h1>
@@ -17,7 +17,7 @@
           <Router-link
             :to="{
               name: 'ArticleUpdate',
-              params: { id, keywords, title, article  }
+              params: { id, keywords, title, content  }
           }">
             수정하기
           </Router-link>
@@ -52,6 +52,14 @@
     components: {
       ArticleDetailSideMenu,
     },
+    computed: {
+      likeList() {
+        return this.$store.state.likeList
+      },
+      pinList() {
+        return this.$store.state.pinList
+      }
+    },
     data() {
       return {
         id: this.$route.params.id,
@@ -59,18 +67,28 @@
         keywords: null,
         title: null,
         article: null,
+        content: null,
         updatedAt: null,
+        sideMenu: {
+          commentList: null,
+          cntLikes: null,
+          cntPin: null,
+        },
       }
     },
     methods: {
       async getArticle() {
         const articleInfo = await fetchArticle(this.id)
-        const { article, keyword } = articleInfo.data.object
+        const { article, keyword, commentList, cntLikes, cntPin } = articleInfo.data.object
+        this.article = article
         this.keywords = keyword
         this.nickname = article.nickname
         this.title = article.title
-        this.article = article.content
+        this.content = article.content
         this.updatedAt = article.updatedat
+        this.sideMenu.commentList = commentList
+        this.sideMenu.cntLikes = cntLikes
+        this.sideMenu.cntPin = cntPin
 
         return article.content
       },

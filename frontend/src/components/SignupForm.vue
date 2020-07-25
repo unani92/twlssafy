@@ -244,6 +244,7 @@ export default {
       const { data } = await registerUser(userData);
       console.log(data);
       this.$store.commit("setUsername", userData.email);
+      this.$store.commit("setNickname", userData.nickname)
       this.$router.push("/selectskills");
     },
     initForm() {

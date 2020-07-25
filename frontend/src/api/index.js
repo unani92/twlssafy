@@ -18,6 +18,10 @@ function login(params) {
   return instance.post("account/login", params);
 }
 
+function selectSkill(params) {
+  return instance.post("account/interest/register", params)
+}
+
 function createArticle(params) {
   return instance.post("article", params);
 }
@@ -52,6 +56,7 @@ export {
   checkNickname,
   registerUser,
   login,
+  selectSkill,
   createArticle,
   updateArticle,
   deleteArticle,

@@ -9,7 +9,10 @@
           <br />
         </p>
         <div class="content content-1">
-          <div class="title">
+          <div class="title"
+               style="cursor:pointer;"
+               @click="$router.push({ name: 'ArticleDetail', params:{id:article.articleid} })"
+          >
             {{ article.title }}
             <br />
             <span class="keywords" v-for="k in keywords" :key="k">
@@ -139,6 +142,9 @@ export default {
       required: true,
     },
   },
+  mounted() {
+    console.log(this.article)
+  }
 };
 </script>
 
@@ -212,7 +218,6 @@ export default {
   overflow: hidden;
 }
 .content button {
-  width: 35px;
   align-items: center;
   justify-content: center;
   display: inline-flex;
@@ -225,8 +230,6 @@ export default {
   height: 25px;
   /* font-weight: 600; */
   /* letter-spacing: 1px; */
-  align-items: center;
-  justify-content: center;
   border-radius: 50px;
   cursor: pointer;
   outline: none;
@@ -236,7 +239,7 @@ export default {
 
 .keywords {
   color: #7b7992;
-  margin-bottom: 0px;
+  margin-bottom: 0;
   font-size: 15px;
   font-weight: 500;
 }

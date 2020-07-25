@@ -33,12 +33,15 @@
     </div>
     <div class="btn">
       <button @click="submitUserSkills" class="signup-btn">가입완료</button>
+      <button @click="$router.push('/')" class="signup-btn">다음에 등록</button>
     </div>
   </div>
 </template>
 
 <script>
   import skills from '../skills.js'
+  import { selectSkill } from "../api";
+
   export default {
     name: "SelectSkills",
     data() {
@@ -81,7 +84,13 @@
         autocomplete.classList.toggle("disabled")
       },
       submitUserSkills() {
-        console.log(this.userSkill)
+        const params = {
+          email: this.$store.state.username,
+          skill: this.userSkill
+        }
+        selectSkill(params)
+          .then(res => console.log(res))
+          .catch(err => console.log(err))
       }
     },
   }
@@ -163,8 +172,7 @@
     outline: none;
     height: 50px;
     cursor: pointer;
-    margin-top: 1rem;
-    margin-bottom: 1rem;
+    margin: 1rem 10px 1rem 0;
     width: 530px;
     }
   @media (max-width: 414px) {

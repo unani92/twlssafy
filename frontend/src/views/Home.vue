@@ -40,7 +40,7 @@
       <div class="primary">
         <p>⚡ News ⚡</p>
         <br />
-        <ArticleCardList></ArticleCardList>
+        <ArticleCardList/>
       </div>
       <div class="secondary secondary-b ">
         <HashTag />
