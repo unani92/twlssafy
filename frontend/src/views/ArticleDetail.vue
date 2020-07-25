@@ -35,8 +35,11 @@
           </span>
         </div>
       </div>
-      <div class="nickname-keyword">
+      <div class="nickname-keyword markdown">
         <div id="viewer"/>
+      </div>
+      <div class="nickname-keyword" v-if="article">
+        <ArticleDetailProfile :article="article"/>
       </div>
     </div>
   </div>
@@ -47,14 +50,16 @@
   import '@toast-ui/editor/dist/toastui-editor-viewer.css';
   import 'highlight.js/styles/github.css';
   import Viewer from '@toast-ui/editor/dist/toastui-editor-viewer';
-  import ArticleDetailSideMenu from "../components/ArticleDetailSideMenu";
   import codeSyntaxHightlight from '@toast-ui/editor-plugin-code-syntax-highlight';
   import hljs from 'highlight.js';
+  import ArticleDetailSideMenu from "../components/ArticleDetailSideMenu";
+  import ArticleDetailProfile from "../components/ArticleDetailProfile";
 
   export default {
     name: "ArticleDetail",
     components: {
       ArticleDetailSideMenu,
+      ArticleDetailProfile,
     },
     computed: {
       likeList() {
@@ -119,7 +124,6 @@
       }
     },
     mounted() {
-
       this.getViewer()
     }
   }
@@ -128,6 +132,7 @@
 <style scoped>
   .article-detail{
     display: flex;
+    justify-content: space-around;
   }
   .article {
     padding-top: 100px;
@@ -140,8 +145,7 @@
     border-radius: 10px;
   }
   .left-sidemenu {
-    padding-top: 100px;
-    margin-left: 1rem;
+    padding-top: 300px;
     width: 10%;
     display: block;
   }
@@ -187,10 +191,10 @@
     }
     .article {
       width: 100%;
-
     }
     .title {
       font-size: 40px;
     }
   }
+
 </style>
