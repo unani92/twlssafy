@@ -1,7 +1,7 @@
 <template>
   <div class="google">
     <i class="fab fa-google"></i>
-    <span>Google 로그인</span>
+    <a href="http://localhost:8080/oauth2/authorization/google">Google 로그인</a>
   </div>
 </template>
 
