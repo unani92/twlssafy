@@ -41,6 +41,9 @@
       <div class="nickname-keyword" v-if="article">
         <ArticleDetailProfile :article="article"/>
       </div>
+      <div v-if="article" class="nickname-keyword">
+        <CommentCreate :article="article" :commentList="sideMenu.commentList"/>
+      </div>
     </div>
   </div>
 </template>
@@ -52,14 +55,15 @@
   import Viewer from '@toast-ui/editor/dist/toastui-editor-viewer';
   import codeSyntaxHightlight from '@toast-ui/editor-plugin-code-syntax-highlight';
   import hljs from 'highlight.js';
-  import ArticleDetailSideMenu from "../components/ArticleDetailSideMenu";
-  import ArticleDetailProfile from "../components/ArticleDetailProfile";
-
+  import ArticleDetailSideMenu from "../components/article/ArticleDetailSideMenu";
+  import ArticleDetailProfile from "../components/article/ArticleDetailProfile";
+  import CommentCreate from "../components/article/CommentCreate";
   export default {
     name: "ArticleDetail",
     components: {
       ArticleDetailSideMenu,
       ArticleDetailProfile,
+      CommentCreate
     },
     computed: {
       likeList() {

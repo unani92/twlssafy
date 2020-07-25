@@ -16,7 +16,7 @@
 </template>
 
 <script>
-  import { likeArticle, pinArticle } from "../api";
+  import { likeArticle, pinArticle } from "../../api";
 
   export default {
     name: "ArticleDetailSideMenu",

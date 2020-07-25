@@ -37,9 +37,11 @@ function deleteArticle(id) {
 function fetchArticles(params) {
   return instance.get(`article?page=${params.page}`);
 }
+
 function fetchArticle(id) {
   return instance.get(`article/${id}`);
 }
+
 function likeArticle(params) {
   return instance.post(`article/${params.article_id}/likes/${params.email}`);
 }
@@ -47,8 +49,13 @@ function likeArticle(params) {
 function pinArticle(params) {
   return instance.post(`article/${params.article_id}/pin/${params.email}`);
 }
+
 function follow(params) {
   return instance.post("account/follow", params);
+}
+
+function createComment(params) {
+  return instance.post("article/comment",params)
 }
 
 export {
@@ -65,4 +72,5 @@ export {
   likeArticle,
   pinArticle,
   follow,
+  createComment
 };
