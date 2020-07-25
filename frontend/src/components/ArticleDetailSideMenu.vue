@@ -9,14 +9,14 @@
       <span style="font-size: 1rem">{{ sideMenu.cntLikes }}</span>
     </div>
     <div class="icon">
-      <i class="far fa-bookmark"></i>
+      <i @click="clickPin" class="far fa-bookmark" :class="{pressed : isPinned}"></i>
       <span style="font-size: 1rem">{{ sideMenu.cntPin }}</span>
     </div>
   </div>
 </template>
 
 <script>
-  import { likeArticle } from "../api";
+  import { likeArticle, pinArticle } from "../api";
 
   export default {
     name: "ArticleDetailSideMenu",
@@ -63,6 +63,30 @@
             }
           })
           .catch(err => console.log(err))
+      },
+      clickPin() {
+        const params = {
+          article_id: this.article.articleid,
+          email: this.$store.state.username
+        }
+        pinArticle(params)
+          .then(res => {
+            const result = res.data.data
+            const pinList = this.pinList
+            if (result === "pin 취소") {
+              this.sideMenu.cntPin -= 1
+              const newPin = pinList.filter(pin => {
+                return Number(pin.articleid) !== Number(this.article.articleid)
+              })
+              this.isPinned = false
+              this.$store.commit("setPinList",newPin)
+            } else  {
+              this.sideMenu.cntPin += 1
+              pinList.push(this.article)
+              this.isPinned = true
+              this.$store.commit("setPinList",pinList)
+            }
+          })
       }
     },
     mounted() {
