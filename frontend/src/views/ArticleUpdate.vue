@@ -6,7 +6,7 @@
         <label style="font-size: 20px; font-weight: bold" for="title">제목</label>
       </div>
       <div>
-        <input v-model="content.title" id="title" type="text">
+        <input v-model="article.title" id="title" type="text">
       </div>
     </div>
     <div class="article-title-skills">
@@ -16,7 +16,7 @@
       <div class="keywords">
         <input v-model="skillInput" @input="submitAutoComplete" id="skills" type="text">
         <div class="keyword-badge"
-             v-for="keyword in this.content.keywords"
+             v-for="keyword in this.article.keywords"
              :key="keyword"
              :id="keyword">
           <span>{{ keyword }}</span>
@@ -57,7 +57,7 @@
       title: {
         type: String
       },
-      article: {
+      content: {
         type: String
       }
     },
@@ -65,7 +65,7 @@
       return {
         skillInput: null,
         result: null,
-        content: {
+        article: {
           title: this.title,
           keywords: this.keywords,
           content: this.article
@@ -87,24 +87,24 @@
       searchSkillAdd(event) {
         const autocomplete = document.querySelector(".autocomplete")
         const skill = event.target.innerText
-        this.content.keywords.push(skill)
+        this.article.keywords.push(skill)
         this.skillInput = null
         autocomplete.classList.toggle("disabled")
       },
       removeStack(event) {
         const selectedSkill = event.target.parentNode.id
-        this.content.keywords = this.content.keywords.filter(skill => {
+        this.article.keywords = this.article.keywords.filter(skill => {
           return skill !== selectedSkill
         })
       },
       submitArticle() {
         const codeMirror = document.querySelector(".CodeMirror-code")
-        this.content.content = codeMirror.innerText
+        this.article.content = codeMirror.innerText
         const params = {
           articleId: String(this.id),
-          title: this.content.title,
-          content: this.content.content,
-          keyword: this.content.keywords
+          title: this.article.title,
+          content: this.article.content,
+          keyword: this.article.keywords
         }
         updateArticle(params)
           .then(res=> {
@@ -119,7 +119,7 @@
       new Editor({
         el: document.querySelector("#editor"),
         initialEditType: "markdown",
-        initialValue: this.article,
+        initialValue: this.content,
         previewStyle: "vertical",
         height: "500px",
         plugins: [[codeSyntaxHightlight, { hljs }]],

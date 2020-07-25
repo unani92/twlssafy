@@ -1,7 +1,7 @@
 <template>
 <div>
   <div v-if="isLoading">
-<LoadingSpinner></LoadingSpinner>
+<LoadingSpinner/>
   </div>
   <div>
     <ArticleCard
@@ -9,7 +9,7 @@
       :key="article._id"
       :article="article"
       :keywords="keywords[index]"
-    ></ArticleCard>
+    />
     <div id="bottomSensor"></div>
   </div>
   </div>
