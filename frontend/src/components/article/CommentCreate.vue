@@ -7,17 +7,28 @@
     <div>
       <textarea v-model="content" placeholder="댓글을 작성해 주세요" class="create"/>
     </div>
+    <div v-if="commentList.length">
+      <CommentDetail
+          v-for="comment in commentList"
+          :comment="comment"
+          :key="comment.commentid"
+          @commentDelete="removeDelete"
+      />
+    </div>
   </div>
 </template>
 
 <script>
   import { createComment } from "../../api";
-
+  import CommentDetail from "./CommentDetail";
   export default {
     name: "CommentCreate",
     props: {
       commentList: Array,
       article: Object
+    },
+    components: {
+      CommentDetail
     },
     data() {
       return {
@@ -35,8 +46,18 @@
           articleid
         }
         createComment(params)
-          .then(res => console.log(res.data))
+          .then(res => {
+            const now = new Date()
+            const comment = { ...res.data.object, now }
+            this.commentList.push(comment)
+            this.content = null
+          })
           .catch(err => console.log(err))
+      },
+      removeDelete(id) {
+        this.commentList = this.commentList.filter(comment => {
+          return Number(comment.commentid) !== Number(id)
+        })
       }
     }
   }
@@ -70,6 +91,7 @@
     font-weight: bold;
     font-size: 1rem !important;
     padding: 1rem;
+    margin-bottom: 2rem;
   }
   .create:focus {
     outline: none !important;

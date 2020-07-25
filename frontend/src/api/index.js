@@ -58,6 +58,10 @@ function createComment(params) {
   return instance.post("article/comment",params)
 }
 
+function deleteComment(params) {
+  return instance.delete(`article/comment?no=${params}`)
+}
+
 export {
   checkEmail,
   checkNickname,
@@ -72,5 +76,6 @@ export {
   likeArticle,
   pinArticle,
   follow,
-  createComment
+  createComment,
+  deleteComment
 };
