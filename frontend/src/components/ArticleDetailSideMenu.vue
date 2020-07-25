@@ -40,9 +40,14 @@
     },
     methods: {
       clickLike() {
-        const params = {
-          article_id: this.article.articleid,
-          email: this.$store.state.username
+        const article_id = this.article.articleid
+        const email = this.$store.state.username
+        if (!email) {
+          this.$router.push({name: "Login"})
+        } else {
+         const params = {
+          article_id,
+          email
         }
         likeArticle(params)
           .then(res => {
@@ -63,30 +68,38 @@
             }
           })
           .catch(err => console.log(err))
+        }
       },
       clickPin() {
-        const params = {
-          article_id: this.article.articleid,
-          email: this.$store.state.username
+        const article_id = this.article.articleid
+        const email = this.$store.state.username
+        if (!email) {
+          this.$router.push({name: "Login"})
+        } else {
+          const params = {
+            article_id,
+            email
+          }
+          pinArticle(params)
+            .then(res => {
+              const result = res.data.data
+              const pinList = this.pinList
+              if (result === "pin 취소") {
+                this.sideMenu.cntPin -= 1
+                const newPin = pinList.filter(pin => {
+                  return Number(pin.articleid) !== Number(this.article.articleid)
+                })
+                this.isPinned = false
+                this.$store.commit("setPinList",newPin)
+              } else  {
+                this.sideMenu.cntPin += 1
+                pinList.push(this.article)
+                this.isPinned = true
+                this.$store.commit("setPinList",pinList)
+              }
+            })
+          .catch(err => console.log(err))
         }
-        pinArticle(params)
-          .then(res => {
-            const result = res.data.data
-            const pinList = this.pinList
-            if (result === "pin 취소") {
-              this.sideMenu.cntPin -= 1
-              const newPin = pinList.filter(pin => {
-                return Number(pin.articleid) !== Number(this.article.articleid)
-              })
-              this.isPinned = false
-              this.$store.commit("setPinList",newPin)
-            } else  {
-              this.sideMenu.cntPin += 1
-              pinList.push(this.article)
-              this.isPinned = true
-              this.$store.commit("setPinList",pinList)
-            }
-          })
       }
     },
     mounted() {

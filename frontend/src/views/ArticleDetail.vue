@@ -5,35 +5,39 @@
     </div>
     <div class="article">
       <h1 class="title">{{ title }}</h1>
-      <div class="username-date">
-        <span @click="userToggle"
-              style="cursor: pointer">
-          {{ nickname }}
-        </span>
-        <span>{{ updatedAt }}</span>
-      </div>
-      <div class="dropdown disabled">
-        <div>
-          <Router-link
-            :to="{
-              name: 'ArticleUpdate',
-              params: { id, keywords, title, content  }
-          }">
-            수정하기
-          </Router-link>
+      <div class="nickname-keyword">
+        <div class="username-date">
+          <span @click="userToggle"
+                style="cursor: pointer">
+            {{ nickname }}
+          </span>
+          <span>{{ updatedAt }}</span>
         </div>
-        <div @click="removeArticle">
-          삭제하기
+        <div class="dropdown disabled">
+          <div>
+            <Router-link
+              :to="{
+                name: 'ArticleUpdate',
+                params: { id, keywords, title, content  }
+            }">
+              수정하기
+            </Router-link>
+          </div>
+          <div @click="removeArticle">
+            삭제하기
+          </div>
+        </div>
+        <div class="keywords">
+          <span v-for="keyword in keywords"
+                :key="keyword"
+                class="keyword">
+            # {{ keyword }}
+          </span>
         </div>
       </div>
-      <div class="keywords">
-        <span v-for="keyword in keywords"
-              :key="keyword"
-              class="keyword">
-          # {{ keyword }}
-        </span>
+      <div class="nickname-keyword">
+        <div id="viewer"/>
       </div>
-      <div id="viewer"/>
     </div>
   </div>
 </template>
@@ -85,7 +89,7 @@
         this.nickname = article.nickname
         this.title = article.title
         this.content = article.content
-        this.updatedAt = article.updatedat
+        this.updatedAt = this.$moment(article.updatedat).fromNow()
         this.sideMenu.commentList = commentList
         this.sideMenu.cntLikes = cntLikes
         this.sideMenu.cntPin = cntPin
@@ -115,6 +119,7 @@
       }
     },
     mounted() {
+
       this.getViewer()
     }
   }
@@ -127,6 +132,12 @@
   .article {
     padding-top: 100px;
     width: 80%;
+  }
+  .nickname-keyword {
+    padding: 1rem;
+    margin-bottom: 1rem;
+    background-color: white;
+    border-radius: 10px;
   }
   .left-sidemenu {
     padding-top: 100px;

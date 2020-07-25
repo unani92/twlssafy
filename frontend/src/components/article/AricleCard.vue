@@ -20,7 +20,7 @@
             </span>
           </div>
           <div class="text">{{ article.content }}</div>
-          <div class="createdat-text">{{ article.createdat }}</div>
+          <div class="createdat-text">{{ this.$moment(article.createdat).fromNow() }}</div>
           <div class="nicknamePinLikes">
             <div style="float : left; ">{{article.nickname}}</div>
             <div class="btns">
