@@ -47,7 +47,7 @@
         const article_id = this.article.articleid
         const email = this.$store.state.username
         if (!email) {
-          this.$router.push({name: "Login"})
+          this.$router.push({ name: 'Login', query: { redirect: `${article_id}` } })
         } else {
          const params = {
           article_id,
@@ -78,7 +78,7 @@
         const article_id = this.article.articleid
         const email = this.$store.state.username
         if (!email) {
-          this.$router.push({name: "Login"})
+          this.$router.push({ name: 'Login', query: { redirect: `${article_id}` } })
         } else {
           const params = {
             article_id,
@@ -106,13 +106,16 @@
         }
       },
       clickFollow() {
-        console.log("click")
+        const article_id = this.article.articleid
         const email = this.$store.state.username
         const follow = this.article.email
-        const params = {
-          email,
-          follow
-        }
+        if (!email) {
+          this.$router.push({ name: 'Login', query: { redirect: `${article_id}` } })
+        } else {
+         const params = {
+            email,
+            follow
+          }
         requestFollow(params)
           .then(res => {
             const result = res.data.data
@@ -134,12 +137,13 @@
             }
           })
           .catch(err => console.log(err))
+       }
       }
     },
     mounted() {
       const id = this.$route.params.id
-      this.isLiked = !!this.likeList.filter(like => like.articleid === id).length
-      this.isPinned = !!this.pinList.filter(pin => pin.articleid === id).length
+      this.isLiked = !!this.likeList.filter(like => Number(like.articleid) === Number(id)).length
+      this.isPinned = !!this.pinList.filter(pin => Number(pin.articleid) === Number(id)).length
     }
   }
 </script>
@@ -177,6 +181,7 @@
     .sidemenu {
       bottom: 1px;
       display: flex;
+      flex-direction: row;
       justify-content: space-between;
       align-items: center;
       width: 100%;
@@ -196,6 +201,10 @@
     .sidemenu {
       left: 2rem ;
       top: 200px ;
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+      align-items: center;
     }
   }
 </style>

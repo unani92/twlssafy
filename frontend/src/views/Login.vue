@@ -109,7 +109,12 @@ export default {
               this.$store.commit("setFollowList", followList);
               this.$store.commit("setLikeList", likesList);
               this.$store.commit("setPinList", pinList);
-              this.$router.push("/");
+
+              if (this.$route.query.redirect) {
+                const redirect = this.$route.query.redirect
+                this.$router.push({ name: 'ArticleDetail', params: {id:Number(redirect)} })
+              } else this.$router.push("/");
+
             } else if (data === "비밀번호가 일치하지 않습니다.") {
               this.error.password = "비밀번호가 일치하지 않습니다.";
             } else {
