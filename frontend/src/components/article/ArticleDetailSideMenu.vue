@@ -1,8 +1,8 @@
 <template>
   <div class="sidemenu">
     <div class="icon">
-      <i @click="clickFollow" class="far fa-user" :class="{pressed : isFollowed}"></i>
-      <span v-if="isFollowed"> - </span>
+      <i @click="clickFollow" class="far fa-user" :class="{pressed : sideMenu.isFollowed}"></i>
+      <span v-if="sideMenu.isFollowed"> - </span>
       <span v-else> + </span>
     </div>
     <div class="icon">
@@ -40,7 +40,6 @@
       return {
         isLiked: null,
         isPinned: null,
-        isFollowed: null,
       }
     },
     methods: {
@@ -107,6 +106,7 @@
         }
       },
       clickFollow() {
+        console.log("click")
         const email = this.$store.state.username
         const follow = this.article.email
         const params = {
@@ -119,17 +119,18 @@
             const followLists = this.followList
             if (result === "unfollow") {
               const newFollowList = followLists.filter(followList => {
-                return followList.followemail !== follow
+                return followList.followemail !== this.article.email
               })
-              this.isFollowed = false
+              this.sideMenu.isFollowed = false
               this.$store.commit("setFollowList",newFollowList)
             } else {
               const newFollow = {
                 email: email,
                 followemail: follow
               }
-              this.isFollowed = true
+              this.sideMenu.isFollowed = true
               followLists.push(newFollow)
+              this.$store.commit("setFollowList",followLists)
             }
           })
           .catch(err => console.log(err))
@@ -139,7 +140,6 @@
       const id = this.$route.params.id
       this.isLiked = !!this.likeList.filter(like => like.articleid === id).length
       this.isPinned = !!this.pinList.filter(pin => pin.articleid === id).length
-      this.isFollowed = !!this.followList.filter(follow => follow.followemail === this.article.email).length
     }
   }
 </script>

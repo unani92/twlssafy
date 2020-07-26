@@ -65,6 +65,11 @@
       ArticleDetailProfile,
       CommentCreate
     },
+    computed: {
+      followList() {
+        return this.$store.state.followList
+      }
+    },
     data() {
       return {
         id: this.$route.params.id,
@@ -76,6 +81,7 @@
         updatedAt: null,
         sideMenu: {
           commentList: null,
+          isFollowed: null,
           cntLikes: null,
           cntPin: null,
         },
@@ -86,6 +92,9 @@
         const articleInfo = await fetchArticle(this.id)
         const { article, keyword, commentList, cntLikes, cntPin } = articleInfo.data.object
         this.article = article
+
+        this.sideMenu.isFollowed = !!this.followList.filter(follow => follow.followemail === this.article.email).length
+
         this.keywords = keyword
         this.nickname = article.nickname
         this.title = article.title
