@@ -4,9 +4,20 @@ import router from './router'
 import store from './store'
 import moment from "moment";
 import VueMomentJS from "vue-momentjs";
+import firebase from "firebase";
 
 moment.locale("ko")
 Vue.use(VueMomentJS, moment);
+
+firebase.initializeApp({
+  apiKey: process.env.VUE_APP_FIREBASE_API_KEY,
+  authDomain: process.env.VUE_APP_AUTH_DOMAIN,
+  databaseURL: process.env.VUE_APP_DATABASE_URL,
+  projectId: process.env.VUE_APP_PROJECT_ID,
+  storageBucket: process.env.VUE_APP_STORAGE_BUCKET,
+  messagingSenderId: process.env.VUE_APP_MESSAGING_SENDER_ID,
+  appId: process.env.VUE_APP_APP_ID
+})
 
 Vue.config.productionTip = false
 
