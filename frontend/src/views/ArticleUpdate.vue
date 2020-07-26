@@ -49,7 +49,7 @@
     name: "ArticleUpdate",
     props: {
       id: {
-        type: String || Number,
+        type: String && Number,
       },
       keywords: {
         type: Array

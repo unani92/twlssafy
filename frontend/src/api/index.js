@@ -50,7 +50,7 @@ function pinArticle(params) {
   return instance.post(`article/${params.article_id}/pin/${params.email}`);
 }
 
-function follow(params) {
+function requestFollow(params) {
   return instance.post("account/follow", params);
 }
 
@@ -75,7 +75,7 @@ export {
   fetchArticle,
   likeArticle,
   pinArticle,
-  follow,
+  requestFollow,
   createComment,
   deleteComment
 };

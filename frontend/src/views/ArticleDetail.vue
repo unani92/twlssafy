@@ -66,11 +66,8 @@
       CommentCreate
     },
     computed: {
-      likeList() {
-        return this.$store.state.likeList
-      },
-      pinList() {
-        return this.$store.state.pinList
+      followList() {
+        return this.$store.state.followList
       }
     },
     data() {
@@ -84,9 +81,14 @@
         updatedAt: null,
         sideMenu: {
           commentList: null,
+          isFollowed: null,
           cntLikes: null,
           cntPin: null,
         },
+        scroll: {
+          prev: 0,
+          upDown: null
+        }
       }
     },
     methods: {
@@ -94,6 +96,9 @@
         const articleInfo = await fetchArticle(this.id)
         const { article, keyword, commentList, cntLikes, cntPin } = articleInfo.data.object
         this.article = article
+
+        this.sideMenu.isFollowed = !!this.followList.filter(follow => follow.followemail === this.article.email).length
+
         this.keywords = keyword
         this.nickname = article.nickname
         this.title = article.title
@@ -125,10 +130,22 @@
         deleteArticle(this.id)
           .then(() => this.$router.push('/'))
           .catch(err => console.log(err))
+      },
+      scrollEvent() {
+        const navBar = document.querySelector(".nav-bar")
+        const nowScrollY = window.scrollY
+        if (nowScrollY > this.scroll.prev) {
+          navBar.classList.add("disabled")
+          this.scroll.prev = nowScrollY
+        } else {
+          navBar.classList.remove("disabled")
+          this.scroll.prev = nowScrollY
+        }
       }
     },
     mounted() {
-      this.getViewer()
+      this.getViewer();
+      document.addEventListener("scroll", this.scrollEvent)
     }
   }
 </script>
@@ -137,9 +154,10 @@
   .article-detail{
     display: flex;
     justify-content: space-around;
+    margin-bottom: 2rem;
   }
   .article {
-    padding-top: 100px;
+    padding-top: 75px;
     width: 80%;
   }
   .nickname-keyword {
@@ -149,8 +167,6 @@
     border-radius: 10px;
   }
   .left-sidemenu {
-    padding-top: 300px;
-    width: 10%;
     display: block;
   }
   #viewer {
@@ -190,11 +206,12 @@
     display: none;
   }
   @media (max-width: 414px) {
-    .left-sidemenu {
-      display: none;
+    .article-detail {
+      padding: 1rem;
     }
     .article {
       width: 100%;
+      margin-bottom: 2rem;
     }
     .title {
       font-size: 40px;

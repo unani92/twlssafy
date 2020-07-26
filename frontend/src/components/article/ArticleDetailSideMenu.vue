@@ -1,8 +1,9 @@
 <template>
   <div class="sidemenu">
     <div class="icon">
-      <i class="far fa-user"></i>
-      <span>{{ isLiked }}</span>
+      <i @click="clickFollow" class="far fa-user" :class="{pressed : sideMenu.isFollowed}"></i>
+      <span v-if="sideMenu.isFollowed"> - </span>
+      <span v-else> + </span>
     </div>
     <div class="icon">
       <i @click="clickLike" class="far fa-heart" :class="{pressed : isLiked}"></i>
@@ -16,7 +17,7 @@
 </template>
 
 <script>
-  import { likeArticle, pinArticle } from "../../api";
+  import { likeArticle, pinArticle, requestFollow } from "../../api";
 
   export default {
     name: "ArticleDetailSideMenu",
@@ -26,6 +27,9 @@
       },
       pinList() {
         return this.$store.state.pinList
+      },
+      followList() {
+        return this.$store.state.followList
       }
     },
     props: {
@@ -35,7 +39,7 @@
     data() {
       return {
         isLiked: null,
-        isPinned: null
+        isPinned: null,
       }
     },
     methods: {
@@ -100,6 +104,36 @@
             })
           .catch(err => console.log(err))
         }
+      },
+      clickFollow() {
+        console.log("click")
+        const email = this.$store.state.username
+        const follow = this.article.email
+        const params = {
+          email,
+          follow
+        }
+        requestFollow(params)
+          .then(res => {
+            const result = res.data.data
+            const followLists = this.followList
+            if (result === "unfollow") {
+              const newFollowList = followLists.filter(followList => {
+                return followList.followemail !== this.article.email
+              })
+              this.sideMenu.isFollowed = false
+              this.$store.commit("setFollowList",newFollowList)
+            } else {
+              const newFollow = {
+                email: email,
+                followemail: follow
+              }
+              this.sideMenu.isFollowed = true
+              followLists.push(newFollow)
+              this.$store.commit("setFollowList",followLists)
+            }
+          })
+          .catch(err => console.log(err))
       }
     },
     mounted() {
@@ -116,6 +150,8 @@
     background-color: white;
     padding: 10px;
     position: fixed;
+    left: 0;
+    width: 10%;
   }
   .icon {
     display: flex;
@@ -136,5 +172,30 @@
   }
   .pressed {
     color: crimson;
+  }
+  @media (max-width: 414px) {
+    .sidemenu {
+      bottom: 1px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      height: 75px;
+    }
+    .icon {
+      border-radius: 50px;
+      border: 1px solid black;
+      -moz-border-radius:50px;
+      -webkit-border-radius:50px;
+      width: 50px;
+      height: 50px;
+      font-size: 18px;
+    }
+  }
+  @media (min-width: 415px) {
+    .sidemenu {
+      left: 2rem ;
+      top: 200px ;
+    }
   }
 </style>
