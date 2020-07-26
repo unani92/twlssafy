@@ -131,21 +131,21 @@
           .then(() => this.$router.push('/'))
           .catch(err => console.log(err))
       },
-      // scrollEvent() {
-      //   const navBar = document.querySelector(".nav-bar")
-      //   const nowScrollY = window.scrollY
-      //   if (nowScrollY > this.scroll.prev) {
-      //     navBar.classList.add("disabled")
-      //     this.scroll.prev = nowScrollY
-      //   } else {
-      //     navBar.classList.remove("disabled")
-      //     this.scroll.prev = nowScrollY
-      //   }
-      // }
+      scrollEvent() {
+        const navBar = document.querySelector(".nav-bar")
+        const nowScrollY = window.scrollY
+        if (nowScrollY > this.scroll.prev) {
+          navBar.classList.add("disabled")
+          this.scroll.prev = nowScrollY
+        } else {
+          navBar.classList.remove("disabled")
+          this.scroll.prev = nowScrollY
+        }
+      }
     },
     mounted() {
       this.getViewer();
-      // document.addEventListener("scroll", this.scrollEvent)
+      document.addEventListener("scroll", this.scrollEvent)
     }
   }
 </script>
@@ -157,7 +157,7 @@
     margin-bottom: 2rem;
   }
   .article {
-    padding-top: 60px;
+    padding-top: 75px;
     width: 80%;
   }
   .nickname-keyword {
