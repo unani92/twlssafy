@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 
@@ -38,16 +40,17 @@ public class SearchController {
 
 
     @ApiOperation(value = "글 검색")
-    @PostMapping("/article/search={search}")
-    public Object searchArticle(@PathVariable String search) {
+    @PostMapping("/article/search={search}/page={page}")
+    public Object searchArticle(@PathVariable final String search, @PathVariable final int page) {
         final BasicResponse result = new BasicResponse();
         result.status = false;
         result.data = "글 검색 실패";
 
         // 글 검색
-        //Specifications<Article> article = Specifications.where(Search.searchByTitle(title));
-       // Page<Article> p = searchDao.findAll(article, page);
-       List<Article> articles = searchDao.findAll(Search.searchByTitle(search));
+        //    List<Article> articles = searchDao.findAll(Search.searchByTitle(search));
+        
+        Specification<Article> s = Search.searchByTitle(search).or(Search.searchByWriter(search));
+        Page<Article> articles = searchDao.findAll(s, PageRequest.of(page, 10, Sort.Direction.DESC,"articleid"));
        
        if(!articles.isEmpty()){
            result.status = true;

@@ -8,6 +8,7 @@ import javax.persistence.criteria.Root;
 import org.springframework.data.jpa.domain.Specification;
 
 public class Search {
+    // 제목으로 검색
     public static Specification<Article> searchByTitle(final String title) {
         return new Specification<Article>() {
             @Override
@@ -16,7 +17,28 @@ public class Search {
                     return cb.like(root.get("title"), "%"+title+"%");
                 }
         };
-
-        
     }
+
+    // 작성자로 검색
+    public static Specification<Article> searchByWriter(final String nickname) {
+        return new Specification<Article>() {
+            @Override
+            public Predicate toPredicate(Root<Article> root, 
+                CriteriaQuery<?> query, CriteriaBuilder cb) {
+                    return cb.like(root.get("nickname"), "%"+nickname+"%");
+                }
+        };
+    }
+
+    // 태그로 검색
+    // public static Specification<Article> searchByKeyword(final String keyword) {
+        
+    //     return new Specification<Article>() {
+    //         @Override
+    //         public Predicate toPredicate(Root<Article, Keywords> root,
+    //             CriteriaQuery<?> query, CriteriaBuilder cb) {
+    //                 return cb.like(root.get("nickname"), "%"+nickname+"%");
+    //             }
+    //     };
+    // }
 }

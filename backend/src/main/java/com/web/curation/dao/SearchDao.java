@@ -10,5 +10,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 public interface SearchDao extends JpaRepository<Article, String>, JpaSpecificationExecutor<Article> {
-  //  Page<Article> findAll(Specification<Article> article, Pageable pageable);
+//    Page<Article> findAll(Specification<Article> article, Pageable pageable);
 }
