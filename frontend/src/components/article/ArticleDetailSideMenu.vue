@@ -150,6 +150,8 @@
     background-color: white;
     padding: 10px;
     position: fixed;
+    left: 0;
+    width: 10%;
   }
   .icon {
     display: flex;
@@ -170,5 +172,30 @@
   }
   .pressed {
     color: crimson;
+  }
+  @media (max-width: 414px) {
+    .sidemenu {
+      bottom: 1px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      height: 75px;
+    }
+    .icon {
+      border-radius: 50px;
+      border: 1px solid black;
+      -moz-border-radius:50px;
+      -webkit-border-radius:50px;
+      width: 50px;
+      height: 50px;
+      font-size: 18px;
+    }
+  }
+  @media (min-width: 415px) {
+    .sidemenu {
+      left: 2rem ;
+      top: 200px ;
+    }
   }
 </style>

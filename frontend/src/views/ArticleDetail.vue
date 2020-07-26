@@ -85,6 +85,10 @@
           cntLikes: null,
           cntPin: null,
         },
+        scroll: {
+          prev: 0,
+          upDown: null
+        }
       }
     },
     methods: {
@@ -126,10 +130,22 @@
         deleteArticle(this.id)
           .then(() => this.$router.push('/'))
           .catch(err => console.log(err))
-      }
+      },
+      // scrollEvent() {
+      //   const navBar = document.querySelector(".nav-bar")
+      //   const nowScrollY = window.scrollY
+      //   if (nowScrollY > this.scroll.prev) {
+      //     navBar.classList.add("disabled")
+      //     this.scroll.prev = nowScrollY
+      //   } else {
+      //     navBar.classList.remove("disabled")
+      //     this.scroll.prev = nowScrollY
+      //   }
+      // }
     },
     mounted() {
-      this.getViewer()
+      this.getViewer();
+      // document.addEventListener("scroll", this.scrollEvent)
     }
   }
 </script>
@@ -138,9 +154,10 @@
   .article-detail{
     display: flex;
     justify-content: space-around;
+    margin-bottom: 2rem;
   }
   .article {
-    padding-top: 100px;
+    padding-top: 60px;
     width: 80%;
   }
   .nickname-keyword {
@@ -150,8 +167,6 @@
     border-radius: 10px;
   }
   .left-sidemenu {
-    padding-top: 300px;
-    width: 10%;
     display: block;
   }
   #viewer {
@@ -191,11 +206,12 @@
     display: none;
   }
   @media (max-width: 414px) {
-    .left-sidemenu {
-      display: none;
+    .article-detail {
+      padding: 1rem;
     }
     .article {
       width: 100%;
+      margin-bottom: 2rem;
     }
     .title {
       font-size: 40px;
