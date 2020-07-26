@@ -1,8 +1,9 @@
 <template>
   <div class="sidemenu">
     <div class="icon">
-      <i class="far fa-user"></i>
-      <span>{{ isLiked }}</span>
+      <i @click="clickFollow" class="far fa-user" :class="{pressed : isFollowed}"></i>
+      <span v-if="isFollowed"> - </span>
+      <span v-else> + </span>
     </div>
     <div class="icon">
       <i @click="clickLike" class="far fa-heart" :class="{pressed : isLiked}"></i>
@@ -16,7 +17,7 @@
 </template>
 
 <script>
-  import { likeArticle, pinArticle } from "../../api";
+  import { likeArticle, pinArticle, requestFollow } from "../../api";
 
   export default {
     name: "ArticleDetailSideMenu",
@@ -26,6 +27,9 @@
       },
       pinList() {
         return this.$store.state.pinList
+      },
+      followList() {
+        return this.$store.state.followList
       }
     },
     props: {
@@ -35,7 +39,8 @@
     data() {
       return {
         isLiked: null,
-        isPinned: null
+        isPinned: null,
+        isFollowed: null,
       }
     },
     methods: {
@@ -100,12 +105,41 @@
             })
           .catch(err => console.log(err))
         }
+      },
+      clickFollow() {
+        const email = this.$store.state.username
+        const follow = this.article.email
+        const params = {
+          email,
+          follow
+        }
+        requestFollow(params)
+          .then(res => {
+            const result = res.data.data
+            const followLists = this.followList
+            if (result === "unfollow") {
+              const newFollowList = followLists.filter(followList => {
+                return followList.followemail !== follow
+              })
+              this.isFollowed = false
+              this.$store.commit("setFollowList",newFollowList)
+            } else {
+              const newFollow = {
+                email: email,
+                followemail: follow
+              }
+              this.isFollowed = true
+              followLists.push(newFollow)
+            }
+          })
+          .catch(err => console.log(err))
       }
     },
     mounted() {
       const id = this.$route.params.id
       this.isLiked = !!this.likeList.filter(like => like.articleid === id).length
       this.isPinned = !!this.pinList.filter(pin => pin.articleid === id).length
+      this.isFollowed = !!this.followList.filter(follow => follow.followemail === this.article.email).length
     }
   }
 </script>

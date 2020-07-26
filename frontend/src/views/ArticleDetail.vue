@@ -65,14 +65,6 @@
       ArticleDetailProfile,
       CommentCreate
     },
-    computed: {
-      likeList() {
-        return this.$store.state.likeList
-      },
-      pinList() {
-        return this.$store.state.pinList
-      }
-    },
     data() {
       return {
         id: this.$route.params.id,
