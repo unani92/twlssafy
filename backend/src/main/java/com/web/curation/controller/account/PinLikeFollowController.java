@@ -84,25 +84,26 @@ public class PinLikeFollowController {
                 return new ResponseEntity<>(result, HttpStatus.OK);
             }
 
-            // 여기서 저 follow 한테 알림 보내야함
+            if (!follow.equals(email)) {
 
-            String other = email;
-            String type = "팔로우";
+                String other = email;
+                String type = "팔로우";
 
-            Notification notification = new Notification();
+                Notification notification = new Notification();
 
-            notification.setEmail(follow);
-            notification.setOther(other);
-            notification.setType(type);
-            notification.setReadn(0);
-            notification.setContent("");
+                notification.setEmail(follow);
+                notification.setOther(other);
+                notification.setType(type);
+                notification.setReadn(0);
+                notification.setContent("");
 
-            if (notificationDao.save(notification) != null) {
-                int cnt = (int) notificationDao.countByEmailAndRead(follow);
-                Map<String, Object> object = new HashMap<>();
-                object.put("notification", notification);
-                object.put("cnt", cnt);
-                result.object = object;
+                if (notificationDao.save(notification) != null) {
+                    int cnt = (int) notificationDao.countByEmailAndRead(follow);
+                    Map<String, Object> object = new HashMap<>();
+                    object.put("notification", notification);
+                    object.put("cnt", cnt);
+                    result.object = object;
+                }
             }
 
             result.data = "follow";
@@ -145,25 +146,28 @@ public class PinLikeFollowController {
             if (pinDao.save(pin) == null) { // 설정 못하면
                 result.data = "pin 설정 실패";
             } else {
-
                 Article article = articleDao.findByArticleid(Integer.parseInt(article_id));
-                String content = article.getTitle();
 
-                Notification notification = new Notification();
-                notification.setContent(content);
-                notification.setEmail(article.getEmail());
-                notification.setOther(email);
-                notification.setType("pin");
-                notification.setReadn(0);
+                if (!article.getEmail().equals(email)) {
 
-                if (notificationDao.save(notification) != null) {
-                    int cnt = (int) notificationDao.countByEmailAndRead(article.getEmail());
-                    Map<String, Object> object = new HashMap<>();
-                    object.put("notification", notification);
-                    object.put("cnt", cnt);
-                    result.object = object;
+                    String content = article.getTitle();
+
+                    Notification notification = new Notification();
+                    notification.setContent(content);
+                    notification.setEmail(article.getEmail());
+                    notification.setOther(email);
+                    notification.setType("pin");
+                    notification.setReadn(0);
+
+                    if (notificationDao.save(notification) != null) {
+                        int cnt = (int) notificationDao.countByEmailAndRead(article.getEmail());
+                        Map<String, Object> object = new HashMap<>();
+                        object.put("notification", notification);
+                        object.put("cnt", cnt);
+                        result.object = object;
+                    }
+
                 }
-
                 result.data = "pin 설정";
             }
         }
@@ -201,25 +205,27 @@ public class PinLikeFollowController {
             if (likesDao.save(likes) == null) { // 설정 못하면
                 result.data = "likes 설정 실패";
             } else {
-
                 Article article = articleDao.findByArticleid(Integer.parseInt(article_id));
-                String content = article.getTitle();
 
-                Notification notification = new Notification();
-                notification.setContent(content);
-                notification.setEmail(article.getEmail());
-                notification.setOther(email);
-                notification.setType("like");
-                notification.setReadn(0);
+                if (!article.getEmail().equals(email)) {
 
-                if (notificationDao.save(notification) != null) {
-                    int cnt = (int) notificationDao.countByEmailAndRead(article.getEmail());
-                    Map<String, Object> object = new HashMap<>();
-                    object.put("notification", notification);
-                    object.put("cnt", cnt);
-                    result.object = object;
+                    String content = article.getTitle();
+
+                    Notification notification = new Notification();
+                    notification.setContent(content);
+                    notification.setEmail(article.getEmail());
+                    notification.setOther(email);
+                    notification.setType("like");
+                    notification.setReadn(0);
+
+                    if (notificationDao.save(notification) != null) {
+                        int cnt = (int) notificationDao.countByEmailAndRead(article.getEmail());
+                        Map<String, Object> object = new HashMap<>();
+                        object.put("notification", notification);
+                        object.put("cnt", cnt);
+                        result.object = object;
+                    }
                 }
-
                 result.data = "likes 설정";
             }
         }

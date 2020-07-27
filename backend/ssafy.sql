@@ -139,3 +139,17 @@ and skills.sno = keyword.sno
 order by articleid desc;
 
 -----------------------------------------------------------------
+
+create table `notification` (
+ `notificationid` int auto_increment NOT NULL,
+ `email` varchar(128) DEFAULT NULL,
+ `other` varchar(128) DEFAULT NULL,
+ `content` varchar(256) DEFAULT NULL,
+ `type` varchar (128) default null,
+ `readn` int default null,
+ `createtime` datetime default now(),
+ PRIMARY KEY (`notificationid`),
+ FOREIGN KEY (`email`) REFERENCES `member`(`email`),
+ FOREIGN KEY (`other`) REFERENCES `member`(`email`)
+ ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
