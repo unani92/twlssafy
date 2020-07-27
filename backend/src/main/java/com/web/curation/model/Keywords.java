@@ -29,7 +29,6 @@ public class Keywords {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int keywordid;
 
-    // @OneToMany(mappedBy = "keyword")
     private int articleid;
     private int sno;
 }

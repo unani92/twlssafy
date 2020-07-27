@@ -34,7 +34,6 @@ import java.util.Set;
 public class Article {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    // @OneToMany(mappedBy = "article")
     private int articleid;
 
     private String email;

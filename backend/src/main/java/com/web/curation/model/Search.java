@@ -40,19 +40,5 @@ public class Search {
         };
     }
 
-    // 태그로 검색 
-    public static Specification<Article> searchBySno(final int sno) {
-        return new Specification<Article>() {
-            @Override
-            public Predicate toPredicate(Root<Article> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
-                Join<Article, Keywords> article = root.join("articleid", JoinType.INNER);
-                return cb.equal(article.get("sno"), sno);
-            }
-        };
-    }
-
-	public static Specification<Article> searchByArticleid(int articleid) {
-		return null;
-	}
 
 }
