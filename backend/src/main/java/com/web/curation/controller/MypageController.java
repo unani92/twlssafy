@@ -12,10 +12,12 @@ import com.web.curation.dao.SkillsDao;
 import com.web.curation.dao.pinlikesfollow.FollowDao;
 import com.web.curation.dao.pinlikesfollow.LikesDao;
 import com.web.curation.dao.pinlikesfollow.PinDao;
+import com.web.curation.dao.user.InterestDao;
 import com.web.curation.dao.user.UserDao;
 import com.web.curation.model.Article;
 import com.web.curation.model.BasicResponse;
 import com.web.curation.model.Keywords;
+import com.web.curation.model.user.Interest;
 import com.web.curation.model.user.User;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,6 +66,9 @@ public class MypageController {
     @Autowired
     KeywordsDao keywordsDao;
 
+    @Autowired
+    InterestDao interestDao;
+
 
     @GetMapping("/account/{nickname}")
     public Object getArticle(@PathVariable String nickname, @RequestParam(value = "page") int page) {
@@ -111,6 +116,16 @@ public class MypageController {
             userInfo.put("totalArticleCount", articleDao.countByNickname(nickname));
             userInfo.put("article", articles);
             userInfo.put("keyword", keywordsList);
+
+            // 관심사 
+            List<Interest> interest = interestDao.findAllByEmail(user.get().getEmail());
+            List<Object> interestList = new ArrayList<>();
+            
+            for(Interest in : interest) {
+                interestList.add(skillsDao.findSkillBySno(in.getSno()));
+            }
+
+            userInfo.put("interestList", interestList);
 
             
             result.object = userInfo;
