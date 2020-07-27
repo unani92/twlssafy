@@ -33,8 +33,8 @@ public class Notification {
     private String content;
     private String type;
     private String other;
-    private boolean read;
-    
+    private int readn;
+
     @Column(insertable = false, updatable = false)
     private LocalDateTime createtime;
 
