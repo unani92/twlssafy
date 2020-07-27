@@ -1,16 +1,21 @@
 package com.web.curation.controller.account;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.transaction.Transactional;
 
+import com.web.curation.dao.ArticleDao;
 import com.web.curation.dao.pinlikesfollow.FollowDao;
 import com.web.curation.dao.pinlikesfollow.LikesDao;
+import com.web.curation.dao.pinlikesfollow.NotificationDao;
 import com.web.curation.dao.pinlikesfollow.PinDao;
 import com.web.curation.dao.user.UserDao;
+import com.web.curation.model.Article;
 import com.web.curation.model.BasicResponse;
 import com.web.curation.model.pinlikesfollow.Follow;
 import com.web.curation.model.pinlikesfollow.Likes;
+import com.web.curation.model.pinlikesfollow.Notification;
 import com.web.curation.model.pinlikesfollow.Pin;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +51,12 @@ public class PinLikeFollowController {
 
     @Autowired
     LikesDao likesDao;
+
+    @Autowired
+    NotificationDao notificationDao;
+
+    @Autowired
+    ArticleDao articleDao;
 
     @Transactional
     @PostMapping("/account/follow")
@@ -85,6 +96,27 @@ public class PinLikeFollowController {
             result.data = "unfollow";
         }
 
+
+        // 여기서 저 follow 한테 알림 보내야함
+
+        String other = email;
+        String type = "팔로우";
+        
+        Notification notification = new Notification();
+
+        notification.setEmail(follow);
+        notification.setOther(other);
+        notification.setType(type);
+        notification.setRead(false);
+
+        if(notificationDao.save(notification)!=null){
+            int cnt = (int) notificationDao.countByEmail(follow);
+            Map<String,Object> object = new HashMap<>();
+            object.put("notification", notification);
+            object.put("cnt", cnt);
+            result.object = object;
+        }
+
         result.status = true;
         
         return new ResponseEntity<>(result, HttpStatus.OK);
@@ -118,6 +150,27 @@ public class PinLikeFollowController {
             }
         }
         
+
+        // 여기서 저 follow 한테 알림 보내야함
+
+        Article article = articleDao.findByArticleid(Integer.parseInt(article_id));
+        String content = article.getTitle();
+
+        Notification notification = new Notification();
+        notification.setContent(content);
+        notification.setEmail(article.getEmail());
+        notification.setOther(email);
+        notification.setType("pin");
+        notification.setRead(false);
+
+        if(notificationDao.save(notification)!=null){
+            int cnt = (int) notificationDao.countByEmail(article.getEmail());
+            Map<String,Object> object = new HashMap<>();
+            object.put("notification", notification);
+            object.put("cnt", cnt);
+            result.object = object;
+        }
+
         result.status = true;
         
         return new ResponseEntity<>(result, HttpStatus.OK);
@@ -151,6 +204,26 @@ public class PinLikeFollowController {
             } else {
                 result.data = "likes 설정";
             }
+        }
+
+
+        
+        Article article = articleDao.findByArticleid(Integer.parseInt(article_id));
+        String content = article.getTitle();
+
+        Notification notification = new Notification();
+        notification.setContent(content);
+        notification.setEmail(article.getEmail());
+        notification.setOther(email);
+        notification.setType("like");
+        notification.setRead(false);
+
+        if(notificationDao.save(notification)!=null){
+            int cnt = (int) notificationDao.countByEmail(article.getEmail());
+            Map<String,Object> object = new HashMap<>();
+            object.put("notification", notification);
+            object.put("cnt", cnt);
+            result.object = object;
         }
         
         result.status = true;

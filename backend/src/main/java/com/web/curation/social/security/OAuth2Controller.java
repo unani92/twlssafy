@@ -68,7 +68,14 @@ public class OAuth2Controller {
         Map<String, String> result = mapper.readValue(body, Map.class);
         System.out.println("result : "  + result.get("name"));
 
+
+        Map<String,Object> object = isJoined(result.get("email"));
+
         return new ResponseEntity<>(tokens, HttpStatus.OK); // 아직 연결된 뷰가 없음
+    }
+
+    private Map<String, Object> isJoined(String string) {
+        return null;
     }
 
     // @GetMapping({ "", "/" })
