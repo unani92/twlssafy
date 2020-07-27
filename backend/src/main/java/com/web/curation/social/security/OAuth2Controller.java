@@ -1,12 +1,18 @@
 package com.web.curation.social.security;
 
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.web.curation.dao.user.UserDao;
+import com.web.curation.model.BasicResponse;
+import com.web.curation.model.user.User;
 
 import org.apache.tomcat.util.codec.binary.Base64;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -22,10 +28,11 @@ import org.springframework.web.client.RestTemplate;
 @Controller
 public class OAuth2Controller {
 
+    @Autowired
+    UserDao userDao;
 
     @GetMapping("/googleLogInCallback")
     public Object doSessionAssignActionPage(HttpServletRequest request) throws Exception {
-
 
         String code = request.getParameter("code");
         System.out.println(code);
@@ -39,14 +46,13 @@ public class OAuth2Controller {
         parameters.add("redirect_uri", "http://localhost:8080/googleLogInCallback");
         parameters.add("grant_type", "authorization_code");
 
-        
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
         HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<MultiValueMap<String, String>>(
-            parameters, headers);
-            System.out.println(requestEntity.getHeaders().toString());
-            ResponseEntity<Map> responseEntity = restTemplate.exchange("https://www.googleapis.com/oauth2/v4/token",
-            HttpMethod.POST, requestEntity, Map.class);
+                parameters, headers);
+        System.out.println(requestEntity.getHeaders().toString());
+        ResponseEntity<Map> responseEntity = restTemplate.exchange("https://www.googleapis.com/oauth2/v4/token",
+                HttpMethod.POST, requestEntity, Map.class);
         Map<String, Object> responseMap = responseEntity.getBody();
 
         // id_token 라는 키에 사용자가 정보가 존재한다.
@@ -58,7 +64,7 @@ public class OAuth2Controller {
         String[] tokens = ((String) responseMap.get("id_token")).split("\\.");
         Base64 base64 = new Base64(true);
         String body = new String(base64.decode(tokens[1]));
-        
+
         System.out.println("token length : " + tokens.length);
         System.out.println("token[0] : " + new String(Base64.decodeBase64(tokens[0]), "utf-8"));
         System.out.println("token[1] : " + new String(Base64.decodeBase64(tokens[1]), "utf-8"));
@@ -66,9 +72,29 @@ public class OAuth2Controller {
         // Jackson을 사용한 JSON을 자바 Map 형식으로 변환
         ObjectMapper mapper = new ObjectMapper();
         Map<String, String> result = mapper.readValue(body, Map.class);
-        System.out.println("result : "  + result.get("name"));
+        System.out.println("result : " + result.get("email"));
 
-        return new ResponseEntity<>(tokens, HttpStatus.OK); // 아직 연결된 뷰가 없음
+        Map<String, Object> object = new HashMap<>();
+        object.put("isJoined", isJoined(result.get("email")));
+        object.put("tokens" ,tokens);
+
+
+        final BasicResponse res = new BasicResponse();
+        res.object = object;
+        res.data = "sucess";
+        res.status = true;
+
+        return new ResponseEntity<>(res, HttpStatus.OK); // 아직 연결된 뷰가 없음
+    }
+
+    private boolean isJoined(String email) {
+        Optional<User> user = userDao.findUserByEmail(email);
+
+        if (user.isPresent()) {
+           return true; 
+        } else {
+            return false;
+        }
     }
 
     // @GetMapping({ "", "/" })
