@@ -10,6 +10,13 @@
         <input class="search-bar" type="text" />
       </div>
       <div class="article-icon">
+        <div v-if="this.$store.getters.isLogin" class="mypage">
+          <figure
+            class="user-photo"
+            style="background-image: url('https://i.pravatar.cc/100?u=정윤환');"
+            @click="goToMyPage"
+          ></figure>
+        </div>
         <div class="article">
           <button @click="$router.push('/create')" class="btn">
             write a post
@@ -59,6 +66,12 @@ export default {
       const aside = document.querySelector(".aside");
       this.$router.push({ name: "Signup" });
       aside.classList.toggle("disabled");
+    },
+    goToMyPage() {
+      this.$router.push({
+        name: "Profile",
+        params: { nickname: this.$store.state.nickname },
+      });
     },
   },
 };
@@ -131,6 +144,9 @@ i:hover {
   border-radius: 50%;
   background-color: rgb(215, 218, 219);
   transition: 1s;
+}
+.mypage:hover {
+  cursor: pointer;
 }
 @media (max-width: 414px) {
   .search-bar {
@@ -213,5 +229,17 @@ i:hover {
 }
 .disabled {
   display: none;
+}
+.user-photo {
+  width: 50px;
+  height: 50px;
+  flex-shrink: 0;
+  border: 2px solid #333;
+  border-radius: 50%;
+  background-color: rgb(144, 153, 240);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 100%;
+  margin-right: 0.5em;
 }
 </style>

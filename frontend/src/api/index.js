@@ -19,7 +19,7 @@ function login(params) {
 }
 
 function selectSkill(params) {
-  return instance.post("account/interest/register", params)
+  return instance.post("account/interest/register", params);
 }
 
 function createArticle(params) {
@@ -27,11 +27,11 @@ function createArticle(params) {
 }
 
 function updateArticle(params) {
-  return instance.put("article",params)
+  return instance.put("article", params);
 }
 
 function deleteArticle(id) {
-  return instance.delete(`article?no=${id}`)
+  return instance.delete(`article?no=${id}`);
 }
 
 function fetchArticles(params) {
@@ -55,13 +55,15 @@ function requestFollow(params) {
 }
 
 function createComment(params) {
-  return instance.post("article/comment",params)
+  return instance.post("article/comment", params);
 }
 
 function deleteComment(params) {
-  return instance.delete(`article/comment?no=${params}`)
+  return instance.delete(`article/comment?no=${params}`);
 }
-
+function fetchMyArticles(params) {
+  return instance.get(`account/${params.nickname}?page=${params.page}`);
+}
 export {
   checkEmail,
   checkNickname,
@@ -77,5 +79,6 @@ export {
   pinArticle,
   requestFollow,
   createComment,
-  deleteComment
+  deleteComment,
+  fetchMyArticles,
 };
