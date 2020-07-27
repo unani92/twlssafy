@@ -13,4 +13,5 @@ public interface KeywordsDao extends JpaRepository<Keywords, String> {
     void delete(Keywords keyword);
     int deleteByArticleid(int articleId);
     List<Keywords> findAllByArticleid(int articleId);
+	List<Keywords> findAllBySno(int sno);
 }

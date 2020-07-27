@@ -40,36 +40,19 @@ public class Search {
         };
     }
 
-    // // 태그로 검색 -> sno 찾기
-    // public static Specification<Skills> searchByKeyword(final String keywordName) {
+    // 태그로 검색 
+    public static Specification<Article> searchBySno(final int sno) {
+        return new Specification<Article>() {
+            @Override
+            public Predicate toPredicate(Root<Article> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
+                Join<Article, Keywords> article = root.join("articleid", JoinType.INNER);
+                return cb.equal(article.get("sno"), sno);
+            }
+        };
+    }
 
-    //     return new Specification<Skills>() {
-    //         @Override
-    //         public Predicate toPredicate(Root<Skills> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
-    //             Join<Skills, Keywords> sno = root.join("sno", JoinType.INNER);
-    //             return cb.equal(sno.get("name"), keywordName);
-    //         }
-    //     };
-    // }
+	public static Specification<Article> searchByArticleid(int articleid) {
+		return null;
+	}
 
-    // // // 태그로 검색 -> sno로 태그 글 찾기
-    // public static Specification<Article> searchBySno(final Specification<Skills> sno) {
-
-    //     return new Specification<Article>() {
-    //         @Override
-    //         public Predicate toPredicate(Root<Article> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
-    //             Join<Article, Skills> article = root.join("articleid", JoinType.INNER);
-    //             try {
-    //                 return cb.equal(article.get("sno"), sno.getClass().getField("sno"));
-    //             } catch (NoSuchFieldException e) {
-    //                 // TODO Auto-generated catch block
-    //                 e.printStackTrace();
-    //             } catch (SecurityException e) {
-    //                 // TODO Auto-generated catch block
-    //                 e.printStackTrace();
-    //             }
-    //             return null;
-    //             }
-    //     };
-    // }
 }

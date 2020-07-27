@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.web.curation.dao.ArticleDao;
 import com.web.curation.dao.KeywordsDao;
 import com.web.curation.dao.SearchDao;
 import com.web.curation.dao.SkillsDao;
@@ -32,6 +33,7 @@ import com.web.curation.model.Article;
 import com.web.curation.model.BasicResponse;
 import com.web.curation.model.Keywords;
 import com.web.curation.model.Search;
+import com.web.curation.model.Skills;
 
 @Api("Search Controller")
 @ApiResponses(value = { @ApiResponse(code = 401, message = "Unauthorized", response = BasicResponse.class),
@@ -57,6 +59,9 @@ public class SearchController {
     @Autowired
     PinDao pinDao;
 
+    @Autowired
+    ArticleDao articleDao;
+
     @ApiOperation(value = "글 검색")
     @GetMapping("/article/search")
     // @GetMapping("/article/search?q={q}&category={category}&page={page}")
@@ -80,6 +85,28 @@ public class SearchController {
             case "nickname" :
                 s = Search.searchByNickname(q);
                 break;
+            case "keyword" :
+                int sno = skillsDao.findSkillByName(q).getSno();
+
+                // s = Search.searchBySno(sno);
+
+
+                List<Keywords> keyword = keywordsDao.findAllBySno(sno);
+                List<Article> aList = new ArrayList<>();
+                // s = Search.searchByArticleid(keyword.get(0).getArticleid());
+                for(int i=1; i<keyword.size(); i++) {
+                    aList.add(articleDao.findByArticleid(keyword.get(i).getArticleid()));
+                    // s.or(Search.searchByArticleid(keyword.get(i).getArticleid()));
+                }  
+                // Page<Article> articles = searchDao.findAll(s, PageRequest.of(page, 10, Sort.Direction.DESC,"articleid"));
+                if(!aList.isEmpty()){
+                    result.status = true;
+                    result.data = "success";
+                    result.object = aList;
+                }
+                
+                return new ResponseEntity<>(result, HttpStatus.OK);
+
             default:
                 return new ResponseEntity<>(result, HttpStatus.OK);
         }
