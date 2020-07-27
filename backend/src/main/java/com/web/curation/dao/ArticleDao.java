@@ -15,4 +15,6 @@ public interface ArticleDao extends JpaRepository<Article, String> {
     Article findByArticleid(int articleId);
     Page<Article> findAllByNickname(Pageable pageable, String nickname);
 
+    int countByNickname(String nickname);
+
 }

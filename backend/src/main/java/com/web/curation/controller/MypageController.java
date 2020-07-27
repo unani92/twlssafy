@@ -80,7 +80,8 @@ public class MypageController {
             Map<String, Object> userInfo = new TreeMap<>();
             userInfo.put("user", user);
             userInfo.put("pinList", pinDao.findAllByEmail(user.get().getEmail()));
-            userInfo.put("followList", followDao.findAllByEmail(user.get().getEmail()));
+            userInfo.put("followList", followDao.findAllByEmail(user.get().getEmail())); // 내가 팔로잉
+            userInfo.put("followerList", followDao.findAllByFollowemail(user.get().getEmail())); // 나를 팔로잉
             userInfo.put("likesList", likesDao.findAllByEmail(user.get().getEmail()));
             
             // 글 가져오기
@@ -107,7 +108,7 @@ public class MypageController {
                     return new ResponseEntity<>(result, HttpStatus.OK); // 글에 keyword 없으면 false return
                 }
             }
-
+            userInfo.put("totalArticleCount", articleDao.countByNickname(nickname));
             userInfo.put("article", articles);
             userInfo.put("keyword", keywordsList);
 
