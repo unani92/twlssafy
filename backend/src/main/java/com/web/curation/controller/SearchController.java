@@ -15,12 +15,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 
-import java.util.List;
 
-import com.web.curation.dao.ArticleDao;
 import com.web.curation.dao.SearchDao;
 import com.web.curation.model.Article;
 import com.web.curation.model.BasicResponse;
@@ -49,7 +46,8 @@ public class SearchController {
         // 글 검색
         //    List<Article> articles = searchDao.findAll(Search.searchByTitle(search));
         
-        Specification<Article> s = Search.searchByTitle(search).or(Search.searchByWriter(search));
+        Specification<Article> s = Search.searchByTitle(search).or(Search.searchByWriter(search))
+            .or(Search.searchByContent(search));
         Page<Article> articles = searchDao.findAll(s, PageRequest.of(page, 10, Sort.Direction.DESC,"articleid"));
        
        if(!articles.isEmpty()){

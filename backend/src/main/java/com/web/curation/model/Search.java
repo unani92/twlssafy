@@ -30,6 +30,17 @@ public class Search {
         };
     }
 
+    // 내용으로 검색
+    public static Specification<Article> searchByContent(final String content) {
+        return new Specification<Article>() {
+            @Override
+            public Predicate toPredicate(Root<Article> root, 
+                CriteriaQuery<?> query, CriteriaBuilder cb) {
+                    return cb.like(root.get("content"), "%"+content+"%");
+                }
+        };
+    }
+
     // 태그로 검색
     // public static Specification<Article> searchByKeyword(final String keyword) {
         
