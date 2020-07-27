@@ -147,8 +147,10 @@ create table `notification` (
  `content` varchar(256) DEFAULT NULL,
  `type` varchar (128) default null,
  `readn` int default null,
+ `articleid` int default null,
  `createtime` datetime default now(),
- PRIMARY KEY (`notificationid`),
+ unique KEY (`notificationid`),
+ primary key (`email`,`other`,`type`,`content`,`articleid`,`readn`),
  FOREIGN KEY (`email`) REFERENCES `member`(`email`),
  FOREIGN KEY (`other`) REFERENCES `member`(`email`)
  ON DELETE CASCADE ON UPDATE CASCADE
