@@ -12,4 +12,5 @@ public interface FollowDao extends JpaRepository<Follow, FollowMultiId> {
 	  int deleteByEmailAndFollowemail(String email, String follow);
 	  Follow findByEmailAndFollowemail(String email, String follow);
 	List<Follow> findAllByEmail(String email);
+	List<Follow> findAllByFollowemail(String follow);
 }
