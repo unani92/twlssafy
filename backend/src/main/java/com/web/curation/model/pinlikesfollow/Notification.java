@@ -11,6 +11,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -22,6 +23,7 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@IdClass(NotificationMultiId.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Table(name="notification")
 public class Notification {
@@ -34,6 +36,7 @@ public class Notification {
     private String type;
     private String other;
     private int readn;
+    private int articleid;
 
     @Column(insertable = false, updatable = false)
     private LocalDateTime createtime;

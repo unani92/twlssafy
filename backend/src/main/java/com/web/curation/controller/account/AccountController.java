@@ -2,6 +2,7 @@ package com.web.curation.controller.account;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Random;
@@ -15,9 +16,11 @@ import javax.validation.Valid;
 
 import com.web.curation.dao.pinlikesfollow.FollowDao;
 import com.web.curation.dao.pinlikesfollow.LikesDao;
+import com.web.curation.dao.pinlikesfollow.NotificationDao;
 import com.web.curation.dao.pinlikesfollow.PinDao;
 import com.web.curation.dao.user.UserDao;
 import com.web.curation.model.BasicResponse;
+import com.web.curation.model.pinlikesfollow.Notification;
 import com.web.curation.model.user.SignupRequest;
 import com.web.curation.model.user.User;
 
@@ -26,7 +29,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -56,6 +58,8 @@ public class AccountController {
     @Autowired
     LikesDao likesDao;
 
+    @Autowired
+    NotificationDao notificationDao;
 
     @PostMapping("/account/login")
     @ApiOperation(value = "로그인")
@@ -79,6 +83,12 @@ public class AccountController {
             userInfo.put("pinList", pinDao.findAllByEmail(email));
             userInfo.put("followList", followDao.findAllByEmail(email));
             userInfo.put("likesList", likesDao.findAllByEmail(email));
+            userInfo.put("notificationCnt", notificationDao.countByEmailAndRead(email));
+
+            List<Notification> notificationList = notificationDao.findAllIn30Days(email);
+            notificationList.addAll(notificationDao.findAllUnread(email));
+            userInfo.put("notification", notificationList);
+            
 
             result.object = userInfo;
 
