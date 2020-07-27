@@ -17,6 +17,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 
+import java.util.ArrayList;
+import java.util.List;
 
 import com.web.curation.dao.SearchDao;
 import com.web.curation.model.Article;
@@ -44,8 +46,6 @@ public class SearchController {
         result.data = "글 검색 실패";
 
         // 글 검색
-        //    List<Article> articles = searchDao.findAll(Search.searchByTitle(search));
-        
         Specification<Article> s = Search.searchByTitle(search).or(Search.searchByWriter(search))
             .or(Search.searchByContent(search));
         Page<Article> articles = searchDao.findAll(s, PageRequest.of(page, 10, Sort.Direction.DESC,"articleid"));
