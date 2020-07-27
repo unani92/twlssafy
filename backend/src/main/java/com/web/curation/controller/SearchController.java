@@ -11,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -19,6 +21,7 @@ import org.springframework.data.jpa.domain.Specification;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import com.web.curation.dao.SearchDao;
 import com.web.curation.model.Article;
@@ -39,15 +42,32 @@ public class SearchController {
 
 
     @ApiOperation(value = "글 검색")
-    @PostMapping("/article/search={search}/page={page}")
-    public Object searchArticle(@PathVariable final String search, @PathVariable final int page) {
+        @PostMapping("/article/search")
+    public Object searchArticle(@RequestParam String q, @RequestParam String category, @RequestParam int page) {
         final BasicResponse result = new BasicResponse();
+
         result.status = false;
         result.data = "글 검색 실패";
 
         // 글 검색
-        Specification<Article> s = Search.searchByTitle(search).or(Search.searchByWriter(search))
-            .or(Search.searchByContent(search));
+        Specification<Article> s = null;
+        switch(category) {
+            case "content":
+                s = Search.searchByContent(q);
+                break;
+            case "title" :
+                s = Search.searchByTitle(q);
+                break;
+            case "nickname" :
+                s = Search.searchByNickname(q);
+                break;
+            default:
+                return new ResponseEntity<>(result, HttpStatus.OK);
+        }
+
+
+        // Specification<Article> s = Search.searchByTitle(search).or(Search.searchByWriter(search))
+        //     .or(Search.searchByContent(search));
         Page<Article> articles = searchDao.findAll(s, PageRequest.of(page, 10, Sort.Direction.DESC,"articleid"));
        
        if(!articles.isEmpty()){
