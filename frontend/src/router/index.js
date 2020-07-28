@@ -9,6 +9,7 @@ import ArticleCreate from "../views/ArticleCreate";
 import ArticleDetail from "../views/ArticleDetail";
 import ArticleUpdate from "../views/ArticleUpdate";
 import Profile from "@/views/Profile";
+import ArticleSearch from "../views/ArticleSearch";
 
 Vue.use(VueRouter);
 
@@ -58,6 +59,11 @@ const routes = [
     path: "/account/:nickname",
     name: "Profile",
     component: Profile,
+  },
+  {
+    path: "/article/search",
+    name: "ArticleSearch",
+    component: ArticleSearch,
   },
 ];
 

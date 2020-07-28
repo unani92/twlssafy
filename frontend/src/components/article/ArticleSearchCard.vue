@@ -1,0 +1,277 @@
+<template>
+  <div class="card-body">
+    <div class="blog-card">
+      <div class="inner-part">
+        <label for="imgTap" class="img">
+          <img class="img-1" src="https://picsum.photos/300/200" />
+        </label>
+        <p>
+          <br />
+        </p>
+        <div class="content content-1">
+          <div class="title"
+               style="cursor:pointer;"
+               @click="$router.push({ name: 'ArticleDetail', params:{id:article.articleid} })"
+          >
+            {{ article.title }}
+            <br />
+<!--            <span class="keywords" v-for="k in keywords" :key="k">-->
+<!--              <a href="#" style="text-decoration: none;">#{{k}}</a>-->
+<!--            </span>-->
+          </div>
+          <div class="text">{{ article.content }}</div>
+          <div class="createdat-text">{{ this.$moment(article.createdat).fromNow() }}</div>
+          <div class="nicknamePinLikes">
+            <div style="float : left; ">{{article.nickname}}</div>
+            <div class="btns">
+              <button @click="pin" class="firstBtn">
+                <i v-if="isPinned" class="fas fa-bookmark"></i>
+                <i v-else class="far fa-bookmark"></i>
+              </button>
+              <button @click="like">
+                <i v-if="isliked" class="fas fa-heart"></i>
+                <i v-else class="far fa-heart"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import { likeArticle, pinArticle } from "@/api/index.js";
+export default {
+  methods: {
+    async like() {
+      if (this.isLogin) {
+        const params = {
+          article_id: this.article.articleid,
+          email: this.$store.state.username,
+        };
+        const { data } = await likeArticle(params);
+        console.log(data);
+        //프런트에서 스토어 값 갱신
+        const likeList = this.$store.state.likeList;
+        if (data.data === "likes 설정") {
+          likeList.push(this.article);
+        } else {
+          //좋아요 목록에서 삭제 로직
+          // const idx = likeList.indexOf(this.article);
+          const len = likeList.length;
+          for (let i = 0; i < len; i++) {
+            if (this.article.articleid === likeList[i].articleid) {
+              likeList.splice(i, 1);
+            }
+          }
+        }
+        this.$store.commit("setLikeList", likeList);
+        console.log("현재 상태는", this.$store.state.likeList);
+      } else {
+        if (confirm("좋아요 하시려면 로그인 해야 합니다. 하시겠습니까")) {
+          this.$router.push("/login");
+        }
+      }
+    },
+    async pin() {
+      if (this.isLogin) {
+        const params = {
+          article_id: this.article.articleid,
+          email: this.$store.state.username,
+        };
+        const { data } = await pinArticle(params);
+        console.log(data);
+        //프런트에서 스토어 값 갱신
+        const pinList = this.$store.state.pinList;
+        if (data.data === "pin 설정") {
+          pinList.push(this.article);
+        } else {
+          //좋아요 목록에서 삭제 로직
+          const len = pinList.length;
+          for (let i = 0; i < len; i++) {
+            if (this.article.articleid === pinList[i].articleid) {
+              pinList.splice(i, 1);
+            }
+          }
+        }
+        this.$store.commit("setPinList", pinList);
+        console.log("현재 상태는", this.$store.state.pinList);
+      } else {
+        if (confirm("좋아요 하시려면 로그인 해야 합니다. 하시겠습니까")) {
+          this.$router.push("/login");
+        }
+      }
+    },
+  },
+  computed: {
+    isLogin() {
+      return this.$store.state.username !== "";
+    },
+    isliked() {
+      const likeList = this.$store.state.likeList;
+      const len = likeList.length;
+      for (let i = 0; i < len; i++) {
+        if (this.article.articleid === likeList[i].articleid) {
+          return true;
+        }
+      }
+      return false;
+    },
+    isPinned() {
+      const pinList = this.$store.state.pinList;
+      const len = pinList.length;
+      for (let i = 0; i < len; i++) {
+        if (this.article.articleid === pinList[i].articleid) {
+          return true;
+        }
+      }
+      return false;
+    },
+  },
+  // },
+  props: {
+    article: {
+      type: Object,
+      required: true,
+    },
+    // keywords: {
+    //   type: Array,
+    //   required: true,
+    // },
+  },
+};
+</script>
+
+<style>
+@import url("https://fonts.googleapis.com/css?family=Fira+Sans:400,500,600,700,800");
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+.card-body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: "Fira Sans", sans-serif;
+  margin-bottom: 1rem;
+  width: 100%;
+}
+.blog-card {
+  height: 370px;
+  width: 96%;
+  max-width: 850px;
+  margin: auto;
+  border-radius: 25px;
+  background: white;
+}
+.inner-part {
+  display: flex;
+  height: 360px;
+  align-items: center;
+  justify-content: center;
+  padding: 0 25px;
+}
+.inner-part .img {
+  height: 260px;
+  width: 260px;
+  flex-shrink: 0;
+  overflow: hidden;
+  border-radius: 20px;
+  /* box-shadow: 2px 3px 15px rgba(252, 56, 56, 0.1); */
+}
+.img img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  cursor: pointer;
+  transition: 0.6s;
+}
+.content {
+  padding: 0 20px 0 0;
+  width: 530px;
+  margin-left: 30px;
+  transition: 0.6s;
+}
+.content .title {
+  font-size: 25px;
+  font-weight: 700;
+  color: #0d0925;
+  margin-bottom: 30px;
+  margin-top: 10px;
+  height: 60px;
+  overflow: hidden;
+}
+.content .text {
+  color: #4e4a67;
+  font-size: 16px;
+  margin-bottom: 10px;
+  line-height: 1.5em;
+  text-align: justify;
+  height: 90px;
+  overflow: hidden;
+}
+.content button {
+  align-items: center;
+  justify-content: center;
+  display: inline-flex;
+  border: none;
+  font-size: 16px;
+  text-transform: uppercase;
+  color: white;
+  margin: 1px;
+  width: 32px;
+  height: 25px;
+  /* font-weight: 600; */
+  /* letter-spacing: 1px; */
+  border-radius: 50px;
+  cursor: pointer;
+  outline: none;
+  border: hotpink;
+  background: hotpink;
+}
+
+.keywords {
+  color: #7b7992;
+  margin-bottom: 0;
+  font-size: 15px;
+  font-weight: 500;
+}
+.createdat-text {
+  font-size: 14px;
+  text-align: right;
+  margin-bottom: 10px;
+}
+.btns {
+  text-align: right;
+}
+@media (max-width: 630px) {
+  .inner-part {
+    display: block;
+    height: 200px;
+    padding: 20px;
+  }
+  .blog-card {
+    height: 450px;
+  }
+  .content {
+    margin: 0%;
+    width: 100%;
+  }
+  .content .text {
+    font-size: 16px;
+  }
+  .content .title {
+    font-size: 22px;
+    margin-bottom: 10px;
+    margin-top: 0px;
+  }
+
+  .content button {
+    display: inline-block;
+  }
+}
+@media (min-width: 1024px) {
+}
+</style>

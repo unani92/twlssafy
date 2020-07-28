@@ -57,7 +57,7 @@
           .then(res => {
             const result = res.data.data
             const likeList = this.likeList
-            if (result === "likes 취소") {
+            if (result === "like 취소") {
               this.sideMenu.cntLikes -= 1
               const newLike = likeList.filter(like => {
                 return Number(like.articleid) !== Number(this.article.articleid)
