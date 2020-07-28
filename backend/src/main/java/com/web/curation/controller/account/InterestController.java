@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.web.curation.dao.user.InterestDao;
+import com.web.curation.controller.JWTDecoding;
 import com.web.curation.dao.SkillsDao;
 import com.web.curation.dao.user.UserDao;
 import com.web.curation.model.BasicResponse;
@@ -12,11 +13,13 @@ import com.web.curation.model.user.Interest;
 import com.web.curation.model.Skills;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.ApiOperation;
@@ -43,11 +46,12 @@ public class InterestController {
 
     @PostMapping("/account/interest/register")
     @ApiOperation(value = "관심사 등록")
-    public Object interest(@RequestBody(required = true) final Map<String, Object> request) {
+    public Object interest(@RequestHeader(required = true) final HttpHeaders header, @RequestBody(required = true) final Map<String, Object> request)
+            throws Exception {
 
-        String email = (String) request.get("email");
-
+        String email = JWTDecoding.decode(header.get("id_token").get(0));
         List<Object> list = new ArrayList<>();
+
         list = (List<Object>) request.get("skill");
 
         List<Object> test = new ArrayList<>();
@@ -76,10 +80,10 @@ public class InterestController {
 
     @PostMapping("/account/interest/delete")
     @ApiOperation(value = "관심 분야 선택")
-    public Object interestDelete (@RequestBody(required = true) final Map<String,Object> request){
+    public Object interestDelete (@RequestHeader(required = true) final HttpHeaders header, @RequestBody(required = true) final Map<String,Object> request)
+            throws Exception {
 
-        String email  = (String) request.get("email");
-        // int no = userDao.findUserByEmail(email).get().getNo();
+        String email = JWTDecoding.decode(header.get("id_token").get(0));
 
         Object test = new ArrayList<>();
 

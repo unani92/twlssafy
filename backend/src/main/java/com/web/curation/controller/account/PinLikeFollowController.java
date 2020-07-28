@@ -5,6 +5,7 @@ import java.util.Map;
 
 import javax.transaction.Transactional;
 
+import com.web.curation.controller.JWTDecoding;
 import com.web.curation.dao.ArticleDao;
 import com.web.curation.dao.pinlikesfollow.FollowDao;
 import com.web.curation.dao.pinlikesfollow.LikesDao;
@@ -19,12 +20,14 @@ import com.web.curation.model.pinlikesfollow.Notification;
 import com.web.curation.model.pinlikesfollow.Pin;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.ApiOperation;
@@ -61,7 +64,8 @@ public class PinLikeFollowController {
     @Transactional
     @PostMapping("/account/follow")
     @ApiOperation(value = "팔로우 / 언팔로우")
-    public Object follow(@RequestBody(required = true) final Map<String, Object> request) {
+    public Object follow(@RequestHeader(required = true) final HttpHeaders header, @RequestBody(required = true) final Map<String, Object> request)
+            throws Exception {
 
         /*
          * 팔로우 -> 내 이메일이랑 상대방 이메일이 들어옴 
@@ -70,7 +74,9 @@ public class PinLikeFollowController {
           "follow" : "qwer@qwer.com"
           }
          */
-        String email = (String) request.get("email");
+        JWTDecoding jd = new JWTDecoding();     
+        String email = jd.decode(header.get("id_token").get(0));
+        
         String follow = (String) request.get("follow");
 
         Follow f = new Follow();
@@ -141,12 +147,15 @@ public class PinLikeFollowController {
     }
 
     @Transactional
-    @PostMapping("/article/{article_id}/pin/{email}")
+    @PostMapping("/article/{article_id}/pin")
     @ApiOperation(value = "핀")
-    public Object pin(@PathVariable(required = true) final String article_id,
-            @PathVariable(required = true) final String email) {
+    public Object pin(@RequestHeader(required = true) final HttpHeaders header, @PathVariable(required = true) final String article_id)
+            throws Exception {
 
-        // String email = "";
+        JWTDecoding jd = new JWTDecoding();     
+        String email = jd.decode(header.get("id_token").get(0));
+
+        
         int no = Integer.parseInt(article_id);
         Pin pin = new Pin();
         pin.setArticleid(no);
@@ -182,10 +191,13 @@ public class PinLikeFollowController {
     }
 
     @Transactional
-    @PostMapping("/article/{article_id}/likes/{email}")
+    @PostMapping("/article/{article_id}/likes")
     @ApiOperation(value = "좋아요")
-    public Object likes(@PathVariable(required = true) final String article_id,
-            @PathVariable(required = true) final String email) {
+    public Object likes(@RequestHeader (required = true) final HttpHeaders header, @PathVariable(required = true) final String article_id)
+            throws Exception {
+
+        JWTDecoding jd = new JWTDecoding();     
+        String email = jd.decode(header.get("id_token").get(0));
 
         int no = Integer.parseInt(article_id);
         Likes likes = new Likes();
@@ -222,7 +234,7 @@ public class PinLikeFollowController {
 
     }
 
-    Map<String, Object> saveNotification(Article article, String other, String type) { // 알림 설정 함수
+    Map<String, Object> saveNotification (Article article, String other, String type) { // 알림 설정 함수
 
         String content = article.getTitle();
 
