@@ -90,7 +90,7 @@ public class AccountController {
         List<String> followNickname = new ArrayList<>();
         Map<String, Object> followList = new TreeMap<>();
         for(Follow fol : follow) {
-            Optional<User> folllownickname = userDao.findUserByEmail(fol.getFollowemail());
+            Optional<User> folllownickname = socialMemberDao.findUserByEmail(fol.getFollowemail());
             followNickname.add(folllownickname.get().getNickname());
                 
         }
