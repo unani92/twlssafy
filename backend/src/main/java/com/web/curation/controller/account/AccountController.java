@@ -33,6 +33,7 @@ import com.web.curation.model.user.SocialMember;
 import com.web.curation.model.user.User;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -40,6 +41,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
@@ -172,23 +174,33 @@ public class AccountController {
 
     @PostMapping("/account/socialSignup")
     @ApiOperation(value = "구글로 가입하기")
-    public Object signup(HttpServletRequest request) throws Exception {
-        String id_token = request.getHeader("id_token");
+    public Object signup(@RequestBody final Map<String, Object> body, @RequestHeader final HttpHeaders header) throws Exception {
+        // 이거 http sevlet request?? 말고 이렇게 따로 받아서 하면 되는듯?~~?~?
 
-        String email = JWTDecoding.decode(id_token);
-        String nickname = request.getParameter("nickname");
-        String info = request.getParameter("info");
+        // String id_token = request.getHeader("id_token");
+        String email = JWTDecoding.decode(header.get("id_token").get(0));
         
+        String nickname = (String) body.get("nickname");
+        String info = (String)body.get("info");
+        // String email = JWTDecoding.decode(id_token);
+        // String nickname = request.getParameter("nickname");
+        // String info = request.getParameter("info");
+        
+        // System.out.println(nickname);
+        // System.out.println(info);
+
         SocialMember user = new SocialMember();
         user.setEmail(email);
         user.setNickname(nickname);
         user.setInfo(info);
+        user.setImg(JWTDecoding.getImg(header.get("id_token").get(0)));
+        user.setType("google");
         socialMemberDao.save(user);
 
         Map<String, String> response = new HashMap<>();
         response.put("email", email);
         response.put("nickname", nickname);
-        response.put("id_token", id_token);
+        response.put("id_token", header.get("id_token").get(0));
         
         final BasicResponse result = new BasicResponse();
         result.status = true;
