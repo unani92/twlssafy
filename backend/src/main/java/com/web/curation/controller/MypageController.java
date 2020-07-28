@@ -18,6 +18,7 @@ import com.web.curation.model.Article;
 import com.web.curation.model.BasicResponse;
 import com.web.curation.model.Keywords;
 import com.web.curation.model.user.Interest;
+import com.web.curation.model.user.SocialMember;
 import com.web.curation.model.user.User;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,16 +79,16 @@ public class MypageController {
         final BasicResponse result = new BasicResponse();
         result.status = false;
         result.data = "마이페이지 조회 실패";
-        Optional<User> user = socialmemberDao.findSocialmemberByNickname(nickname);
-        if(user.isPresent()){
+        Optional<SocialMember> socialmember = socialmemberDao.findSocialmemberByNickname(nickname);
+        if(socialmember.isPresent()){
             result.status = true;
             result.data = "success";
             Map<String, Object> userInfo = new TreeMap<>();
-            userInfo.put("user", user);
-            userInfo.put("pinList", pinDao.findAllByEmail(user.get().getEmail()));
-            userInfo.put("followList", followDao.findAllByEmail(user.get().getEmail())); // 내가 팔로잉
-            userInfo.put("followerList", followDao.findAllByFollowemail(user.get().getEmail())); // 나를 팔로잉
-            userInfo.put("likesList", likesDao.findAllByEmail(user.get().getEmail()));
+            userInfo.put("socialmember", socialmember);
+            userInfo.put("pinList", pinDao.findAllByEmail(socialmember.get().getEmail()));
+            userInfo.put("followList", followDao.findAllByEmail(socialmember.get().getEmail())); // 내가 팔로잉
+            userInfo.put("followerList", followDao.findAllByFollowemail(socialmember.get().getEmail())); // 나를 팔로잉
+            userInfo.put("likesList", likesDao.findAllByEmail(socialmember.get().getEmail()));
             
             // 글 가져오기
             Page<Article> articles = articleDao.findAllByNickname(PageRequest.of(page, 10, Sort.Direction.DESC,"articleid"), nickname);
@@ -118,7 +119,7 @@ public class MypageController {
             userInfo.put("keyword", keywordsList);
 
             // 관심사 
-            List<Interest> interest = interestDao.findAllByEmail(user.get().getEmail());
+            List<Interest> interest = interestDao.findAllByEmail(socialmember.get().getEmail());
             List<Object> interestList = new ArrayList<>();
             
             for(Interest in : interest) {
