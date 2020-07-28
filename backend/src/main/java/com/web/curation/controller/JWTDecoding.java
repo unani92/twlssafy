@@ -7,8 +7,8 @@ import org.apache.tomcat.util.codec.binary.Base64;
 
 public class JWTDecoding  {
 
-    public String decode (Map<String,Object> id_token) throws Exception {
-        String[] tokens = ((String) id_token.get("id_token")).split("\\.");
+    public String decode (String id_token) throws Exception {
+        String[] tokens = ((String) id_token).split("\\.");
         Base64 base64 = new Base64(true);
         String body = new String(base64.decode(tokens[1]));
 
