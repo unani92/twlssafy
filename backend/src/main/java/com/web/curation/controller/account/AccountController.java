@@ -13,8 +13,13 @@ import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import javax.servlet.ServletInputStream;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import com.web.curation.controller.JWTDecoding;
+import com.web.curation.dao.SocialMemberDao;
 import com.web.curation.dao.pinlikesfollow.FollowDao;
 import com.web.curation.dao.pinlikesfollow.LikesDao;
 import com.web.curation.dao.pinlikesfollow.NotificationDao;
@@ -24,6 +29,7 @@ import com.web.curation.model.BasicResponse;
 import com.web.curation.model.pinlikesfollow.Follow;
 import com.web.curation.model.pinlikesfollow.Notification;
 import com.web.curation.model.user.SignupRequest;
+import com.web.curation.model.user.SocialMember;
 import com.web.curation.model.user.User;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +37,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -61,6 +68,48 @@ public class AccountController {
 
     @Autowired
     NotificationDao notificationDao;
+
+    @Autowired
+    SocialMemberDao socialMemberDao;
+
+    @PostMapping("/account/userInfo")
+    @ApiOperation(value = "유저 정보 전달")
+    public Object userInfo(HttpServletRequest request) throws Exception {
+        // 핀, 좋아요, 팔로우, 팔로워, 작성 글, interest 전달
+        String id_token = request.getHeader("id_token");
+        String email = JWTDecoding.decode(id_token);
+
+        Map<String, Object> userInfo = new TreeMap<>();
+        userInfo.put("id_token", id_token);
+        userInfo.put("email", email);
+        userInfo.put("pinList", pinDao.findAllByEmail(email));
+        userInfo.put("likesList", likesDao.findAllByEmail(email));
+        userInfo.put("notificationCnt", notificationDao.countByEmailAndRead(email));
+            
+        List<Follow> follow = followDao.findAllByEmail(email);
+        List<String> followNickname = new ArrayList<>();
+        Map<String, Object> followList = new TreeMap<>();
+        for(Follow fol : follow) {
+            Optional<User> folllownickname = userDao.findUserByEmail(fol.getFollowemail());
+            followNickname.add(folllownickname.get().getNickname());
+                
+        }
+        followList.put("follow", follow);
+        followList.put("followNickname", followNickname);
+        userInfo.put("followList", followList);
+            
+
+        List<Notification> notificationList = notificationDao.findAllIn30Days(email);
+        notificationList.addAll(notificationDao.findAllUnread(email));
+        userInfo.put("notification", notificationList);
+
+        final BasicResponse result = new BasicResponse();
+        result.status = true;
+        result.data = "success";
+        result.object = userInfo; 
+        
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
 
     @PostMapping("/account/login")
     @ApiOperation(value = "로그인")
@@ -121,6 +170,34 @@ public class AccountController {
         return response;
     }
 
+    @PostMapping("/account/socialSignup")
+    @ApiOperation(value = "구글로 가입하기")
+    public Object signup(HttpServletRequest request) throws Exception {
+        String id_token = request.getHeader("id_token");
+
+        String email = JWTDecoding.decode(id_token);
+        String nickname = request.getParameter("nickname");
+        String info = request.getParameter("info");
+        
+        SocialMember user = new SocialMember();
+        user.setEmail(email);
+        user.setNickname(nickname);
+        user.setInfo(info);
+        socialMemberDao.save(user);
+
+        Map<String, String> response = new HashMap<>();
+        response.put("email", email);
+        response.put("nickname", nickname);
+        response.put("id_token", id_token);
+        
+        final BasicResponse result = new BasicResponse();
+        result.status = true;
+        result.data = "success";
+        result.object = response; 
+        
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
     @PostMapping("/account/signup")
     @ApiOperation(value = "가입하기")
     public Object signup(@Valid @RequestBody final SignupRequest request) {
@@ -143,6 +220,7 @@ public class AccountController {
         
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
+
 
     @PostMapping("/account/checkEmail")
     @ApiOperation(value = "이메일 체크")

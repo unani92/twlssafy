@@ -5,32 +5,33 @@ import java.util.Map;
 import java.util.Optional;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.web.curation.dao.user.UserDao;
+import com.web.curation.dao.SocialMemberDao;
 import com.web.curation.model.BasicResponse;
-import com.web.curation.model.user.User;
+import com.web.curation.model.user.SocialMember;
 
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 
 @CrossOrigin
 @Controller
 public class OAuth2Controller {
 
     @Autowired
-    UserDao userDao;
+    SocialMemberDao socialmemberDao;
 
     @PostMapping("/googlelogin")
-    public Object doSessionAssignActionPage(
-    @RequestBody final Map<String,Object> id_token) throws Exception {
+    public Object doSessionAssignActionPage(@RequestHeader final HttpHeaders header) throws Exception {
 
-        
-        String[] tokens = ((String) id_token.get("id_token")).split("\\.");
+        String id_token = header.get("id_token").get(0);
+        String[] tokens = (id_token.split("\\."));
         Base64 base64 = new Base64(true);
         String body = new String(base64.decode(tokens[1]));
 
@@ -45,21 +46,33 @@ public class OAuth2Controller {
         // 가입여부 판단
         Map<String, Object> object = new HashMap<>();
         object.put("isJoined", isJoined(result.get("email")));
-        object.put("tokens" , id_token.get("id_token"));
-
+        object.put("id_token" , id_token);
 
         final BasicResponse res = new BasicResponse();
-        res.object = object;
-        res.data = "sucess";
-        res.status = true;
+        System.out.println("is joined : "+isJoined(result.get("email")));
+        System.out.println("TOKEN : "+id_token);
+
+        // 가입된 회원이면 -> success 회원 정보 토큰 반환
+        if(isJoined(result.get("email"))) {
+            res.object = object;
+            res.data = "sucess";
+            res.status = true;
+        }
+
+        // 가입안된 회원이면 -> failure 반환
+        else {
+            res.data = "failed";
+            res.status = true;
+
+        }
 
         return new ResponseEntity<>(res, HttpStatus.OK);
     }
 
     private boolean isJoined(String email) {
-        Optional<User> user = userDao.findUserByEmail(email);
+        Optional<SocialMember> socialmember = socialmemberDao.findSocialmemberByEmail(email);
 
-        if (user.isPresent()) {
+        if (socialmember.isPresent()) {
            return true; 
         } else {
             return false;
@@ -67,3 +80,5 @@ public class OAuth2Controller {
     }
 
 }
+
+

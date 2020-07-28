@@ -155,3 +155,18 @@ create table `notification` (
  FOREIGN KEY (`other`) REFERENCES `member`(`email`)
  ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-----------------------------------------------------------------
+
+create table `socialmember` (
+  `no` int auto_increment NOT NULL,
+  `email` varchar(128) DEFAULT NULL,
+  `createDate` datetime DEFAULT current_timestamp(),
+  `nickname` char(20) NOT NULL,
+  `info` varchar(200),
+  `type` varchar(8),
+  `img` text,
+  PRIMARY KEY (`email`),
+  UNIQUE KEY `memberIdx_unique_no` (`no`),
+  UNIQUE KEY `nickname` (`nickname`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
