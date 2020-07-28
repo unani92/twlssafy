@@ -7,7 +7,6 @@ import java.util.Map;
 import com.web.curation.dao.user.InterestDao;
 import com.web.curation.controller.JWTDecoding;
 import com.web.curation.dao.SkillsDao;
-import com.web.curation.dao.user.UserDao;
 import com.web.curation.model.BasicResponse;
 import com.web.curation.model.user.Interest;
 import com.web.curation.model.Skills;
@@ -40,9 +39,6 @@ public class InterestController {
 
     @Autowired
     SkillsDao skillsDao;
-
-    @Autowired
-    UserDao userDao;
 
     @PostMapping("/account/interest/register")
     @ApiOperation(value = "관심사 등록")
@@ -108,8 +104,5 @@ public class InterestController {
         return new ResponseEntity<>(result, HttpStatus.OK);
 
     }
-
-
-
 }
 
