@@ -43,7 +43,6 @@ export default {
         nickname: this.$route.params.nickname,
       };
       const { data } = await fetchMyArticles(params);
-      console.log(data);
       this.isLoading = false;
       this.keywords = [...this.keywords, ...data.object.keyword];
       this.articles = [...this.articles, ...data.object.article.content];

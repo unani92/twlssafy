@@ -7,20 +7,36 @@
     </div>
     <div class="emailogin">
       <div class="email">
-        <input @focusout="emailCheckForm" v-model="email" type="email" placeholder="이메일을 입력하세요" />
+        <input
+          @focusout="emailCheckForm"
+          v-model="email"
+          type="email"
+          placeholder="이메일을 입력하세요"
+        />
         <div class="error-message" v-if="error.email">
-          <span>{{error.email}}</span>
+          <span>{{ error.email }}</span>
         </div>
       </div>
       <div class="password">
-        <input @input="pwdCheckForm" v-model="password" type="password" placeholder="비밀번호를 입력하세요" />
+        <input
+          @input="pwdCheckForm"
+          v-model="password"
+          type="password"
+          placeholder="비밀번호를 입력하세요"
+        />
       </div>
       <div class="error-message" v-if="error.password">
-        <span>{{error.password}}</span>
+        <span>{{ error.password }}</span>
       </div>
-      <button @click="login" class="login-btn" :class="{disabled : !isSubmit}">Login</button>
-      <button @click="$router.push('/signup')" class="signup-btn">Sign Up</button>
-      <Router-link to="/changepwd" style="text-decoration: none; color: black">비밀번호를 잊으셨나요?</Router-link>
+      <button @click="login" class="login-btn" :class="{ disabled: !isSubmit }">
+        Login
+      </button>
+      <button @click="$router.push('/signup')" class="signup-btn">
+        Sign Up
+      </button>
+      <Router-link to="/changepwd" style="text-decoration: none; color: black"
+        >비밀번호를 잊으셨나요?</Router-link
+      >
     </div>
   </div>
 </template>
@@ -102,6 +118,7 @@ export default {
               data: { data },
             } = res;
             if (data === "success") {
+              console.log(res);
               const { email, nickname } = res.data.object.email;
               const { followList, likesList, pinList } = res.data.object;
               this.$store.commit("setUsername", email);
@@ -111,10 +128,12 @@ export default {
               this.$store.commit("setPinList", pinList);
 
               if (this.$route.query.redirect) {
-                const redirect = this.$route.query.redirect
-                this.$router.push({ name: 'ArticleDetail', params: {id:Number(redirect)} })
+                const redirect = this.$route.query.redirect;
+                this.$router.push({
+                  name: "ArticleDetail",
+                  params: { id: Number(redirect) },
+                });
               } else this.$router.push("/");
-
             } else if (data === "비밀번호가 일치하지 않습니다.") {
               this.error.password = "비밀번호가 일치하지 않습니다.";
             } else {

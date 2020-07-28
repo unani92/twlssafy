@@ -9,20 +9,28 @@
           <br />
         </p>
         <div class="content content-1">
-          <div class="title"
-               style="cursor:pointer;"
-               @click="$router.push({ name: 'ArticleDetail', params:{id:article.articleid} })"
+          <div
+            class="title"
+            style="cursor:pointer;"
+            @click="
+              $router.push({
+                name: 'ArticleDetail',
+                params: { id: article.articleid },
+              })
+            "
           >
             {{ article.title }}
             <br />
             <span class="keywords" v-for="k in keywords" :key="k">
-              <a href="#" style="text-decoration: none;">#{{k}}</a>
+              <a href="#" style="text-decoration: none;">#{{ k }}</a>
             </span>
           </div>
           <div class="text">{{ article.content }}</div>
-          <div class="createdat-text">{{ this.$moment(article.createdat).fromNow() }}</div>
+          <div class="createdat-text">
+            {{ this.$moment(article.createdat).fromNow() }}
+          </div>
           <div class="nicknamePinLikes">
-            <div style="float : left; ">{{article.nickname}}</div>
+            <div style="float : left; ">{{ article.nickname }}</div>
             <div class="btns">
               <button @click="pin" class="firstBtn">
                 <i v-if="isPinned" class="fas fa-bookmark"></i>
@@ -56,8 +64,9 @@ export default {
         console.log(data);
         //프런트에서 스토어 값 갱신
         const likeList = this.$store.state.likeList;
-        if (data.data === "likes 설정") {
+        if (data.data === "like 설정") {
           likeList.push(this.article);
+          console.log(likeList);
         } else {
           //좋아요 목록에서 삭제 로직
           // const idx = likeList.indexOf(this.article);
@@ -143,8 +152,8 @@ export default {
     },
   },
   mounted() {
-    console.log(this.article)
-  }
+    console.log(this.article);
+  },
 };
 </script>
 
