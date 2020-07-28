@@ -9,11 +9,11 @@ import java.util.TreeMap;
 import com.web.curation.dao.ArticleDao;
 import com.web.curation.dao.KeywordsDao;
 import com.web.curation.dao.SkillsDao;
+import com.web.curation.dao.SocialMemberDao;
 import com.web.curation.dao.pinlikesfollow.FollowDao;
 import com.web.curation.dao.pinlikesfollow.LikesDao;
 import com.web.curation.dao.pinlikesfollow.PinDao;
 import com.web.curation.dao.user.InterestDao;
-import com.web.curation.dao.user.UserDao;
 import com.web.curation.model.Article;
 import com.web.curation.model.BasicResponse;
 import com.web.curation.model.Keywords;
@@ -46,7 +46,7 @@ import io.swagger.annotations.ApiResponses;
 public class MypageController {
 
     @Autowired
-    UserDao userDao;
+    SocialMemberDao socialmemberDao;
 
     @Autowired
     ArticleDao articleDao;
@@ -78,7 +78,7 @@ public class MypageController {
         final BasicResponse result = new BasicResponse();
         result.status = false;
         result.data = "마이페이지 조회 실패";
-        Optional<User> user = userDao.findUserByNickname(nickname);
+        Optional<User> user = socialmemberDao.findSocialmemberByNickname(nickname);
         if(user.isPresent()){
             result.status = true;
             result.data = "success";

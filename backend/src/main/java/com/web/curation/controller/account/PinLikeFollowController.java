@@ -11,7 +11,6 @@ import com.web.curation.dao.pinlikesfollow.FollowDao;
 import com.web.curation.dao.pinlikesfollow.LikesDao;
 import com.web.curation.dao.pinlikesfollow.NotificationDao;
 import com.web.curation.dao.pinlikesfollow.PinDao;
-import com.web.curation.dao.user.UserDao;
 import com.web.curation.model.Article;
 import com.web.curation.model.BasicResponse;
 import com.web.curation.model.pinlikesfollow.Follow;
@@ -44,9 +43,6 @@ import io.swagger.annotations.ApiResponses;
 public class PinLikeFollowController {
 
     @Autowired
-    UserDao userDao;
-
-    @Autowired
     FollowDao followDao;
 
     @Autowired
@@ -74,8 +70,7 @@ public class PinLikeFollowController {
           "follow" : "qwer@qwer.com"
           }
          */
-        JWTDecoding jd = new JWTDecoding();     
-        String email = jd.decode(header.get("id_token").get(0));
+        String email = JWTDecoding.decode(header.get("id_token").get(0));
         
         String follow = (String) request.get("follow");
 
@@ -152,8 +147,8 @@ public class PinLikeFollowController {
     public Object pin(@RequestHeader(required = true) final HttpHeaders header, @PathVariable(required = true) final String article_id)
             throws Exception {
 
-        JWTDecoding jd = new JWTDecoding();     
-        String email = jd.decode(header.get("id_token").get(0));
+       
+        String email = JWTDecoding.decode(header.get("id_token").get(0));
 
         
         int no = Integer.parseInt(article_id);
@@ -196,8 +191,7 @@ public class PinLikeFollowController {
     public Object likes(@RequestHeader (required = true) final HttpHeaders header, @PathVariable(required = true) final String article_id)
             throws Exception {
 
-        JWTDecoding jd = new JWTDecoding();     
-        String email = jd.decode(header.get("id_token").get(0));
+        String email = JWTDecoding.decode(header.get("id_token").get(0));
 
         int no = Integer.parseInt(article_id);
         Likes likes = new Likes();
