@@ -48,7 +48,13 @@ export default {
       this.keywords = [...this.keywords, ...data.object.keyword];
       this.articles = [...this.articles, ...data.object.article.content];
       this.userInfo = data.object.user;
-      this.$emit("setUserInfo", this.userInfo);
+      this.$emit("setUserInfo", {
+        userInfo: this.userInfo,
+        skills: this.keywords,
+        following: data.object.followList,
+        follower: data.object.followerList,
+        totalArticleCount: data.object.totalArticleCount,
+      });
     },
     addScrollWatcher() {
       const bottomSensor = document.querySelector("#bottomSensor");
