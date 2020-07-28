@@ -33,13 +33,20 @@ import axios from 'axios';
         // this.googleAccessToken = googleUser.Zi
         // console.log(googleUser.w3.ig)
 
-         console.log(googleUser);
+         // console.log(googleUser);
  
             // This only gets the user information: id, name, imageUrl and email
-            const id_token = googleUser.wc.id_token;
+        const id_token = googleUser.wc.id_token;
         axios.post('http://localhost:8080/googlelogin',{ id_token },{headers: {id_token}})
           .then((res) =>{
-          console.log(res.data)
+            const { email } = res.data.object
+            console.log(res.data)
+          if (res.data.data === "failed") {
+            console.log("가입하러가자")
+            this.$router.push({ name: "SocialSignup", params: {email, id_token} })
+          } else {
+            console.log("로그인해줄게")
+          }
         }).catch(err =>{
           console.log(err);
           }

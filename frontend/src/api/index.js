@@ -13,6 +13,9 @@ function checkNickname(nickname) {
 function registerUser(userData) {
   return instance.post("account/signup", userData);
 }
+function socialSignup(userData,token) {
+  return instance.post("account/socialSignup", userData,{headers:{id_token: token}})
+}
 
 function login(params) {
   return instance.post("account/login", params);
@@ -72,6 +75,7 @@ export {
   checkEmail,
   checkNickname,
   registerUser,
+  socialSignup,
   login,
   selectSkill,
   createArticle,
