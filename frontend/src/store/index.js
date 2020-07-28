@@ -29,6 +29,9 @@ export default new Vuex.Store({
     setFollowList(state, followList) {
       state.followList = followList;
     },
+    setFollowListByNickname(state, followList) {
+      state.followList.followNickname = followList;
+    },
     setLikeList(state, likeList) {
       state.likeList = likeList;
     },

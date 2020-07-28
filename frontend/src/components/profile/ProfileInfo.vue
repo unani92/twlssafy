@@ -5,52 +5,67 @@
         <img src="https://i.pravatar.cc/400?u=정윤환" />
       </div>
       <div class="text">
-        <div class="description">{{this.$route.params.nickname}}</div>
-        <div class="intro">{{userInfo.userInfo.info}}</div>
+        <div class="description follower-email-container">
+          <span class="follower-email">{{ userInfo.userInfo.nickname }}</span>
+          <div
+            v-if="nickname !== this.$store.state.nickname"
+            @click="requestFollow(userInfo.userInfo.email, $event)"
+          >
+            <button class="followBtn">팔로우</button>
+          </div>
+        </div>
+        <div class="intro">{{ userInfo.userInfo.info }}</div>
+
         <ul>
           <li>
             <div class="info">
               <i class="far fa-calendar-alt"></i>
               <span>&nbsp;&nbsp;From&nbsp;</span>
-              <span>&nbsp;{{userInfo.userInfo.createdate}}</span>
+              <span>&nbsp;{{ userInfo.userInfo.createdate }}</span>
             </div>
           </li>
 
           <li>
             <div class="info">
               <i class="fas fa-envelope"></i>
-              {{userInfo.userInfo.email}}
+              {{ userInfo.userInfo.email }}
             </div>
           </li>
-          <li v-if="userInfo.skills.length!==0">
+          <li v-if="userInfo.skills.length !== 0">
             <div class="skills">
-              <span>#{{userInfo.skills[0][0]}}</span>
-              <span>#{{userInfo.skills[1][0]}}</span>
-              <span>#{{userInfo.skills[2][0]}}</span>
-              <span class="more">➕</span>
+              <span>#{{ userInfo.skills[0][0] }}</span>
+              <span>#{{ userInfo.skills[1][0] }}</span>
+              <span>#{{ userInfo.skills[2][0] }}</span>
+              <span class="more" data-toggle="modal">➕</span>
             </div>
+          </li>
+          <li v-else>
+            등록된 관심사가 없습니다.
+            <span class="more" data-toggle="modal">➕</span>
           </li>
         </ul>
         <div class="sns">
           <a>
             <i class="fas fa-pencil-alt"></i>
             <br />
-            <span>{{userInfo.totalArticleCount}} TILs</span>
+            <span>{{ userInfo.totalArticleCount }} TILs</span>
           </a>
-          <a class="follower-modal">
+          <a class="follower-modal" data-toggle="modal">
             <i class="fas fa-eye"></i>
             <br />
-            <span>{{userInfo.follower.length}} Followers</span>
+            <span>{{ userInfo.follower.follower.length }} Followers</span>
           </a>
-          <a class="following-modal">
+          <a class="following-modal" data-toggle="modal">
             <i class="fas fa-assistive-listening-systems"></i>
             <br />
-            <span>{{userInfo.following.length}} Followings</span>
+            <span>{{ userInfo.following.follow.length }} Followings</span>
           </a>
         </div>
       </div>
     </section>
-    <section v-if="userInfo.totalArticleCount===0" class="no-article">작성한 글이 없습니다.</section>
+    <section v-if="userInfo.totalArticleCount === 0" class="no-article">
+      작성한 글이 없습니다.
+    </section>
 
     <button id="myBtn" style="display:none">Open Modal</button>
 
@@ -63,43 +78,65 @@
           v-for="skill in this.userInfo.skills"
           :key="skill[0]"
           class="totalSkills"
-        >#{{skill[0]}}</span>
-        <SelectSkills v-if="this.$store.state.nickname===this.$route.params.nickname"></SelectSkills>
+          >#{{ skill[0] }}</span
+        >
+        <SelectSkills
+          v-if="this.$store.state.nickname === this.$route.params.nickname"
+        ></SelectSkills>
       </div>
     </div>
 
     <!-- The followers -->
     <div id="followersModal" class="modal">
-      <!-- Modal content -->
       <div class="follow-modal-content">
         <span class="close">&times;</span>
         <br />
+
         <div
-          v-for="follower in this.userInfo.follower"
-          :key="follower.email"
+          v-for="idx in userInfo.follower.follower.length"
+          :key="idx"
           class="follower-email-container"
         >
-          <span class="follower-email">{{follower.email}}</span>
-          <button class="modal-follow">팔로우</button>
+          <span class="follower-email">{{
+            userInfo.follower.followerNickname[idx - 1]
+          }}</span>
+          <div
+            @click="
+              requestFollow(userInfo.follower.follower[idx - 1].email, $event)
+            "
+          >
+            <button class="followBtn">팔로잉</button>
+          </div>
         </div>
-        <div v-if="this.userInfo.follower.length===0">팔로우한 친구가 없습니다.</div>
+        <div v-if="this.userInfo.follower.follower.length === 0">
+          팔로우한 친구가 없습니다.
+        </div>
       </div>
     </div>
 
     <div id="followingsModal" class="modal">
-      <!-- Modal content -->
       <div class="follow-modal-content">
         <span class="close">&times;</span>
         <br />
         <div
-          v-for="following in this.userInfo.following"
-          :key="following.email"
+          v-for="idx in userInfo.following.follow.length"
+          :key="idx"
           class="follower-email-container"
         >
-          <span class="follower-email">{{following.email}}</span>
-          <button class="modal-follow">팔로잉</button>
+          <span class="follower-email">{{
+            userInfo.following.followNickname[idx - 1]
+          }}</span>
+          <div
+            @click="
+              requestFollow(userInfo.following.follow[idx - 1].email, $event)
+            "
+          >
+            <button class="followBtn">팔로잉</button>
+          </div>
         </div>
-        <div v-if="this.userInfo.following.length===0">팔로잉한 친구가 없습니다.</div>
+        <div v-if="this.userInfo.following.follow.length === 0">
+          팔로우한 친구가 없습니다.
+        </div>
       </div>
     </div>
   </div>
@@ -107,8 +144,8 @@
 
 <script>
 import SelectSkills from "@/views/SelectSkills.vue";
+import { requestFollow } from "@/api/index.js";
 export default {
-  // props: ["userInfo"],
   props: {
     userInfo: Object,
   },
@@ -118,27 +155,106 @@ export default {
   data() {
     return {
       skills: this.userInfo.skills,
+      nickname: this.$route.params.nickname,
+      follower: this.userInfo.follower,
     };
   },
+  computed: {
+    isLoginFollow() {
+      return this.$store.getters.isLogin;
+    },
+  },
+  methods: {
+    async requestFollow(followWantingTo, e) {
+      if (!this.$store.getters.isLogin == true) {
+        if (confirm("팔로우 하시려면 로그인을 해야 합니다")) {
+          this.$router.push("/login");
+        }
+      } else {
+        const params = {
+          email: this.$store.state.username,
+          follow: followWantingTo,
+        };
+        const { data } = await requestFollow(params);
+        console.log(data);
+        // 프런트에서 처리
+        const followList = this.$store.state.followList.followNickname;
+        const nicknameOfThisBlog = this.$route.params.nickname;
+        if (data.data === "follow") {
+          followList.push(nicknameOfThisBlog);
+          e.target.innerHTML = "팔로우 취소";
+
+          //로그인한 사용자의 스토어에 this.userInfo.userInfo.email추가하기
+        } else {
+          e.target.innerHTML = "팔로우";
+
+          const len = followList.length;
+          for (let i = 0; i < len; i++) {
+            if (nicknameOfThisBlog === followList[i]) {
+              followList.splice(i, 1);
+            }
+          }
+        }
+        this.$store.commit("setFollowListByNickname", followList);
+      }
+    },
+    isFollowing(follow) {
+      //로그인한 사용자가 어떤 사용자를 팔로잉하고 있는가
+      if (this.$store.getters.isLogin) {
+        // 로그인한 사용자가 팔로잉하고 있는 모든 사람
+        const followList = this.$store.state.followList.followNickname;
+        const len = followList.length;
+        for (let i = 0; i < len; i++) {
+          if (follow === followList[0]) {
+            return true;
+          }
+        }
+      }
+      return false;
+    },
+  },
   updated() {
+    if (this.$store.getters.isLogin) {
+      const followBtns = [
+        ...document.querySelectorAll(".follower-email-container"),
+      ];
+      const len = followBtns.length;
+      for (let i = 0; i < len; i++) {
+        // console.log(followBtns[i].childNodes[0].innerHTML);
+        // console.log(this.$store.state.followList.followNickname);
+        // console.log(
+        //   followBtns[i].childNodes[0].innerHTML ===
+        //     this.$store.state.followList.followNickname[0]
+        // );
+        const followerOfLoginUser = this.$store.state.followList.followNickname;
+        const numOfFollowerOFLoginUser = followerOfLoginUser.length;
+        for (let j = 0; j < numOfFollowerOFLoginUser; j++) {
+          if (
+            followBtns[i].childNodes[0].innerHTML === followerOfLoginUser[j]
+          ) {
+            followBtns[i].childNodes[1].childNodes[0].innerHTML = "팔로우 취소";
+          }
+        }
+      }
+    }
     //스킬
     const skillModal = document.getElementById("skillModal");
     const btn = document.querySelector(".more");
     const span = document.getElementsByClassName("close")[0];
-    btn.onclick = function () {
+    btn.onclick = function() {
       skillModal.style.display = "block";
     };
-    span.onclick = function () {
+    span.onclick = function() {
       skillModal.style.display = "none";
     };
     // follower modal
     const followerModal = document.getElementById("followersModal");
     const followBtn = document.querySelector(".follower-modal");
     const followSpan = document.getElementsByClassName("close")[1];
-    followBtn.onclick = function () {
+    followBtn.onclick = function() {
       followerModal.style.display = "block";
     };
-    followSpan.onclick = function () {
+    followSpan.onclick = function() {
       followerModal.style.display = "none";
     };
 
@@ -146,13 +262,13 @@ export default {
     const followingModal = document.getElementById("followingsModal");
     const followingBtn = document.querySelector(".following-modal");
     const followingSpan = document.getElementsByClassName("close")[2];
-    followingBtn.onclick = function () {
+    followingBtn.onclick = function() {
       followingModal.style.display = "block";
     };
-    followingSpan.onclick = function () {
+    followingSpan.onclick = function() {
       followingModal.style.display = "none";
     };
-    window.onclick = function (event) {
+    window.onclick = function(event) {
       if (
         event.target == skillModal ||
         event.target == followerModal ||
@@ -362,6 +478,11 @@ section {
   border: 1px solid #888;
   width: 40%;
 }
+@media (max-width: 992px) {
+  .follow-modal-content {
+    width: 80%;
+  }
+}
 .follower-email-container {
   margin: 1rem 1rem;
   display: flex;
@@ -379,14 +500,6 @@ section {
 .follower-email-container > button:hover {
   cursor: pointer;
 }
-
-.follow-modal-content {
-  background-color: #fefefe;
-  margin: auto;
-  padding: 20px;
-  border: 1px solid #888;
-  width: 40%;
-}
 .follower-email-container {
   margin: 1rem 1rem;
   display: flex;
@@ -402,6 +515,17 @@ section {
   color: white;
 }
 .follower-email-container > button:hover {
+  cursor: pointer;
+}
+.followBtn {
+  background-color: #0095f6;
+  border: #0095f6;
+  border-radius: 4px;
+  padding: 5px 9px;
+  font-size: 14px;
+  color: white;
+}
+.followBtn:hover {
   cursor: pointer;
 }
 </style>
