@@ -52,6 +52,9 @@ public class OAuth2Controller {
         System.out.println("is joined : "+isJoined(result.get("email")));
         System.out.println("TOKEN : "+id_token);
 
+        Map<String, String> response = new HashMap<>();
+        response.put("email", result.get("email"));
+
         // 가입된 회원이면 -> success 회원 정보 토큰 반환
         if(isJoined(result.get("email"))) {
             res.object = object;
@@ -63,7 +66,7 @@ public class OAuth2Controller {
         else {
             res.data = "failed";
             res.status = true;
-
+            res.object = response;
         }
 
         return new ResponseEntity<>(res, HttpStatus.OK);

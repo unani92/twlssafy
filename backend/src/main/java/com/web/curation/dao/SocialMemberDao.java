@@ -8,5 +8,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface SocialMemberDao extends JpaRepository<SocialMember, String> {
 
     Optional<SocialMember> findSocialmemberByEmail (String email);
+    Optional<SocialMember> findSocialmemberByNickname (String nickname);
 
 }
