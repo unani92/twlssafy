@@ -15,9 +15,9 @@
           >
             {{ article.title }}
             <br />
-<!--            <span class="keywords" v-for="k in keywords" :key="k">-->
-<!--              <a href="#" style="text-decoration: none;">#{{k}}</a>-->
-<!--            </span>-->
+            <span class="keywords" v-for="k in keywords" :key="k">
+              <a href="#" style="text-decoration: none;">#{{k}}</a>
+            </span>
           </div>
           <div class="text">{{ article.content }}</div>
           <div class="createdat-text">{{ this.$moment(article.createdat).fromNow() }}</div>
@@ -135,10 +135,10 @@ export default {
       type: Object,
       required: true,
     },
-    // keywords: {
-    //   type: Array,
-    //   required: true,
-    // },
+    keywords: {
+      type: Array,
+      required: true,
+    },
   },
 };
 </script>
@@ -211,6 +211,7 @@ export default {
   text-align: justify;
   height: 90px;
   overflow: hidden;
+  word-break:break-all;
 }
 .content button {
   align-items: center;

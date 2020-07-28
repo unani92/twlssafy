@@ -15,11 +15,12 @@
         <input @keypress.enter="fetchSearchData" type="text" v-model="input">
       </div>
     </div>
-    <div>
+    <div v-if="searchArticles">
       <ArticleSearchCard
-          v-for="article in searchArticles"
-          :key="article._id"
+          v-for="(article,index) in searchArticles"
+          :key="article.articleid"
           :article="article"
+          :keywords="keywords[index]"
       />
       <div id="bottomSensor"></div>
     </div>
@@ -55,11 +56,13 @@
           q: this.q,
           category: this.category
         }
+        const res = await searchArticle(params);
+        console.log(res)
         const { data: { object: { article, keyword } } } = await searchArticle(params);
         console.log(article)
         console.log(keyword)
         this.keywords = [...this.keywords, ...keyword];
-        this.searchArticles = [...this.searchArticles, ...article.content];
+        this.searchArticles = [...this.searchArticles, ...article];
         } else {
           this.q = this.input
           this.page = 0
@@ -69,11 +72,13 @@
             q: this.q,
             category: this.category
           }
+          const res = await searchArticle(params);
+          console.log(res)
           const { data: { object: { article, keyword } } } = await searchArticle(params);
           console.log(article)
           console.log(keyword)
           this.keywords = [...this.keywords, ...keyword];
-          this.searchArticles = [...this.searchArticles, ...article.content];
+          this.searchArticles = [...this.searchArticles, ...article];
         }
       },
       addScrollWatcher() {

@@ -216,6 +216,7 @@ export default {
   text-align: justify;
   height: 90px;
   overflow: hidden;
+  word-break:break-all;
 }
 .content button {
   align-items: center;
