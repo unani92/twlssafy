@@ -10,6 +10,7 @@ import ArticleDetail from "../views/ArticleDetail";
 import ArticleUpdate from "../views/ArticleUpdate";
 import Profile from "@/views/Profile";
 import ArticleSearch from "../views/ArticleSearch";
+import SocialSignup from "../views/SocialSignup";
 
 Vue.use(VueRouter);
 
@@ -65,6 +66,12 @@ const routes = [
     name: "ArticleSearch",
     component: ArticleSearch,
   },
+  {
+    path: "/social/signup",
+    name: "SocialSignup",
+    component: SocialSignup,
+    props: true
+  }
 ];
 
 const router = new VueRouter({
