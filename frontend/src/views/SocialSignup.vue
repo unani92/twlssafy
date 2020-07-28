@@ -29,6 +29,7 @@
         <!-- 버튼 활성화 OK -->
         <div class="inputfield">
           <button
+            @click="submitForm"
             type="submit"
             class="btn"
             :disabled="
@@ -45,7 +46,8 @@
 
 <script>
 
-import { checkNickname, registerUser } from "@/api/index";
+import { checkNickname,  } from "@/api/index";
+import axios from "axios"
 // import SelectSkills from "../views/SelectSkills.vue";
 // import { mapState, mapMutations } from 'vuex'
 
@@ -61,7 +63,8 @@ export default {
     };
   },
   props: {
-    email: String
+    email: String,
+    id_token: String
   },
   methods: {
     async nicknameCheck() {
@@ -84,16 +87,24 @@ export default {
 
     async submitForm() {
       const userData = {
-        email: this.email,
+        // email: this.email,
         nickname: this.nickname,
         info: this.info,
       };
-
-      const { data } = await registerUser(userData);
-      console.log(data);
-      this.$store.commit("setUsername", userData.email);
-      this.$store.commit("setNickname", userData.nickname);
-      this.$router.push("/selectskills");
+      const config = {
+        headers: {
+          id_token: this.id_token
+        }
+      }
+      console.log(userData)
+      axios.post("http://localhost:8080/account/socialSignup", userData, config)
+        .then(res => console.log(res))
+        .catch(err => console.log(err))
+      // const res = await socialSignup(userData,this.id_token);
+      // console.log(res);
+      // this.$store.commit("setUsername", userData.email);
+      // this.$store.commit("setNickname", userData.nickname);
+      // this.$router.push("/selectskills");
     },
     initForm() {
       this.email = "";
