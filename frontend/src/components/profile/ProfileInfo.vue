@@ -6,30 +6,27 @@
       </div>
       <div class="text">
         <div class="description">{{this.$route.params.nickname}}</div>
-        <div class="intro">{{userInfo.info}}</div>
+        <div class="intro">{{userInfo.userInfo.info}}</div>
         <ul>
           <li>
             <div class="info">
               <i class="far fa-calendar-alt"></i>
               <span>&nbsp;&nbsp;From&nbsp;</span>
-              <span>&nbsp;{{userInfo.createdate}}</span>
+              <span>&nbsp;{{userInfo.userInfo.createdate}}</span>
             </div>
           </li>
 
           <li>
             <div class="info">
               <i class="fas fa-envelope"></i>
-              {{userInfo.email}}
+              {{userInfo.userInfo.email}}
             </div>
           </li>
-          <li>
-            <!-- <div class="info">
-              <i class="fas fa-phone"></i> +82 10-1234-5678
-            </div>-->
+          <li v-if="userInfo.skills.length!==0">
             <div class="skills">
-              <span>HTML</span>
-              <span>CSS</span>
-              <span>Javascript</span>
+              <span>#{{userInfo.skills[0][0]}}</span>
+              <span>#{{userInfo.skills[1][0]}}</span>
+              <span>#{{userInfo.skills[2][0]}}</span>
               <span class="more">➕</span>
             </div>
           </li>
@@ -38,27 +35,135 @@
           <a>
             <i class="fas fa-pencil-alt"></i>
             <br />
-            <span>100 TILs</span>
+            <span>{{userInfo.totalArticleCount}} TILs</span>
           </a>
-          <a>
+          <a class="follower-modal">
             <i class="fas fa-eye"></i>
             <br />
-            <span>22 Followers</span>
+            <span>{{userInfo.follower.length}} Followers</span>
           </a>
-          <a>
+          <a class="following-modal">
             <i class="fas fa-assistive-listening-systems"></i>
             <br />
-            <span>33 Followings</span>
+            <span>{{userInfo.following.length}} Followings</span>
           </a>
         </div>
       </div>
     </section>
+    <section v-if="userInfo.totalArticleCount===0" class="no-article">작성한 글이 없습니다.</section>
+
+    <button id="myBtn" style="display:none">Open Modal</button>
+
+    <!-- The SkillModal -->
+    <div id="skillModal" class="modal">
+      <!-- Modal content -->
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <span
+          v-for="skill in this.userInfo.skills"
+          :key="skill[0]"
+          class="totalSkills"
+        >#{{skill[0]}}</span>
+        <SelectSkills v-if="this.$store.state.nickname===this.$route.params.nickname"></SelectSkills>
+      </div>
+    </div>
+
+    <!-- The followers -->
+    <div id="followersModal" class="modal">
+      <!-- Modal content -->
+      <div class="follow-modal-content">
+        <span class="close">&times;</span>
+        <br />
+        <div
+          v-for="follower in this.userInfo.follower"
+          :key="follower.email"
+          class="follower-email-container"
+        >
+          <span class="follower-email">{{follower.email}}</span>
+          <button class="modal-follow">팔로우</button>
+        </div>
+        <div v-if="this.userInfo.follower.length===0">팔로우한 친구가 없습니다.</div>
+      </div>
+    </div>
+
+    <div id="followingsModal" class="modal">
+      <!-- Modal content -->
+      <div class="follow-modal-content">
+        <span class="close">&times;</span>
+        <br />
+        <div
+          v-for="following in this.userInfo.following"
+          :key="following.email"
+          class="follower-email-container"
+        >
+          <span class="follower-email">{{following.email}}</span>
+          <button class="modal-follow">팔로잉</button>
+        </div>
+        <div v-if="this.userInfo.following.length===0">팔로잉한 친구가 없습니다.</div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
+import SelectSkills from "@/views/SelectSkills.vue";
 export default {
-  props: ["userInfo"],
+  // props: ["userInfo"],
+  props: {
+    userInfo: Object,
+  },
+  components: {
+    SelectSkills,
+  },
+  data() {
+    return {
+      skills: this.userInfo.skills,
+    };
+  },
+  updated() {
+    //스킬
+    const skillModal = document.getElementById("skillModal");
+    const btn = document.querySelector(".more");
+    const span = document.getElementsByClassName("close")[0];
+    btn.onclick = function () {
+      skillModal.style.display = "block";
+    };
+    span.onclick = function () {
+      skillModal.style.display = "none";
+    };
+    // follower modal
+    const followerModal = document.getElementById("followersModal");
+    const followBtn = document.querySelector(".follower-modal");
+    const followSpan = document.getElementsByClassName("close")[1];
+    followBtn.onclick = function () {
+      followerModal.style.display = "block";
+    };
+    followSpan.onclick = function () {
+      followerModal.style.display = "none";
+    };
+
+    // following modal
+    const followingModal = document.getElementById("followingsModal");
+    const followingBtn = document.querySelector(".following-modal");
+    const followingSpan = document.getElementsByClassName("close")[2];
+    followingBtn.onclick = function () {
+      followingModal.style.display = "block";
+    };
+    followingSpan.onclick = function () {
+      followingModal.style.display = "none";
+    };
+    window.onclick = function (event) {
+      if (
+        event.target == skillModal ||
+        event.target == followerModal ||
+        event.target == followingModal
+      ) {
+        skillModal.style.display = "none";
+        followerModal.style.display = "none";
+        followingModal.style.display = "none";
+      }
+    };
+  },
 };
 </script>
 
@@ -79,6 +184,9 @@ ul {
 /* SECTION */
 section {
   padding: 10px 0;
+}
+.no-article {
+  text-align: center;
 }
 
 /* ABOUT AREA */
@@ -190,15 +298,110 @@ section {
   cursor: pointer;
 }
 
-.skills span {
+.totalSkills {
   display: inline-block;
   border: 1px solid #9fa3af;
   padding: 6px 15px;
   border-radius: 25px;
   min-width: 65px;
-  /* font-weight: 600; */
-  color: #9fa3af;
-  margin: 0 1%;
+  font-weight: 600;
+  margin: 0.5rem 0.25rem;
   text-align: center;
+}
+
+.skills span {
+  display: inline-block;
+  min-width: 30px;
+  font-weight: 600;
+  margin: 4px 4px;
+  text-align: center;
+}
+/* The Modal (background) */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0, 0, 0); /* Fallback color */
+  background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+  background-color: #fefefe;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+}
+
+/* The Close Button */
+.close {
+  color: #aaaaaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.follow-modal-content {
+  background-color: #fefefe;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 40%;
+}
+.follower-email-container {
+  margin: 1rem 1rem;
+  display: flex;
+  justify-content: space-between;
+  line-height: 30px;
+}
+.follower-email-container > button {
+  background-color: #0095f6;
+  border: #0095f6;
+  border-radius: 4px;
+  padding: 5px 9px;
+  font-size: 14px;
+  color: white;
+}
+.follower-email-container > button:hover {
+  cursor: pointer;
+}
+
+.follow-modal-content {
+  background-color: #fefefe;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 40%;
+}
+.follower-email-container {
+  margin: 1rem 1rem;
+  display: flex;
+  justify-content: space-between;
+  line-height: 30px;
+}
+.follower-email-container > button {
+  background-color: #0095f6;
+  border: #0095f6;
+  border-radius: 4px;
+  padding: 5px 9px;
+  font-size: 14px;
+  color: white;
+}
+.follower-email-container > button:hover {
+  cursor: pointer;
 }
 </style>
