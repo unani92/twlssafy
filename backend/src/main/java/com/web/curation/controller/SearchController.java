@@ -10,7 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.data.domain.Page;
@@ -33,7 +32,6 @@ import com.web.curation.model.Article;
 import com.web.curation.model.BasicResponse;
 import com.web.curation.model.Keywords;
 import com.web.curation.model.Search;
-import com.web.curation.model.Skills;
 
 @Api("Search Controller")
 @ApiResponses(value = { @ApiResponse(code = 401, message = "Unauthorized", response = BasicResponse.class),
