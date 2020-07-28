@@ -73,4 +73,12 @@ const router = new VueRouter({
   routes,
 });
 
+// router.beforeEach((to, from, next) => {
+//   const publicPages = ['Home', 'Login', 'Signup', 'ArticleDetail']
+//   const authPages = ['Login', 'Signup']
+//   const authRequired = !publicPages.includes(to.name)
+//   const unauthRequired = authPages.includes(to.name)
+//
+// })
+
 export default router;

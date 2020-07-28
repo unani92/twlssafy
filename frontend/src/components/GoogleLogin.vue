@@ -10,6 +10,7 @@
 <script>
 import GoogleLogin from 'vue-google-login';
 import axios from 'axios';
+// import { mapActions } from 'vuex'
   export default {
     // name: "GoogleLogin",
 
@@ -36,11 +37,12 @@ import axios from 'axios';
  
             // This only gets the user information: id, name, imageUrl and email
             const id_token = googleUser.wc.id_token;
-        axios.post('http://localhost:8080/googlelogin',{ id_token }).then(()=>{
-          console.log("success");
-        }).catch((err)=>{
+        axios.post('http://localhost:8080/googlelogin',{ id_token },{headers: {id_token}})
+          .then((res) =>{
+          console.log(res.data)
+        }).catch(err =>{
           console.log(err);
-        }
+          }
         )
            
       },

@@ -1,6 +1,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
-
+import cookies from 'vue-cookies'
+import { registerUser, login } from "../api";
 Vue.use(Vuex);
 
 export default new Vuex.Store({
@@ -10,16 +11,22 @@ export default new Vuex.Store({
   state: {
     username: "",
     nickname: "",
+    authToken: cookies.get('auth-token'),
     followList: [],
     likeList: [],
     pinList: [],
   },
   getters: {
-    isLogin(state) {
-      return state.username !== "";
-    },
+    isLoggedIn: state => !!state.authToken,
+    config: state => ({
+      headers: {Authorization: `Token ${state.authToken}`}
+    })
   },
   mutations: {
+    setToken(state,token) {
+      state.authToken = token
+      cookies.set('auth-token',token)
+    },
     setUsername(state, username) {
       state.username = username;
     },
@@ -40,6 +47,25 @@ export default new Vuex.Store({
       state.nickname = "";
     },
   },
-  actions: {},
+  actions: {
+    socialLogin({ commit }, loginData) {
+      login(loginData)
+        .then(res => {
+          // 이메일, 닉네임, 좋아요, 핀, 팔로우 리스트, 토큰 받아서 커밋으로 집어넣는다.
+          commit("setToken",res.data.key)
+          this.$router.push('/')
+        })
+        .catch(err => console.log(err))
+    },
+    socialSignUp({ commit }, signUpData) {
+      registerUser(signUpData)
+        .then(res => {
+          // 이메일, 닉네임, 토큰 받아서 커밋으로 집어넣는다.
+          commit("setToken", res.data.key)
+          this.$router.push({ name: "SelectSkills" })
+        })
+        .catch(err => console.log(err))
+    }
+  },
   modules: {},
 });

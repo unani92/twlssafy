@@ -2,12 +2,15 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
+
+import VueCookies from 'vue-cookies'
 import moment from "moment";
 import VueMomentJS from "vue-momentjs";
 import firebase from "firebase";
 
 moment.locale("ko")
 Vue.use(VueMomentJS, moment);
+Vue.use(VueCookies)
 
 firebase.initializeApp({
   apiKey: process.env.VUE_APP_FIREBASE_API_KEY,
