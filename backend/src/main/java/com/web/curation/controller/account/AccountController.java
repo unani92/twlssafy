@@ -170,8 +170,8 @@ public class AccountController {
         return response;
     }
 
-    @PostMapping("/account/signup")
-    @ApiOperation(value = "가입하기")
+    @PostMapping("/account/socialSignup")
+    @ApiOperation(value = "구글로 가입하기")
     public Object signup(HttpServletRequest request) throws Exception {
         String id_token = request.getHeader("id_token");
 
@@ -197,6 +197,30 @@ public class AccountController {
         
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
+
+    @PostMapping("/account/signup")
+    @ApiOperation(value = "가입하기")
+    public Object signup(@Valid @RequestBody final SignupRequest request) {
+
+        String email = request.getEmail();
+        int password = ((String)request.getPassword()).hashCode();
+        String nickname = request.getNickname();
+        String info = request.getInfo();
+        
+        User user = new User();
+        user.setEmail(email);
+        user.setPassword(password);
+        user.setNickname(nickname);
+        user.setInfo(info);
+        userDao.save(user);
+        final BasicResponse result = new BasicResponse();
+        result.status = true;
+        result.data = "success";
+        result.object = userDao.findUserByEmail(email).get(); 
+        
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
 
     @PostMapping("/account/checkEmail")
     @ApiOperation(value = "이메일 체크")
