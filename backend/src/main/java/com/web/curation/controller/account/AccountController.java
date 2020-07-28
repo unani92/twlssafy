@@ -22,7 +22,6 @@ import com.web.curation.dao.pinlikesfollow.PinDao;
 import com.web.curation.dao.user.UserDao;
 import com.web.curation.model.BasicResponse;
 import com.web.curation.model.pinlikesfollow.Follow;
-import com.web.curation.model.pinlikesfollow.FollowTmp;
 import com.web.curation.model.pinlikesfollow.Notification;
 import com.web.curation.model.user.SignupRequest;
 import com.web.curation.model.user.User;
