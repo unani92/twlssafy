@@ -64,6 +64,10 @@ function deleteComment(params) {
 function fetchMyArticles(params) {
   return instance.get(`account/${params.nickname}?page=${params.page}`);
 }
+function searchArticle(params) {
+  return instance.get(`article/search?q=${params.q}&category=${params.category}&page=${params.page}`)
+}
+
 export {
   checkEmail,
   checkNickname,
@@ -81,4 +85,5 @@ export {
   createComment,
   deleteComment,
   fetchMyArticles,
+  searchArticle
 };

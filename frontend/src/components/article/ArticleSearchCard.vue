@@ -28,8 +28,6 @@
                 <i v-if="isPinned" class="fas fa-bookmark"></i>
                 <i v-else class="far fa-bookmark"></i>
               </button>
-              <!-- <button class="firstBtn"><i class="fas fa-bookmark"></i></button> -->
-              <!-- <button><i class="far fa-heart"></i></button> -->
               <button @click="like">
                 <i v-if="isliked" class="fas fa-heart"></i>
                 <i v-else class="far fa-heart"></i>
@@ -142,9 +140,6 @@ export default {
       required: true,
     },
   },
-  mounted() {
-    console.log(this.article)
-  }
 };
 </script>
 

@@ -7,7 +7,9 @@
             TWL
           </Router-link>
         </div>
-        <input class="search-bar" type="text" />
+        <div class="input-box">
+          <i @click="$router.push({name: 'ArticleSearch'})" style="font-size: x-large" class="fas fa-search"></i>
+        </div>
       </div>
       <div class="article-icon">
         <div v-if="this.$store.getters.isLogin" class="mypage">
@@ -104,14 +106,12 @@ export default {
   margin-left: 1rem;
   text-decoration: none;
 }
+.input-box {
+  margin-left: 2rem;
+}
 .logo-text {
   text-decoration: none;
   color: white;
-}
-.search-bar {
-  margin-left: 1rem;
-  width: 350px;
-  height: 30px;
 }
 .article-icon {
   display: flex;
