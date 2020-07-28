@@ -45,7 +45,7 @@ public class OAuth2Controller {
         // 가입여부 판단
         Map<String, Object> object = new HashMap<>();
         object.put("isJoined", isJoined(result.get("email")));
-        object.put("tokens" ,tokens);
+        object.put("tokens" , id_token.get("id_token"));
 
 
         final BasicResponse res = new BasicResponse();
