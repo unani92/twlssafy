@@ -22,7 +22,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@Table(name="socialMember")
+@Table(name="socialmember")
 public class SocialMember {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,6 +35,8 @@ public class SocialMember {
     private String type;
 
     private String info;
+
+    private String img;
 
     @Column(insertable = false, updatable = false)
     private LocalDateTime createdate;
