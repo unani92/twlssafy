@@ -21,6 +21,7 @@ export default {
   },
   methods: {
     setUserInfo(userInfo) {
+      // userInfo: this.userInfo, skills:data.object.keywords, following:data.object.followList,
       this.userinfo = userInfo;
     },
   },

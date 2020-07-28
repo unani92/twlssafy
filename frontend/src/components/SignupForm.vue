@@ -8,11 +8,9 @@
           0. 형식 검증
           1. 중복 확인
           2. 메일 인증 요청 및 인증 코드 입력
-          -->
-        <div class="inputfield logo" style=""></div>
-        <div style="text-align: center;">
-          회원가입을 하고 배운 지식을 친구들과 공유해보세요
-        </div>
+        -->
+        <div class="inputfield logo" style></div>
+        <div style="text-align: center;">회원가입을 하고 배운 지식을 친구들과 공유해보세요</div>
         <div class="inputfield">
           <GithubLogin />
           <GoogleLogin />
@@ -30,7 +28,7 @@
 
           <!-- <button :disabled="!isemailValid">
             이메일 인증 받기
-          </button> -->
+          </button>-->
         </div>
         <p class="guide-text">{{ logMessage.validationNumber }}</p>
         <div v-if="confirmedEmail" style="margin-bottom:1rem;">
@@ -47,7 +45,7 @@
           </div>
         </div>
         <!-- nickname
-        중복확인 -->
+        중복확인-->
         <p class="join-warning guide-text">{{ logMessage.nickname }}</p>
         <div class="inputfield">
           <input
@@ -60,7 +58,7 @@
           />
         </div>
         <!-- password
-        형식 검증 -->
+        형식 검증-->
         <p class="join-warning guide-text">{{ logMessage.password }}</p>
         <div class="inputfield">
           <input
@@ -87,17 +85,9 @@
         </div>
 
         <div class="inputfield">
-          <input
-            class="input"
-            id="info"
-            type="text"
-            placeholder="한 줄 소개 부탁해요"
-            v-model="info"
-          />
+          <input class="input" id="info" type="text" placeholder="한 줄 소개 부탁해요" v-model="info" />
         </div>
-        <p class="join-warning guide-text">
-          {{ logMessage.info }}
-        </p>
+        <p class="join-warning guide-text">{{ logMessage.info }}</p>
         <!-- 버튼 활성화 OK -->
         <div class="inputfield">
           <button
@@ -111,9 +101,7 @@
                 isPasswordValid
               )
             "
-          >
-            회원 가입
-          </button>
+          >회원 가입</button>
         </div>
       </div>
     </form>
@@ -126,6 +114,7 @@ import GithubLogin from "../components/GithubLogin";
 import GoogleLogin from "../components/GoogleLogin";
 import { validateEmail, validatePassword } from "@/utils/validation";
 import { checkEmail, checkNickname, registerUser } from "@/api/index";
+// import SelectSkills from "../views/SelectSkills.vue";
 
 export default {
   data() {
@@ -244,7 +233,7 @@ export default {
       const { data } = await registerUser(userData);
       console.log(data);
       this.$store.commit("setUsername", userData.email);
-      this.$store.commit("setNickname", userData.nickname)
+      this.$store.commit("setNickname", userData.nickname);
       this.$router.push("/selectskills");
     },
     initForm() {
@@ -256,7 +245,7 @@ export default {
   directives: {
     focus: {
       // directive definition
-      inserted: function(el) {
+      inserted: function (el) {
         el.focus();
       },
     },
