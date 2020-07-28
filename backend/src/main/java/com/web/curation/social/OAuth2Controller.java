@@ -28,7 +28,6 @@ public class OAuth2Controller {
     @PostMapping("/googlelogin")
     public Object doSessionAssignActionPage(
     @RequestBody final Map<String,Object> id_token) throws Exception {
-
         
         String[] tokens = ((String) id_token.get("id_token")).split("\\.");
         Base64 base64 = new Base64(true);
@@ -46,6 +45,7 @@ public class OAuth2Controller {
         Map<String, Object> object = new HashMap<>();
         object.put("isJoined", isJoined(result.get("email")));
         object.put("tokens" ,tokens);
+        object.put("email", result.get("email"));
 
 
         final BasicResponse res = new BasicResponse();
@@ -56,13 +56,19 @@ public class OAuth2Controller {
         return new ResponseEntity<>(res, HttpStatus.OK);
     }
 
-    private boolean isJoined(String email) {
+    private String isJoined(String email) {
         Optional<User> user = userDao.findUserByEmail(email);
 
         if (user.isPresent()) {
-           return true; 
+            int pw = user.get().getPassword();
+            if(pw<0 || pw>=0) {
+                // id도 있고, pw도 있음 -> 이미 가입 된 회원
+                return "이메일 회원";
+            }
+            else // id는 있고, pw는 없음 -> 소셜로만 가입
+            return "소셜 회원"; 
         } else {
-            return false;
+            return "미가입 회원";
         }
     }
 

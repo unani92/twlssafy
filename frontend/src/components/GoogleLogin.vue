@@ -2,9 +2,10 @@
   <div class="google">
     <!-- <i class="fab fa-google"></i> -->
     <!-- <a href="http://localhost:8080/oauth2/authorization/google">Google 로그인</a> -->
-    <GoogleLogin class="big-button" :renderParams="renderParams" :params="params" :onSuccess="onSuccess" :onFailure="onFailure"> Google Login</GoogleLogin>
     <!-- <button class="big-button" type="button" value="google logout" @click="GoogleSignout()"/> -->
+    <GoogleLogin :renderParams="renderParams" :params="params" :onSuccess="onSuccess" :onFailure="onFailure"> Google Login</GoogleLogin>
   </div>
+        <!-- <GoogleLogin :params="params" :logoutButton=true>Logout</GoogleLogin> -->
 </template>
 
 <script>
@@ -21,7 +22,7 @@ import axios from 'axios';
         renderParams: {
                     width: 250,
                     height: 50,
-                    longtitle: true
+                    longtitle: true,
                 },
         googleAccessToken : '',
       };
@@ -36,8 +37,9 @@ import axios from 'axios';
  
             // This only gets the user information: id, name, imageUrl and email
             const id_token = googleUser.wc.id_token;
-        axios.post('http://localhost:8080/googlelogin',{ id_token }).then(()=>{
+        axios.post('http://localhost:8080/googlelogin',{ id_token }).then((res)=>{
           console.log("success");
+          console.log(res);
         }).catch((err)=>{
           console.log(err);
         }
