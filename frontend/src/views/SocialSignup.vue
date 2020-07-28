@@ -46,9 +46,7 @@
 
 <script>
 
-import { checkNickname,  } from "@/api/index";
-import axios from "axios"
-// import SelectSkills from "../views/SelectSkills.vue";
+import { checkNickname, socialSignup  } from "@/api/index";
 // import { mapState, mapMutations } from 'vuex'
 
 export default {
@@ -87,24 +85,16 @@ export default {
 
     async submitForm() {
       const userData = {
-        // email: this.email,
         nickname: this.nickname,
         info: this.info,
       };
-      const config = {
-        headers: {
-          id_token: this.id_token
-        }
-      }
-      console.log(userData)
-      axios.post("http://localhost:8080/account/socialSignup", userData, config)
-        .then(res => console.log(res))
-        .catch(err => console.log(err))
-      // const res = await socialSignup(userData,this.id_token);
-      // console.log(res);
-      // this.$store.commit("setUsername", userData.email);
-      // this.$store.commit("setNickname", userData.nickname);
-      // this.$router.push("/selectskills");
+
+      const { data: { object } } = await socialSignup(userData, this.id_token)
+
+      this.$store.commit("setUsername", object.email);
+      this.$store.commit("setNickname", object.nickname);
+      this.$store.commit("setToken", object.id_token)
+      this.$router.push("/selectskills");
     },
     initForm() {
       this.email = "";

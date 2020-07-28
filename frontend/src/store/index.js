@@ -11,21 +11,23 @@ export default new Vuex.Store({
   state: {
     username: "",
     nickname: "",
-    authToken: cookies.get('auth-token'),
+    id_token: cookies.get('id_token'),
     followList: [],
     likeList: [],
     pinList: [],
+    notification: []
   },
   getters: {
-    isLoggedIn: state => !!state.authToken,
+    isLoggedIn: state => !!state.id_token,
     config: state => ({
-      headers: {Authorization: `Token ${state.authToken}`}
-    })
+      headers: {id_token: state.id_token}
+    }),
+    notificationCnt: state => state.notification.length
   },
   mutations: {
     setToken(state,token) {
-      state.authToken = token
-      cookies.set('auth-token',token)
+      state.id_token = token
+      cookies.set('id_token',token)
     },
     setUsername(state, username) {
       state.username = username;
@@ -41,6 +43,9 @@ export default new Vuex.Store({
     },
     setPinList(state, pinList) {
       state.pinList = pinList;
+    },
+    setNotificationlist(state, notification) {
+      state.notification = notification
     },
     clearUsername(state) {
       state.username = "";

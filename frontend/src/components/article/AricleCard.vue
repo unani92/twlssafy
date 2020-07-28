@@ -142,9 +142,6 @@ export default {
       required: true,
     },
   },
-  mounted() {
-    console.log(this.article)
-  }
 };
 </script>
 
