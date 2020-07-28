@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
+import javax.servlet.http.HttpServletRequest;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.web.curation.dao.user.UserDao;
 import com.web.curation.model.BasicResponse;
@@ -26,11 +28,10 @@ public class OAuth2Controller {
     UserDao userDao;
 
     @PostMapping("/googlelogin")
-    public Object doSessionAssignActionPage(
-    @RequestBody final Map<String,Object> id_token) throws Exception {
+    public Object doSessionAssignActionPage(HttpServletRequest request) throws Exception {
 
-        
-        String[] tokens = ((String) id_token.get("id_token")).split("\\.");
+        String id_token = request.getHeader("id_token");
+        String[] tokens = (id_token.split("\\."));
         Base64 base64 = new Base64(true);
         String body = new String(base64.decode(tokens[1]));
 
@@ -45,13 +46,25 @@ public class OAuth2Controller {
         // 가입여부 판단
         Map<String, Object> object = new HashMap<>();
         object.put("isJoined", isJoined(result.get("email")));
-        object.put("tokens" , id_token.get("id_token"));
-
+        object.put("tokens" , id_token);
 
         final BasicResponse res = new BasicResponse();
-        res.object = object;
-        res.data = "sucess";
-        res.status = true;
+        System.out.println("is joined : "+isJoined(result.get("email")));
+        System.out.println("TOKEN : "+id_token);
+
+        // 가입된 회원이면 -> success 회원 정보 토큰 반환
+        if(isJoined(result.get("email"))) {
+            res.object = object;
+            res.data = "sucess";
+            res.status = true;
+        }
+
+        // 가입안된 회원이면 -> failure 반환
+        else {
+            res.data = "failed";
+            res.status = true;
+
+        }
 
         return new ResponseEntity<>(res, HttpStatus.OK);
     }
@@ -67,3 +80,5 @@ public class OAuth2Controller {
     }
 
 }
+
+

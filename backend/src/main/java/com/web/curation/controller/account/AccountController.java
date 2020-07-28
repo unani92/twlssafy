@@ -13,8 +13,13 @@ import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import javax.servlet.ServletInputStream;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import com.web.curation.controller.JWTDecoding;
+import com.web.curation.dao.SocialMemberDao;
 import com.web.curation.dao.pinlikesfollow.FollowDao;
 import com.web.curation.dao.pinlikesfollow.LikesDao;
 import com.web.curation.dao.pinlikesfollow.NotificationDao;
@@ -24,6 +29,7 @@ import com.web.curation.model.BasicResponse;
 import com.web.curation.model.pinlikesfollow.Follow;
 import com.web.curation.model.pinlikesfollow.Notification;
 import com.web.curation.model.user.SignupRequest;
+import com.web.curation.model.user.SocialMember;
 import com.web.curation.model.user.User;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,6 +67,9 @@ public class AccountController {
 
     @Autowired
     NotificationDao notificationDao;
+
+    @Autowired
+    SocialMemberDao socialMemberDao;
 
     @PostMapping("/account/login")
     @ApiOperation(value = "로그인")
@@ -120,26 +129,31 @@ public class AccountController {
 
         return response;
     }
-
+    // token Front로 보낼 때 string으로
     @PostMapping("/account/signup")
     @ApiOperation(value = "가입하기")
-    public Object signup(@Valid @RequestBody final SignupRequest request) {
+    public Object signup(HttpServletRequest request) throws Exception {
+        String id_token = request.getHeader("id_token");
 
-        String email = request.getEmail();
-        int password = ((String)request.getPassword()).hashCode();
-        String nickname = request.getNickname();
-        String info = request.getInfo();
+        String email = JWTDecoding.decode(id_token);
+        String nickname = request.getParameter("nickname");
+        String info = request.getParameter("info");
         
-        User user = new User();
+        SocialMember user = new SocialMember();
         user.setEmail(email);
-        user.setPassword(password);
         user.setNickname(nickname);
         user.setInfo(info);
-        userDao.save(user);
+        socialMemberDao.save(user);
+
+        Map<String, String> response = new HashMap<>();
+        response.put("email", email);
+        response.put("nickname", nickname);
+        response.put("id_token", id_token);
+        
         final BasicResponse result = new BasicResponse();
         result.status = true;
         result.data = "success";
-        result.object = userDao.findUserByEmail(email).get(); 
+        result.object = response; 
         
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
