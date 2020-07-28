@@ -37,6 +37,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -70,6 +71,45 @@ public class AccountController {
 
     @Autowired
     SocialMemberDao socialMemberDao;
+
+    @PostMapping("/account/userInfo")
+    @ApiOperation(value = "유저 정보 전달")
+    public Object userInfo(HttpServletRequest request) throws Exception {
+        // 핀, 좋아요, 팔로우, 팔로워, 작성 글, interest 전달
+        String id_token = request.getHeader("id_token");
+        String email = JWTDecoding.decode(id_token);
+
+        Map<String, Object> userInfo = new TreeMap<>();
+        userInfo.put("id_token", id_token);
+        userInfo.put("email", email);
+        userInfo.put("pinList", pinDao.findAllByEmail(email));
+        userInfo.put("likesList", likesDao.findAllByEmail(email));
+        userInfo.put("notificationCnt", notificationDao.countByEmailAndRead(email));
+            
+        List<Follow> follow = followDao.findAllByEmail(email);
+        List<String> followNickname = new ArrayList<>();
+        Map<String, Object> followList = new TreeMap<>();
+        for(Follow fol : follow) {
+            Optional<User> folllownickname = userDao.findUserByEmail(fol.getFollowemail());
+            followNickname.add(folllownickname.get().getNickname());
+                
+        }
+        followList.put("follow", follow);
+        followList.put("followNickname", followNickname);
+        userInfo.put("followList", followList);
+            
+
+        List<Notification> notificationList = notificationDao.findAllIn30Days(email);
+        notificationList.addAll(notificationDao.findAllUnread(email));
+        userInfo.put("notification", notificationList);
+
+        final BasicResponse result = new BasicResponse();
+        result.status = true;
+        result.data = "success";
+        result.object = userInfo; 
+        
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
 
     @PostMapping("/account/login")
     @ApiOperation(value = "로그인")
@@ -129,7 +169,7 @@ public class AccountController {
 
         return response;
     }
-    // token Front로 보낼 때 string으로
+
     @PostMapping("/account/signup")
     @ApiOperation(value = "가입하기")
     public Object signup(HttpServletRequest request) throws Exception {
