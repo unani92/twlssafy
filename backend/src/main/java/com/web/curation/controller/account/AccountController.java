@@ -1,5 +1,6 @@
 package com.web.curation.controller.account;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -20,6 +21,8 @@ import com.web.curation.dao.pinlikesfollow.NotificationDao;
 import com.web.curation.dao.pinlikesfollow.PinDao;
 import com.web.curation.dao.user.UserDao;
 import com.web.curation.model.BasicResponse;
+import com.web.curation.model.pinlikesfollow.Follow;
+import com.web.curation.model.pinlikesfollow.FollowTmp;
 import com.web.curation.model.pinlikesfollow.Notification;
 import com.web.curation.model.user.SignupRequest;
 import com.web.curation.model.user.User;
@@ -81,9 +84,21 @@ public class AccountController {
             Map<String, Object> userInfo = new TreeMap<>();
             userInfo.put("email", userOpt);
             userInfo.put("pinList", pinDao.findAllByEmail(email));
-            userInfo.put("followList", followDao.findAllByEmail(email));
             userInfo.put("likesList", likesDao.findAllByEmail(email));
             userInfo.put("notificationCnt", notificationDao.countByEmailAndRead(email));
+            
+            List<Follow> follow = followDao.findAllByEmail(email);
+            List<String> followNickname = new ArrayList<>();
+            Map<String, Object> followList = new TreeMap<>();
+            for(Follow fol : follow) {
+                Optional<User> folllownickname = userDao.findUserByEmail(fol.getFollowemail());
+                followNickname.add(folllownickname.get().getNickname());
+                
+            }
+            followList.put("follow", follow);
+            followList.put("followNickname", followNickname);
+            userInfo.put("followList", followList);
+            
 
             List<Notification> notificationList = notificationDao.findAllIn30Days(email);
             notificationList.addAll(notificationDao.findAllUnread(email));
