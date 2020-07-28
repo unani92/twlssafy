@@ -150,8 +150,23 @@ public class SearchController {
                 return new ResponseEntity<>(result, HttpStatus.OK);
         }
 
+        // 페이징 구현
+        List<Article> temp = searchDao.findAll(s);
+        int totalArticle = temp.size();
+        int totalPage = totalArticle/10;
+        if(totalArticle%10 > 0) {
+            totalPage += 1;
+        }
 
-        Page<Article> articles = searchDao.findAll(s, PageRequest.of(page, 10, Sort.Direction.DESC,"articleid"));
+        List<Article> articles = new ArrayList<>();
+
+        for(int i=page*10; i<page*10+10; i++) {
+            if(i<totalArticle) {
+                articles.add(temp.get(i));
+            } else break;
+        }
+
+        // Page<Article> articles = searchDao.findAll(s, PageRequest.of(page, 10, Sort.Direction.DESC,"articleid"));
        
         // 키워드 받아오기
         List<List<String>> keywordsList = new ArrayList<>();
