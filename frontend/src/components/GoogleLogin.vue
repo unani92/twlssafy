@@ -1,7 +1,5 @@
 <template>
   <div class="google">
-    <!-- <i class="fab fa-google"></i> -->
-    <!-- <a href="http://localhost:8080/oauth2/authorization/google">Google 로그인</a> -->
     <GoogleLogin class="big-button" :renderParams="renderParams" :params="params" :onSuccess="onSuccess" :onFailure="onFailure"> Google Login</GoogleLogin>
     <!-- <button class="big-button" type="button" value="google logout" @click="GoogleSignout()"/> -->
   </div>
@@ -10,7 +8,6 @@
 <script>
 import GoogleLogin from 'vue-google-login';
 import axios from 'axios';
-// import { mapActions } from 'vuex'
   export default {
     // name: "GoogleLogin",
 
@@ -20,10 +17,10 @@ import axios from 'axios';
           client_id : '634062607964-elrm78as5396cdodbtf1p6mp6nd0dib4.apps.googleusercontent.com'
         },
         renderParams: {
-                    width: 250,
-                    height: 50,
-                    longtitle: true
-                },
+          width: 250,
+          height: 50,
+          longtitle: true
+        },
         googleAccessToken : '',
       };
     },
@@ -42,24 +39,27 @@ import axios from 'axios';
             const { email } = res.data.object
             console.log(res.data)
           if (res.data.data === "failed") {
-            console.log("가입하러가자")
             this.$router.push({ name: "SocialSignup", params: {email, id_token} })
           } else {
-            console.log("로그인해줄게")
-          }
-        }).catch(err =>{
-          console.log(err);
-          }
-        )
-           
+            axios.post('http://localhost:8080/account/userInfo',null,{headers:{id_token}})
+              .then(res => {
+                const { email, followList, id_token, likesList, notification, pinList } = res.data.object
+                this.$store.commit("setUsername", email)
+                this.$store.commit("setFollowList", followList.follow)
+                this.$store.commit("setToken", id_token)
+                this.$store.commit("setLikeList", likesList)
+                this.$store.commit("setNotificationlist", notification)
+                this.$store.commit("setPinList", pinList)
+              })
+            }
+        })
+          .catch(err => console.log(err))
       },
-      onFailure(err){
-        console.log("fail -> " + err);
-            },
+      onFailure(err) { console.log("fail -> " + err) },
     },
     components: {
-            GoogleLogin
-        }
+      GoogleLogin
+    }
   }
 </script>
 

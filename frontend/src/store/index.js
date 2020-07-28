@@ -15,12 +15,14 @@ export default new Vuex.Store({
     followList: [],
     likeList: [],
     pinList: [],
+    notification: []
   },
   getters: {
     isLoggedIn: state => !!state.id_token,
     config: state => ({
-      headers: {Authorization: `Token ${state.id_token}`}
-    })
+      headers: {id_token: state.id_token}
+    }),
+    notificationCnt: state => state.notification.length
   },
   mutations: {
     setToken(state,token) {
@@ -41,6 +43,9 @@ export default new Vuex.Store({
     },
     setPinList(state, pinList) {
       state.pinList = pinList;
+    },
+    setNotificationlist(state, notification) {
+      state.notification = notification
     },
     clearUsername(state) {
       state.username = "";
