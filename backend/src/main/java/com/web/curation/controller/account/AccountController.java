@@ -86,7 +86,31 @@ public class AccountController {
             userInfo.put("likesList", likesDao.findAllByEmail(email));
             userInfo.put("notificationCnt", notificationDao.countByEmailAndRead(email));
 
-            
+            // 내가 팔로우 하는 사람 목록
+            List<Follow> follow = followDao.findAllByEmail(email);
+            List<String> followNickname = new ArrayList<>();
+            Map<String, Object> followList = new TreeMap<>();
+            for(Follow fol : follow) {
+                Optional<User> folllownickname = userDao.findUserByEmail(fol.getFollowemail());
+                followNickname.add(folllownickname.get().getNickname());
+                
+            }
+            followList.put("follow", follow);
+            followList.put("followNickname", followNickname);
+            userInfo.put("followList", followList);
+
+            // 나를 팔로잉 하는 사람 목록
+            List<Follow> follower = followDao.findAllByFollowemail(email);
+            List<String> followerNickname = new ArrayList<>();
+            Map<String, Object> followerList = new TreeMap<>();
+            for(Follow fol : follower) {
+                Optional<User> followernickname = userDao.findUserByEmail(fol.getEmail());
+                followerNickname.add(followernickname.get().getNickname());
+            }            
+
+            followerList.put("follower", follower);
+            followerList.put("followerNickname", followerNickname);
+            userInfo.put("followerList", followerList);
 
             List<Notification> notificationList = notificationDao.findAllIn30Days(email);
             notificationList.addAll(notificationDao.findAllUnread(email));
