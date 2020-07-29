@@ -73,9 +73,9 @@ public class JwtController {
             
             if(loginUser.isPresent()){ // 있으면,,
                 String token = jwtService.create(loginUser.get());
-                System.out.println(token);
+                // System.out.println(token);
 
-                System.out.println(jwtService.decodeJwt(token));
+                // System.out.println(jwtService.decodeJwt(token));
 
                 // res.setHeader("id_token",token); 
                 // // 왜 header에 안 담겨가!!!

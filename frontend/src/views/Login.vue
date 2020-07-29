@@ -31,6 +31,7 @@ import * as EmailValidator from "email-validator";
 import GithubLogin from "../components/GithubLogin";
 import GoogleLogin from "../components/GoogleLogin";
 import { login } from "../api";
+import { mapActions } from 'vuex'
 
 export default {
   name: "Login",
@@ -90,6 +91,7 @@ export default {
         }
       }, 1000);
     },
+    ...mapActions(["getGoogleUserInfo"]),
     login() {
       const params = {
         email: this.email,
@@ -98,28 +100,33 @@ export default {
       if (this.isSubmit) {
         login(params)
           .then((res) => {
-            const {
-              data: { data },
-            } = res;
-            if (data === "success") {
-              const { email, nickname } = res.data.object.email;
-              const { followList, likesList, pinList } = res.data.object;
-              this.$store.commit("setUsername", email);
-              this.$store.commit("setNickname", nickname);
-              this.$store.commit("setFollowList", followList);
-              this.$store.commit("setLikeList", likesList);
-              this.$store.commit("setPinList", pinList);
+            console.log(res);
 
-              if (this.$route.query.redirect) {
-                const redirect = this.$route.query.redirect
-                this.$router.push({ name: 'ArticleDetail', params: {id:Number(redirect)} })
-              } else this.$router.push("/");
+           console.log(res.data.object.id_token)
+            this.getGoogleUserInfo(res.data.object.id_token)
+           
+            // const {
+            //   data: { data },
+            // } = res;
+            // if (data === "success") {
+              // const { email, nickname } = res.data.object.email;
+              // const { followList, likesList, pinList } = res.data.object;
+              // this.$store.commit("setUsername", email);
+              // this.$store.commit("setNickname", nickname);
+              // this.$store.commit("setFollowList", followList);
+              // this.$store.commit("setLikeList", likesList);
+              // this.$store.commit("setPinList", pinList);
 
-            } else if (data === "비밀번호가 일치하지 않습니다.") {
-              this.error.password = "비밀번호가 일치하지 않습니다.";
-            } else {
-              this.error.email = "이메일이 일치하지 않습니다.";
-            }
+            //   if (this.$route.query.redirect) {
+            //     const redirect = this.$route.query.redirect
+            //     this.$router.push({ name: 'ArticleDetail', params: {id:Number(redirect)} })
+            //   } else this.$router.push("/");
+
+            // } else if (data === "비밀번호가 일치하지 않습니다.") {
+            //   this.error.password = "비밀번호가 일치하지 않습니다.";
+            // } else {
+            //   this.error.email = "이메일이 일치하지 않습니다.";
+            // }
           })
           .catch((err) => console.log(err));
       }

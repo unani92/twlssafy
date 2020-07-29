@@ -33,7 +33,7 @@ public class OAuth2Controller {
     public Object googleLogin(@RequestHeader final HttpHeaders header) throws Exception {
 
         String id_token = header.get("id_token").get(0);
-        System.out.println(jwtService.decodeJwt(id_token));
+        // System.out.println(jwtService.decodeJwt(id_token));
 
 
         String[] tokens = (id_token.split("\\."));
