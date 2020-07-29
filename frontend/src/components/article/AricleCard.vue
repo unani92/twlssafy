@@ -44,15 +44,16 @@
 
 <script>
 import { likeArticle, pinArticle } from "@/api/index.js";
+import { mapState } from 'vuex'
 export default {
+  name: "ArticleCard",
   methods: {
     async like() {
       if (this.isLogin) {
         const params = {
           article_id: this.article.articleid,
-          email: this.$store.state.username,
         };
-        const { data } = await likeArticle(params);
+        const { data } = await likeArticle(params, this.id_token);
         console.log(data);
         //프런트에서 스토어 값 갱신
         const likeList = this.$store.state.likeList;
@@ -80,9 +81,8 @@ export default {
       if (this.isLogin) {
         const params = {
           article_id: this.article.articleid,
-          email: this.$store.state.username,
         };
-        const { data } = await pinArticle(params);
+        const { data } = await pinArticle(params, this.id_token);
         console.log(data);
         //프런트에서 스토어 값 갱신
         const pinList = this.$store.state.pinList;
@@ -107,6 +107,7 @@ export default {
     },
   },
   computed: {
+    ...mapState(["id_token"]),
     isLogin() {
       return this.$store.state.username !== "";
     },
@@ -131,7 +132,6 @@ export default {
       return false;
     },
   },
-  // },
   props: {
     article: {
       type: Object,

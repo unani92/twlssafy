@@ -18,7 +18,7 @@
 
 <script>
   import { likeArticle, pinArticle, requestFollow } from "../../api";
-
+  import { mapState, mapActions } from 'vuex'
   export default {
     name: "ArticleDetailSideMenu",
     computed: {
@@ -30,7 +30,8 @@
       },
       followList() {
         return this.$store.state.followList
-      }
+      },
+      ...mapState(["id_token"])
     },
     props: {
       sideMenu: Object,
@@ -51,9 +52,8 @@
         } else {
          const params = {
           article_id,
-          email
         }
-        likeArticle(params)
+        likeArticle(params, this.id_token)
           .then(res => {
             const result = res.data.data
             const likeList = this.likeList
@@ -82,9 +82,8 @@
         } else {
           const params = {
             article_id,
-            email
           }
-          pinArticle(params)
+          pinArticle(params, this.id_token)
             .then(res => {
               const result = res.data.data
               const pinList = this.pinList
@@ -113,10 +112,9 @@
           this.$router.push({ name: 'Login', query: { redirect: `${article_id}` } })
         } else {
          const params = {
-            email,
             follow
           }
-        requestFollow(params)
+        requestFollow(params, this.id_token)
           .then(res => {
             const result = res.data.data
             const followLists = this.followList
@@ -138,12 +136,16 @@
           })
           .catch(err => console.log(err))
        }
-      }
+      },
+      ...mapActions(["getGoogleUserInfo"])
     },
     mounted() {
       const id = this.$route.params.id
       this.isLiked = !!this.likeList.filter(like => Number(like.articleid) === Number(id)).length
       this.isPinned = !!this.pinList.filter(pin => Number(pin.articleid) === Number(id)).length
+      if (this.id_token) {
+        this.getGoogleUserInfo(this.id_token)
+      }
     }
   }
 </script>
