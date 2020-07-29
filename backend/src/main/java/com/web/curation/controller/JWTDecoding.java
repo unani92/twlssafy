@@ -15,7 +15,7 @@ public class JWTDecoding  {
         ObjectMapper mapper = new ObjectMapper();
         Map<String, Object> result = mapper.readValue(body, Map.class);
 
-        System.out.println("token[1] : " + new String(Base64.decodeBase64(tokens[1]), "utf-8"));
+        // System.out.println("token[1] : " + new String(Base64.decodeBase64(tokens[1]), "utf-8"));
         
         String email;
         if(result.get("email") == null){

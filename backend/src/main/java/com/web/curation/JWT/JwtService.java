@@ -22,8 +22,8 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 @Slf4j
 public class JwtService {
-    @Value("${jwt.salt}")
-    private String salt;
+    // @Value("${jwt.salt}")
+    // private String salt;
 
     @Value("${jwt.expmin}")
     private Long expireMin;
@@ -56,11 +56,11 @@ public class JwtService {
         return jwt;
     }
 
-    public void checkValid (final String jwt){
-        log.trace("validating token : {}", jwt);
-        System.out.println("check valid : ");
-        Jwts.parser().setSigningKey(salt.getBytes()).parseClaimsJws(jwt);
-    }
+    // public void checkValid (final String jwt){
+    //     log.trace("validating token : {}", jwt);
+    //     System.out.println("check valid : ");
+    //     Jwts.parser().setSigningKey(salt.getBytes()).parseClaimsJws(jwt);
+    // }
 
     // public Map<String, Object> decodeJwt (final String jwt){
     //     Jws<Claims> claims = null;
