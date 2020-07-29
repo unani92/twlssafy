@@ -33,7 +33,6 @@ import { mapActions } from 'vuex'
         axios.post('http://localhost:8080/googlelogin',{ id_token },{headers: {id_token}})
           .then((res) =>{
             const { email } = res.data.object
-            console.log(res.data)
           if (res.data.data === "failed") {
             this.$router.push({ name: "SocialSignup", params: {email, id_token} })
           } else {

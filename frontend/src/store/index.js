@@ -60,7 +60,7 @@ export default new Vuex.Store({
   },
   actions: {
     getGoogleUserInfo({ commit }, id_token) {
-      axios.post("http://localhost:8080/account/googleInfo", null, {headers: {id_token:id_token}})
+      axios.post("http://localhost:8080/account/googleInfo", { id_token }, {headers: {id_token:id_token}})
         .then(res => {
           const { email, followList, img, nickname, id_token, likesList, notification, pinList } = res.data.object
           commit("setUsername", email)
