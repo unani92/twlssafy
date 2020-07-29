@@ -38,4 +38,19 @@ public class JWTDecoding  {
 
         return result.get("picture");
     }
+
+    static public Map<String,Object> getInfo (String id_token) throws Exception {
+        String[] tokens = ((String) id_token).split("\\.");
+        Base64 base64 = new Base64(true);
+        String body = new String(base64.decode(tokens[1]));
+
+        ObjectMapper mapper = new ObjectMapper();
+        Map<String, Object> result = mapper.readValue(body, Map.class);
+
+        // System.out.println("token[1] : " + new String(Base64.decodeBase64(tokens[1]), "utf-8"));
+
+
+        return (Map<String, Object>) result.get("user");
+    }
+
 }

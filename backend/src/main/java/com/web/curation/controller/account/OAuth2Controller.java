@@ -40,24 +40,31 @@ public class OAuth2Controller {
         String email = JWTDecoding.decode(id_token);
         Optional<User> user = userDao.findUserByEmail(email);
         if(user.isPresent()) {
-            id_token = jwtService.create(user.get());
+            User newUser = new User();
+            newUser.setEmail(user.get().getEmail());
+            newUser.setNickname(user.get().getNickname());
+            newUser.setInfo(user.get().getInfo());
+            newUser.setImg(user.get().getImg());
+            newUser.setType(user.get().getType());
+            newUser.setCreatedate(user.get().getCreatedate());
+            id_token = jwtService.create(newUser);
         }
 
-        String[] tokens = (id_token.split("\\."));
-        Base64 base64 = new Base64(true);
-        String body = new String(base64.decode(tokens[1]));
+        // String[] tokens = (id_token.split("\\."));
+        // Base64 base64 = new Base64(true);
+        // String body = new String(base64.decode(tokens[1]));
 
         // System.out.println("token length : " + tokens.length);
         // System.out.println("token[0] : " + new String(Base64.decodeBase64(tokens[0]), "utf-8"));
         // System.out.println("token[1] : " + new String(Base64.decodeBase64(tokens[1]), "utf-8"));
 
-        ObjectMapper mapper = new ObjectMapper();
-        Map<String, String> result = mapper.readValue(body, Map.class);
+        // ObjectMapper mapper = new ObjectMapper();
+        // Map<String, String> result = mapper.readValue(body, Map.class);
         // System.out.println("result : " + result.get("email"));
 
         // 가입여부 판단
         Map<String, Object> object = new HashMap<>();
-        object.put("isJoined", isJoined(result.get("email")));
+        object.put("isJoined", isJoined(JWTDecoding.decode(id_token)));
         object.put("id_token" , id_token);
 
         final BasicResponse res = new BasicResponse();
@@ -65,10 +72,10 @@ public class OAuth2Controller {
         // System.out.println("TOKEN : "+id_token);
 
         Map<String, String> response = new HashMap<>();
-        response.put("email", result.get("email"));
+        response.put("email", JWTDecoding.decode(id_token));
 
         // 가입된 회원이면 -> success 회원 정보 토큰 반환
-        if(isJoined(result.get("email"))) {
+        if(isJoined(JWTDecoding.decode(id_token))) {
             res.object = object;
             res.data = "success";
             res.status = true;
