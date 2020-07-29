@@ -16,6 +16,7 @@ import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import com.web.curation.JWT.Decoding;
 import com.web.curation.controller.JWTDecoding;
 import com.web.curation.dao.pinlikesfollow.FollowDao;
 import com.web.curation.dao.pinlikesfollow.LikesDao;
@@ -123,8 +124,13 @@ public class AccountController {
     @PostMapping("/account/googleSignup")
     @ApiOperation(value = "구글로 가입하기")
     public Object signup(@RequestBody final Map<String, Object> body, @RequestHeader final HttpHeaders header) throws Exception {
-        String email = JWTDecoding.decode(header.get("id_token").get(0));
+        //String email = JWTDecoding.decode(header.get("id_token").get(0));
         
+        String email = Decoding.decode(header.get("id_token").get(0));
+     
+        System.out.println("최종==============");
+        System.out.println("EMAIL : "+email);
+
         String nickname = (String) body.get("nickname");
         String info = (String)body.get("info");
 
