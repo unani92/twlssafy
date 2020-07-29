@@ -130,7 +130,7 @@ public class AccountController {
         
         String email = JWTDecoding.decode(header.get("id_token").get(0));
      
-        System.out.println("EMAIL : "+email);
+        // System.out.println("EMAIL : "+email);
 
         String nickname = (String) body.get("nickname");
         String info = (String)body.get("info");

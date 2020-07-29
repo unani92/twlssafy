@@ -40,13 +40,13 @@ public class OAuth2Controller {
         Base64 base64 = new Base64(true);
         String body = new String(base64.decode(tokens[1]));
 
-        System.out.println("token length : " + tokens.length);
-        System.out.println("token[0] : " + new String(Base64.decodeBase64(tokens[0]), "utf-8"));
-        System.out.println("token[1] : " + new String(Base64.decodeBase64(tokens[1]), "utf-8"));
+        // System.out.println("token length : " + tokens.length);
+        // System.out.println("token[0] : " + new String(Base64.decodeBase64(tokens[0]), "utf-8"));
+        // System.out.println("token[1] : " + new String(Base64.decodeBase64(tokens[1]), "utf-8"));
 
         ObjectMapper mapper = new ObjectMapper();
         Map<String, String> result = mapper.readValue(body, Map.class);
-        System.out.println("result : " + result.get("email"));
+        // System.out.println("result : " + result.get("email"));
 
         // 가입여부 판단
         Map<String, Object> object = new HashMap<>();
@@ -54,8 +54,8 @@ public class OAuth2Controller {
         object.put("id_token" , id_token);
 
         final BasicResponse res = new BasicResponse();
-        System.out.println("is joined : "+isJoined(result.get("email")));
-        System.out.println("TOKEN : "+id_token);
+        // System.out.println("is joined : "+isJoined(result.get("email")));
+        // System.out.println("TOKEN : "+id_token);
 
         Map<String, String> response = new HashMap<>();
         response.put("email", result.get("email"));

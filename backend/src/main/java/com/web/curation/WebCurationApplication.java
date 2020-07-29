@@ -1,6 +1,6 @@
 package com.web.curation;
 
-import com.web.curation.JWT.JwtInterceptor;
+// import com.web.curation.JWT.JwtInterceptor;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -16,14 +16,14 @@ public class WebCurationApplication implements WebMvcConfigurer {
 		SpringApplication.run(WebCurationApplication.class, args);
 	}
 
-	@Autowired
-	private JwtInterceptor jwtInterceptor;
+	// @Autowired
+	// private JwtInterceptor jwtInterceptor;
 
-	@Override
-	public void addInterceptors(InterceptorRegistry registry) {
-		registry.addInterceptor(jwtInterceptor).addPathPatterns("/admin/**")
-		.excludePathPatterns("/**");
-	}
+	// @Override
+	// public void addInterceptors(InterceptorRegistry registry) {
+	// 	registry.addInterceptor(jwtInterceptor).addPathPatterns("/admin/**")
+	// 	.excludePathPatterns("/**");
+	// }
 
 
 	@Override
