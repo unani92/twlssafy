@@ -76,11 +76,13 @@ public class AccountController {
 
         String email = JWTDecoding.decode(id_token);
 
+        Map<String, Object> userToken = JWTDecoding.getInfo(id_token);
+
         Map<String, Object> userInfo = new TreeMap<>();
         userInfo.put("id_token", id_token);
         userInfo.put("email", email);
-        userInfo.put("nickname", userDao.findUserByEmail(email).get().getNickname());
-        userInfo.put("img", userDao.findUserByEmail(email).get().getImg());
+        userInfo.put("nickname", userToken.get("nickname"));
+        userInfo.put("img", userToken.get("img"));
         userInfo.put("pinList", pinDao.findAllByEmail(email));
         userInfo.put("likesList", likesDao.findAllByEmail(email));
         userInfo.put("notificationCnt", notificationDao.countByEmailAndRead(email));
@@ -127,11 +129,12 @@ public class AccountController {
     @ApiOperation(value = "구글로 가입하기")
     public Object signup(@RequestBody final Map<String, Object> body, @RequestHeader final HttpHeaders header) throws Exception {
         //String email = JWTDecoding.decode(header.get("id_token").get(0));
+        // 여기는 구글 토큰 사용함!!
+
+        System.out.println(header.get("id_token").get(0));
         
         String email = JWTDecoding.decode(header.get("id_token").get(0));
      
-        // System.out.println("EMAIL : "+email);
-
         String nickname = (String) body.get("nickname");
         String info = (String)body.get("info");
 
