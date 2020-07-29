@@ -29,13 +29,14 @@ import { mapActions } from 'vuex'
     methods : {
       ...mapActions(["getGoogleUserInfo"]),
       onSuccess(googleUser){
-        const id_token = googleUser.wc.id_token;
+        let id_token = googleUser.wc.id_token;
         axios.post('http://localhost:8080/googlelogin',{ id_token },{headers: {id_token}})
           .then((res) =>{
             const { email } = res.data.object
           if (res.data.data === "failed") {
             this.$router.push({ name: "SocialSignup", params: {email, id_token} })
           } else {
+              id_token = res.data.object.id_token
               this.getGoogleUserInfo(id_token)
             }
         })

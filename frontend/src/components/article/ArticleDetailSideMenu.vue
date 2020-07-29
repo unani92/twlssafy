@@ -22,16 +22,7 @@
   export default {
     name: "ArticleDetailSideMenu",
     computed: {
-      likeList() {
-        return this.$store.state.likeList
-      },
-      pinList() {
-        return this.$store.state.pinList
-      },
-      followList() {
-        return this.$store.state.followList
-      },
-      ...mapState(["id_token"])
+      ...mapState(["id_token", "likeList", "pinList", "followList"])
     },
     props: {
       sideMenu: Object,
@@ -39,6 +30,7 @@
     },
     data() {
       return {
+        id: this.$route.params.id,
         isLiked: null,
         isPinned: null,
       }
@@ -140,11 +132,14 @@
       ...mapActions(["getGoogleUserInfo"])
     },
     mounted() {
-      const id = this.$route.params.id
-      this.isLiked = !!this.likeList.filter(like => Number(like.articleid) === Number(id)).length
-      this.isPinned = !!this.pinList.filter(pin => Number(pin.articleid) === Number(id)).length
+      // this.isLiked = !!this.likeList.filter(like => Number(like.articleid) === Number(this.id)).length
+      // this.isPinned = !!this.pinList.filter(pin => Number(pin.articleid) === Number(this.id)).length
       if (this.id_token) {
         this.getGoogleUserInfo(this.id_token)
+          .then(() => {
+            this.isLiked = !!this.likeList.filter(like => Number(like.articleid) === Number(this.id)).length
+            this.isPinned = !!this.pinList.filter(pin => Number(pin.articleid) === Number(this.id)).length
+          })
       }
     }
   }

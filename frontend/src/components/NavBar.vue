@@ -31,7 +31,7 @@
       </div>
     </div>
     <div class="aside disabled">
-      <div class="aside-menu">
+      <div class="aside-menu" v-if="!this.$store.getters.isLoggedIn">
         <GoogleLogin />
         <GithubLogin />
         <div @click="goToEmailLogin" class="emailogin-text">
@@ -39,6 +39,11 @@
         </div>
         <div @click="goToSignup" class="signup-text">
           Signup
+        </div>
+      </div>
+      <div v-else>
+        <div @click="logout" class="logout emailogin-text">
+          Log Out
         </div>
       </div>
     </div>
@@ -75,6 +80,9 @@ export default {
         params: { nickname: this.$store.state.nickname },
       });
     },
+    logout() {
+      this.$router.push({name: 'Logout'})
+    }
   },
 };
 </script>
@@ -221,6 +229,15 @@ i:hover {
   cursor: pointer;
   color: white;
   font-weight: bolder;
+}
+.logout {
+  width: 250px;
+  height: 50px;
+  border-radius: 3px;
+  background-color: rgb(204, 93, 65);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .signup-text {
   cursor: pointer;

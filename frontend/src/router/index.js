@@ -11,6 +11,7 @@ import ArticleUpdate from "../views/ArticleUpdate";
 import Profile from "@/views/Profile";
 import ArticleSearch from "../views/ArticleSearch";
 import SocialSignup from "../views/SocialSignup";
+import Logout from "../views/Logout";
 
 Vue.use(VueRouter);
 
@@ -71,6 +72,11 @@ const routes = [
     name: "SocialSignup",
     component: SocialSignup,
     props: true
+  },
+  {
+    path: "/account/logout",
+    name: "Logout",
+    component: Logout
   }
 ];
 
