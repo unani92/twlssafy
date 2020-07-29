@@ -44,7 +44,7 @@ public class InterestController {
     @PostMapping("/account/interest/register")
     @ApiOperation(value = "관심사 등록")
     public Object interest(@RequestBody(required = true) final Map<String, Object> request) {
-
+        //t
         String email = (String) request.get("email");
 
         List<Object> list = new ArrayList<>();
