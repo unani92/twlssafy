@@ -1,23 +1,20 @@
-package com.web.curation.JWT;
+package com.web.curation.controller.account;
 
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.TreeMap;
 
 import javax.servlet.http.HttpServletResponse;
 
+import com.web.curation.JWT.JwtService;
+import com.web.curation.JWT.UserService;
 import com.web.curation.dao.pinlikesfollow.FollowDao;
 import com.web.curation.dao.pinlikesfollow.LikesDao;
 import com.web.curation.dao.pinlikesfollow.NotificationDao;
 import com.web.curation.dao.pinlikesfollow.PinDao;
 import com.web.curation.dao.user.UserDao;
 import com.web.curation.model.BasicResponse;
-import com.web.curation.model.pinlikesfollow.Follow;
-import com.web.curation.model.pinlikesfollow.Notification;
 import com.web.curation.model.user.User;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -85,10 +82,11 @@ public class JwtController {
 
                 result.data = "success";
 
-                // String email = loginUser.get().getEmail();
+                String email = loginUser.get().getEmail();
 
                 object.put("id_token", token);
                 object.put("isJoined", true);
+                result.object = object;
             }
 
         return new ResponseEntity<>(result, HttpStatus.OK);
