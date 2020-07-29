@@ -15,14 +15,17 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.validation.Valid;
 
+import com.web.curation.dao.SkillsDao;
 import com.web.curation.dao.pinlikesfollow.FollowDao;
 import com.web.curation.dao.pinlikesfollow.LikesDao;
 import com.web.curation.dao.pinlikesfollow.NotificationDao;
 import com.web.curation.dao.pinlikesfollow.PinDao;
+import com.web.curation.dao.user.InterestDao;
 import com.web.curation.dao.user.UserDao;
 import com.web.curation.model.BasicResponse;
 import com.web.curation.model.pinlikesfollow.Follow;
 import com.web.curation.model.pinlikesfollow.Notification;
+import com.web.curation.model.user.Interest;
 import com.web.curation.model.user.SignupRequest;
 import com.web.curation.model.user.User;
 
@@ -63,6 +66,12 @@ public class AccountController {
     @Autowired
     NotificationDao notificationDao;
 
+    @Autowired
+    SkillsDao skillsDao;
+
+    @Autowired
+    InterestDao interestDao;
+
     @PostMapping("/account/login")
     @ApiOperation(value = "로그인")
     public Object login(@RequestBody(required = true) final Map<String,Object> request) {
@@ -91,6 +100,16 @@ public class AccountController {
             List<Notification> notificationList = notificationDao.findAllIn30Days(email);
             notificationList.addAll(notificationDao.findAllUnread(email));
             userInfo.put("notification", notificationList);
+
+            // 관심사 
+            List<Interest> interest = interestDao.findAllByEmail(email);
+            List<Object> interestList = new ArrayList<>();
+            
+            for(Interest in : interest) {
+                interestList.add(skillsDao.findSkillBySno(in.getSno()));
+            }
+
+            userInfo.put("interestList", interestList);
             
 
             result.object = userInfo;
