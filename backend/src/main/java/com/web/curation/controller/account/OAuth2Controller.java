@@ -1,4 +1,4 @@
-package com.web.curation.social;
+package com.web.curation.controller.account;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -30,7 +30,7 @@ public class OAuth2Controller {
     JwtService jwtService;
 
     @PostMapping("/googlelogin")
-    public Object doSessionAssignActionPage(@RequestHeader final HttpHeaders header) throws Exception {
+    public Object googleLogin(@RequestHeader final HttpHeaders header) throws Exception {
 
         String id_token = header.get("id_token").get(0);
         System.out.println(jwtService.decodeJwt(id_token));
