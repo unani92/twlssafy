@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.web.curation.JWT.JwtService;
+import com.web.curation.controller.JWTDecoding;
 import com.web.curation.dao.user.UserDao;
 import com.web.curation.model.BasicResponse;
 import com.web.curation.model.user.User;
@@ -35,6 +36,12 @@ public class OAuth2Controller {
         String id_token = header.get("id_token").get(0);
         // System.out.println(jwtService.decodeJwt(id_token));
 
+        // id_token 해독해서 이메일 토큰으로 create
+        String email = JWTDecoding.decode(id_token);
+        Optional<User> user = userDao.findUserByEmail(email);
+        if(user.isPresent()) {
+            id_token = jwtService.create(user.get());
+        }
 
         String[] tokens = (id_token.split("\\."));
         Base64 base64 = new Base64(true);
