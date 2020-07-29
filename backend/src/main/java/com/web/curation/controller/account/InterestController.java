@@ -79,6 +79,8 @@ public class InterestController {
     public Object interestDelete (@RequestHeader(required = true) final HttpHeaders header, @RequestBody(required = true) final Map<String,Object> request)
             throws Exception {
 
+                // body에 isSocial -> google / email
+                
         String email = JWTDecoding.decode(header.get("id_token").get(0));
 
         Object test = new ArrayList<>();
