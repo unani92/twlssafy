@@ -41,7 +41,7 @@ import axios from 'axios';
           if (res.data.data === "failed") {
             this.$router.push({ name: "SocialSignup", params: {email, id_token} })
           } else {
-            axios.post('http://localhost:8080/account/userInfo',null,{headers:{id_token}})
+            axios.post('http://localhost:8080/account/googleInfo',null,{headers:{id_token}})
               .then(res => {
                 const { email, followList, id_token, likesList, notification, pinList } = res.data.object
                 this.$store.commit("setUsername", email)
