@@ -60,12 +60,12 @@ public class JwtController {
 
     @PostMapping("/account/login")
     @ApiOperation(value = "로그인")
-    public Object login (@RequestBody final Map<String, Object> body, HttpServletResponse response){
+    public Object login (@RequestBody final Map<String, Object> body, HttpServletResponse res){
 
         final BasicResponse result = new BasicResponse();
         
-        result.data = "fail";
-        result.status = false;
+        result.data = "failed";
+        result.status = true;
 
         Map<String,Object> object = new HashMap<>();
 
@@ -80,65 +80,18 @@ public class JwtController {
 
                 System.out.println(jwtService.decodeJwt(token));
 
-                response.setHeader("id_token",token); 
-                // 왜 header에 안 담겨가!!!
+                // res.setHeader("id_token",token); 
+                // // 왜 header에 안 담겨가!!!
 
-                result.status = true;
                 result.data = "success";
 
-                String email = loginUser.get().getEmail();
-                String nickname = loginUser.get().getNickname();
+                // String email = loginUser.get().getEmail();
 
-                object.put("email", email);
-                object.put("nickname", nickname);
                 object.put("id_token", token);
-
-
-                {
-                    // is social 정보 담아서 보내주기
-
-                    Map<String, Object> userInfo = new HashMap<>();
-                    userInfo.put("img", userDao.findUserByEmail(email).get().getImg());
-                    userInfo.put("pinList", pinDao.findAllByEmail(email));
-                    userInfo.put("likesList", likesDao.findAllByEmail(email));
-                    userInfo.put("notificationCnt", notificationDao.countByEmailAndRead(email));
-                        
-                    // 내가 팔로우 하는 사람 목록            
-                    List<Follow> follow = followDao.findAllByEmail(email);
-                    List<String> followNickname = new ArrayList<>();
-                    Map<String, Object> followList = new TreeMap<>();
-                    for(Follow fol : follow) {
-                        Optional<User> folllownickname = userDao.findUserByEmail(fol.getFollowemail());
-                        followNickname.add(folllownickname.get().getNickname());
-                                    
-                    }
-                    followList.put("follow", follow);
-                    followList.put("followNickname", followNickname);
-                    userInfo.put("followList", followList);
-                    
-                    // 나를 팔로잉 하는 사람 목록
-                    List<Follow> follower = followDao.findAllByFollowemail(email);
-                    List<String> followerNickname = new ArrayList<>();
-                    Map<String, Object> followerList = new TreeMap<>();
-                    for(Follow fol : follower) {
-                        Optional<User> followernickname = userDao.findUserByEmail(fol.getEmail());
-                        followerNickname.add(followernickname.get().getNickname());
-                    }            
-        
-                    followerList.put("follower", follower);
-                    followerList.put("followerNickname", followerNickname);
-                    userInfo.put("followerList", followerList);
-
-                    List<Notification> notificationList = notificationDao.findAllIn30Days(email);
-                    notificationList.addAll(notificationDao.findAllUnread(email));
-                    userInfo.put("notification", notificationList);
-
-                    object.put("userinfo", userInfo);
-                }
-
+                object.put("isJoined", true);
             }
-            
-        result.object = object;
+
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
+    
 }
