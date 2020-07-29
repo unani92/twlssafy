@@ -13,13 +13,10 @@ import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-import javax.servlet.ServletInputStream;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import com.web.curation.controller.JWTDecoding;
-import com.web.curation.dao.SocialMemberDao;
 import com.web.curation.dao.pinlikesfollow.FollowDao;
 import com.web.curation.dao.pinlikesfollow.LikesDao;
 import com.web.curation.dao.pinlikesfollow.NotificationDao;
@@ -29,7 +26,6 @@ import com.web.curation.model.BasicResponse;
 import com.web.curation.model.pinlikesfollow.Follow;
 import com.web.curation.model.pinlikesfollow.Notification;
 import com.web.curation.model.user.SignupRequest;
-import com.web.curation.model.user.SocialMember;
 import com.web.curation.model.user.User;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +34,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -71,10 +66,7 @@ public class AccountController {
     @Autowired
     NotificationDao notificationDao;
 
-    @Autowired
-    SocialMemberDao socialMemberDao;
-
-    @PostMapping("/account/userInfo")
+    @PostMapping("/account/googleInfo")
     @ApiOperation(value = "유저 정보 전달")
     public Object userInfo(HttpServletRequest request) throws Exception {
         // 핀, 좋아요, 팔로우, 팔로워, 작성 글, interest 전달
@@ -84,24 +76,37 @@ public class AccountController {
         Map<String, Object> userInfo = new TreeMap<>();
         userInfo.put("id_token", id_token);
         userInfo.put("email", email);
-        userInfo.put("nickname", socialMemberDao.findSocialmemberByEmail(email).get().getNickname());
-        userInfo.put("img", socialMemberDao.findSocialmemberByEmail(email).get().getImg());
+        userInfo.put("nickname", userDao.findUserByEmail(email).get().getNickname());
+        userInfo.put("img", userDao.findUserByEmail(email).get().getImg());
         userInfo.put("pinList", pinDao.findAllByEmail(email));
         userInfo.put("likesList", likesDao.findAllByEmail(email));
         userInfo.put("notificationCnt", notificationDao.countByEmailAndRead(email));
             
+        // 내가 팔로우 하는 사람 목록            
         List<Follow> follow = followDao.findAllByEmail(email);
         List<String> followNickname = new ArrayList<>();
         Map<String, Object> followList = new TreeMap<>();
         for(Follow fol : follow) {
-            Optional<SocialMember> folllownickname = socialMemberDao.findSocialmemberByEmail(fol.getFollowemail());
+            Optional<User> folllownickname = userDao.findUserByEmail(fol.getFollowemail());
             followNickname.add(folllownickname.get().getNickname());
-                
+                        
         }
         followList.put("follow", follow);
         followList.put("followNickname", followNickname);
         userInfo.put("followList", followList);
-            
+        
+        // 나를 팔로잉 하는 사람 목록
+        List<Follow> follower = followDao.findAllByFollowemail(email);
+        List<String> followerNickname = new ArrayList<>();
+        Map<String, Object> followerList = new TreeMap<>();
+        for(Follow fol : follower) {
+            Optional<User> followernickname = userDao.findUserByEmail(fol.getEmail());
+            followerNickname.add(followernickname.get().getNickname());
+        }            
+        
+        followerList.put("follower", follower);
+        followerList.put("followerNickname", followerNickname);
+        userInfo.put("followerList", followerList);
 
         List<Notification> notificationList = notificationDao.findAllIn30Days(email);
         notificationList.addAll(notificationDao.findAllUnread(email));
@@ -114,6 +119,40 @@ public class AccountController {
         
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
+
+    @PostMapping("/account/googleSignup")
+    @ApiOperation(value = "구글로 가입하기")
+    public Object signup(@RequestBody final Map<String, Object> body, @RequestHeader final HttpHeaders header) throws Exception {
+        String email = JWTDecoding.decode(header.get("id_token").get(0));
+        
+        String nickname = (String) body.get("nickname");
+        String info = (String)body.get("info");
+
+        User user = new User();
+        user.setEmail(email);
+        user.setNickname(nickname);
+        user.setInfo(info);
+        user.setImg(JWTDecoding.getImg(header.get("id_token").get(0)));
+        user.setType("google");
+        userDao.save(user);
+
+        Map<String, String> response = new HashMap<>();
+        response.put("email", email);
+        response.put("nickname", nickname);
+        response.put("id_token", header.get("id_token").get(0));
+        
+        final BasicResponse result = new BasicResponse();
+        result.status = true;
+        result.data = "success";
+        result.object = response; 
+        
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    ////////////////////////////////////////////////
+    // 여기까지 google login
+    ////////////////////////////////////////////////
+
 
     @PostMapping("/account/login")
     @ApiOperation(value = "로그인")
@@ -138,17 +177,31 @@ public class AccountController {
             userInfo.put("likesList", likesDao.findAllByEmail(email));
             userInfo.put("notificationCnt", notificationDao.countByEmailAndRead(email));
             
+            // 내가 팔로우 하는 사람 목록
             List<Follow> follow = followDao.findAllByEmail(email);
             List<String> followNickname = new ArrayList<>();
             Map<String, Object> followList = new TreeMap<>();
             for(Follow fol : follow) {
                 Optional<User> folllownickname = userDao.findUserByEmail(fol.getFollowemail());
                 followNickname.add(folllownickname.get().getNickname());
-                
+                            
             }
             followList.put("follow", follow);
             followList.put("followNickname", followNickname);
             userInfo.put("followList", followList);
+            
+            // 나를 팔로잉 하는 사람 목록
+            List<Follow> follower = followDao.findAllByFollowemail(email);
+            List<String> followerNickname = new ArrayList<>();
+            Map<String, Object> followerList = new TreeMap<>();
+            for(Follow fol : follower) {
+                Optional<User> followernickname = userDao.findUserByEmail(fol.getEmail());
+                followerNickname.add(followernickname.get().getNickname());
+            }            
+            
+            followerList.put("follower", follower);
+            followerList.put("followerNickname", followerNickname);
+            userInfo.put("followerList", followerList);
             
 
             List<Notification> notificationList = notificationDao.findAllIn30Days(email);
@@ -174,44 +227,7 @@ public class AccountController {
         return response;
     }
 
-    @PostMapping("/account/socialSignup")
-    @ApiOperation(value = "구글로 가입하기")
-    public Object signup(@RequestBody final Map<String, Object> body, @RequestHeader final HttpHeaders header) throws Exception {
-        // 이거 http sevlet request?? 말고 이렇게 따로 받아서 하면 되는듯?~~?~?
-
-        // String id_token = request.getHeader("id_token");
-        String email = JWTDecoding.decode(header.get("id_token").get(0));
-        
-        String nickname = (String) body.get("nickname");
-        String info = (String)body.get("info");
-        // String email = JWTDecoding.decode(id_token);
-        // String nickname = request.getParameter("nickname");
-        // String info = request.getParameter("info");
-        
-        // System.out.println(nickname);
-        // System.out.println(info);
-
-        SocialMember user = new SocialMember();
-        user.setEmail(email);
-        user.setNickname(nickname);
-        user.setInfo(info);
-        user.setImg(JWTDecoding.getImg(header.get("id_token").get(0)));
-        user.setType("google");
-        socialMemberDao.save(user);
-
-        Map<String, String> response = new HashMap<>();
-        response.put("email", email);
-        response.put("nickname", nickname);
-        response.put("id_token", header.get("id_token").get(0));
-        
-        final BasicResponse result = new BasicResponse();
-        result.status = true;
-        result.data = "success";
-        result.object = response; 
-        
-        return new ResponseEntity<>(result, HttpStatus.OK);
-    }
-
+ 
     @PostMapping("/account/signup")
     @ApiOperation(value = "가입하기")
     public Object signup(@Valid @RequestBody final SignupRequest request) {

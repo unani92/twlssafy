@@ -1,10 +1,26 @@
+drop table pin;
+drop table likes;
+drop table interest;
+drop table follow;
+drop table keyword;
+drop table socialmember;
+drop table notification;
+drop table interest;
+drop table comment;
+drop table article;
+drop table member;
+
+-------------------------------------------------
+
 create table `member` (
   `no` int auto_increment NOT NULL,
   `email` varchar(128) DEFAULT NULL,
-  `password` int DEFAULT NULL,
+  `password` varchar(128) default null,
   `createDate` datetime DEFAULT current_timestamp(),
   `nickname` char(20) NOT NULL,
   `info` varchar(200),
+  `type` varchar(8),
+  `img` text,
   PRIMARY KEY (`email`),
   UNIQUE KEY `memberIdx_unique_no` (`no`),
   UNIQUE KEY `nickname` (`nickname`)

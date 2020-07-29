@@ -33,14 +33,18 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int no;
 
+    private String email;
+
     @JsonIgnore
     private int password;
-    private String email;
 
     private String nickname;
 
-    @Column(name="info")
+    private String type;
+
     private String info;
+
+    private String img;
 
     @Column(insertable = false, updatable = false)
     private LocalDateTime createdate;

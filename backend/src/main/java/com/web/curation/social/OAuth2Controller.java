@@ -5,9 +5,9 @@ import java.util.Map;
 import java.util.Optional;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.web.curation.dao.SocialMemberDao;
+import com.web.curation.dao.user.UserDao;
 import com.web.curation.model.BasicResponse;
-import com.web.curation.model.user.SocialMember;
+import com.web.curation.model.user.User;
 
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +17,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 
 @CrossOrigin
@@ -25,7 +24,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 public class OAuth2Controller {
 
     @Autowired
-    SocialMemberDao socialmemberDao;
+    UserDao userDao;
 
     @PostMapping("/googlelogin")
     public Object doSessionAssignActionPage(@RequestHeader final HttpHeaders header) throws Exception {
@@ -73,9 +72,9 @@ public class OAuth2Controller {
     }
 
     private boolean isJoined(String email) {
-        Optional<SocialMember> socialmember = socialmemberDao.findSocialmemberByEmail(email);
+        Optional<User> user = userDao.findUserByEmail(email);
 
-        if (socialmember.isPresent()) {
+        if (user.isPresent()) {
            return true; 
         } else {
             return false;
