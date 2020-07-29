@@ -11,4 +11,5 @@ public interface InterestDao extends JpaRepository<Interest, MultiId> {
     Interest save(MultiId id);
     void delete(Interest id);
     List<Interest> findAllByEmail(String email);
+    <Optional>Interest findByEmailAndSno(String email, int sno);
 }
