@@ -18,8 +18,12 @@ function login(params) {
   return instance.post("account/login", params);
 }
 
-function selectSkill(params) {
+function selectSkills(params) {
   return instance.post("account/interest/register", params);
+}
+
+function deleteSkill(params) {
+  return instance.post("account/interest/delete", params);
 }
 
 function createArticle(params) {
@@ -65,7 +69,9 @@ function fetchMyArticles(params) {
   return instance.get(`account/${params.nickname}?page=${params.page}`);
 }
 function searchArticle(params) {
-  return instance.get(`article/search?q=${params.q}&category=${params.category}&page=${params.page}`)
+  return instance.get(
+    `article/search?q=${params.q}&category=${params.category}&page=${params.page}`
+  );
 }
 
 export {
@@ -73,7 +79,8 @@ export {
   checkNickname,
   registerUser,
   login,
-  selectSkill,
+  selectSkills,
+  deleteSkill,
   createArticle,
   updateArticle,
   deleteArticle,
@@ -85,5 +92,5 @@ export {
   createComment,
   deleteComment,
   fetchMyArticles,
-  searchArticle
+  searchArticle,
 };

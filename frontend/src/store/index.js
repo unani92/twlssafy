@@ -13,6 +13,7 @@ export default new Vuex.Store({
     followList: [],
     likeList: [],
     pinList: [],
+    interestList: [],
   },
   getters: {
     isLogin(state) {
@@ -37,6 +38,9 @@ export default new Vuex.Store({
     },
     setPinList(state, pinList) {
       state.pinList = pinList;
+    },
+    setInterestList(state, interestList) {
+      state.interestList = interestList;
     },
     clearUsername(state) {
       state.username = "";
