@@ -85,6 +85,7 @@ public class AccountController {
         userInfo.put("id_token", id_token);
         userInfo.put("email", email);
         userInfo.put("nickname", socialMemberDao.findSocialmemberByEmail(email).get().getNickname());
+        userInfo.put("img", socialMemberDao.findSocialmemberByEmail(email).get().getImg());
         userInfo.put("pinList", pinDao.findAllByEmail(email));
         userInfo.put("likesList", likesDao.findAllByEmail(email));
         userInfo.put("notificationCnt", notificationDao.countByEmailAndRead(email));
