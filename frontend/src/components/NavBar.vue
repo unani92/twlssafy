@@ -8,7 +8,11 @@
           </Router-link>
         </div>
         <div class="input-box">
-          <i @click="$router.push({name: 'ArticleSearch'})" style="font-size: x-large" class="fas fa-search"></i>
+          <i
+            @click="$router.push({ name: 'ArticleSearch' })"
+            style="font-size: x-large"
+            class="fas fa-search"
+          ></i>
         </div>
       </div>
       <div class="article-icon">
@@ -70,10 +74,12 @@ export default {
       aside.classList.toggle("disabled");
     },
     goToMyPage() {
-      this.$router.push({
-        name: "Profile",
-        params: { nickname: this.$store.state.nickname },
-      });
+      this.$router
+        .push({
+          name: "Profile",
+          params: { nickname: this.$store.state.nickname },
+        })
+        .catch(() => {});
     },
   },
 };

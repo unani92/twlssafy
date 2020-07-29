@@ -8,7 +8,7 @@
         <div class="description follower-email-container">
           <span class="follower-email">{{ userInfo.userInfo.nickname }}</span>
           <div
-            v-if="nickname !== this.$store.state.nickname"
+            v-show="nickname !== this.$store.state.nickname"
             @click="requestFollow(userInfo.userInfo.email, $event)"
           >
             <button class="followBtn">팔로우</button>
@@ -33,9 +33,7 @@
           </li>
           <li v-if="userInfo.skills.length !== 0">
             <div class="skills">
-              <span>#{{ userInfo.skills[0][0] }}</span>
-              <span>#{{ userInfo.skills[1][0] }}</span>
-              <span>#{{ userInfo.skills[2][0] }}</span>
+              <span v-for="skill in skills" :key="skill"># {{ skill }}</span>
               <span class="more" data-toggle="modal">➕</span>
             </div>
           </li>
@@ -74,14 +72,12 @@
       <!-- Modal content -->
       <div class="modal-content">
         <span class="close">&times;</span>
-        <span
-          v-for="skill in this.userInfo.skills"
-          :key="skill[0]"
-          class="totalSkills"
-          >#{{ skill[0] }}</span
+        <span v-for="skill in skills" :key="skill" class="totalSkills"
+          ># {{ skill }}</span
         >
         <SelectSkills
           v-if="this.$store.state.nickname === this.$route.params.nickname"
+          userNickname="nickname"
         ></SelectSkills>
       </div>
     </div>
@@ -153,8 +149,16 @@ export default {
     SelectSkills,
   },
   data() {
+    let interests = [];
+    if (
+      this.$store.getters.isLogin &&
+      this.$route.params.nickname === this.$store.state.nickname
+    ) {
+      // console.log("마이페이지에 오셨군요");
+      interests = this.$store.state.interestList;
+    }
     return {
-      skills: this.userInfo.skills,
+      skills: interests,
       nickname: this.$route.params.nickname,
       follower: this.userInfo.follower,
     };
@@ -192,6 +196,7 @@ export default {
           for (let i = 0; i < len; i++) {
             if (nicknameOfThisBlog === followList[i]) {
               followList.splice(i, 1);
+              break;
             }
           }
         }
@@ -220,12 +225,6 @@ export default {
       ];
       const len = followBtns.length;
       for (let i = 0; i < len; i++) {
-        // console.log(followBtns[i].childNodes[0].innerHTML);
-        // console.log(this.$store.state.followList.followNickname);
-        // console.log(
-        //   followBtns[i].childNodes[0].innerHTML ===
-        //     this.$store.state.followList.followNickname[0]
-        // );
         const followerOfLoginUser = this.$store.state.followList.followNickname;
         const numOfFollowerOFLoginUser = followerOfLoginUser.length;
         for (let j = 0; j < numOfFollowerOFLoginUser; j++) {
@@ -279,6 +278,21 @@ export default {
         followingModal.style.display = "none";
       }
     };
+  },
+  beforeUpdate() {
+    if (
+      !this.$store.getters.isLogin ||
+      this.$route.params.nickname !== this.$store.state.nickname
+    ) {
+      console.log("mounted", this.userInfo);
+      // let interestName = [];
+      const len = this.userInfo.skills.length;
+      for (let i = 0; i < len; i++) {
+        console.log(this.userInfo.skills[i]);
+        this.skills.push(this.userInfo.skills[i].name);
+      }
+      console.log("남의 페이지입니다.3", this.skills);
+    }
   },
 };
 </script>

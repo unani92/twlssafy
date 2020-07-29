@@ -4,8 +4,13 @@
     <div class="selectskills-main">
       <h2>Hot skills</h2>
       <div class="hotskills">
-        <div v-for="skill in hotSkills" :key="skill" :id="skill" class="skill-badge">
-          <span>{{ skill }}</span>
+        <div
+          v-for="skill in hotSkills"
+          :key="skill"
+          :id="skill"
+          class="skill-badge"
+        >
+          <span>{{ skill.name }}</span>
           <i @click="addStack" style="cursor:pointer;" class="fas fa-plus"></i>
         </div>
       </div>
@@ -18,40 +23,48 @@
           style="cursor: pointer"
           v-for="res in result"
           :key="res"
-        >{{ res }}</div>
+        >
+          {{ res }}
+        </div>
       </div>
     </div>
     <div v-if="userSkill.length" class="selectskills-selected">
       <h2>Selected</h2>
       <div class="hotskills">
-        <div v-for="skill in userSkill" :key="skill" :id="skill" class="skill-badge">
+        <div
+          v-for="skill in userSkill"
+          :key="skill"
+          :id="skill"
+          class="totalSkills"
+        >
           <span>{{ skill }}</span>
-          <i @click="removeStack" style="cursor:pointer;" class="fas fa-times"></i>
+          <i
+            @click="removeStack"
+            style="cursor:pointer;"
+            class="fas fa-times"
+          ></i>
         </div>
       </div>
-    </div>
-    <div class="btn">
-      <button @click="submitUserSkills" class="signup-btn">선택완료</button>
-      <!-- <button @click="$router.push('/')" class="signup-btn">다음에 등록</button> -->
     </div>
   </div>
 </template>
 
 <script>
 import skills from "../skills.js";
-import { selectSkill } from "../api";
+import { selectSkills, deleteSkill } from "../api";
 
 export default {
   name: "SelectSkills",
   data() {
     return {
-      hotSkills: ["Python", "Java", "Javascript", "C", "C++"],
+      hotSkills: [],
       skillInput: null,
       result: null,
-      userSkill: [],
+      userSkill: this.$store.state.interestList,
     };
   },
   methods: {
+    //
     submitAutoComplete() {
       const autocomplete = document.querySelector(".autocomplete");
       if (this.skillInput) {
@@ -63,31 +76,62 @@ export default {
         autocomplete.classList.add("disabled");
       }
     },
+    // hotskill에서 더하기 요청
     addStack(event) {
       const skill = event.target.parentNode.id;
       if (!this.userSkill.includes(skill)) {
         this.userSkill.push(skill);
       }
     },
-    removeStack(event) {
+    //selected 영역에서 삭제(BE, FE 모두)
+    async removeStack(event) {
       const selectedSkill = event.target.parentNode.id;
-      this.userSkill = this.userSkill.filter((skill) => {
-        return skill !== selectedSkill;
-      });
+      const params = {
+        email: this.$store.state.username,
+        skill: selectedSkill,
+      };
+      const res = await deleteSkill(params);
+      console.log(res.data.data);
+      if (res.data.data === "success") {
+        const updatedUserSkill = this.userSkill;
+        const len = updatedUserSkill.length;
+        for (let i = 0; i < len; i++) {
+          if (selectedSkill === updatedUserSkill[i]) {
+            // console.log("selectedSkill");
+            updatedUserSkill.splice(i, 1);
+            this.$store.commit("setInterestList", updatedUserSkill);
+            break;
+          }
+        }
+      }
     },
-    searchSkillAdd(event) {
+    // 검색 결과에서 추가
+    async searchSkillAdd(event) {
       const autocomplete = document.querySelector(".autocomplete");
       const skill = event.target.innerText;
-      this.userSkill.push(skill);
+      const params = {
+        email: this.$store.state.username,
+        skill: [skill],
+      };
+      const res = await selectSkills(params);
+      const updatedUserSkill = this.userSkill;
+
+      if (res.data.data === "success") {
+        updatedUserSkill.push(skill);
+        this.$store.commit("setInterestList", updatedUserSkill);
+      }
       this.skillInput = null;
       autocomplete.classList.toggle("disabled");
+      console.log(this.$store.state.interestList);
     },
+    //편집 결과를 반영
     submitUserSkills() {
       const params = {
         email: this.$store.state.username,
         skill: this.userSkill,
       };
-      selectSkill(params)
+      console.log(params);
+      selectSkills(params)
         .then((res) => console.log(res))
         .catch((err) => console.log(err));
     },
@@ -183,5 +227,15 @@ input {
 }
 .disabled {
   display: none;
+}
+.totalSkills {
+  display: inline-block;
+  border: 1px solid #9fa3af;
+  padding: 6px 15px;
+  border-radius: 25px;
+  min-width: 65px;
+  font-weight: 600;
+  margin: 0.5rem 0.25rem;
+  text-align: center;
 }
 </style>

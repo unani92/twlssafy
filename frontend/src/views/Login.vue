@@ -120,12 +120,23 @@ export default {
             if (data === "success") {
               console.log(res);
               const { email, nickname } = res.data.object.email;
-              const { followList, likesList, pinList } = res.data.object;
+              const {
+                followList,
+                likesList,
+                pinList,
+                interestList,
+              } = res.data.object;
               this.$store.commit("setUsername", email);
               this.$store.commit("setNickname", nickname);
               this.$store.commit("setFollowList", followList);
               this.$store.commit("setLikeList", likesList);
               this.$store.commit("setPinList", pinList);
+              let interestName = [];
+              const len = interestList.length;
+              for (let i = 0; i < len; i++) {
+                interestName.push(interestList[i].name);
+              }
+              this.$store.commit("setInterestList", interestName);
 
               if (this.$route.query.redirect) {
                 const redirect = this.$route.query.redirect;
