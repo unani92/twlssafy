@@ -46,7 +46,7 @@
 
 <script>
 
-import { checkNickname, socialSignup  } from "@/api/index";
+import { checkNickname, googleSignup  } from "@/api/index";
 // import { mapState, mapMutations } from 'vuex'
 
 export default {
@@ -89,7 +89,7 @@ export default {
         info: this.info,
       };
 
-      const { data: { object } } = await socialSignup(userData, this.id_token)
+      const { data: { object } } = await googleSignup(userData, this.id_token)
 
       this.$store.commit("setUsername", object.email);
       this.$store.commit("setNickname", object.nickname);

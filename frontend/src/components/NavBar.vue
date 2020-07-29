@@ -12,10 +12,10 @@
         </div>
       </div>
       <div class="article-icon">
-        <div v-if="this.$store.getters.isLogin" class="mypage">
+        <div v-if="this.$store.getters.isLoggedIn" class="mypage">
           <figure
             class="user-photo"
-            style="background-image: url('https://i.pravatar.cc/100?u=정윤환');"
+            :style="{ 'background-image': 'url(' + this.$store.state.img + ')' }"
             @click="goToMyPage"
           ></figure>
         </div>

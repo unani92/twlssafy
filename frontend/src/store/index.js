@@ -1,7 +1,9 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import cookies from 'vue-cookies'
-import { registerUser, login } from "../api";
+import { registerUser } from "../api";
+import axios from 'axios'
+
 Vue.use(Vuex);
 
 export default new Vuex.Store({
@@ -11,6 +13,7 @@ export default new Vuex.Store({
   state: {
     username: "",
     nickname: "",
+    img: "",
     id_token: cookies.get('id_token'),
     followList: [],
     likeList: [],
@@ -22,7 +25,7 @@ export default new Vuex.Store({
     config: state => ({
       headers: {id_token: state.id_token}
     }),
-    notificationCnt: state => state.notification.length
+    // notificationCnt: state => state.notification.length
   },
   mutations: {
     setToken(state,token) {
@@ -34,6 +37,9 @@ export default new Vuex.Store({
     },
     setNickname(state, nickname) {
       state.nickname = nickname;
+    },
+    setImg(state, img) {
+      state.img = img
     },
     setFollowList(state, followList) {
       state.followList = followList;
@@ -53,12 +59,18 @@ export default new Vuex.Store({
     },
   },
   actions: {
-    socialLogin({ commit }, loginData) {
-      login(loginData)
+    getGoogleUserInfo({ commit }, id_token) {
+      axios.post("http://localhost:8080/account/googleInfo", null, {headers: {id_token:id_token}})
         .then(res => {
-          // 이메일, 닉네임, 좋아요, 핀, 팔로우 리스트, 토큰 받아서 커밋으로 집어넣는다.
-          commit("setToken",res.data.key)
-          this.$router.push('/')
+          const { email, followList, img, nickname, id_token, likesList, notification, pinList } = res.data.object
+          commit("setUsername", email)
+          commit("setNickname", nickname)
+          commit("setImg", img)
+          commit("setFollowList", followList.follow)
+          commit("setToken", id_token)
+          commit("setLikeList", likesList)
+          commit("setNotificationlist", notification)
+          commit("setPinList", pinList)
         })
         .catch(err => console.log(err))
     },

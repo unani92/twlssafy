@@ -8,6 +8,7 @@
 <script>
 import GoogleLogin from 'vue-google-login';
 import axios from 'axios';
+import { mapActions } from 'vuex'
   export default {
     // name: "GoogleLogin",
 
@@ -26,13 +27,8 @@ import axios from 'axios';
     },
 
     methods : {
+      ...mapActions(["getGoogleUserInfo"]),
       onSuccess(googleUser){
-        // this.googleAccessToken = googleUser.Zi
-        // console.log(googleUser.w3.ig)
-
-         // console.log(googleUser);
- 
-            // This only gets the user information: id, name, imageUrl and email
         const id_token = googleUser.wc.id_token;
         axios.post('http://localhost:8080/googlelogin',{ id_token },{headers: {id_token}})
           .then((res) =>{
@@ -41,16 +37,7 @@ import axios from 'axios';
           if (res.data.data === "failed") {
             this.$router.push({ name: "SocialSignup", params: {email, id_token} })
           } else {
-            axios.post('http://localhost:8080/account/userInfo',null,{headers:{id_token}})
-              .then(res => {
-                const { email, followList, id_token, likesList, notification, pinList } = res.data.object
-                this.$store.commit("setUsername", email)
-                this.$store.commit("setFollowList", followList.follow)
-                this.$store.commit("setToken", id_token)
-                this.$store.commit("setLikeList", likesList)
-                this.$store.commit("setNotificationlist", notification)
-                this.$store.commit("setPinList", pinList)
-              })
+              this.getGoogleUserInfo(id_token)
             }
         })
           .catch(err => console.log(err))
