@@ -44,7 +44,6 @@ public class InterestController {
     @PostMapping("/account/interest/register")
     @ApiOperation(value = "관심사 등록")
     public Object interest(@RequestBody(required = true) final Map<String, Object> request) {
-
         String email = (String) request.get("email");
 
         List<Object> list = new ArrayList<>();
@@ -55,6 +54,14 @@ public class InterestController {
         for (Object s : list) {
             Skills skill = new Skills();
             skill = skillsDao.findSkillByName((String) s);
+
+            // 이미 추가되어있는 관심사라면 무시
+            // interest.sno == skill.sno and interest.email==email
+            if(interestDao.findByEmailAndSno(email, skill.getSno()) != null) {
+                continue;
+            }
+            
+
             Interest i = new Interest();
             i.setEmail(email);
             i.setSno(skill.getSno());;
