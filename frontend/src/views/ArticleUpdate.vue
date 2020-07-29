@@ -106,7 +106,8 @@
           content: this.article.content,
           keyword: this.article.keywords
         }
-        updateArticle(params)
+        const id_token = this.$store.state.id_token
+        updateArticle(params, id_token)
           .then(res=> {
             console.log(res)
             this.$router.push({name: "ArticleDetail", params: {id:this.id}})

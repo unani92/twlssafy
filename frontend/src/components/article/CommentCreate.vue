@@ -45,7 +45,8 @@
           content,
           articleid
         }
-        createComment(params)
+        const id_token = this.$store.state.id_token
+        createComment(params, id_token)
           .then(res => {
             const now = new Date()
             const comment = { ...res.data.object, now }
