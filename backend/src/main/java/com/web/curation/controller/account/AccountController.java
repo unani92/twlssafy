@@ -154,78 +154,78 @@ public class AccountController {
     ////////////////////////////////////////////////
 
 
-    @PostMapping("/account/login")
-    @ApiOperation(value = "로그인")
-    public Object login(@RequestBody(required = true) final Map<String,Object> request) {
+    // @PostMapping("/account/login")
+    // @ApiOperation(value = "로그인")
+    // public Object login(@RequestBody(required = true) final Map<String,Object> request) {
 
-        String email = (String)request.get("email");
-        int password = ((String)request.get("password")).hashCode();
+    //     String email = (String)request.get("email");
+    //     String password = ((String)request.get("password"));
 
-        final Optional<User> userOpt = userDao.findUserByEmailAndPassword(email, password);
+    //     final Optional<User> userOpt = userDao.findUserByEmailAndPassword(email, password);
 
-        ResponseEntity response = null;
+    //     ResponseEntity response = null;
 
-        final BasicResponse result = new BasicResponse();
-        if (userOpt.isPresent()) { // id/pw 다 맞을 때
-            result.status = true;
-            result.data = "success"; 
+    //     final BasicResponse result = new BasicResponse();
+    //     if (userOpt.isPresent()) { // id/pw 다 맞을 때
+    //         result.status = true;
+    //         result.data = "success"; 
 
-            // 로그인 한 사람의 팔로우, 좋아요, 핀 정보 배열
-            Map<String, Object> userInfo = new TreeMap<>();
-            userInfo.put("email", userOpt);
-            userInfo.put("pinList", pinDao.findAllByEmail(email));
-            userInfo.put("likesList", likesDao.findAllByEmail(email));
-            userInfo.put("notificationCnt", notificationDao.countByEmailAndRead(email));
+    //         // 로그인 한 사람의 팔로우, 좋아요, 핀 정보 배열
+    //         Map<String, Object> userInfo = new TreeMap<>();
+    //         userInfo.put("email", userOpt);
+    //         userInfo.put("pinList", pinDao.findAllByEmail(email));
+    //         userInfo.put("likesList", likesDao.findAllByEmail(email));
+    //         userInfo.put("notificationCnt", notificationDao.countByEmailAndRead(email));
             
-            // 내가 팔로우 하는 사람 목록
-            List<Follow> follow = followDao.findAllByEmail(email);
-            List<String> followNickname = new ArrayList<>();
-            Map<String, Object> followList = new TreeMap<>();
-            for(Follow fol : follow) {
-                Optional<User> folllownickname = userDao.findUserByEmail(fol.getFollowemail());
-                followNickname.add(folllownickname.get().getNickname());
+    //         // 내가 팔로우 하는 사람 목록
+    //         List<Follow> follow = followDao.findAllByEmail(email);
+    //         List<String> followNickname = new ArrayList<>();
+    //         Map<String, Object> followList = new TreeMap<>();
+    //         for(Follow fol : follow) {
+    //             Optional<User> folllownickname = userDao.findUserByEmail(fol.getFollowemail());
+    //             followNickname.add(folllownickname.get().getNickname());
                             
-            }
-            followList.put("follow", follow);
-            followList.put("followNickname", followNickname);
-            userInfo.put("followList", followList);
+    //         }
+    //         followList.put("follow", follow);
+    //         followList.put("followNickname", followNickname);
+    //         userInfo.put("followList", followList);
             
-            // 나를 팔로잉 하는 사람 목록
-            List<Follow> follower = followDao.findAllByFollowemail(email);
-            List<String> followerNickname = new ArrayList<>();
-            Map<String, Object> followerList = new TreeMap<>();
-            for(Follow fol : follower) {
-                Optional<User> followernickname = userDao.findUserByEmail(fol.getEmail());
-                followerNickname.add(followernickname.get().getNickname());
-            }            
+    //         // 나를 팔로잉 하는 사람 목록
+    //         List<Follow> follower = followDao.findAllByFollowemail(email);
+    //         List<String> followerNickname = new ArrayList<>();
+    //         Map<String, Object> followerList = new TreeMap<>();
+    //         for(Follow fol : follower) {
+    //             Optional<User> followernickname = userDao.findUserByEmail(fol.getEmail());
+    //             followerNickname.add(followernickname.get().getNickname());
+    //         }            
             
-            followerList.put("follower", follower);
-            followerList.put("followerNickname", followerNickname);
-            userInfo.put("followerList", followerList);
-            
-
-            List<Notification> notificationList = notificationDao.findAllIn30Days(email);
-            notificationList.addAll(notificationDao.findAllUnread(email));
-            userInfo.put("notification", notificationList);
+    //         followerList.put("follower", follower);
+    //         followerList.put("followerNickname", followerNickname);
+    //         userInfo.put("followerList", followerList);
             
 
-            result.object = userInfo;
-
-        } else { // id/pw 둘 중 하나라도 안 맞으면
-            Optional<User> emailOpt = userDao.findUserByEmail(email);
-            result.status = false;            
-
-            if(emailOpt.isPresent()) { // pw 가 틀린 경우
-                result.data = "비밀번호가 일치하지 않습니다.";
-            } else { // id 자체가 존재하지 않는 경우
-                result.data = "등록되지 않은 E-mail 입니다.";
-            }
+    //         List<Notification> notificationList = notificationDao.findAllIn30Days(email);
+    //         notificationList.addAll(notificationDao.findAllUnread(email));
+    //         userInfo.put("notification", notificationList);
             
-        }
-        response = new ResponseEntity<>(result, HttpStatus.OK); 
 
-        return response;
-    }
+    //         result.object = userInfo;
+
+    //     } else { // id/pw 둘 중 하나라도 안 맞으면
+    //         Optional<User> emailOpt = userDao.findUserByEmail(email);
+    //         result.status = false;            
+
+    //         if(emailOpt.isPresent()) { // pw 가 틀린 경우
+    //             result.data = "비밀번호가 일치하지 않습니다.";
+    //         } else { // id 자체가 존재하지 않는 경우
+    //             result.data = "등록되지 않은 E-mail 입니다.";
+    //         }
+            
+    //     }
+    //     response = new ResponseEntity<>(result, HttpStatus.OK); 
+
+    //     return response;
+    // }
 
  
     @PostMapping("/account/signup")
@@ -233,7 +233,7 @@ public class AccountController {
     public Object signup(@Valid @RequestBody final SignupRequest request) {
 
         String email = request.getEmail();
-        int password = ((String)request.getPassword()).hashCode();
+        String password = ((String)request.getPassword());
         String nickname = request.getNickname();
         String info = request.getInfo();
         
@@ -389,7 +389,7 @@ public class AccountController {
         result.data = "비밀번호 변경 성공! 다시 로그인 해주세요";
         
         User user = userOpt.get();
-        user.setPassword(((String)request.get("password")).hashCode());
+        user.setPassword(((String)request.get("password")));
 
         userDao.save(user);
 
