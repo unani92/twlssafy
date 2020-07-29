@@ -12,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import java.time.LocalDateTime;
@@ -37,6 +38,9 @@ public class SocialMember {
     private String info;
 
     private String img;
+
+    @JsonIgnore
+    private String password;
 
     @Column(insertable = false, updatable = false)
     private LocalDateTime createdate;

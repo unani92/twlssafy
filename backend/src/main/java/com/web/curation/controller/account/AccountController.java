@@ -13,8 +13,6 @@ import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-import javax.servlet.ServletInputStream;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
@@ -38,7 +36,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -74,7 +71,7 @@ public class AccountController {
     @Autowired
     SocialMemberDao socialMemberDao;
 
-    @PostMapping("/account/userInfo")
+    @PostMapping("/account/googleInfo")
     @ApiOperation(value = "유저 정보 전달")
     public Object userInfo(HttpServletRequest request) throws Exception {
         // 핀, 좋아요, 팔로우, 팔로워, 작성 글, interest 전달
@@ -112,6 +109,40 @@ public class AccountController {
         
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
+
+    @PostMapping("/account/googleSignup")
+    @ApiOperation(value = "구글로 가입하기")
+    public Object signup(@RequestBody final Map<String, Object> body, @RequestHeader final HttpHeaders header) throws Exception {
+        String email = JWTDecoding.decode(header.get("id_token").get(0));
+        
+        String nickname = (String) body.get("nickname");
+        String info = (String)body.get("info");
+
+        SocialMember user = new SocialMember();
+        user.setEmail(email);
+        user.setNickname(nickname);
+        user.setInfo(info);
+        user.setImg(JWTDecoding.getImg(header.get("id_token").get(0)));
+        user.setType("google");
+        socialMemberDao.save(user);
+
+        Map<String, String> response = new HashMap<>();
+        response.put("email", email);
+        response.put("nickname", nickname);
+        response.put("id_token", header.get("id_token").get(0));
+        
+        final BasicResponse result = new BasicResponse();
+        result.status = true;
+        result.data = "success";
+        result.object = response; 
+        
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    ////////////////////////////////////////////////
+    // 여기까지 google login
+    ////////////////////////////////////////////////
+
 
     @PostMapping("/account/login")
     @ApiOperation(value = "로그인")
@@ -172,44 +203,7 @@ public class AccountController {
         return response;
     }
 
-    @PostMapping("/account/socialSignup")
-    @ApiOperation(value = "구글로 가입하기")
-    public Object signup(@RequestBody final Map<String, Object> body, @RequestHeader final HttpHeaders header) throws Exception {
-        // 이거 http sevlet request?? 말고 이렇게 따로 받아서 하면 되는듯?~~?~?
-
-        // String id_token = request.getHeader("id_token");
-        String email = JWTDecoding.decode(header.get("id_token").get(0));
-        
-        String nickname = (String) body.get("nickname");
-        String info = (String)body.get("info");
-        // String email = JWTDecoding.decode(id_token);
-        // String nickname = request.getParameter("nickname");
-        // String info = request.getParameter("info");
-        
-        // System.out.println(nickname);
-        // System.out.println(info);
-
-        SocialMember user = new SocialMember();
-        user.setEmail(email);
-        user.setNickname(nickname);
-        user.setInfo(info);
-        user.setImg(JWTDecoding.getImg(header.get("id_token").get(0)));
-        user.setType("google");
-        socialMemberDao.save(user);
-
-        Map<String, String> response = new HashMap<>();
-        response.put("email", email);
-        response.put("nickname", nickname);
-        response.put("id_token", header.get("id_token").get(0));
-        
-        final BasicResponse result = new BasicResponse();
-        result.status = true;
-        result.data = "success";
-        result.object = response; 
-        
-        return new ResponseEntity<>(result, HttpStatus.OK);
-    }
-
+ 
     @PostMapping("/account/signup")
     @ApiOperation(value = "가입하기")
     public Object signup(@Valid @RequestBody final SignupRequest request) {
