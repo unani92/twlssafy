@@ -54,6 +54,8 @@ public class OAuth2Controller {
         Map<String, String> response = new HashMap<>();
         response.put("email", result.get("email"));
 
+        // result 에 is social google 담아주기~~
+
         // 가입된 회원이면 -> success 회원 정보 토큰 반환
         if(isJoined(result.get("email"))) {
             res.object = object;
