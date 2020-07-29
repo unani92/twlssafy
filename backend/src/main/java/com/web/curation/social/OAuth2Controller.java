@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.web.curation.JWT.JwtService;
 import com.web.curation.dao.user.UserDao;
 import com.web.curation.model.BasicResponse;
 import com.web.curation.model.user.User;
@@ -25,11 +26,16 @@ public class OAuth2Controller {
 
     @Autowired
     UserDao userDao;
+    @Autowired
+    JwtService jwtService;
 
     @PostMapping("/googlelogin")
     public Object doSessionAssignActionPage(@RequestHeader final HttpHeaders header) throws Exception {
 
         String id_token = header.get("id_token").get(0);
+        System.out.println(jwtService.decodeJwt(id_token));
+
+
         String[] tokens = (id_token.split("\\."));
         Base64 base64 = new Base64(true);
         String body = new String(base64.decode(tokens[1]));
@@ -54,12 +60,10 @@ public class OAuth2Controller {
         Map<String, String> response = new HashMap<>();
         response.put("email", result.get("email"));
 
-        // result 에 is social google 담아주기~~
-
         // 가입된 회원이면 -> success 회원 정보 토큰 반환
         if(isJoined(result.get("email"))) {
             res.object = object;
-            res.data = "sucess";
+            res.data = "success";
             res.status = true;
         }
 
