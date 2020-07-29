@@ -43,6 +43,7 @@ import axios from 'axios';
           } else {
             axios.post('http://localhost:8080/account/googleInfo',null,{headers:{id_token}})
               .then(res => {
+                console.log(res.data.object)
                 const { email, followList, id_token, likesList, notification, pinList } = res.data.object
                 this.$store.commit("setUsername", email)
                 this.$store.commit("setFollowList", followList.follow)
