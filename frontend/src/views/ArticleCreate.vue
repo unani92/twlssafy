@@ -88,13 +88,13 @@
         const codeMirror = document.querySelector(".CodeMirror-code")
         this.content.content = codeMirror.innerText
         const params = {
-          email: this.$store.state.username,
           nickname: this.$store.state.nickname,
           title: this.content.title,
           content: this.content.content,
           keyword: this.content.keywords
         }
-        createArticle(params)
+        const id_token = this.$store.state.id_token
+        createArticle(params,id_token)
           .then(res=> {
             this.$router.push({name: "ArticleDetail", params: {id:res.data.object}})
           })

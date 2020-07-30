@@ -54,13 +54,24 @@
 import HomeNav from "../components/HomeNav";
 import HashTag from "../components/HashTag";
 import ArticleCardList from "@/components/article/ArticleCardList.vue";
-
+import { mapState, mapActions } from 'vuex'
 export default {
   components: {
     HomeNav,
     HashTag,
     ArticleCardList,
   },
+  computed: {
+    ...mapState(["id_token"])
+  },
+  methods: {
+    ...mapActions(["getGoogleUserInfo"])
+  },
+  mounted() {
+    if (this.id_token) {
+      this.getGoogleUserInfo(this.id_token)
+    }
+  }
 };
 </script>
 

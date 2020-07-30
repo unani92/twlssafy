@@ -47,6 +47,7 @@ import * as EmailValidator from "email-validator";
 import GithubLogin from "../components/GithubLogin";
 import GoogleLogin from "../components/GoogleLogin";
 import { login } from "../api";
+import { mapActions } from 'vuex'
 
 export default {
   name: "Login",
@@ -106,6 +107,7 @@ export default {
         }
       }, 1000);
     },
+    ...mapActions(["getGoogleUserInfo"]),
     login() {
       const params = {
         email: this.email,
@@ -113,6 +115,7 @@ export default {
       };
       if (this.isSubmit) {
         login(params)
+<<<<<<< HEAD
           .then((res) => {
             const {
               data: { data },
@@ -139,12 +142,18 @@ export default {
               this.$store.commit("setInterestList", interestName);
 
               if (this.$route.query.redirect) {
+=======
+          .then(res => {
+            this.getGoogleUserInfo(res.data.object.id_token)
+            if (this.$route.query.redirect) {
+>>>>>>> social
                 const redirect = this.$route.query.redirect;
                 this.$router.push({
                   name: "ArticleDetail",
                   params: { id: Number(redirect) },
                 });
               } else this.$router.push("/");
+<<<<<<< HEAD
             } else if (data === "비밀번호가 일치하지 않습니다.") {
               this.error.password = "비밀번호가 일치하지 않습니다.";
             } else {
@@ -152,6 +161,12 @@ export default {
             }
           })
           .catch((err) => console.log(err));
+=======
+        })
+          .catch(err => console.log(err))
+      } else {
+        this.error.email = "아이디, 비밀번호를 확인하세요"
+>>>>>>> social
       }
     },
     changeBtn() {

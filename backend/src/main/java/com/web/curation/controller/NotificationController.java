@@ -9,10 +9,11 @@ import com.web.curation.model.BasicResponse;
 import com.web.curation.model.pinlikesfollow.Notification;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.annotations.Api;
@@ -34,10 +35,12 @@ public class NotificationController {
 
     @ApiOperation(value = "알림 리스트")
     @GetMapping("/notification")
-    public Object notification(@RequestParam final String email){
+    public Object notification(@RequestHeader final HttpHeaders header) throws Exception {
         final BasicResponse result = new BasicResponse();
         result.data="fail";
         result.status=false;
+
+        String email = JWTDecoding.decode(header.get("id_token").get(0));
 
         Map<String, Object> object = new HashMap<>();
 

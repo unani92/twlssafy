@@ -13,6 +13,7 @@ import com.web.curation.model.BasicResponse;
 import com.web.curation.model.Comment;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -38,7 +40,8 @@ public class CommentController {
     
     @ApiOperation(value = "댓글 등록")
     @PostMapping("/article/comment")
-    public Object writeComment(@RequestBody(required = true) final Map<String, Object> request) {
+    public Object writeComment(@RequestBody(required = true) final Map<String, Object> request, @RequestHeader final HttpHeaders header)
+            throws Exception {
         /*
         {
             "email" : "ssasfy@ssafy.com",
@@ -51,7 +54,7 @@ public class CommentController {
         result.status = false;
         result.data = "댓글 등록 실패";
 
-        String email = (String) request.get("email");
+        String email = JWTDecoding.decode(header.get("id_token").get(0));
         int articleid = Integer.parseInt((String)request.get("articleid"));
         String content = (String) request.get("content");
 

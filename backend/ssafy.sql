@@ -1,10 +1,26 @@
+drop table pin;
+drop table likes;
+drop table interest;
+drop table follow;
+drop table keyword;
+drop table socialmember;
+drop table notification;
+drop table interest;
+drop table comment;
+drop table article;
+drop table member;
+
+-------------------------------------------------
+
 create table `member` (
   `no` int auto_increment NOT NULL,
   `email` varchar(128) DEFAULT NULL,
-  `password` int DEFAULT NULL,
+  `password` varchar(128) default null,
   `createDate` datetime DEFAULT current_timestamp(),
   `nickname` char(20) NOT NULL,
   `info` varchar(200),
+  `type` varchar(8),
+  `img` text,
   PRIMARY KEY (`email`),
   UNIQUE KEY `memberIdx_unique_no` (`no`),
   UNIQUE KEY `nickname` (`nickname`)
@@ -108,7 +124,7 @@ create table keyword (
   primary key (`keywordId`),
   foreign key (`articleid`) references article(`articleid`) 
   on delete cascade on update cascade,
-  foreign key (`sno`) references skills(`sno`)
+  foreign key (`sno`) references skills(`sno`) on delete cascade on update cascade
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
@@ -151,7 +167,21 @@ create table `notification` (
  `createtime` datetime default now(),
  unique KEY (`notificationid`),
  primary key (`email`,`other`,`type`,`content`,`articleid`,`readn`),
- FOREIGN KEY (`email`) REFERENCES `member`(`email`),
+ FOREIGN KEY (`email`) REFERENCES `member`(`email`) ON DELETE CASCADE ON UPDATE CASCADE,
  FOREIGN KEY (`other`) REFERENCES `member`(`email`)
  ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+-----------------------------------------------------------------
+
+create table `socialmember` (
+  `no` int auto_increment NOT NULL,
+  `email` varchar(128) DEFAULT NULL,
+  `createDate` datetime DEFAULT current_timestamp(),
+  `nickname` char(20) NOT NULL,
+  `info` varchar(200),
+  `type` varchar(8),
+  `img` text,
+  PRIMARY KEY (`email`),
+  UNIQUE KEY `memberIdx_unique_no` (`no`),
+  UNIQUE KEY `nickname` (`nickname`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

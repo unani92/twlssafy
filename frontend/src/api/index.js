@@ -13,6 +13,9 @@ function checkNickname(nickname) {
 function registerUser(userData) {
   return instance.post("account/signup", userData);
 }
+function googleSignup(userData,token) {
+  return instance.post("account/googleSignup", userData,{headers:{id_token: token}})
+}
 
 function login(params) {
   return instance.post("account/login", params);
@@ -26,16 +29,16 @@ function deleteSkill(params) {
   return instance.post("account/interest/delete", params);
 }
 
-function createArticle(params) {
-  return instance.post("article", params);
+function createArticle(params,token) {
+  return instance.post("article", params, {headers: {id_token: token}});
 }
 
-function updateArticle(params) {
-  return instance.put("article", params);
+function updateArticle(params, token) {
+  return instance.put("article", params, {headers: {id_token: token}});
 }
 
-function deleteArticle(id) {
-  return instance.delete(`article?no=${id}`);
+function deleteArticle(id, token) {
+  return instance.delete(`article?no=${id}`, {headers: {id_token: token}});
 }
 
 function fetchArticles(params) {
@@ -46,20 +49,20 @@ function fetchArticle(id) {
   return instance.get(`article/${id}`);
 }
 
-function likeArticle(params) {
-  return instance.post(`article/${params.article_id}/likes/${params.email}`);
+function likeArticle(params, token) {
+  return instance.post(`article/${params.article_id}/likes`, null,{headers: {id_token: token}});
 }
 
-function pinArticle(params) {
-  return instance.post(`article/${params.article_id}/pin/${params.email}`);
+function pinArticle(params, token) {
+  return instance.post(`article/${params.article_id}/pin`, null,{headers: {id_token: token}});
 }
 
-function requestFollow(params) {
-  return instance.post("account/follow", params);
+function requestFollow(params, token) {
+  return instance.post("account/follow", params, {headers: {id_token: token}});
 }
 
-function createComment(params) {
-  return instance.post("article/comment", params);
+function createComment(params, token) {
+  return instance.post("article/comment", params, {headers: {id_token: token}});
 }
 
 function deleteComment(params) {
@@ -78,6 +81,7 @@ export {
   checkEmail,
   checkNickname,
   registerUser,
+  googleSignup,
   login,
   selectSkills,
   deleteSkill,

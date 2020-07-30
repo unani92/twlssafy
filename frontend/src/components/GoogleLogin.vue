@@ -1,7 +1,6 @@
 <template>
   <div class="google">
-    <!-- <i class="fab fa-google"></i> -->
-    <!-- <a href="http://localhost:8080/oauth2/authorization/google">Google 로그인</a> -->
+    <GoogleLogin class="big-button" :renderParams="renderParams" :params="params" :onSuccess="onSuccess" :onFailure="onFailure"> Google Login</GoogleLogin>
     <!-- <button class="big-button" type="button" value="google logout" @click="GoogleSignout()"/> -->
     <GoogleLogin :renderParams="renderParams" :params="params" :onSuccess="onSuccess" :onFailure="onFailure"> Google Login</GoogleLogin>
   </div>
@@ -11,6 +10,7 @@
 <script>
 import GoogleLogin from 'vue-google-login';
 import axios from 'axios';
+import { mapActions } from 'vuex'
   export default {
     // name: "GoogleLogin",
 
@@ -20,39 +20,35 @@ import axios from 'axios';
           client_id : '634062607964-elrm78as5396cdodbtf1p6mp6nd0dib4.apps.googleusercontent.com'
         },
         renderParams: {
-                    width: 250,
-                    height: 50,
-                    longtitle: true,
-                },
+          width: 250,
+          height: 50,
+          longtitle: true
+        },
         googleAccessToken : '',
       };
     },
 
     methods : {
+      ...mapActions(["getGoogleUserInfo"]),
       onSuccess(googleUser){
-        // this.googleAccessToken = googleUser.Zi
-        // console.log(googleUser.w3.ig)
-
-         console.log(googleUser);
- 
-            // This only gets the user information: id, name, imageUrl and email
-            const id_token = googleUser.wc.id_token;
-        axios.post('http://localhost:8080/googlelogin',{ id_token }).then((res)=>{
-          console.log("success");
-          console.log(res);
-        }).catch((err)=>{
-          console.log(err);
-        }
-        )
-           
+        let id_token = googleUser.wc.id_token;
+        axios.post('http://localhost:8080/googlelogin',{ id_token },{headers: {id_token}})
+          .then((res) =>{
+            const { email } = res.data.object
+          if (res.data.data === "failed") {
+            this.$router.push({ name: "SocialSignup", params: {email, id_token} })
+          } else {
+              id_token = res.data.object.id_token
+              this.getGoogleUserInfo(id_token)
+            }
+        })
+          .catch(err => console.log(err))
       },
-      onFailure(err){
-        console.log("fail -> " + err);
-            },
+      onFailure(err) { console.log("fail -> " + err) },
     },
     components: {
-            GoogleLogin
-        }
+      GoogleLogin
+    }
   }
 </script>
 

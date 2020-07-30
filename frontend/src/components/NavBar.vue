@@ -16,10 +16,10 @@
         </div>
       </div>
       <div class="article-icon">
-        <div v-if="this.$store.getters.isLogin" class="mypage">
+        <div v-if="this.$store.getters.isLoggedIn" class="mypage">
           <figure
             class="user-photo"
-            style="background-image: url('https://i.pravatar.cc/100?u=정윤환');"
+            :style="{ 'background-image': 'url(' + this.$store.state.img + ')' }"
             @click="goToMyPage"
           ></figure>
         </div>
@@ -35,7 +35,7 @@
       </div>
     </div>
     <div class="aside disabled">
-      <div class="aside-menu">
+      <div class="aside-menu" v-if="!this.$store.getters.isLoggedIn">
         <GoogleLogin />
         <GithubLogin />
         <div @click="goToEmailLogin" class="emailogin-text">
@@ -43,6 +43,11 @@
         </div>
         <div @click="goToSignup" class="signup-text">
           Signup
+        </div>
+      </div>
+      <div v-else>
+        <div @click="logout" class="logout emailogin-text">
+          Log Out
         </div>
       </div>
     </div>
@@ -81,6 +86,9 @@ export default {
         })
         .catch(() => {});
     },
+    logout() {
+      this.$router.push({name: 'Logout'})
+    }
   },
 };
 </script>
@@ -227,6 +235,15 @@ i:hover {
   cursor: pointer;
   color: white;
   font-weight: bolder;
+}
+.logout {
+  width: 250px;
+  height: 50px;
+  border-radius: 3px;
+  background-color: rgb(204, 93, 65);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .signup-text {
   cursor: pointer;

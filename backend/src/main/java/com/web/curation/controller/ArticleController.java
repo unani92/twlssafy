@@ -8,6 +8,7 @@ import java.util.Map;
 
 import javax.transaction.Transactional;
 
+import com.web.curation.JWT.JWTDecoding;
 import com.web.curation.dao.ArticleDao;
 import com.web.curation.dao.CommentDao;
 import com.web.curation.dao.KeywordsDao;
@@ -23,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -31,6 +33,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -120,7 +123,8 @@ public class ArticleController {
     @ApiOperation(value = "글쓰기")
     @ResponseBody
     @PostMapping("/article")
-    public Object writeArticle (@RequestBody(required = true) final Map<String,Object> request){
+    public Object writeArticle (@RequestHeader (required = true) final HttpHeaders header , @RequestBody(required = true) final Map<String,Object> request)
+            throws Exception {
         
         /*
         {
@@ -136,10 +140,13 @@ public class ArticleController {
         final BasicResponse result = new BasicResponse();
         result.status = false;
         result.data = "글쓰기 실패";
-        
 
-        String email = (String) request.get("email");
-        String nickname = (String) request.get("nickname");
+        Map<String,Object> userToken = JWTDecoding.getInfo(header.get("id_token").get(0));
+        
+        String email = JWTDecoding.decode(header.get("id_token").get(0));
+
+        String nickname = (String) userToken.get("nickname");
+        // String nickname = (String) request.get("nickname");
         String title = (String) request.get("title");
         String content = (String) request.get("content");
         String imgurl = (String) request.get("imgUrl");

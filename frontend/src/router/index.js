@@ -10,6 +10,8 @@ import ArticleDetail from "../views/ArticleDetail";
 import ArticleUpdate from "../views/ArticleUpdate";
 import Profile from "@/views/Profile";
 import ArticleSearch from "../views/ArticleSearch";
+import SocialSignup from "../views/SocialSignup";
+import Logout from "../views/Logout";
 
 Vue.use(VueRouter);
 
@@ -65,6 +67,17 @@ const routes = [
     name: "ArticleSearch",
     component: ArticleSearch,
   },
+  {
+    path: "/social/signup",
+    name: "SocialSignup",
+    component: SocialSignup,
+    props: true
+  },
+  {
+    path: "/account/logout",
+    name: "Logout",
+    component: Logout
+  }
 ];
 
 const router = new VueRouter({
@@ -72,5 +85,13 @@ const router = new VueRouter({
   base: process.env.BASE_URL,
   routes,
 });
+
+// router.beforeEach((to, from, next) => {
+//   const publicPages = ['Home', 'Login', 'Signup', 'ArticleDetail']
+//   const authPages = ['Login', 'Signup']
+//   const authRequired = !publicPages.includes(to.name)
+//   const unauthRequired = authPages.includes(to.name)
+//
+// })
 
 export default router;
