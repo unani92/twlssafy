@@ -21,12 +21,12 @@ function login(params) {
   return instance.post("account/login", params);
 }
 
-function selectSkills(params) {
-  return instance.post("account/interest/register", params);
+function selectSkills(params,token) {
+  return instance.post("account/interest/register", params, {headers: {id_token: token}});
 }
 
-function deleteSkill(params) {
-  return instance.post("account/interest/delete", params);
+function deleteSkill(params,token) {
+  return instance.post("account/interest/delete", params, {headers: {id_token: token}});
 }
 
 function createArticle(params,token) {

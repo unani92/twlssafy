@@ -65,7 +65,7 @@
         if (this.skillInput) {
           autocomplete.classList.remove("disabled")
           this.result = skills.filter(skill => {
-            return skill.match(new RegExp(this.skillInput,"i"))
+            return skill.match(new RegExp("^"+this.skillInput,"i"))
           })
         } else {
           autocomplete.classList.add("disabled")

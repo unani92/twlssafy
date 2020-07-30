@@ -70,7 +70,7 @@ export default {
       if (this.skillInput) {
         autocomplete.classList.remove("disabled");
         this.result = skills.filter((skill) => {
-          return skill.match(new RegExp(this.skillInput, "i"));
+          return skill.match(new RegExp("^"+this.skillInput, "i"));
         });
       } else {
         autocomplete.classList.add("disabled");
@@ -87,10 +87,10 @@ export default {
     async removeStack(event) {
       const selectedSkill = event.target.parentNode.id;
       const params = {
-        email: this.$store.state.username,
         skill: selectedSkill,
       };
-      const res = await deleteSkill(params);
+      const id_token = this.$store.state.id_token;
+      const res = await deleteSkill(params, id_token);
       console.log(res.data.data);
       if (res.data.data === "success") {
         const updatedUserSkill = this.userSkill;
@@ -110,10 +110,10 @@ export default {
       const autocomplete = document.querySelector(".autocomplete");
       const skill = event.target.innerText;
       const params = {
-        email: this.$store.state.username,
         skill: [skill],
       };
-      const res = await selectSkills(params);
+      const id_token = this.$store.state.id_token;
+      const res = await selectSkills(params, id_token);
       const updatedUserSkill = this.userSkill;
 
       if (res.data.data === "success") {
