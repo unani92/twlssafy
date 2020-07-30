@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div @click="closeAside">
     <div class="nav-bar">
       <div class="logo-searchbar">
         <div class="logo">
@@ -45,9 +45,12 @@
           Signup
         </div>
       </div>
-      <div v-else>
+      <div v-else class="aside-menu-loggedIn">
         <div @click="logout" class="logout emailogin-text">
           Log Out
+        </div>
+        <div @click="goToMyPage" class="mypage-text">
+          MyPage
         </div>
       </div>
     </div>
@@ -88,6 +91,16 @@ export default {
     },
     logout() {
       this.$router.push({name: 'Logout'})
+    },    
+    closeAside(){
+     // if(event.srcElement && event.srcElement=="aside") return;
+      const aside = document.querySelector(".aside");
+      console.log(aside);
+      if(aside.contains('.disabled')){
+        console.log("closed");
+      } else {
+        console.log("opened");
+      }
     }
   },
 };
@@ -210,8 +223,27 @@ i:hover {
   align-items: center;
   margin-right: 1rem;
 }
-.aside-menu > div {
+.aside-menu-loggedIn {
+  width: 300px;
+  border: 1px solid black;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-right: 1rem;
+}
+.aside-menu > div, .aside-menu-loggedIn > div{
   margin: 10px;
+}
+.aside-menu-loggedIn > div:nth-child(2) {
+  width: 250px;
+  height: 50px;
+  border-radius: 3px;
+  background-color: rgb(114, 177, 214);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .aside-menu > div:nth-child(3) {
   width: 250px;
@@ -264,5 +296,10 @@ i:hover {
   background-position: center;
   background-size: 100%;
   margin-right: 0.5em;
+}
+.mypage-text {
+  cursor: pointer;
+  color: white;
+  font-weight: bolder;
 }
 </style>
