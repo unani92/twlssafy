@@ -284,6 +284,4 @@ export default {
     display: inline-block;
   }
 }
-@media (min-width: 1024px) {
-}
 </style>
