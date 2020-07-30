@@ -141,6 +141,7 @@
 <script>
 import SelectSkills from "@/views/SelectSkills.vue";
 import { requestFollow } from "@/api/index.js";
+import { mapState, mapGetters } from 'vuex'
 export default {
   props: {
     userInfo: Object,
@@ -164,22 +165,21 @@ export default {
     };
   },
   computed: {
-    isLoginFollow() {
-      return this.$store.getters.isLogin;
-    },
+    ...mapGetters(["isLoggedIn"]),
+    ...mapState(["id_token"])
   },
   methods: {
     async requestFollow(followWantingTo, e) {
-      if (!this.$store.getters.isLogin == true) {
+      if (!this.isLoggedIn) {
+        console.log('login required')
         if (confirm("팔로우 하시려면 로그인을 해야 합니다")) {
           this.$router.push("/login");
         }
       } else {
         const params = {
-          email: this.$store.state.username,
           follow: followWantingTo,
         };
-        const { data } = await requestFollow(params);
+        const { data } = await requestFollow(params,this.id_token);
         console.log(data);
         // 프런트에서 처리
         const followList = this.$store.state.followList.followNickname;
@@ -205,7 +205,7 @@ export default {
     },
     isFollowing(follow) {
       //로그인한 사용자가 어떤 사용자를 팔로잉하고 있는가
-      if (this.$store.getters.isLogin) {
+      if (this.isLoggedIn) {
         // 로그인한 사용자가 팔로잉하고 있는 모든 사람
         const followList = this.$store.state.followList.followNickname;
         const len = followList.length;

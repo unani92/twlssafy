@@ -10,7 +10,7 @@
           :id="skill"
           class="skill-badge"
         >
-          <span>{{ skill.name }}</span>
+          <span>{{ skill }}</span>
           <i @click="addStack" style="cursor:pointer;" class="fas fa-plus"></i>
         </div>
       </div>
@@ -57,7 +57,7 @@ export default {
   name: "SelectSkills",
   data() {
     return {
-      hotSkills: [],
+      hotSkills: ["Java", "Python", "C++", "Javascript"],
       skillInput: null,
       result: null,
       userSkill: this.$store.state.interestList,
