@@ -290,7 +290,7 @@ public class ArticleController {
         }
 
         // 해당 글의 댓글 list 저장
-        List<Comment> commentList = commentDao.findAllByArticleid(no);
+        List<Comment> commentList = commentDao.findAllByArticleidOrderByCommentidDesc(no);
 
 
         result.status = true;
@@ -307,6 +307,82 @@ public class ArticleController {
         return new ResponseEntity<>(result, HttpStatus.OK);
 
     }
+
+
     
+    @ApiOperation(value = "팔로잉 글 조회")
+    @GetMapping("/article/following")
+    public Object getFollowingArticle(@RequestParam(value = "page") final int page, @RequestHeader final HttpHeaders header) throws Exception {
+
+        final BasicResponse result = new BasicResponse();
+        result.status = false;
+        result.data = "fail";
+
+        String id_token = header.get("id_token").get(0);
+        String email = JWTDecoding.decode(id_token);
+
+        List<Article> list = articleDao.articleFromFollowing(email);
+
+        if(list!=null){
+            result.status = true;
+            result.data = "success";
+
+            int totalArticle = list.size();
+            // int totalPage = totalArticle/10;
+            // if (totalArticle%10 > 0) 
+            //     totalPage += 1;
+            
+            List<Article> articles = new ArrayList<>();
+
+            for(int i=page*10; i<page*10+10; i++) {
+                if(i<totalArticle) {
+                    articles.add(list.get(i));
+                }
+            }
+
+            result.object = articles;
+        }
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+
+    @ApiOperation(value = "북마크 글 조회")
+    @GetMapping("/article/pin")
+    public Object getPinnedArticle(@RequestParam(value = "page") final int page, @RequestHeader final HttpHeaders header) throws Exception {
+
+        final BasicResponse result = new BasicResponse();
+        result.status = false;
+        result.data = "fail";
+
+        String id_token = header.get("id_token").get(0);
+        String email = JWTDecoding.decode(id_token);
+
+        List<Article> list = articleDao.articleFromPin(email);
+
+        if(list!=null){
+            result.status = true;
+            result.data = "success";
+
+            int totalArticle = list.size();
+            // int totalPage = totalArticle/10;
+            // if (totalArticle%10 > 0) 
+            //     totalPage += 1;
+            
+            List<Article> articles = new ArrayList<>();
+
+            for(int i=page*10; i<page*10+10; i++) {
+                if(i<totalArticle) {
+                    articles.add(list.get(i));
+                }
+            }
+
+            result.object = articles;
+        }
+
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+  
 }
 

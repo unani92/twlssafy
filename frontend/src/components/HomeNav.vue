@@ -1,8 +1,5 @@
 <template>
   <div class="home-nav">
-    <span>
-      POST
-    </span>
     <div class="post-nav">
       <span>
         Latest
@@ -13,8 +10,17 @@
       <span>
         Pinned
       </span>
+    </div>
+    <div v-if="$store.getters.isLoggedIn">
       <span>
-        <i @click="interestToggle" class="fa fa-rocket"></i>
+        <button @click="$router.push('/create')" class="writeBtn">
+          <i class="fas fa-pen"></i>
+        </button>
+      </span>
+      <span>
+        <button class="writeBtn">
+        <i @click="interestToggle" class="fas fa-fire-alt"></i>
+        </button>
       </span>
     </div>
     <div class="interest disabled">
@@ -59,7 +65,7 @@ export default {
   font-size: 20px;
   font-weight: bold;
   position: fixed;
-  background-color: aliceblue;
+  background-color: rgb(244, 248, 255);
   width: 100%;
   z-index: 7;
 }
@@ -96,5 +102,18 @@ export default {
 }
 .disabled {
   display: none;
+}
+.writeBtn {
+  background-color: rgb(144, 153, 240);
+  border-radius: 3px;
+  color: white;
+  font-weight: bold;
+  font-size: 1rem;
+  border-style: none;
+  outline: none;
+  width: 35px;
+  height: 35px;
+  cursor: pointer;
+  margin-right: 10px;
 }
 </style>

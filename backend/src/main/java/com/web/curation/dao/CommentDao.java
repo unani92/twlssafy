@@ -10,7 +10,7 @@ public interface CommentDao extends JpaRepository<Comment, String> {
 
 	int deleteByCommentid(int commentid);
 
-	List<Comment> findAllByArticleid(int articleid);
+	List<Comment> findAllByArticleidOrderByCommentidDesc(int articleid);
 
 	Comment findByCommentid(int commentid);
 }

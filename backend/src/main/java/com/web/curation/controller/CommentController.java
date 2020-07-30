@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.Map;
 
 import com.web.curation.JWT.JWTDecoding;
@@ -67,9 +68,11 @@ public class CommentController {
         if(commentDao.save(comment) == null){
             return new ResponseEntity<>(result, HttpStatus.OK);
         }
+        
+
 
         result.status = true;
-        result.data = "댓글 등록 성공";
+        result.data = (String) JWTDecoding.getInfo(header.get("id_token").get(0)).get("nickname");
         result.object = comment;
 
         return new ResponseEntity<>(result,HttpStatus.OK);

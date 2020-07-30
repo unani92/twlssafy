@@ -7,7 +7,12 @@
     <div>
       <textarea v-model="content" placeholder="댓글을 작성해 주세요" class="create"/>
     </div>
-    <div v-if="commentList.length">
+     <button class="commentBtn" @click="readComment">
+          <div v-if="!toggle"> 댓글 보기</div>
+          <div v-else> 댓글 닫기</div>
+    </button>
+
+    <div v-if="commentList.length && toggle">
       <CommentDetail
           v-for="comment in commentList"
           :comment="comment"
@@ -32,7 +37,8 @@
     },
     data() {
       return {
-        content: null
+        content: null,
+        toggle : true
       }
     },
     methods: {
@@ -50,7 +56,7 @@
           .then(res => {
             const now = new Date()
             const comment = { ...res.data.object, now }
-            this.commentList.push(comment)
+            this.commentList = [comment, ...this.commentList]
             this.content = null
           })
           .catch(err => console.log(err))
@@ -59,6 +65,11 @@
         this.commentList = this.commentList.filter(comment => {
           return Number(comment.commentid) !== Number(id)
         })
+      },
+      readComment(){
+        if(this.toggle)
+          this.toggle = false;
+        else this.toggle = true;
       }
     }
   }
@@ -78,7 +89,7 @@
   button {
     border-radius: 3px;
     color: white;
-    background-color: #e6837a;
+    background-color: #94adff;
     border: none;
     outline: none;
     cursor: pointer;
