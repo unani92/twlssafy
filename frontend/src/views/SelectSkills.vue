@@ -1,48 +1,137 @@
 <template>
-  <div class="selectskills">
-    <h1>관심사를 선택해주세요</h1>
-    <div class="selectskills-main">
-      <h2>Hot skills</h2>
-      <div class="hotskills">
-        <div
-          v-for="skill in hotSkills"
-          :key="skill"
-          :id="skill"
-          class="skill-badge"
+  <div class="profile-info">
+    <section class="about-area" id="about">
+      <div class="picture">
+        <img src="https://i.pravatar.cc/400?u=정윤환" />
+      </div>
+      <div class="text">
+        <div class="description follower-email-container">
+          <span class="follower-email">{{ userInfo.userInfo.nickname }}</span>
+          <div
+            v-show="nickname !== this.$store.state.nickname"
+            @click="requestFollow(userInfo.userInfo.email, $event)"
+          >
+            <button class="followBtn">팔로우</button>
+          </div>
+        </div>
+        <div class="intro">{{ userInfo.userInfo.info }}</div>
+
+        <ul>
+          <li>
+            <div class="info">
+              <i class="far fa-calendar-alt"></i>
+              <span>&nbsp;&nbsp;From&nbsp;</span>
+              <span>&nbsp;{{ userInfo.userInfo.createdate }}</span>
+            </div>
+          </li>
+
+          <li>
+            <div class="info">
+              <i class="fas fa-envelope"></i>
+              {{ userInfo.userInfo.email }}
+            </div>
+          </li>
+          <li v-if="userInfo.skills.length !== 0">
+            <div class="skills">
+              <span v-for="skill in skills" :key="skill"># {{ skill }}</span>
+              <span class="more" data-toggle="modal">➕</span>
+            </div>
+          </li>
+          <li v-else>
+            등록된 관심사가 없습니다.
+            <span class="more" data-toggle="modal">➕</span>
+          </li>
+        </ul>
+        <div class="sns">
+          <a>
+            <i class="fas fa-pencil-alt"></i>
+            <br />
+            <span>{{ userInfo.totalArticleCount }} TILs</span>
+          </a>
+          <a class="follower-modal" data-toggle="modal">
+            <i class="fas fa-eye"></i>
+            <br />
+            <span>{{ userInfo.follower.follower.length }} Followers</span>
+          </a>
+          <a class="following-modal" data-toggle="modal">
+            <i class="fas fa-assistive-listening-systems"></i>
+            <br />
+            <span>{{ userInfo.following.follow.length }} Followings</span>
+          </a>
+        </div>
+      </div>
+    </section>
+    <section v-if="userInfo.totalArticleCount === 0" class="no-article">
+      작성한 글이 없습니다.
+    </section>
+
+    <button id="myBtn" style="display:none">Open Modal</button>
+
+    <!-- The SkillModal -->
+    <div id="skillModal" class="modal">
+      <!-- Modal content -->
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <span v-for="skill in skills" :key="skill" class="totalSkills"
+          ># {{ skill }}</span
         >
-          <span>{{ skill }}</span>
-          <i @click="addStack" style="cursor:pointer;" class="fas fa-plus"></i>
+        <SelectSkills
+          v-if="this.$store.state.nickname === this.$route.params.nickname"
+          userNickname="nickname"
+        ></SelectSkills>
+      </div>
+    </div>
+
+    <!-- The followers -->
+    <div id="followersModal" class="modal">
+      <div class="follow-modal-content">
+        <span class="close">&times;</span>
+        <br />
+
+        <div
+          v-for="idx in userInfo.follower.follower.length"
+          :key="idx"
+          class="follower-email-container"
+        >
+          <span class="follower-email">{{
+            userInfo.follower.followerNickname[idx - 1]
+          }}</span>
+          <div
+            @click="
+              requestFollow(userInfo.follower.follower[idx - 1].email, $event)
+            "
+          >
+            <button class="followBtn">팔로잉</button>
+          </div>
+        </div>
+        <div v-if="this.userInfo.follower.follower.length === 0">
+          팔로우한 친구가 없습니다.
         </div>
       </div>
     </div>
-    <div class="selectskills-search">
-      <input v-model="skillInput" @input="submitAutoComplete" type="text" />
-      <div class="autocomplete disabled">
+
+    <div id="followingsModal" class="modal">
+      <div class="follow-modal-content">
+        <span class="close">&times;</span>
+        <br />
         <div
-          @click="searchSkillAdd"
-          style="cursor: pointer"
-          v-for="res in result"
-          :key="res"
+          v-for="idx in userInfo.following.follow.length"
+          :key="idx"
+          class="follower-email-container"
         >
-          {{ res }}
+          <span class="follower-email">{{
+            userInfo.following.followNickname[idx - 1]
+          }}</span>
+          <div
+            @click="
+              requestFollow(userInfo.following.follow[idx - 1].email, $event)
+            "
+          >
+            <button class="followBtn">팔로잉</button>
+          </div>
         </div>
-      </div>
-    </div>
-    <div v-if="userSkill.length" class="selectskills-selected">
-      <h2>Selected</h2>
-      <div class="hotskills">
-        <div
-          v-for="skill in userSkill"
-          :key="skill"
-          :id="skill"
-          class="totalSkills"
-        >
-          <span>{{ skill }}</span>
-          <i
-            @click="removeStack"
-            style="cursor:pointer;"
-            class="fas fa-times"
-          ></i>
+        <div v-if="this.userInfo.following.follow.length === 0">
+          팔로우한 친구가 없습니다.
         </div>
       </div>
     </div>
@@ -50,184 +139,295 @@
 </template>
 
 <script>
-import skills from "../skills.js";
-import { selectSkills, deleteSkill } from "../api";
-
+import SelectSkills from "@/views/SelectSkills.vue";
+import { requestFollow } from "@/api/index.js";
+import { mapState, mapGetters } from 'vuex'
 export default {
-  name: "SelectSkills",
+  props: {
+    userInfo: Object,
+  },
+  components: {
+    SelectSkills,
+  },
   data() {
+    let interests = [];
+    if (
+      this.$store.getters.isLogin &&
+      this.$route.params.nickname === this.$store.state.nickname
+    ) {
+      // console.log("마이페이지에 오셨군요");
+      interests = this.$store.state.interestList;
+    }
     return {
-      hotSkills: ["Java", "Python", "C++", "Javascript"],
-      skillInput: null,
-      result: null,
-      userSkill: this.$store.state.interestList,
+      skills: interests,
+      nickname: this.$route.params.nickname,
+      follower: this.userInfo.follower,
     };
   },
+  computed: {
+    ...mapGetters(["isLoggedIn"]),
+    ...mapState(["id_token"])
+  },
   methods: {
-    //
-    submitAutoComplete() {
-      const autocomplete = document.querySelector(".autocomplete");
-      if (this.skillInput) {
-        autocomplete.classList.remove("disabled");
-        this.result = skills.filter((skill) => {
-          return skill.match(new RegExp("^"+this.skillInput, "i"));
-        });
+    async requestFollow(followWantingTo, e) {
+      if (!this.isLoggedIn) {
+        console.log('login required')
+        if (confirm("팔로우 하시려면 로그인을 해야 합니다")) {
+          this.$router.push("/login");
+        }
       } else {
-        autocomplete.classList.add("disabled");
+        const params = {
+          follow: followWantingTo,
+        };
+        const { data } = await requestFollow(params,this.id_token);
+        console.log(data);
+        // 프런트에서 처리
+        const followList = this.$store.state.followList.followNickname;
+        const nicknameOfThisBlog = this.$route.params.nickname;
+        if (data.data === "follow") {
+          followList.push(nicknameOfThisBlog);
+          e.target.innerHTML = "팔로우 취소";
+
+          //로그인한 사용자의 스토어에 this.userInfo.userInfo.email추가하기
+        } else {
+          e.target.innerHTML = "팔로우";
+
+          const len = followList.length;
+          for (let i = 0; i < len; i++) {
+            if (nicknameOfThisBlog === followList[i]) {
+              followList.splice(i, 1);
+              break;
+            }
+          }
+        }
+        this.$store.commit("setFollowListByNickname", followList);
       }
     },
-    // hotskill에서 더하기 요청
-    addStack(event) {
-      const skill = event.target.parentNode.id;
-      if (!this.userSkill.includes(skill)) {
-        this.userSkill.push(skill);
-      }
-    },
-    //selected 영역에서 삭제(BE, FE 모두)
-    async removeStack(event) {
-      const selectedSkill = event.target.parentNode.id;
-      const params = {
-        skill: selectedSkill,
-      };
-      const id_token = this.$store.state.id_token;
-      const res = await deleteSkill(params, id_token);
-      console.log(res.data.data);
-      if (res.data.data === "success") {
-        const updatedUserSkill = this.userSkill;
-        const len = updatedUserSkill.length;
+    isFollowing(follow) {
+      //로그인한 사용자가 어떤 사용자를 팔로잉하고 있는가
+      if (this.isLoggedIn) {
+        // 로그인한 사용자가 팔로잉하고 있는 모든 사람
+        const followList = this.$store.state.followList.followNickname;
+        const len = followList.length;
         for (let i = 0; i < len; i++) {
-          if (selectedSkill === updatedUserSkill[i]) {
-            // console.log("selectedSkill");
-            updatedUserSkill.splice(i, 1);
-            this.$store.commit("setInterestList", updatedUserSkill);
-            break;
+          if (follow === followList[0]) {
+            return true;
           }
         }
       }
+      return false;
     },
-    // 검색 결과에서 추가
-    async searchSkillAdd(event) {
-      const autocomplete = document.querySelector(".autocomplete");
-      const skill = event.target.innerText;
-      const params = {
-        skill: [skill],
-      };
-      const id_token = this.$store.state.id_token;
-      const res = await selectSkills(params, id_token);
-      const updatedUserSkill = this.userSkill;
-
-      if (res.data.data === "success") {
-        updatedUserSkill.push(skill);
-        this.$store.commit("setInterestList", updatedUserSkill);
+  },
+  updated() {
+    if (this.$store.getters.isLogin) {
+      const followBtns = [
+        ...document.querySelectorAll(".follower-email-container"),
+      ];
+      const len = followBtns.length;
+      for (let i = 0; i < len; i++) {
+        const followerOfLoginUser = this.$store.state.followList.followNickname;
+        const numOfFollowerOFLoginUser = followerOfLoginUser.length;
+        for (let j = 0; j < numOfFollowerOFLoginUser; j++) {
+          if (
+            followBtns[i].childNodes[0].innerHTML === followerOfLoginUser[j]
+          ) {
+            followBtns[i].childNodes[1].childNodes[0].innerHTML = "팔로우 취소";
+          }
+        }
       }
-      this.skillInput = null;
-      autocomplete.classList.toggle("disabled");
-      console.log(this.$store.state.interestList);
-    },
-    //편집 결과를 반영
-    submitUserSkills() {
-      const params = {
-        email: this.$store.state.username,
-        skill: this.userSkill,
-      };
-      console.log(params);
-      selectSkills(params)
-        .then((res) => console.log(res))
-        .catch((err) => console.log(err));
-    },
+    }
+    //스킬
+    const skillModal = document.getElementById("skillModal");
+    const btn = document.querySelector(".more");
+    const span = document.getElementsByClassName("close")[0];
+    btn.onclick = function() {
+      skillModal.style.display = "block";
+    };
+    span.onclick = function() {
+      skillModal.style.display = "none";
+    };
+    // follower modal
+    const followerModal = document.getElementById("followersModal");
+    const followBtn = document.querySelector(".follower-modal");
+    const followSpan = document.getElementsByClassName("close")[1];
+    followBtn.onclick = function() {
+      followerModal.style.display = "block";
+    };
+    followSpan.onclick = function() {
+      followerModal.style.display = "none";
+    };
+
+    // following modal
+    const followingModal = document.getElementById("followingsModal");
+    const followingBtn = document.querySelector(".following-modal");
+    const followingSpan = document.getElementsByClassName("close")[2];
+    followingBtn.onclick = function() {
+      followingModal.style.display = "block";
+    };
+    followingSpan.onclick = function() {
+      followingModal.style.display = "none";
+    };
+    window.onclick = function(event) {
+      if (
+        event.target == skillModal ||
+        event.target == followerModal ||
+        event.target == followingModal
+      ) {
+        skillModal.style.display = "none";
+        followerModal.style.display = "none";
+        followingModal.style.display = "none";
+      }
+    };
+  },
+  beforeUpdate() {
+    if (
+      !this.$store.getters.isLogin ||
+      this.$route.params.nickname !== this.$store.state.nickname
+    ) {
+      console.log("mounted", this.userInfo);
+      // let interestName = [];
+      const len = this.userInfo.skills.length;
+      for (let i = 0; i < len; i++) {
+        console.log(this.userInfo.skills[i]);
+        this.skills.push(this.userInfo.skills[i].name);
+      }
+      console.log("남의 페이지입니다.3", this.skills);
+    }
   },
 };
 </script>
 
-<style scoped>
-.selectskills {
-  padding-top: 50px;
+<style>
+ul {
+  list-style-type: none;
 }
-h1 {
-  font-size: 40px;
+.profile-info {
+  max-width: 850px;
+  margin: auto;
+}
+/* SECTION CONTAINER */
+.section-container {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+/* SECTION */
+section {
+  padding: 10px 0;
+}
+.no-article {
   text-align: center;
 }
-input {
-  margin-top: 2rem;
+
+/* ABOUT AREA */
+.about-area > .picture {
+  display: block;
   text-align: center;
-  font-size: 1rem;
-  border: 0;
-  outline: 0;
-  background: transparent;
-  border-bottom: 3px solid black;
+  padding: 20px;
 }
-.selectskills-search,
-.selectskills-main,
-.selectskills-selected {
-  max-width: 530px;
-  margin-top: 1rem;
-  margin-bottom: 1rem;
-  margin-left: auto;
-  margin-right: auto;
-  padding-bottom: 1rem;
-  border-radius: 3px;
-  background-color: white;
-  text-align: left;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-}
-.autocomplete {
-  border: 1px solid black;
-  width: 300px;
-  height: 150px;
-  overflow-y: auto;
-}
-.skill-badge {
-  color: white;
-  font-weight: bold;
-  background-color: black;
-  width: 100px;
-  height: 40px;
-  border-radius: 6px;
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  margin: 6px;
-}
-.hotskills {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-flow: row wrap;
-}
-.btn {
-  max-width: 530px;
-  margin-top: 1rem;
-  margin-bottom: 1rem;
-  margin-left: auto;
-  margin-right: auto;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.signup-btn {
-  background-color: rgb(204, 93, 65);
-  border-radius: 3px;
-  color: white;
-  font-weight: bolder;
-  font-size: 1rem;
-  border-style: none;
-  outline: none;
-  height: 50px;
-  cursor: pointer;
-  margin: 1rem 10px 1rem 0;
-  width: 530px;
-}
-@media (max-width: 414px) {
-  .signup-btn {
-    width: 250px;
+
+@media (min-width: 992px) {
+  .about-area > .picture {
+    width: 40%;
+    display: inline-block;
   }
 }
-.disabled {
-  display: none;
+
+.about-area > .picture > img {
+  max-width: 300px;
+  max-height: 300px;
+  border-radius: 50%;
 }
+.name {
+  font-size: 25px;
+  /* text-align: center; */
+  padding: 15px 0;
+}
+
+.description {
+  font-size: 14px;
+  font-family: "Noto Sans KR", sans-serif;
+}
+
+.about-area > .text {
+  display: block;
+  width: 96%;
+  padding: 30px;
+  background-color: white;
+  word-break: break-all;
+  margin: auto;
+  border-radius: 25px;
+}
+
+@media (min-width: 992px) {
+  .about-area > .text {
+    display: inline-block;
+    width: 60%;
+  }
+}
+
+.about-area > .text * {
+  font-size: 16px;
+}
+
+.about-area > .text > .intro {
+  padding: 20px 0;
+  font-family: "Noto Sans KR", sans-serif;
+  letter-spacing: 1.5px;
+}
+
+.about-area > .text > ul {
+  padding: 20px 0;
+}
+
+.about-area > .text > ul > li {
+  height: 40px;
+}
+
+.about-area > .text > ul > li > .info {
+  color: #777;
+}
+
+.about-area > .text > ul > li > .info > i {
+  color: royalblue;
+}
+
+.about-area > .text > .sns {
+  text-align: right;
+  display: flex;
+  /* justify-content: space-between; */
+}
+.more:hover {
+  cursor: pointer;
+  background-color: lightblue;
+}
+@media (max-width: 414px) {
+  .about-area > .text > .sns > a {
+    /* text-align: center; */
+    margin: 0 auto;
+  }
+  .about-area > .text > .sns > a > span {
+    font-size: 12px;
+  }
+}
+
+@media (min-width: 992px) {
+  .about-area > .text > .sns {
+    text-align: left;
+  }
+}
+
+.about-area > .text > .sns > a {
+  padding: 1rem;
+  text-align: center;
+  border-radius: 5px;
+}
+
+.about-area > .text > .sns > a:hover {
+  background-color: #f0f0f0;
+  cursor: pointer;
+}
+
 .totalSkills {
   display: inline-block;
   border: 1px solid #9fa3af;
@@ -237,5 +437,109 @@ input {
   font-weight: 600;
   margin: 0.5rem 0.25rem;
   text-align: center;
+}
+
+.skills span {
+  display: inline-block;
+  min-width: 30px;
+  font-weight: 600;
+  margin: 4px 4px;
+  text-align: center;
+}
+/* The Modal (background) */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0, 0, 0); /* Fallback color */
+  background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+  background-color: #fefefe;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+}
+
+/* The Close Button */
+.close {
+  color: #aaaaaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.follow-modal-content {
+  background-color: #fefefe;
+  margin: auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 40%;
+}
+@media (max-width: 992px) {
+  .follow-modal-content {
+    width: 80%;
+  }
+}
+.follower-email-container {
+  margin: 1rem 1rem;
+  display: flex;
+  justify-content: space-between;
+  line-height: 30px;
+}
+.follower-email-container > button {
+  background-color: #0095f6;
+  border: #0095f6;
+  border-radius: 4px;
+  padding: 5px 9px;
+  font-size: 14px;
+  color: white;
+}
+.follower-email-container > button:hover {
+  cursor: pointer;
+}
+.follower-email-container {
+  margin: 1rem 1rem;
+  display: flex;
+  justify-content: space-between;
+  line-height: 30px;
+}
+.follower-email-container > button {
+  background-color: #0095f6;
+  border: #0095f6;
+  border-radius: 4px;
+  padding: 5px 9px;
+  font-size: 14px;
+  color: white;
+}
+.follower-email-container > button:hover {
+  cursor: pointer;
+}
+.followBtn {
+  background-color: #0095f6;
+  border: #0095f6;
+  border-radius: 4px;
+  padding: 5px 9px;
+  font-size: 14px;
+  color: white;
+}
+.followBtn:hover {
+  cursor: pointer;
 }
 </style>
