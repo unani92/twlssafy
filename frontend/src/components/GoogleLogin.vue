@@ -1,8 +1,6 @@
 <template>
   <div class="google">
     <GoogleLogin class="big-button" :renderParams="renderParams" :params="params" :onSuccess="onSuccess" :onFailure="onFailure"> Google Login</GoogleLogin>
-    <!-- <button class="big-button" type="button" value="google logout" @click="GoogleSignout()"/> -->
-    <GoogleLogin :renderParams="renderParams" :params="params" :onSuccess="onSuccess" :onFailure="onFailure"> Google Login</GoogleLogin>
   </div>
         <!-- <GoogleLogin :params="params" :logoutButton=true>Logout</GoogleLogin> -->
 </template>
