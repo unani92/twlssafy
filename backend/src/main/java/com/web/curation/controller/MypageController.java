@@ -95,7 +95,6 @@ public class MypageController {
             for(Follow fol : follow) {
                 Optional<User> folllownickname = userDao.findUserByEmail(fol.getFollowemail());
                 followNickname.add(folllownickname.get().getNickname());
-                
             }
             followList.put("follow", follow);
             followList.put("followNickname", followNickname);
@@ -114,33 +113,7 @@ public class MypageController {
             followerList.put("followerNickname", followerNickname);
             userInfo.put("followerList", followerList);
             
-           // 내가 팔로우 하는 사람 목록
-           List<Follow> follow = followDao.findAllByEmail(user.get().getEmail());
-           List<String> followNickname = new ArrayList<>();
-           Map<String, Object> followList = new TreeMap<>();
-           for(Follow fol : follow) {
-               Optional<User> folllownickname = userDao.findUserByEmail(fol.getFollowemail());
-               followNickname.add(folllownickname.get().getNickname());
-               
-           }
-           followList.put("follow", follow);
-           followList.put("followNickname", followNickname);
-           userInfo.put("followList", followList);
-
-           // 나를 팔로잉 하는 사람 목록
-           List<Follow> follower = followDao.findAllByFollowemail(user.get().getEmail());
-           List<String> followerNickname = new ArrayList<>();
-           Map<String, Object> followerList = new TreeMap<>();
-           for(Follow fol : follower) {
-               Optional<User> followernickname = userDao.findUserByEmail(fol.getEmail());
-               followerNickname.add(followernickname.get().getNickname());
-           }            
-
-           followerList.put("follower", follower);
-           followerList.put("followerNickname", followerNickname);
-           userInfo.put("followerList", followerList);
-
-            
+           
             // 글 가져오기
             Page<Article> articles = articleDao.findAllByNickname(PageRequest.of(page, 10, Sort.Direction.DESC,"articleid"), nickname);
             
