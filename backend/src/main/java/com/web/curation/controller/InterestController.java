@@ -1,11 +1,11 @@
-package com.web.curation.controller.account;
+package com.web.curation.controller;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import com.web.curation.dao.user.InterestDao;
-import com.web.curation.controller.JWTDecoding;
+import com.web.curation.JWT.JWTDecoding;
 import com.web.curation.dao.SkillsDao;
 import com.web.curation.model.BasicResponse;
 import com.web.curation.model.user.Interest;
@@ -75,16 +75,13 @@ public class InterestController {
 
 
     @PostMapping("/account/interest/delete")
-    @ApiOperation(value = "관심 분야 선택")
+    @ApiOperation(value = "관심 분야 삭제")
     public Object interestDelete (@RequestHeader(required = true) final HttpHeaders header, @RequestBody(required = true) final Map<String,Object> request)
             throws Exception {
 
-                // body에 isSocial -> google / email
-                
         String email = JWTDecoding.decode(header.get("id_token").get(0));
 
         Object test = new ArrayList<>();
-
      
             Skills skill = new Skills();
             skill = skillsDao.findSkillByName((String) request.get("skill"));

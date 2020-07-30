@@ -124,7 +124,7 @@ create table keyword (
   primary key (`keywordId`),
   foreign key (`articleid`) references article(`articleid`) 
   on delete cascade on update cascade,
-  foreign key (`sno`) references skills(`sno`)
+  foreign key (`sno`) references skills(`sno`) on delete cascade on update cascade
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
@@ -167,11 +167,10 @@ create table `notification` (
  `createtime` datetime default now(),
  unique KEY (`notificationid`),
  primary key (`email`,`other`,`type`,`content`,`articleid`,`readn`),
- FOREIGN KEY (`email`) REFERENCES `member`(`email`),
+ FOREIGN KEY (`email`) REFERENCES `member`(`email`) ON DELETE CASCADE ON UPDATE CASCADE,
  FOREIGN KEY (`other`) REFERENCES `member`(`email`)
  ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
 -----------------------------------------------------------------
 
 create table `socialmember` (

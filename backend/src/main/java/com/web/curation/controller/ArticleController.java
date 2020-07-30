@@ -8,6 +8,7 @@ import java.util.Map;
 
 import javax.transaction.Transactional;
 
+import com.web.curation.JWT.JWTDecoding;
 import com.web.curation.dao.ArticleDao;
 import com.web.curation.dao.CommentDao;
 import com.web.curation.dao.KeywordsDao;
@@ -139,10 +140,13 @@ public class ArticleController {
         final BasicResponse result = new BasicResponse();
         result.status = false;
         result.data = "글쓰기 실패";
+
+        Map<String,Object> userToken = JWTDecoding.getInfo(header.get("id_token").get(0));
         
         String email = JWTDecoding.decode(header.get("id_token").get(0));
 
-        String nickname = (String) request.get("nickname");
+        String nickname = (String) userToken.get("nickname");
+        // String nickname = (String) request.get("nickname");
         String title = (String) request.get("title");
         String content = (String) request.get("content");
         String imgurl = (String) request.get("imgUrl");
