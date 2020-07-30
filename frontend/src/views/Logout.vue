@@ -5,11 +5,13 @@
 </template>
 
 <script>
+  import { mapMutations } from "vuex"
   export default {
     name: "Logout",
     methods: {
+      ...mapMutations(["clearUser"]),
       logout() {
-        this.$store.commit("setToken",null)
+        this.clearUser();
         this.$cookies.remove("id_token")
         this.$router.push('/')
       }

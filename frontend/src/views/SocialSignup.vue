@@ -1,6 +1,7 @@
 <template>
-  <div class="wrapper">
-    <h1 class="title">환영합니다.</h1>
+  <div style="padding-top: 25vh">
+    <div class="wrapper">
+      <h1 class="title">환영합니다.</h1>
       <div class="form">
         <div class="inputfield logo" style></div>
         <div style="text-align: center;">회원가입을 하고 배운 지식을 친구들과 공유해보세요</div>
@@ -13,12 +14,12 @@
         <p class="join-warning guide-text">{{ logMessage.nickname }}</p>
         <div class="inputfield">
           <input
-            class="input"
-            id="nickname"
-            type="text"
-            v-model="nickname"
-            @focusout="nicknameCheck"
-            placeholder="nickname"
+                  class="input"
+                  id="nickname"
+                  type="text"
+                  v-model="nickname"
+                  @focusout="nicknameCheck"
+                  placeholder="nickname"
           />
         </div>
 
@@ -29,10 +30,10 @@
         <!-- 버튼 활성화 OK -->
         <div class="inputfield">
           <button
-            @click="submitForm"
-            type="submit"
-            class="btn"
-            :disabled="
+                  @click="submitForm"
+                  type="submit"
+                  class="btn"
+                  :disabled="
               !(
                 nicknameDoubleCheck
               )
@@ -40,14 +41,15 @@
           >회원 가입</button>
         </div>
       </div>
-    <p class="log"></p>
+      <p class="log"></p>
+    </div>
   </div>
 </template>
 
 <script>
 
 import { checkNickname, googleSignup  } from "@/api/index";
-// import { mapState, mapMutations } from 'vuex'
+import { mapActions } from 'vuex'
 
 export default {
   data() {
@@ -65,6 +67,7 @@ export default {
     id_token: String
   },
   methods: {
+    ...mapActions(["getGoogleUserInfo"]),
     async nicknameCheck() {
       if (this.nickname === "") {
         this.logMessage.nickname = "닉네임을 입력해주세요";
@@ -89,12 +92,13 @@ export default {
         info: this.info,
       };
 
-      const { data: { object } } = await googleSignup(userData, this.id_token)
-
-      this.$store.commit("setUsername", object.email);
-      this.$store.commit("setNickname", object.nickname);
-      this.$store.commit("setToken", object.id_token)
-      this.$router.push("/selectskills");
+      googleSignup(userData, this.id_token)
+        .then(res => {
+          const id_token = res.data.object.id_token
+          this.getGoogleUserInfo(id_token)
+          this.$router.push('/selectskills')
+        })
+        .catch(err => console.log(err))
     },
     initForm() {
       this.email = "";

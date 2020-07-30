@@ -4,7 +4,7 @@
 
     <form @submit.prevent="submitForm">
       <div class="form">
-        <!-- email(email) 
+        <!-- email(email)
           0. 형식 검증
           1. 중복 확인
           2. 메일 인증 요청 및 인증 코드 입력
@@ -231,6 +231,7 @@ export default {
       };
 
       const { data } = await registerUser(userData);
+      // 토큰 보내주세요.... 셀렉스킬에 넘겨줄예정
       console.log(data);
       this.$store.commit("setUsername", userData.email);
       this.$store.commit("setNickname", userData.nickname);

@@ -3,6 +3,11 @@
     <h1>관심사를 선택해주세요</h1>
     <div class="selectskills-main">
       <h2>Hot skills</h2>
+      <button v-if="nowSignUp"
+              @click="$router.push('/')"
+              style="margin: 5px; border-style: none; background-color: #0095f6; font-size: 1rem; padding: 5px; border-radius: 5px; color: white">
+        가입완료
+      </button>
       <div class="hotskills">
         <div
           v-for="skill in hotSkills"
@@ -57,15 +62,21 @@ export default {
   name: "SelectSkills",
   data() {
     return {
+      path: this.$route.path,
       hotSkills: [],
       skillInput: null,
       result: null,
       userSkill: this.$store.state.userSkills,
     };
   },
-  // beforeUpdate() {
-  //   this.userSkill = this.$store.state.userSkill;
-  // },
+  computed: {
+    nowSignUp() {
+      return this.path === '/selectskills'
+    }
+  },
+  mounted() {
+    console.log(this.nowSignUp)
+  },
   methods: {
     //검색
     submitAutoComplete() {

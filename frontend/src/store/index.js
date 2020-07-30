@@ -15,7 +15,7 @@ export default new Vuex.Store({
     nickname: "",
     img: "",
     id_token: cookies.get("id_token"),
-    followList: [],
+    followList: {follow:[],followNickname:[]},
     likeList: [],
     pinList: [],
     interestList: [],
@@ -67,9 +67,16 @@ export default new Vuex.Store({
     setUserSkills(state, userSkills) {
       state.userSkills = userSkills;
     },
-    clearUsername(state) {
-      state.username = "";
-      state.nickname = "";
+    clearUser(state) {
+      state.username =  ""
+      state.nickname =  ""
+      state.id_token = ""
+      state.img =  ""
+      state.followList = {follow:[],followNickname:[]}
+      state.likeList = []
+      state.pinList = []
+      state.interestList = []
+      state.notification = []
     },
   },
   actions: {

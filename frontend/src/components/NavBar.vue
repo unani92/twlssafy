@@ -18,8 +18,15 @@
       <div class="article-icon">
         <div v-if="this.$store.getters.isLoggedIn" class="mypage">
           <figure
+            v-if="$store.state.img"
             class="user-photo"
             :style="{ 'background-image': 'url(' + this.$store.state.img + ')' }"
+            @click="goToMyPage"
+          ></figure>
+          <figure
+            v-else
+            class="user-photo"
+            :style="{ 'background-image': 'url(' + `https://api.adorable.io/avatars/100/${this.$store.state.username}.png` + ')' }"
             @click="goToMyPage"
           ></figure>
         </div>
