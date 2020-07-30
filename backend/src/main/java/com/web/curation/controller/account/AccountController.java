@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import com.web.curation.JWT.JWTDecoding;
+import com.web.curation.JWT.JwtService;
 import com.web.curation.dao.SkillsDao;
 import com.web.curation.dao.pinlikesfollow.FollowDao;
 import com.web.curation.dao.pinlikesfollow.LikesDao;
@@ -74,6 +75,9 @@ public class AccountController {
 
     @Autowired
     SkillsDao skillsDao;
+    
+    @Autowired
+    JwtService jwtService;
 
     @PostMapping("/account/googleInfo")
     @ApiOperation(value = "유저 정보 전달")
@@ -84,9 +88,9 @@ public class AccountController {
         String id_token = request.getHeader("id_token");
 
         String email = JWTDecoding.decode(id_token);
-
+        System.out.println("EMAIL : "+email);
         Map<String, Object> userToken = JWTDecoding.getInfo(id_token);
-
+        System.out.println("USERTOKEN : "+userToken);
         Map<String, Object> userInfo = new TreeMap<>();
         userInfo.put("id_token", id_token);
         userInfo.put("email", email);
@@ -150,25 +154,27 @@ public class AccountController {
         //String email = JWTDecoding.decode(header.get("id_token").get(0));
         // 여기는 구글 토큰 사용함!!
 
-        System.out.println(header.get("id_token").get(0));
+        // System.out.println(header.get("id_token").get(0));
+        String id_token = header.get("id_token").get(0);
         
         String email = JWTDecoding.decode(header.get("id_token").get(0));
-     
+
         String nickname = (String) body.get("nickname");
         String info = (String)body.get("info");
 
-        User user = new User();
-        user.setEmail(email);
-        user.setNickname(nickname);
-        user.setInfo(info);
-        user.setImg(JWTDecoding.getImg(header.get("id_token").get(0)));
-        user.setType("google");
-        userDao.save(user);
+        User userInfo = new User();
+        userInfo.setEmail(email);
+        userInfo.setNickname(nickname);
+        userInfo.setInfo(info);
+        userInfo.setImg(JWTDecoding.getImg(header.get("id_token").get(0)));
+        userInfo.setType("google");
+        userDao.save(userInfo);
+        id_token = jwtService.create(userInfo);
 
         Map<String, String> response = new HashMap<>();
         response.put("email", email);
         response.put("nickname", nickname);
-        response.put("id_token", header.get("id_token").get(0));
+        response.put("id_token", id_token);
         
         final BasicResponse result = new BasicResponse();
         result.status = true;
