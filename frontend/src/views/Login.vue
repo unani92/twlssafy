@@ -115,58 +115,19 @@ export default {
       };
       if (this.isSubmit) {
         login(params)
-<<<<<<< HEAD
-          .then((res) => {
-            const {
-              data: { data },
-            } = res;
-            if (data === "success") {
-              console.log(res);
-              const { email, nickname } = res.data.object.email;
-              const {
-                followList,
-                likesList,
-                pinList,
-                interestList,
-              } = res.data.object;
-              this.$store.commit("setUsername", email);
-              this.$store.commit("setNickname", nickname);
-              this.$store.commit("setFollowList", followList);
-              this.$store.commit("setLikeList", likesList);
-              this.$store.commit("setPinList", pinList);
-              let interestName = [];
-              const len = interestList.length;
-              for (let i = 0; i < len; i++) {
-                interestName.push(interestList[i].name);
-              }
-              this.$store.commit("setInterestList", interestName);
-
-              if (this.$route.query.redirect) {
-=======
           .then(res => {
             this.getGoogleUserInfo(res.data.object.id_token)
             if (this.$route.query.redirect) {
->>>>>>> social
                 const redirect = this.$route.query.redirect;
                 this.$router.push({
                   name: "ArticleDetail",
                   params: { id: Number(redirect) },
                 });
               } else this.$router.push("/");
-<<<<<<< HEAD
-            } else if (data === "비밀번호가 일치하지 않습니다.") {
-              this.error.password = "비밀번호가 일치하지 않습니다.";
-            } else {
-              this.error.email = "이메일이 일치하지 않습니다.";
-            }
-          })
-          .catch((err) => console.log(err));
-=======
         })
           .catch(err => console.log(err))
       } else {
         this.error.email = "아이디, 비밀번호를 확인하세요"
->>>>>>> social
       }
     },
     changeBtn() {
