@@ -16,8 +16,8 @@ import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
-import com.web.curation.dao.SkillsDao;
 import com.web.curation.JWT.JWTDecoding;
+import com.web.curation.dao.SkillsDao;
 import com.web.curation.dao.pinlikesfollow.FollowDao;
 import com.web.curation.dao.pinlikesfollow.LikesDao;
 import com.web.curation.dao.pinlikesfollow.NotificationDao;
@@ -68,6 +68,12 @@ public class AccountController {
 
     @Autowired
     NotificationDao notificationDao;
+
+    @Autowired
+    InterestDao interestDao;
+
+    @Autowired
+    SkillsDao skillsDao;
 
     @PostMapping("/account/googleInfo")
     @ApiOperation(value = "유저 정보 전달")
@@ -120,57 +126,17 @@ public class AccountController {
         notificationList.addAll(notificationDao.findAllUnread(email));
         userInfo.put("notification", notificationList);
 
+        // 관심사 
+        List<Interest> interest = interestDao.findAllByEmail(email);
+        List<Object> interestList = new ArrayList<>();
+        
+        for(Interest in : interest) {
+            interestList.add(skillsDao.findSkillBySno(in.getSno()));
+        }
+
+        userInfo.put("interestList", interestList);
+
         final BasicResponse result = new BasicResponse();
-        if (userOpt.isPresent()) { // id/pw 다 맞을 때
-            result.status = true;
-            result.data = "success"; 
-
-            // 로그인 한 사람의 팔로우, 좋아요, 핀 정보 배열
-            Map<String, Object> userInfo = new TreeMap<>();
-            userInfo.put("email", userOpt);
-            userInfo.put("pinList", pinDao.findAllByEmail(email));
-            userInfo.put("likesList", likesDao.findAllByEmail(email));
-            userInfo.put("notificationCnt", notificationDao.countByEmailAndRead(email));
-
-            // 내가 팔로우 하는 사람 목록
-            List<Follow> follow = followDao.findAllByEmail(email);
-            List<String> followNickname = new ArrayList<>();
-            Map<String, Object> followList = new TreeMap<>();
-            for(Follow fol : follow) {
-                Optional<User> folllownickname = userDao.findUserByEmail(fol.getFollowemail());
-                followNickname.add(folllownickname.get().getNickname());
-                
-            }
-            followList.put("follow", follow);
-            followList.put("followNickname", followNickname);
-            userInfo.put("followList", followList);
-
-            // 나를 팔로잉 하는 사람 목록
-            List<Follow> follower = followDao.findAllByFollowemail(email);
-            List<String> followerNickname = new ArrayList<>();
-            Map<String, Object> followerList = new TreeMap<>();
-            for(Follow fol : follower) {
-                Optional<User> followernickname = userDao.findUserByEmail(fol.getEmail());
-                followerNickname.add(followernickname.get().getNickname());
-            }            
-
-            followerList.put("follower", follower);
-            followerList.put("followerNickname", followerNickname);
-            userInfo.put("followerList", followerList);
-
-            List<Notification> notificationList = notificationDao.findAllIn30Days(email);
-            notificationList.addAll(notificationDao.findAllUnread(email));
-            userInfo.put("notification", notificationList);
-
-            // 관심사 
-            List<Interest> interest = interestDao.findAllByEmail(email);
-            List<Object> interestList = new ArrayList<>();
-            
-            for(Interest in : interest) {
-                interestList.add(skillsDao.findSkillBySno(in.getSno()));
-            }
-
-            userInfo.put("interestList", interestList);
         result.status = true;
         result.data = "success";
         result.object = userInfo; 
