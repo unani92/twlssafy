@@ -157,8 +157,6 @@ public class MypageController {
             result.object = userInfo;
         }
         
-        ResponseEntity response = new ResponseEntity<>(result, HttpStatus.OK);
-;
-        return response;
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 }

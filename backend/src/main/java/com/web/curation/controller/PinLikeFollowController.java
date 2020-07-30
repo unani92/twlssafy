@@ -1,11 +1,11 @@
-package com.web.curation.controller.account;
+package com.web.curation.controller;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.transaction.Transactional;
 
-import com.web.curation.controller.JWTDecoding;
+import com.web.curation.JWT.JWTDecoding;
 import com.web.curation.dao.ArticleDao;
 import com.web.curation.dao.pinlikesfollow.FollowDao;
 import com.web.curation.dao.pinlikesfollow.LikesDao;

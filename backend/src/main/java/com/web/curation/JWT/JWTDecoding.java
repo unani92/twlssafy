@@ -1,4 +1,4 @@
-package com.web.curation.controller;
+package com.web.curation.JWT;
 
 import java.util.Map;
 import com.fasterxml.jackson.databind.ObjectMapper;
