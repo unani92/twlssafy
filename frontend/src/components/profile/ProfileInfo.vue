@@ -31,9 +31,11 @@
               {{ userInfo.userInfo.email }}
             </div>
           </li>
-          <li v-if="userInfo.skills.length !== 0">
+          <li v-if="skills.length !== 0">
             <div class="skills">
-              <span v-for="skill in skills" :key="skill"># {{ skill }}</span>
+              <span v-for="skill in skills" :key="skill.name"
+                ># {{ skill.name }}</span
+              >
               <span class="more" data-toggle="modal">➕</span>
             </div>
           </li>
@@ -72,12 +74,11 @@
       <!-- Modal content -->
       <div class="modal-content">
         <span class="close">&times;</span>
-        <span v-for="skill in skills" :key="skill" class="totalSkills"
-          ># {{ skill }}</span
+        <span v-for="skill in skills" :key="skill.name" class="totalSkills"
+          ># {{ skill.name }}</span
         >
         <SelectSkills
           v-if="this.$store.state.nickname === this.$route.params.nickname"
-          userNickname="nickname"
         ></SelectSkills>
       </div>
     </div>
@@ -141,7 +142,7 @@
 <script>
 import SelectSkills from "@/views/SelectSkills.vue";
 import { requestFollow } from "@/api/index.js";
-import { mapState, mapGetters } from 'vuex'
+import { mapState, mapGetters } from "vuex";
 export default {
   props: {
     userInfo: Object,
@@ -150,28 +151,29 @@ export default {
     SelectSkills,
   },
   data() {
-    let interests = [];
-    if (
-      this.$store.getters.isLogin &&
-      this.$route.params.nickname === this.$store.state.nickname
-    ) {
-      // console.log("마이페이지에 오셨군요");
-      interests = this.$store.state.interestList;
-    }
+    // let interests = [];
+    // if (
+    //   this.$store.getters.isLoggedIn &&
+    //   this.$route.params.nickname === this.$store.state.nickname
+    // ) {
+    //   console.log("마이페이지에 오셨군요");
+    //   interests = this.$store.state.interestList;
+    // }
+    const userSkills = this.$store.state.userSkills;
     return {
-      skills: interests,
+      skills: userSkills,
       nickname: this.$route.params.nickname,
       follower: this.userInfo.follower,
     };
   },
   computed: {
     ...mapGetters(["isLoggedIn"]),
-    ...mapState(["id_token"])
+    ...mapState(["id_token", "userSkills"]),
   },
   methods: {
     async requestFollow(followWantingTo, e) {
       if (!this.isLoggedIn) {
-        console.log('login required')
+        console.log("login required");
         if (confirm("팔로우 하시려면 로그인을 해야 합니다")) {
           this.$router.push("/login");
         }
@@ -179,7 +181,7 @@ export default {
         const params = {
           follow: followWantingTo,
         };
-        const { data } = await requestFollow(params,this.id_token);
+        const { data } = await requestFollow(params, this.id_token);
         console.log(data);
         // 프런트에서 처리
         const followList = this.$store.state.followList.followNickname;
@@ -219,7 +221,7 @@ export default {
     },
   },
   updated() {
-    if (this.$store.getters.isLogin) {
+    if (this.$store.getters.isLoggedIn) {
       const followBtns = [
         ...document.querySelectorAll(".follower-email-container"),
       ];
@@ -280,19 +282,7 @@ export default {
     };
   },
   beforeUpdate() {
-    if (
-      !this.$store.getters.isLogin ||
-      this.$route.params.nickname !== this.$store.state.nickname
-    ) {
-      console.log("mounted", this.userInfo);
-      // let interestName = [];
-      const len = this.userInfo.skills.length;
-      for (let i = 0; i < len; i++) {
-        console.log(this.userInfo.skills[i]);
-        this.skills.push(this.userInfo.skills[i].name);
-      }
-      console.log("남의 페이지입니다.3", this.skills);
-    }
+    this.skills = this.$store.state.userSkills;
   },
 };
 </script>
