@@ -20,6 +20,7 @@ export default new Vuex.Store({
     pinList: [],
     interestList: [],
     notification: [],
+    userSkills: [],
   },
   getters: {
     isLoggedIn: (state) => !!state.id_token,
@@ -59,6 +60,9 @@ export default new Vuex.Store({
     },
     setNotificationlist(state, notification) {
       state.notification = notification;
+    },
+    setUserSkills(state, userSkills) {
+      state.userSkills = userSkills;
     },
     clearUsername(state) {
       state.username = "";
