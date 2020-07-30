@@ -23,15 +23,15 @@
             @click="goToMyPage"
           ></figure>
         </div>
-        <div class="article">
-          <button @click="$router.push('/create')" class="btn">
-            write a post
-          </button>
-        </div>
         <div class="icon">
           <i class="far fa-bell" />
           <i @click="asideBarToggle" class="fas fa-bars"></i>
         </div>
+        <!-- <div class="article">
+          <button @click="$router.push('/create')" class="btn">
+            write a post
+          </button>
+        </div> -->
       </div>
     </div>
     <div class="aside disabled">
@@ -132,7 +132,7 @@ export default {
   justify-content: center;
   align-items: center;
 }
-.btn {
+/* .btn {
   background-color: rgb(144, 153, 240);
   border-radius: 3px;
   color: white;
@@ -143,7 +143,7 @@ export default {
   width: 110px;
   height: 35px;
   cursor: pointer;
-}
+} */
 .btn:hover {
   background-color: rgb(15, 35, 219);
   transition: 2s;
@@ -254,8 +254,8 @@ i:hover {
   display: none;
 }
 .user-photo {
-  width: 50px;
-  height: 50px;
+  width: 40px;
+  height: 40px;
   flex-shrink: 0;
   border: 2px solid #333;
   border-radius: 50%;
