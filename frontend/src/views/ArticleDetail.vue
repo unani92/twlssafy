@@ -97,7 +97,7 @@
         const { article, keyword, commentList, cntLikes, cntPin } = articleInfo.data.object
         this.article = article
 
-        this.sideMenu.isFollowed = !!this.followList.filter(follow => follow.followemail === this.article.email).length
+        this.sideMenu.isFollowed = !!this.followList.follow.filter(follow => follow.followemail === this.article.email).length
 
         this.keywords = keyword
         this.nickname = article.nickname
