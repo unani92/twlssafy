@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 
 @CrossOrigin
 @Controller
-public class OAuth2Controller {
+public class GoogleLoginController {
 
     @Autowired
     UserDao userDao;
