@@ -5,6 +5,5 @@
 - [200714](https://docs.google.com/presentation/d/1piRrDj8NKTSH452ochvDlPB6p6yq9XQf-KAX1VwMFZM/edit#slide=id.g8c19049884_0_0): 유저 시나리오 및 와이어프레임
 - [200720](https://lab.ssafy.com/s03-webmobile2-sub2/s03p12a407/blob/master/Discussion/200720%20%ED%9A%8C%EC%9D%98%EB%A1%9D.md) : ERD, API 구성하기
 
-## 3주차 까지의 개발 과정
+## 20/07/31 중간발표자료
 - [200731](https://lab.ssafy.com/s03-webmobile2-sub2/s03p12a407/blob/master/Discussion/%EA%B3%B5%ED%86%B5%ED%94%8C%EC%A0%9D%EB%B0%9C%ED%91%9C1.pdf) : 발표자료 및 프로젝트 요약
-- 
