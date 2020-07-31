@@ -32,7 +32,4 @@ export default {
 </script>
 
 <style>
-.profile {
-  padding-top: 60px;
-}
 </style>

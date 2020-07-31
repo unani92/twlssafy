@@ -2,16 +2,16 @@
   <div class="sidemenu">
     <div class="icon">
       <i @click="clickFollow" class="far fa-user" :class="{pressed : sideMenu.isFollowed}"></i>
-      <span v-if="sideMenu.isFollowed"> - </span>
-      <span v-else> + </span>
+      <span class="sideCnt" v-if="sideMenu.isFollowed">-</span>
+      <span class="sideCnt" v-else> + </span>
     </div>
     <div class="icon">
       <i @click="clickLike" class="far fa-heart" :class="{pressed : isLiked}"></i>
-      <span style="font-size: 1rem">{{ sideMenu.cntLikes }}</span>
+      <span class="sideCnt">{{ sideMenu.cntLikes }}</span>
     </div>
     <div class="icon">
       <i @click="clickPin" class="far fa-bookmark" :class="{pressed : isPinned}"></i>
-      <span style="font-size: 1rem">{{ sideMenu.cntPin }}</span>
+      <span class="sideCnt">{{ sideMenu.cntPin }}</span>
     </div>
   </div>
 </template>
@@ -147,12 +147,12 @@
 
 <style scoped>
   .sidemenu {
-    border-radius: 5px;
+    border-radius: 35px;
     background-color: white;
     padding: 10px;
     position: fixed;
-    left: 0;
-    width: 10%;
+    width: 80px;    
+    right: 91% ;
   }
   .icon {
     display: flex;
@@ -160,48 +160,92 @@
     justify-content: center;
     align-items: center;
     border-radius: 75px;
-    border: 1px solid black;
+    border: 1.5px solid black;
     -moz-border-radius:75px;
     -webkit-border-radius:75px;
-    width: 70px;
-    height: 70px;
+    width: 50px;
+    height: 50px;
     text-align: center;
-    font-size: 26px;
-    padding: 5px;
-    margin-bottom: 5px;
+    font-size: 24px;
+    padding: 8px 5px 5px 5px;
+    margin: 8px;
     cursor: pointer;
   }
   .pressed {
     color: crimson;
   }
-  @media (max-width: 414px) {
+  @media (max-width: 1024px) {
     .sidemenu {
-      bottom: 1px;
+      bottom: 15px;
       display: flex;
       flex-direction: row;
       justify-content: space-between;
       align-items: center;
-      width: 100%;
-      height: 75px;
+      width: 120px;
+      height: 48px;
+      right : 10%;
+      border: 1px solid black;
     }
     .icon {
-      border-radius: 50px;
-      border: 1px solid black;
-      -moz-border-radius:50px;
-      -webkit-border-radius:50px;
-      width: 50px;
-      height: 50px;
-      font-size: 18px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      border: none;
+      width: 30px;
+      height: 30px;
+      text-align: center;
+      font-size: 10px;
+      padding: 0;
+      margin: 1px;
+      cursor: pointer;
+    }
+    .sideCnt {
+    margin-top: 0;
+    font-size: 11px;
     }
   }
-  @media (min-width: 415px) {
+  @media (min-width: 1024px) {
     .sidemenu {
-      left: 2rem ;
       top: 200px ;
       display: flex;
       justify-content: center;
       flex-direction: column;
       align-items: center;
     }
+    .sideCnt {
+    margin-top: 2px;
+    font-size: 10px;
+    }
   }
+
+  .icon {
+    width: 40px;
+    height : 40px;
+    font-size: 17px;
+  }
+
+  /* @media (max-width: 1024px) and (min-width: 415px){
+    .sidemenu {
+      top: 200px ;
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+      align-items: center;
+      right : 89%;
+    }
+    .sideCnt {
+    margin-top: 2px;
+    font-size: 10px;
+    }
+
+    .icon {
+    width: 35px;
+    height: 35px;
+    font-size: 14px;
+  }
+
+
+  
+  } */
 </style>
