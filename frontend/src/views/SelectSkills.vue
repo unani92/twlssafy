@@ -3,11 +3,16 @@
     <h1>관심사를 선택해주세요</h1>
     <div class="selectskills-main">
       <h2>Hot skills</h2>
+      <button v-if="nowSignUp"
+              @click="$router.push('/')"
+              style="margin: 5px; border-style: none; background-color: #0095f6; font-size: 1rem; padding: 5px; border-radius: 5px; color: white">
+        가입완료
+      </button>
       <div class="hotskills">
         <div
           v-for="skill in hotSkills"
           :key="skill"
-          :id="skill"
+          :id="skill.name"
           class="skill-badge"
         >
           <span>{{ skill.name }}</span>
@@ -33,11 +38,11 @@
       <div class="hotskills">
         <div
           v-for="skill in userSkill"
-          :key="skill"
-          :id="skill"
+          :key="skill.name"
+          :id="skill.name"
           class="totalSkills"
         >
-          <span>{{ skill }}</span>
+          <span>{{ skill.name }}</span>
           <i
             @click="removeStack"
             style="cursor:pointer;"
@@ -57,20 +62,29 @@ export default {
   name: "SelectSkills",
   data() {
     return {
+      path: this.$route.path,
       hotSkills: [],
       skillInput: null,
       result: null,
-      userSkill: this.$store.state.interestList,
+      userSkill: this.$store.state.userSkills,
     };
   },
+  computed: {
+    nowSignUp() {
+      return this.path === '/selectskills'
+    }
+  },
+  mounted() {
+    console.log(this.nowSignUp)
+  },
   methods: {
-    //
+    //검색
     submitAutoComplete() {
       const autocomplete = document.querySelector(".autocomplete");
       if (this.skillInput) {
         autocomplete.classList.remove("disabled");
         this.result = skills.filter((skill) => {
-          return skill.match(new RegExp("^"+this.skillInput, "i"));
+          return skill.match(new RegExp("^" + this.skillInput, "i"));
         });
       } else {
         autocomplete.classList.add("disabled");
@@ -96,9 +110,9 @@ export default {
         const updatedUserSkill = this.userSkill;
         const len = updatedUserSkill.length;
         for (let i = 0; i < len; i++) {
-          if (selectedSkill === updatedUserSkill[i]) {
-            // console.log("selectedSkill");
+          if (selectedSkill === updatedUserSkill[i].name) {
             updatedUserSkill.splice(i, 1);
+            this.$store.commit("setUserSkills", updatedUserSkill);
             this.$store.commit("setInterestList", updatedUserSkill);
             break;
           }
@@ -115,9 +129,13 @@ export default {
       const id_token = this.$store.state.id_token;
       const res = await selectSkills(params, id_token);
       const updatedUserSkill = this.userSkill;
-
       if (res.data.data === "success") {
-        updatedUserSkill.push(skill);
+        const addedSkill = {
+          sno: res.data.object[0].sno,
+          name: skill,
+        };
+        updatedUserSkill.push(addedSkill);
+        this.$store.commit("setUserSkills", updatedUserSkill);
         this.$store.commit("setInterestList", updatedUserSkill);
       }
       this.skillInput = null;

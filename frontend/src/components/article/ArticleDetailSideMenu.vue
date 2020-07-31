@@ -109,13 +109,13 @@
         requestFollow(params, this.id_token)
           .then(res => {
             const result = res.data.data
-            const followLists = this.followList
+            const followLists = this.followList.follow
             if (result === "unfollow") {
               const newFollowList = followLists.filter(followList => {
                 return followList.followemail !== this.article.email
               })
               this.sideMenu.isFollowed = false
-              this.$store.commit("setFollowList",newFollowList)
+              this.$store.commit("setFollowListByNickname",newFollowList)
             } else {
               const newFollow = {
                 email: email,
@@ -123,7 +123,7 @@
               }
               this.sideMenu.isFollowed = true
               followLists.push(newFollow)
-              this.$store.commit("setFollowList",followLists)
+              this.$store.commit("setFollowListByNickname",followLists)
             }
           })
           .catch(err => console.log(err))

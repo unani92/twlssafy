@@ -4,8 +4,15 @@
       <ArticleDetailSideMenu :article="article" :sideMenu="sideMenu"/>
     </div>
     <div class="article">
-      <h1 class="title">{{ title }}</h1>
       <div class="nickname-keyword">
+      <h1 class="title">{{ title }}</h1>
+        <div class="keywords" style="margin-bottom : 10px;">
+          <span v-for="keyword in keywords"
+                :key="keyword"
+                class="keyword">
+            # {{ keyword }}
+          </span>
+        </div>
         <div class="username-date">
           <span @click="userToggle"
                 style="cursor: pointer">
@@ -27,13 +34,6 @@
             삭제하기
           </div>
         </div>
-        <div class="keywords">
-          <span v-for="keyword in keywords"
-                :key="keyword"
-                class="keyword">
-            # {{ keyword }}
-          </span>
-        </div>
       </div>
       <div class="nickname-keyword markdown">
         <div id="viewer"/>
@@ -42,8 +42,11 @@
         <ArticleDetailProfile :article="article"/>
       </div>
       <div v-if="article" class="nickname-keyword">
-        <CommentCreate :article="article" :commentList="sideMenu.commentList"/>
+        <div>
+          <CommentCreate :article="article" :commentList="sideMenu.commentList"/>
+        </div>
       </div>
+    <button class="backBtn" @click=goback>뒤로가기</button>
     </div>
   </div>
 </template>
@@ -97,7 +100,7 @@
         const { article, keyword, commentList, cntLikes, cntPin } = articleInfo.data.object
         this.article = article
 
-        this.sideMenu.isFollowed = !!this.followList.filter(follow => follow.followemail === this.article.email).length
+        this.sideMenu.isFollowed = !!this.followList.follow.filter(follow => follow.followemail === this.article.email).length
 
         this.keywords = keyword
         this.nickname = article.nickname
@@ -141,7 +144,10 @@
           navBar.classList.remove("disabled")
           this.scroll.prev = nowScrollY
         }
-      }
+      },
+      goback(){
+        this.$router.go(-1)
+      },
     },
     mounted() {
       this.getViewer();
@@ -174,13 +180,13 @@
     margin-bottom: 2rem;
   }
   .title {
-    font-size: 60px;
+    font-size: 35px;
     margin-bottom: 1rem;
   }
   .username-date {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 1rem;
+    /* margin-bottom: 1rem; */
   }
   .username-date > span:nth-child(1) {
     font-size: 20px;
@@ -191,7 +197,7 @@
     padding: 3px;
     border-radius: 3px;
     color: white;
-    background-color: #e6837a;
+    background-color: #94adff;
   }
   .dropdown {
     padding: 3px;
@@ -214,8 +220,26 @@
       margin-bottom: 2rem;
     }
     .title {
-      font-size: 40px;
+      font-size: 25px;
     }
+  }
+  .backBtn {
+    border-radius: 3px;
+    color: white;
+    background-color:  #94adff;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 5px;
+  }
+  .commentBtn {
+    border-radius: 3px;
+    color: black;
+    background-color:  white;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 5px;
   }
 
 </style>

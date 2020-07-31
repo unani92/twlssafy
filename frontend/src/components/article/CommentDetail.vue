@@ -2,7 +2,7 @@
   <div :id="comment.commentid" class="comment-detail">
     <div class="profile">
       <div class="prifile-detail">
-        <img :src="photo" alt="">
+        <img :src="photo" alt="" style="width : 40px; height : 40px;">
         <div class="profile-text">
           <h3>{{ this.comment.email }}</h3>
           <span style="color: gainsboro">{{ this.$moment(this.comment.updatedat).fromNow() }}</span>
@@ -72,6 +72,7 @@
     display: flex;
     flex-direction: column;
     justify-content: space-around;
+    font-size : 13px;
   }
   .user-icons {
     display: flex;
@@ -82,7 +83,7 @@
     margin: 10px;
   }
   .detail {
-    font-size: 20px;
+    font-size: 17px;
     padding: 1rem;
   }
 </style>

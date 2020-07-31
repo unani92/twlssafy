@@ -1,7 +1,7 @@
 <template>
   <div class="detail-profile">
     <img :src="photo" alt="" />
-    <div class="profile">
+    <div style="margin-left : 15px;">
       <h2 @click="gotoWriterPage" class="writer-page">
         {{ article.nickname }}
       </h2>
@@ -47,6 +47,8 @@ export default {
 }
 img {
   border-radius: 50%;
+  width: 50px;
+  height : 50px;
 }
 .writer-page {
   cursor: pointer;

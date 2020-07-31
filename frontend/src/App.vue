@@ -21,7 +21,7 @@
     color: #2c3e50;
   }
   body {
-    background-color: rgb(237, 239, 242);
+    background-color: rgb(249, 249, 249);
     margin: 0 auto;
   }
   /* markdown viewer custom css */

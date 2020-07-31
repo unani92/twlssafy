@@ -1,8 +1,8 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import cookies from 'vue-cookies'
+import cookies from "vue-cookies";
 import { registerUser } from "../api";
-import axios from 'axios'
+import axios from "axios";
 
 Vue.use(Vuex);
 
@@ -14,24 +14,25 @@ export default new Vuex.Store({
     username: "",
     nickname: "",
     img: "",
-    id_token: cookies.get('id_token'),
-    followList: [],
+    id_token: cookies.get("id_token"),
+    followList: {follow:[],followNickname:[]},
     likeList: [],
     pinList: [],
     interestList: [],
-    notification: []
+    notification: [],
+    userSkills: [],
   },
   getters: {
-    isLoggedIn: state => !!state.id_token,
-    config: state => ({
-      headers: {id_token: state.id_token}
+    isLoggedIn: (state) => !!state.id_token,
+    config: (state) => ({
+      headers: { id_token: state.id_token },
     }),
     // notificationCnt: state => state.notification.length
   },
   mutations: {
-    setToken(state,token) {
-      state.id_token = token
-      cookies.set('id_token',token)
+    setToken(state, token) {
+      state.id_token = token;
+      cookies.set("id_token", token);
     },
     setUsername(state, username) {
       state.username = username;
@@ -40,10 +41,13 @@ export default new Vuex.Store({
       state.nickname = nickname;
     },
     setImg(state, img) {
-      state.img = img
+      state.img = img;
     },
     setFollowList(state, followList) {
       state.followList = followList;
+    },
+    setFollowListByEmail(state,follow) {
+      state.followList.follow = follow
     },
     setFollowListByNickname(state, followList) {
       state.followList.followNickname = followList;
@@ -58,44 +62,64 @@ export default new Vuex.Store({
       state.interestList = interestList;
     },
     setNotificationlist(state, notification) {
-      state.notification = notification
+      state.notification = notification;
     },
-    clearUsername(state) {
-      state.username = "";
-      state.nickname = "";
+    setUserSkills(state, userSkills) {
+      state.userSkills = userSkills;
+    },
+    clearUser(state) {
+      state.username =  ""
+      state.nickname =  ""
+      state.id_token = ""
+      state.img =  ""
+      state.followList = {follow:[],followNickname:[]}
+      state.likeList = []
+      state.pinList = []
+      state.interestList = []
+      state.notification = []
     },
   },
   actions: {
     getGoogleUserInfo({ commit }, id_token) {
-      axios.post("http://localhost:8080/account/googleInfo", { id_token }, {headers: {id_token:id_token}})
-        .then(res => {
-          const { email, followList, img, nickname, interestList, id_token, likesList, notification, pinList } = res.data.object
-          commit("setUsername", email)
-          commit("setNickname", nickname)
-          commit("setImg", img)
-          commit("setFollowList", followList.follow)
-          commit("setToken", id_token)
-          commit("setLikeList", likesList)
-          commit("setNotificationlist", notification)
-          commit("setPinList", pinList)
-          let interestName = [];
-              const len = interestList.length;
-              for (let i = 0; i < len; i++) {
-                interestName.push(interestList[i].name);
-              }
-              commit("setInterestList", interestName);
+      axios
+        .post(
+          "http://localhost:8080/account/googleInfo",
+          { id_token },
+          { headers: { id_token: id_token } }
+        )
+        .then((res) => {
+          const {
+            email,
+            followList,
+            img,
+            nickname,
+            interestList,
+            id_token,
+            likesList,
+            notification,
+            pinList,
+          } = res.data.object;
+          commit("setUsername", email);
+          commit("setNickname", nickname);
+          commit("setImg", img);
+          commit("setFollowList", followList);
+          commit("setToken", id_token);
+          commit("setLikeList", likesList);
+          commit("setNotificationlist", notification);
+          commit("setPinList", pinList);
+          commit("setInterestList", interestList);
         })
-        .catch(err => console.log(err))
+        .catch((err) => console.log(err));
     },
     socialSignUp({ commit }, signUpData) {
       registerUser(signUpData)
-        .then(res => {
+        .then((res) => {
           // 이메일, 닉네임, 토큰 받아서 커밋으로 집어넣는다.
-          commit("setToken", res.data.key)
-          this.$router.push({ name: "SelectSkills" })
+          commit("setToken", res.data.key);
+          this.$router.push({ name: "SelectSkills" });
         })
-        .catch(err => console.log(err))
-    }
+        .catch((err) => console.log(err));
+    },
   },
   modules: {},
 });

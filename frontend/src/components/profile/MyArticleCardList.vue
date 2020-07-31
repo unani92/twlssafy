@@ -19,6 +19,7 @@
 import ArticleCard from "@/components/article/AricleCard.vue";
 import LoadingSpinner from "@/components/common/LoadingSpinner.vue";
 import { fetchMyArticles } from "@/api/index";
+import { mapState, mapActions } from "vuex";
 import scrollMonitor from "scrollmonitor";
 
 export default {
@@ -36,7 +37,11 @@ export default {
       userInfo: {},
     };
   },
+  computed: {
+    ...mapState(["id_token"]),
+  },
   methods: {
+    ...mapActions(["getGoogleUserInfo"]),
     async fetchData() {
       const params = {
         page: this.page++,
@@ -50,11 +55,12 @@ export default {
       // console.log(data.object.interestList);
       this.$emit("setUserInfo", {
         userInfo: this.userInfo,
-        skills: data.object.interestList,
+        // skills: data.object.interestList,
         following: data.object.followList,
         follower: data.object.followerList,
         totalArticleCount: data.object.totalArticleCount,
       });
+      this.$store.commit("setUserSkills", data.object.interestList);
     },
     addScrollWatcher() {
       const bottomSensor = document.querySelector("#bottomSensor");
@@ -66,6 +72,9 @@ export default {
   },
   created() {
     this.fetchData();
+    if (this.id_token) {
+      this.getGoogleUserInfo(this.id_token);
+    }
   },
   mounted() {
     setTimeout(() => this.addScrollWatcher(), 1000);
