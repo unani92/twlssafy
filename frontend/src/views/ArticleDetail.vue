@@ -180,16 +180,16 @@
     margin-bottom: 2rem;
   }
   .title {
-    font-size: 35px;
+    font-size: 30px;
     margin-bottom: 1rem;
   }
   .username-date {
     display: flex;
     justify-content: space-between;
     /* margin-bottom: 1rem; */
+    font-size: 13px;
   }
   .username-date > span:nth-child(1) {
-    font-size: 20px;
     font-weight: bold;
   }
   .keyword {

@@ -5,7 +5,7 @@
       <h2 @click="gotoWriterPage" class="writer-page">
         {{ article.nickname }}
       </h2>
-      <span>User First, Mobile Friendly!! </span>
+      <span id = "info">User First, Mobile Friendly!! </span>
     </div>
   </div>
 </template>
@@ -47,10 +47,17 @@ export default {
 }
 img {
   border-radius: 50%;
-  width: 50px;
-  height : 50px;
+  width: 45px;
+  height : 45ax;
 }
 .writer-page {
   cursor: pointer;
+}
+h2 {
+  font-size: 18px;
+  margin: 3px 0 2px 0;
+}
+#info {
+  font-size : 14px;
 }
 </style>
