@@ -1,5 +1,5 @@
 <template>
-  <div @click="closeAside">
+  <div>
     <div class="nav-bar">
       <div class="logo-searchbar">
         <div class="logo">
@@ -41,7 +41,7 @@
         </div> -->
       </div>
     </div>
-    <div class="aside disabled">
+    <div class="aside">
       <div class="aside-menu" v-if="!this.$store.getters.isLoggedIn">
         <GoogleLogin />
         <GithubLogin />
@@ -99,16 +99,7 @@ export default {
     logout() {
       this.$router.push({name: 'Logout'})
     },    
-    closeAside(){
-     // if(event.srcElement && event.srcElement=="aside") return;
-      const aside = document.querySelector(".aside");
-      console.log(aside);
-      if(aside.contains('.disabled')){
-        console.log("closed");
-      } else {
-        console.log("opened");
-      }
-    }
+
   },
 };
 </script>
