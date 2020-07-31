@@ -165,6 +165,8 @@
   .article {
     padding-top: 75px;
     width: 80%;
+    margin-right: 5%;
+    /* margin-left: 5%; */
   }
   .nickname-keyword {
     padding: 1rem;
@@ -217,7 +219,6 @@
     }
     .article {
       width: 100%;
-      margin-bottom: 2rem;
     }
     .title {
       font-size: 25px;

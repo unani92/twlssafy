@@ -151,8 +151,8 @@
     background-color: white;
     padding: 10px;
     position: fixed;
-    left: 0;
-    width: 80px;
+    width: 80px;    
+    right: 91% ;
   }
   .icon {
     display: flex;
@@ -174,33 +174,39 @@
   .pressed {
     color: crimson;
   }
-  @media (max-width: 414px) {
+  @media (max-width: 1024px) {
     .sidemenu {
-      bottom: 1px;
+      bottom: 15px;
       display: flex;
       flex-direction: row;
       justify-content: space-between;
       align-items: center;
-      width: 100%;
-      height: 75px;
+      width: 120px;
+      height: 48px;
+      right : 10%;
+      border: 1px solid black;
     }
     .icon {
-      border-radius: 50px;
-      border: 1px solid black;
-      -moz-border-radius:50px;
-      -webkit-border-radius:50px;
-      width: 50px;
-      height: 50px;
-      font-size: 18px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      border: none;
+      width: 30px;
+      height: 30px;
+      text-align: center;
+      font-size: 10px;
+      padding: 0;
+      margin: 1px;
+      cursor: pointer;
     }
     .sideCnt {
-    margin-top: 2px;
-    font-size: 3px;
+    margin-top: 0;
+    font-size: 11px;
     }
   }
-  @media (min-width: 768px) {
+  @media (min-width: 1024px) {
     .sidemenu {
-      left: 4.5% ;
       top: 200px ;
       display: flex;
       justify-content: center;
@@ -219,14 +225,14 @@
     font-size: 17px;
   }
 
-  @media (max-width: 768px) and (min-width: 415px){
+  /* @media (max-width: 1024px) and (min-width: 415px){
     .sidemenu {
-      left: 3% ;
       top: 200px ;
       display: flex;
       justify-content: center;
       flex-direction: column;
       align-items: center;
+      right : 89%;
     }
     .sideCnt {
     margin-top: 2px;
@@ -239,10 +245,7 @@
     font-size: 14px;
   }
 
-.sidemenu {
-      
-      width: 60px;
-    }
+
   
-  }
+  } */
 </style>
