@@ -32,9 +32,8 @@
       </div>
     </div>
     <div class="editor">
-      <Editor/>
+      <Editor @submitContent="submitArticle"/>
     </div>
-    <button @click="submitArticle">Submit</button>
   </div>
 </template>
 
@@ -84,9 +83,8 @@
           return skill !== selectedSkill
         })
       },
-      submitArticle() {
-        const codeMirror = document.querySelector(".CodeMirror-code")
-        this.content.content = codeMirror.innerText
+      submitArticle(data) {
+        this.content.content = data
         const params = {
           nickname: this.$store.state.nickname,
           title: this.content.title,
@@ -99,7 +97,7 @@
             this.$router.push({name: "ArticleDetail", params: {id:res.data.object}})
           })
           .catch(err => console.log(err))
-        console.log(params)
+        console.log(this.content.content)
       },
     },
   }
@@ -157,15 +155,5 @@
   }
   .title {
     margin-top: 1rem;
-  }
-  button {
-    margin: 1rem 0 1rem 0;
-    width: 100px;
-    height: 30px;
-    border-radius: 3px;
-    border-style: none;
-    cursor: pointer;
-    background-color: #e6837a;
-    color: white;
   }
 </style>

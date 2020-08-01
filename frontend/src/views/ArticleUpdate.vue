@@ -34,7 +34,7 @@
     <div class="editor">
       <div id="editor"/>
     </div>
-    <button @click="submitArticle">Submit</button>
+    <button id="submitUpdate">Submit</button>
   </div>
 </template>
 
@@ -97,9 +97,8 @@
           return skill !== selectedSkill
         })
       },
-      submitArticle() {
-        const codeMirror = document.querySelector(".CodeMirror-code")
-        this.article.content = codeMirror.innerText
+      submitArticle(data) {
+        this.article.content = data
         const params = {
           articleId: String(this.id),
           title: this.article.title,
@@ -117,7 +116,7 @@
       },
     },
     mounted() {
-      new Editor({
+      const editor = new Editor({
         el: document.querySelector("#editor"),
         initialEditType: "markdown",
         initialValue: this.content,
@@ -125,6 +124,11 @@
         height: "500px",
         plugins: [[codeSyntaxHightlight, { hljs }]],
 
+      })
+      const btn = document.querySelector('#submitUpdate')
+      btn.addEventListener('click', () => {
+        const editContent = editor.getMarkdown()
+        this.submitArticle(editContent)
       })
     }
   }

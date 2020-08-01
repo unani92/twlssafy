@@ -1,6 +1,7 @@
 <template>
   <div>
     <div id="editor"/>
+    <button id="submit">submit</button>
   </div>
 </template>
 <script>
@@ -49,7 +50,23 @@ export default {
         }
       }
     })
-    editor
+    const btn = document.querySelector("#submit")
+    btn.addEventListener("click", () => {
+      const editContent = editor.getMarkdown()
+      this.$emit("submitContent",editContent)
+    })
   }
 };
 </script>
+<style scoped>
+  button {
+    margin: 1rem 0 1rem 0;
+    width: 100px;
+    height: 30px;
+    border-radius: 3px;
+    border-style: none;
+    cursor: pointer;
+    background-color: #e6837a;
+    color: white;
+  }
+</style>
