@@ -76,6 +76,9 @@ function searchArticle(params) {
     `article/search?q=${params.q}&category=${params.category}&page=${params.page}`
   );
 }
+function fetchHashTags() {
+  return instance.get(`hashTag`);
+}
 
 export {
   checkEmail,
@@ -97,4 +100,5 @@ export {
   deleteComment,
   fetchMyArticles,
   searchArticle,
+  fetchHashTags,
 };
