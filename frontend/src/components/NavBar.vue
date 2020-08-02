@@ -41,7 +41,7 @@
         </div> -->
       </div>
     </div>
-    <div class="aside">
+    <div class="aside disabled">
       <div class="aside-menu" v-if="!this.$store.getters.isLoggedIn">
         <GoogleLogin />
         <GithubLogin />
@@ -53,11 +53,11 @@
         </div>
       </div>
       <div v-else class="aside-menu-loggedIn">
-        <div @click="logout" class="logout emailogin-text">
-          Log Out
-        </div>
         <div @click="goToMyPage" class="mypage-text">
           MyPage
+        </div>
+        <div @click="logout" class="emailogin-text">
+          Log Out
         </div>
       </div>
     </div>
@@ -207,9 +207,9 @@ i:hover {
 }
 .aside {
   position: absolute;
-  top: 120px;
+  top: 70px;
   right: 0;
-  z-index: 3;
+  z-index: 10;
 }
 .aside-menu {
   width: 300px;
@@ -234,11 +234,20 @@ i:hover {
 .aside-menu > div, .aside-menu-loggedIn > div{
   margin: 10px;
 }
+.aside-menu-loggedIn > div:nth-child(1) {
+  width: 250px;
+  height: 50px;
+  border-radius: 3px;
+  background-color: rgb(143, 182, 204);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 .aside-menu-loggedIn > div:nth-child(2) {
   width: 250px;
   height: 50px;
   border-radius: 3px;
-  background-color: rgb(114, 177, 214);
+  background-color: rgb(204, 93, 65);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -256,7 +265,8 @@ i:hover {
   width: 250px;
   height: 50px;
   border-radius: 3px;
-  background-color: lightgray;
+  background-color: rgb(143, 182, 204);
+  color: white;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -265,15 +275,6 @@ i:hover {
   cursor: pointer;
   color: white;
   font-weight: bolder;
-}
-.logout {
-  width: 250px;
-  height: 50px;
-  border-radius: 3px;
-  background-color: rgb(204, 93, 65);
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 .signup-text {
   cursor: pointer;
