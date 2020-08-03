@@ -46,7 +46,7 @@ export default {
       console.log(data);
       this.isLoading = false;
       this.keywords = [...this.keywords, ...data.object.keyword];
-      this.articles = [...this.articles, ...data.object.article.content];
+      this.articles = [...this.articles, ...data.object.article];
     },
     addScrollWatcher() {
       const bottomSensor = document.querySelector("#bottomSensor");

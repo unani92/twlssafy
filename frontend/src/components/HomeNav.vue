@@ -1,14 +1,18 @@
 <template>
   <div class="home-nav">
     <div class="post-nav">
-      <span>Latest</span>
+      <span>
+        <Router-link to="/" exact>Latest</Router-link>
+      </span>
       <span>
         <router-link v-if="isLoggedIn" to="/follow">Follow</router-link>
       </span>
       <span>
         <router-link v-if="isLoggedIn" to="/pin">Pinned</router-link>
       </span>
-      <!-- <span>Pinned</span> -->
+      <span>
+        <router-link v-if="isLoggedIn" to="/hot">Hot</router-link>
+      </span>
     </div>
     <div v-if="$store.getters.isLoggedIn">
       <span>
@@ -79,6 +83,15 @@ export default {
   cursor: pointer;
 }
 .post-nav > span:hover {
+  color: blueviolet;
+}
+.post-nav > span > a {
+  text-decoration: none;
+}
+.post-nav > span > a:hover {
+  color: blueviolet;
+}
+.router-link-active {
   color: blueviolet;
 }
 .interest {

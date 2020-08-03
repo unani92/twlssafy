@@ -18,7 +18,7 @@
 <script>
 import ArticleCard from "@/components/article/AricleCard.vue";
 import LoadingSpinner from "@/components/common/LoadingSpinner.vue";
-import { fetchFollowArticles } from "@/api/index";
+import { fetchHotArticles } from "@/api/index";
 import scrollMonitor from "scrollmonitor";
 
 export default {
@@ -42,7 +42,7 @@ export default {
       };
       const id_token = this.$store.state.id_token;
 
-      const { data } = await fetchFollowArticles(params, id_token);
+      const { data } = await fetchHotArticles(params, id_token);
       console.log(data);
       this.isLoading = false;
       this.keywords = [...this.keywords, ...data.object.keyword];

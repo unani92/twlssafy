@@ -100,6 +100,12 @@ function fetchPinArticles(params, token) {
     headers: { id_token: token },
   });
 }
+function fetchHotArticles(params, token) {
+  console.log(params);
+  return instance.get(`article/hot?page=${params.page}`, {
+    headers: { id_token: token },
+  });
+}
 function fetchHashTags() {
   return instance.get(`hashTag`);
 }
@@ -126,5 +132,6 @@ export {
   searchArticle,
   fetchFollowArticles,
   fetchPinArticles,
+  fetchHotArticles,
   fetchHashTags,
 };
