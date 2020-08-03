@@ -516,12 +516,12 @@ public class ArticleController {
         
         try {
             if(date.trim().contains(now[0].trim())){
-                list = articleDao.findAllByEmail(email);
+                list = articleDao.findAllByEmailOrderByArticleidDesc(email);
             }
             else if(list.get(0) != null){
             }
         } catch (Exception e) {
-            list = articleDao.findAllByEmail(email);
+            list = articleDao.findAllByEmailOrderByArticleidDesc(email);
         }
 
 

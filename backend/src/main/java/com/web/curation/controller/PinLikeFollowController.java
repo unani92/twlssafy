@@ -265,11 +265,14 @@ public class PinLikeFollowController {
         result.status=false;
 
         Notification notification = notificationDao.findNotificationByNotificationid(notificationid);
-        notification.setReady(1);
-        notificationDao.save(notification);
-        result.data="알림 - 읽음 처리";
-        result.status=true;
-
+        if(notification.getReady() == 0)
+        {
+            notification.setReady(1);
+            notificationDao.save(notification);
+            result.data="알림 - 읽음 처리";
+            result.status=true;
+        }
+        
         return result;
     }
 }

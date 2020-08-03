@@ -39,8 +39,16 @@
         const notificationId = event.target.parentNode.id
         console.log(notificationId)
         axios.get(`http://localhost:8080/notification/${notificationId}`)
-          .then(res => console.log(res))
-          .catch(err => console.log(err))
+          .then(res => {
+            console.log(res)
+            if(res.data.status)
+              this.$store.state.notificationCnt--;
+            }
+          )
+          .catch(err => {
+            console.log(err)
+            }
+          )
       }
     }
   }

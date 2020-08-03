@@ -33,5 +33,6 @@ public interface ArticleDao extends JpaRepository<Article, String> {
     List<Article> articleAt(String date,String email);
 
     List<Article> findAllByEmail(String email);
+    List<Article> findAllByEmailOrderByArticleidDesc(String email);
 
 }
