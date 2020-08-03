@@ -15,7 +15,7 @@ public interface NotificationDao extends JpaRepository<Notification, Notificatio
  
    Notification save(NotificationMultiId notification);
 
-   @Query(value = "SELECT count(readn) FROM notification where readn = 0 and email = ?1", nativeQuery = true)
+   @Query(value = "SELECT count(readn) FROM notification where ready = 0 and email = ?1", nativeQuery = true)
    int countByEmailAndRead(String follow);
    @Query(value = 
    "select * from notification where email = ?1 and date(createtime) > date(subdate(now(), INTERVAL 2 DAY)) order by notificationid desc" 
