@@ -38,7 +38,7 @@
       goToPage(event) {
         const notificationId = event.target.parentNode.id
         console.log(notificationId)
-        axios.get(`http://localhost:8080/notification/${notificationId}`, {id_token:this.$store.state.id_token})
+        axios.get(`http://localhost:8080/notification/${notificationId}`)
           .then(res => console.log(res))
           .catch(err => console.log(err))
       }

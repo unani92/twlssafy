@@ -30,8 +30,11 @@
             @click="goToMyPage"
           ></figure>
         </div>
-        <div class="icon">
-          <i @click="notificationIconToggle" class="far fa-bell" />
+        <div class="icon" style="display: flex">
+          <div style="display: flex">
+            <div class="circle">{{ $store.state.notification.length }}</div>
+            <i @click="notificationIconToggle" class="far fa-bell" />
+          </div>
           <i @click="asideBarToggle" class="fas fa-bars"></i>
         </div>
       </div>
@@ -167,6 +170,18 @@ i {
   margin-right: 1rem;
   font-size: 2rem;
   cursor: pointer;
+}
+.circle {
+  position: absolute;
+  top: 15px;
+  right: 60px;
+  border-radius: 75%;
+  width: 20px;
+  height: 20px;
+  background-color: crimson;
+  color: white;
+  text-align: center;
+  font-weight: bold;
 }
 i:hover {
   border-radius: 50%;
