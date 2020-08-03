@@ -6,6 +6,7 @@ import java.util.Map;
 
 import com.web.curation.dao.user.InterestDao;
 import com.web.curation.JWT.JWTDecoding;
+import com.web.curation.dao.KeywordsDao;
 import com.web.curation.dao.SkillsDao;
 import com.web.curation.model.BasicResponse;
 import com.web.curation.model.user.Interest;
@@ -16,6 +17,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -39,6 +41,9 @@ public class InterestController {
 
     @Autowired
     SkillsDao skillsDao;
+
+    @Autowired
+    KeywordsDao keywordsDao;
 
     @PostMapping("/account/interest/register")
     @ApiOperation(value = "관심사 등록")
@@ -110,6 +115,38 @@ public class InterestController {
         
         return new ResponseEntity<>(result, HttpStatus.OK);
 
+    }
+
+    @ApiOperation(value = "해시태그 조회")
+    @GetMapping("/hashTag")
+    public Object getHashTagList() {
+        // 인기 키워드 10개 
+        /*
+            // 최근 1달간 인기 키워드
+            select sno,count(*) from keyword, article 
+            where article.updatedAt > date_add(now(), interval -1 month) 
+            and keyword.articleid=article.articleid 
+            group by sno 
+            order by count(*) desc limit 10;
+        */
+
+        
+        final BasicResponse result = new BasicResponse();
+        result.status = false;
+        result.data = "태그 조회 실패";
+        
+        List<Object[]> hashTagList = keywordsDao.findGroupByKeywordsWithJPQL();
+        List<String> hashTag = new ArrayList<>();
+
+        for(int i=0;i<10;i++){
+            hashTag.add((skillsDao.findSkillBySno((int) hashTagList.get(i)[0])).getName());
+        }
+
+        result.status = true;
+        result.data = "success";
+        result.object = hashTag;
+        
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 }
 

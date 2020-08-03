@@ -30,18 +30,28 @@
             @click="goToMyPage"
           ></figure>
         </div>
-        <div class="icon">
-          <i class="far fa-bell" />
+        <div class="icon" style="display: flex">
+          <div style="display: flex">
+            <div class="circle">{{ $store.state.notification.length }}</div>
+            <i @click="notificationIconToggle" class="far fa-bell" />
+          </div>
           <i @click="asideBarToggle" class="fas fa-bars"></i>
         </div>
-        <!-- <div class="article">
-          <button @click="$router.push('/create')" class="btn">
-            write a post
-          </button>
-        </div> -->
       </div>
     </div>
-    <div class="aside">
+    <div class="notification" v-if="$store.state.notification.length">
+      <Notification
+        v-for="noti in $store.state.notification.filter(noti => noti.readn === 0)"
+        :noti="noti"
+        :key="noti.notificationid"
+      />
+<!--      <div>-->
+<!--        <div v-for="noti in $store.state.notification" :key="noti.notificationid">-->
+<!--          <span>{{ noti.email }} 님이 {{ noti.content }}를 {{ noti.type }}합니다.</span>-->
+<!--        </div>-->
+<!--      </div>-->
+    </div>
+    <div class="aside disabled">
       <div class="aside-menu" v-if="!this.$store.getters.isLoggedIn">
         <GoogleLogin />
         <GithubLogin />
@@ -53,11 +63,11 @@
         </div>
       </div>
       <div v-else class="aside-menu-loggedIn">
-        <div @click="logout" class="logout emailogin-text">
-          Log Out
-        </div>
         <div @click="goToMyPage" class="mypage-text">
           MyPage
+        </div>
+        <div @click="logout" class="emailogin-text">
+          Log Out
         </div>
       </div>
     </div>
@@ -67,16 +77,22 @@
 <script>
 import GoogleLogin from "./GoogleLogin";
 import GithubLogin from "./GithubLogin";
+import Notification from "./Notification";
 export default {
   name: "NavBar",
   components: {
     GoogleLogin,
     GithubLogin,
+    Notification,
   },
   methods: {
     asideBarToggle() {
       const aside = document.querySelector(".aside");
       aside.classList.toggle("disabled");
+    },
+    notificationIconToggle() {
+      const notiDropdown = document.querySelector(".notification")
+      notiDropdown.classList.toggle("disabled")
     },
     goToEmailLogin() {
       const aside = document.querySelector(".aside");
@@ -143,27 +159,29 @@ export default {
   justify-content: center;
   align-items: center;
 }
-/* .btn {
-  background-color: rgb(144, 153, 240);
-  border-radius: 3px;
-  color: white;
-  font-weight: bold;
-  font-size: 1rem;
-  border-style: none;
-  outline: none;
-  width: 110px;
-  height: 35px;
-  cursor: pointer;
-} */
-.btn:hover {
-  background-color: rgb(15, 35, 219);
-  transition: 2s;
+.notification {
+  position: absolute;
+  top: 70px;
+  right: 0;
+  z-index: 10;
 }
 i {
   margin-left: 1rem;
   margin-right: 1rem;
   font-size: 2rem;
   cursor: pointer;
+}
+.circle {
+  position: absolute;
+  top: 15px;
+  right: 60px;
+  border-radius: 75%;
+  width: 20px;
+  height: 20px;
+  background-color: crimson;
+  color: white;
+  text-align: center;
+  font-weight: bold;
 }
 i:hover {
   border-radius: 50%;
@@ -207,9 +225,9 @@ i:hover {
 }
 .aside {
   position: absolute;
-  top: 120px;
+  top: 70px;
   right: 0;
-  z-index: 3;
+  z-index: 10;
 }
 .aside-menu {
   width: 300px;
@@ -234,11 +252,20 @@ i:hover {
 .aside-menu > div, .aside-menu-loggedIn > div{
   margin: 10px;
 }
+.aside-menu-loggedIn > div:nth-child(1) {
+  width: 250px;
+  height: 50px;
+  border-radius: 3px;
+  background-color: rgb(143, 182, 204);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 .aside-menu-loggedIn > div:nth-child(2) {
   width: 250px;
   height: 50px;
   border-radius: 3px;
-  background-color: rgb(114, 177, 214);
+  background-color: rgb(204, 93, 65);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -256,7 +283,8 @@ i:hover {
   width: 250px;
   height: 50px;
   border-radius: 3px;
-  background-color: lightgray;
+  background-color: rgb(143, 182, 204);
+  color: white;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -265,15 +293,6 @@ i:hover {
   cursor: pointer;
   color: white;
   font-weight: bolder;
-}
-.logout {
-  width: 250px;
-  height: 50px;
-  border-radius: 3px;
-  background-color: rgb(204, 93, 65);
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 .signup-text {
   cursor: pointer;
