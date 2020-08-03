@@ -21,7 +21,6 @@ export default new Vuex.Store({
     interestList: [],
     notification: [],
     userSkills: [],
-    calendarEmail : '',
   },
   getters: {
     isLoggedIn: (state) => !!state.id_token,

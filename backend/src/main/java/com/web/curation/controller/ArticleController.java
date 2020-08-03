@@ -504,19 +504,40 @@ public class ArticleController {
 
     @ApiOperation(value = "게시글 날짜 조회")
     @GetMapping("/article/date/{date}")
-    public Object searchDate(@PathVariable final String date) {
+    public Object searchDate(@PathVariable final String date,@RequestParam (value = "email") final String email) {
 
         final BasicResponse result = new BasicResponse();
         result.status = false;
         result.data = "fail";
 
-        // System.out.println(email);
-        System.out.println(date);
+        String [] tmp = date.split("-");
+       
+        System.out.println(LocalDateTime.now().toString());
+        String[] now = LocalDateTime.now().toString().split("-");
 
-        System.out.println(articleDao.articleAt(date).get(0).getTitle());
+        System.out.println(tmp[0] + " "+now[0]);
+        System.out.println(tmp[1] + " "+now[1]);
+        System.out.println(tmp[2] + " "+now[2]);
 
-        return null;
+        List<Article> list = articleDao.articleAt(date, email);
+
+        try {
+            if(list.get(0) != null){
+                return list;
+            }
+
+            if(tmp[0] == now[0] && tmp[1] == now[1] && tmp[2] == now[2]){
+                list = articleDao.findAllByEmail(email);
+                return list;
+            }
+        } catch (Exception e) {
+            System.out.println("Null");
+            list = articleDao.findAllByEmail(email);
+            return list;
+        }
+
+        return list;
     }
-  
+
 }
 

@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -59,19 +58,5 @@ public class NotificationController {
         return result;
     }
     
-    @ApiOperation(value = "알림 리스트")
-    @GetMapping("/notification/{notificationid}")
-    public Object notification(@PathVariable final int notificationid){
-        final BasicResponse result = new BasicResponse();
-        result.data="fail";
-        result.status=false;
-
-        Notification notification = notificationDao.findNotificationByNotificationid(notificationid);
-        notification.setReadn(1);
-        notificationDao.save(notification);
-        result.data="알림 - 읽음 처리";
-        result.status=true;
-
-        return result;
-    }
+    
 }
