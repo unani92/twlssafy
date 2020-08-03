@@ -64,7 +64,7 @@
       </div>
 
       <div id ="calendar" style="text-align : right">
-          <Calendar :email="userInfo"/>
+          <Calendar :userInfo="userInfo"/>
       </div>
 
     </section>

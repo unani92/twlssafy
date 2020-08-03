@@ -16,11 +16,12 @@
         </div>
         <flat-pickr
         v-if="getEmail"
-                v-model="date"
-                :config="config"                                                          
-                class="form"
-                placeholder="Select Date"          
-                name="date">
+          v-model="date"
+          :config="config"
+          class="form"
+          placeholder="Select Date"
+          name="date"
+        >
         </flat-pickr>
       </div>
     </div>
@@ -32,7 +33,7 @@
   import flatPickr from 'vue-flatpickr-component';  
   import 'flatpickr/dist/flatpickr.css';
   import 'flatpickr/dist/themes/material_blue.css';
-  import {Korean} from 'flatpickr/dist/l10n/ko.js';
+  import { Korean } from 'flatpickr/dist/l10n/ko.js';
   import http from '../../api/http-common.js';
   
   export default {
@@ -41,20 +42,19 @@
       return {
         date: new Date(),
         calendarEmail : '',
-
         config: {
-          wrap: true, 
-
+          wrap: true,
           dateFormat: 'Y-m-d',
-
-          locale: Korean, 
-
-          onChange: function(date) {
-
+          locale: Korean,
+          onChange: (e) => (this.onChange(e))
+        },                
+      }
+    },
+    methods : {
+      onChange (date) {
           let tmp = date.toString().split(" ");
-
           let month = tmp[1];
-          // Jan Feb Mar Apr May Jun July Aug Sep Oct Nov Dec
+
           switch (month) {
             case "Jan":  month = "01";
                      break;
@@ -87,32 +87,31 @@
           let day = tmp[2];
           let year = tmp[3];
 
-          date = year+"-"+month+"-"+day;
+          const targetDate = year+"-"+month+"-"+day;
 
-          http.get(`/article/date/${date}`)
+          http.get(`/article/date/${targetDate}?email=${this.userInfo.userInfo.email}`)
           .then( res => {
             console.log(res);
             });
-
           },
-        },                
-      }
     },
     computed: {
       getEmail(){
-        return this.email;
+        return this.userInfo.userInfo.email;
       }
     },
     props: {
-      email: {
-        type: String,
+      userInfo: {
+        type: Object,
         required: true,
       },
     },
     components: {
       flatPickr
     },
-
+    mounted() {
+      console.log(this.userInfo.userInfo.email)
+    }
   }
 
 </script> 
