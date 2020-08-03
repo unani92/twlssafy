@@ -512,12 +512,8 @@ public class ArticleController {
 
         String [] tmp = date.split("-");
        
-        System.out.println(LocalDateTime.now().toString());
         String[] now = LocalDateTime.now().toString().split("-");
 
-        System.out.println(tmp[0] + " "+now[0]);
-        System.out.println(tmp[1] + " "+now[1]);
-        System.out.println(tmp[2] + " "+now[2]);
 
         List<Article> list = articleDao.articleAt(date, email);
 
@@ -525,13 +521,11 @@ public class ArticleController {
             if(list.get(0) != null){
                 return list;
             }
-
-            if(tmp[0] == now[0] && tmp[1] == now[1] && tmp[2] == now[2]){
+            if(tmp[0].equals(now[0]) && tmp[1].equals(now[1]) && tmp[2].equals(now[2].substring(0,2))){
                 list = articleDao.findAllByEmail(email);
                 return list;
             }
         } catch (Exception e) {
-            System.out.println("Null");
             list = articleDao.findAllByEmail(email);
             return list;
         }
