@@ -1,11 +1,10 @@
 <template>
   <div>
-
     <div class="home">
       <div>
         <HomeNav class="home-nav" />
       </div>
-      <div class="secondary secondary-a ">
+      <div class="secondary secondary-a">
         <div class="friends">
           <p>💌 Friends 💌</p>
           <li class="user-item friend-item">
@@ -13,36 +12,31 @@
               class="user-photo"
               style="background-image: url('https://i.pravatar.cc/100?u=배유진');"
             ></figure>
-            <p class="user-name">
-              배유진
-            </p>
+            <p class="user-name">배유진</p>
           </li>
           <li class="user-item friend-item">
             <figure
               class="user-photo"
               style="background-image: url('https://i.pravatar.cc/100?u=전해인');"
             ></figure>
-            <p class="user-name">
-              전혜인
-            </p>
+            <p class="user-name">전혜인</p>
           </li>
           <li class="user-item friend-item">
             <figure
               class="user-photo"
               style="background-image: url('https://i.pravatar.cc/100?u=신영찬');"
             ></figure>
-            <p class="user-name">
-              신영찬
-            </p>
+            <p class="user-name">신영찬</p>
           </li>
         </div>
       </div>
       <div class="primary">
         <p>⚡ News ⚡</p>
         <br />
-        <ArticleCardList/>
+        <router-view></router-view>
+        <!-- <ArticleCardList /> -->
       </div>
-      <div class="secondary secondary-b ">
+      <div class="secondary secondary-b">
         <HashTag />
       </div>
     </div>
@@ -54,7 +48,7 @@
 import HomeNav from "../components/HomeNav";
 import HashTag from "../components/HashTag";
 import ArticleCardList from "@/components/article/ArticleCardList.vue";
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapActions } from "vuex";
 export default {
   components: {
     HomeNav,
@@ -62,16 +56,16 @@ export default {
     ArticleCardList,
   },
   computed: {
-    ...mapState(["id_token"])
+    ...mapState(["id_token"]),
   },
   methods: {
-    ...mapActions(["getGoogleUserInfo"])
+    ...mapActions(["getGoogleUserInfo"]),
   },
   mounted() {
     if (this.id_token) {
-      this.getGoogleUserInfo(this.id_token)
+      this.getGoogleUserInfo(this.id_token);
     }
-  }
+  },
 };
 </script>
 

@@ -1,15 +1,14 @@
 <template>
   <div class="home-nav">
     <div class="post-nav">
+      <span>Latest</span>
       <span>
-        Latest
+        <router-link v-if="isLoggedIn" to="/follow">Follow</router-link>
       </span>
       <span>
-        Follow
+        <router-link v-if="isLoggedIn" to="/pin">Pinned</router-link>
       </span>
-      <span>
-        Pinned
-      </span>
+      <!-- <span>Pinned</span> -->
     </div>
     <div v-if="$store.getters.isLoggedIn">
       <span>
@@ -19,25 +18,26 @@
       </span>
       <span>
         <button class="writeBtn">
-        <i @click="interestToggle" class="fas fa-fire-alt"></i>
+          <i @click="interestToggle" class="fas fa-fire-alt"></i>
         </button>
       </span>
     </div>
     <div class="interest disabled">
       <div class="interest-menu">
-        <li v-for="h in hashTag" :key="h">
-          #{{h}}
-        </li>
+        <li v-for="h in hashTag" :key="h">#{{h}}</li>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import { fetchHashTags } from "@/api/index";
-
 export default {
-  name: "HomeNav",  
+  name: "HomeNav",
+  computed: {
+    ...mapGetters(["isLoggedIn"]),
+  },
   data() {
     return {
       hashTag: [],

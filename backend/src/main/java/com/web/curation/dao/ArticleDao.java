@@ -28,7 +28,7 @@ public interface ArticleDao extends JpaRepository<Article, String> {
     List<Article> articleFromPin(String email);
     
     @Query(value = 
-    "select * from article where date(createdat) =  ?1 order by articleid desc",
+    "select * from article where date(createdat) =  ?1) order by articleid desc",
     nativeQuery = true)
     List<Article> articleAt(String date);
 
