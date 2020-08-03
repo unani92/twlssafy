@@ -31,15 +31,22 @@
           ></figure>
         </div>
         <div class="icon">
-          <i class="far fa-bell" />
+          <i @click="notificationIconToggle" class="far fa-bell" />
           <i @click="asideBarToggle" class="fas fa-bars"></i>
         </div>
-        <!-- <div class="article">
-          <button @click="$router.push('/create')" class="btn">
-            write a post
-          </button>
-        </div> -->
       </div>
+    </div>
+    <div class="notification" v-if="$store.state.notification.length">
+      <Notification
+        v-for="noti in $store.state.notification.filter(noti => noti.readn === 0)"
+        :noti="noti"
+        :key="noti.notificationid"
+      />
+<!--      <div>-->
+<!--        <div v-for="noti in $store.state.notification" :key="noti.notificationid">-->
+<!--          <span>{{ noti.email }} 님이 {{ noti.content }}를 {{ noti.type }}합니다.</span>-->
+<!--        </div>-->
+<!--      </div>-->
     </div>
     <div class="aside disabled">
       <div class="aside-menu" v-if="!this.$store.getters.isLoggedIn">
@@ -67,16 +74,22 @@
 <script>
 import GoogleLogin from "./GoogleLogin";
 import GithubLogin from "./GithubLogin";
+import Notification from "./Notification";
 export default {
   name: "NavBar",
   components: {
     GoogleLogin,
     GithubLogin,
+    Notification,
   },
   methods: {
     asideBarToggle() {
       const aside = document.querySelector(".aside");
       aside.classList.toggle("disabled");
+    },
+    notificationIconToggle() {
+      const notiDropdown = document.querySelector(".notification")
+      notiDropdown.classList.toggle("disabled")
     },
     goToEmailLogin() {
       const aside = document.querySelector(".aside");
@@ -143,21 +156,11 @@ export default {
   justify-content: center;
   align-items: center;
 }
-/* .btn {
-  background-color: rgb(144, 153, 240);
-  border-radius: 3px;
-  color: white;
-  font-weight: bold;
-  font-size: 1rem;
-  border-style: none;
-  outline: none;
-  width: 110px;
-  height: 35px;
-  cursor: pointer;
-} */
-.btn:hover {
-  background-color: rgb(15, 35, 219);
-  transition: 2s;
+.notification {
+  position: absolute;
+  top: 70px;
+  right: 0;
+  z-index: 10;
 }
 i {
   margin-left: 1rem;
