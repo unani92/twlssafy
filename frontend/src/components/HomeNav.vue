@@ -24,11 +24,7 @@
     </div>
     <div class="interest disabled">
       <div class="interest-menu">
-        <li class="skill">Python</li>
-        <li class="skill">Java</li>
-        <li class="skill">Vuejs</li>
-        <li class="skill">Flutter</li>
-        <li class="skill">AI</li>
+        <li v-for="h in hashTag" :key="h">#{{h}}</li>
       </div>
     </div>
   </div>
@@ -36,16 +32,29 @@
 
 <script>
 import { mapGetters } from "vuex";
+import { fetchHashTags } from "@/api/index";
 export default {
   name: "HomeNav",
   computed: {
     ...mapGetters(["isLoggedIn"]),
+  },
+  data() {
+    return {
+      hashTag: [],
+    };
   },
   methods: {
     interestToggle() {
       const interest = document.querySelector(".interest");
       interest.classList.toggle("disabled");
     },
+    async fetchData() {
+      const { data } = await fetchHashTags();
+      this.hashTag = data.object;
+    },
+  },
+  created() {
+    this.fetchData();
   },
 };
 </script>
@@ -79,7 +88,7 @@ export default {
   z-index: 3;
 }
 .interest-menu {
-  width: 100px;
+  width: 300px;
   border: 1px solid black;
   background-color: white;
   display: flex;

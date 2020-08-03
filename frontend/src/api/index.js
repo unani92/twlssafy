@@ -100,6 +100,10 @@ function fetchPinArticles(params, token) {
     headers: { id_token: token },
   });
 }
+function fetchHashTags() {
+  return instance.get(`hashTag`);
+}
+
 export {
   checkEmail,
   checkNickname,
@@ -122,4 +126,5 @@ export {
   searchArticle,
   fetchFollowArticles,
   fetchPinArticles,
+  fetchHashTags,
 };

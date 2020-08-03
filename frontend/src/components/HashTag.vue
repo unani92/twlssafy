@@ -2,28 +2,32 @@
   <div class="hashtag">
     <p class="title">👀 Attention 👀</p>
     <div class="stacks">
-      <div class="stack" v-for="stack in stacks" :key="stack"># {{ stack }}</div>
+      <!-- <div class="stack" v-for="stack in stacks" :key="stack"># {{ stack }}</div> -->
+      <div class="stack" v-for="h in hashTag" :key="h">
+        #{{h}}
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+import { fetchHashTags } from "@/api/index";
+
 export default {
   name: "HashTag",
   data() {
     return {
-      stacks: [
-        "python",
-        "java",
-        "javascript",
-        "c",
-        "c++",
-        "frontend",
-        "backend",
-        "vue",
-        "spring",
-      ],
+      hashTag: [],
     };
+  },
+  methods: {
+    async fetchData() {
+        const { data } = await fetchHashTags();
+        this.hashTag = data.object;
+      },
+  },
+  created() {
+    this.fetchData();
   },
 };
 </script>
