@@ -10,7 +10,7 @@
     </div>
     <div class="notice" v-else-if="noti.type === 'pin'">
       <i style="color: crimson" class="far fa-bookmark"></i>
-      <div>
+      <div :id="noti.notificationid" style="cursor: pointer" @click="goToPage">
         <p>{{ noti.email }} 님이</p>
         <p>{{ noti.content.slice(0,9) }}... 글을 찜했습니다.</p>
       </div>
