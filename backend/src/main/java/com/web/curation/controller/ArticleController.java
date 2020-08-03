@@ -340,12 +340,41 @@ public class ArticleController {
                 }
             }
 
-            result.object = articles;
+            List<List<String>> keywordsList = new ArrayList<>();
+            List<Integer> likesList = new ArrayList<>();
+            List<Integer> pinList = new ArrayList<>();
+    
+            for(Article a : articles){
+                // 게시글 번호를 이용해 이 글의 키워드 리스트를 받아옴 (ex. 1번글의 키워드 c, c++)
+                List<Keywords> tmpKeyword = keywordsDao.findAllByArticleid(a.getArticleid());
+                if(tmpKeyword!=null){ // 임시리스트 만들어서 키워드들 넣고, 최종 리스트에 담음
+                    List<String> tmplist = new ArrayList<>();
+                    for(Keywords k : tmpKeyword){
+                        tmplist.add(skillsDao.findSkillBySno(k.getSno()).getName());
+                    }
+                    keywordsList.add(tmplist);
+                    result.status = true;
+                    result.data = "글 조회 성공";
+                }
+                else return new ResponseEntity<>(result, HttpStatus.OK); // 글에 keyword 없으면 false return
+    
+                // 이 글의 총 좋아요, 핀 수
+               likesList.add(likesDao.countByArticleid(a.getArticleid()));
+               pinList.add(pinDao.countByArticleid(a.getArticleid()));
+    
+            }
+            
+            Map<String,Object> object = new HashMap<>();
+            object.put("article", articles);
+            object.put("keyword", keywordsList);
+            object.put("likesCntList", likesList);
+            object.put("pinCntList", pinList);
+    
+            result.object = object;
+            
         }
-
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
-
 
     @ApiOperation(value = "북마크 글 조회")
     @GetMapping("/article/pin")
@@ -377,9 +406,98 @@ public class ArticleController {
                 }
             }
 
-            result.object = articles;
+            List<List<String>> keywordsList = new ArrayList<>();
+            List<Integer> likesList = new ArrayList<>();
+            List<Integer> pinList = new ArrayList<>();
+    
+            for(Article a : articles){
+                // 게시글 번호를 이용해 이 글의 키워드 리스트를 받아옴 (ex. 1번글의 키워드 c, c++)
+                List<Keywords> tmpKeyword = keywordsDao.findAllByArticleid(a.getArticleid());
+                if(tmpKeyword!=null){ // 임시리스트 만들어서 키워드들 넣고, 최종 리스트에 담음
+                    List<String> tmplist = new ArrayList<>();
+                    for(Keywords k : tmpKeyword){
+                        tmplist.add(skillsDao.findSkillBySno(k.getSno()).getName());
+                    }
+                    keywordsList.add(tmplist);
+                    result.status = true;
+                    result.data = "글 조회 성공";
+                }
+                else return new ResponseEntity<>(result, HttpStatus.OK); // 글에 keyword 없으면 false return
+    
+                // 이 글의 총 좋아요, 핀 수
+               likesList.add(likesDao.countByArticleid(a.getArticleid()));
+               pinList.add(pinDao.countByArticleid(a.getArticleid()));
+    
+            }
+            
+            Map<String,Object> object = new HashMap<>();
+            object.put("article", articles);
+            object.put("keyword", keywordsList);
+            object.put("likesCntList", likesList);
+            object.put("pinCntList", pinList);
+    
+            result.object = object;
+        }
+            
+            return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "인기글 조회")
+    @GetMapping("/article/hot")
+    public Object getHotArticle(@RequestParam(value = "page") final int page) throws Exception {
+        final BasicResponse result = new BasicResponse();
+        result.status = false;
+        result.data = "글 조회 실패";
+    
+        // 게시글 페이징 10개 단위
+        List<Object[]> list = likesDao.articleFromHot();
+
+        //  keywords list - "keyword": [ ["Swift","Swagger"], ["C"], ["STS", "SQL"], ...]
+        if(list==null){
+            return new ResponseEntity<>(result, HttpStatus.OK);
         }
 
+        List<Article> articles = new ArrayList<>();
+
+        int totalArticle = list.size();
+        for(int i=page*10; i<page*10+10; i++) {
+            if(i<totalArticle) {
+                articles.add((articleDao.findByArticleid((int) list.get(i)[0])));
+            }
+        }
+
+        List<List<String>> keywordsList = new ArrayList<>();
+        List<Integer> likesList = new ArrayList<>();
+        List<Integer> pinList = new ArrayList<>();
+
+        for(Article a : articles){
+            // 게시글 번호를 이용해 이 글의 키워드 리스트를 받아옴 (ex. 1번글의 키워드 c, c++)
+            List<Keywords> tmpKeyword = keywordsDao.findAllByArticleid(a.getArticleid());
+            if(tmpKeyword!=null){ // 임시리스트 만들어서 키워드들 넣고, 최종 리스트에 담음
+                List<String> tmplist = new ArrayList<>();
+                for(Keywords k : tmpKeyword){
+                    tmplist.add(skillsDao.findSkillBySno(k.getSno()).getName());
+                }
+                keywordsList.add(tmplist);
+                result.status = true;
+                result.data = "글 조회 성공";
+            }
+            else return new ResponseEntity<>(result, HttpStatus.OK); // 글에 keyword 없으면 false return
+
+            // 이 글의 총 좋아요, 핀 수
+           likesList.add(likesDao.countByArticleid(a.getArticleid()));
+           pinList.add(pinDao.countByArticleid(a.getArticleid()));
+
+        }
+        
+        Map<String,Object> object = new HashMap<>();
+        object.put("article", articles);
+        object.put("keyword", keywordsList);
+        object.put("likesCntList", likesList);
+        object.put("pinCntList", pinList);
+
+        result.object = object;
+        
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
