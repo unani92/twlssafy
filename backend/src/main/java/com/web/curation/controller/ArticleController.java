@@ -382,7 +382,23 @@ public class ArticleController {
 
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
+    
 
+    @ApiOperation(value = "게시글 날짜 조회")
+    @GetMapping("/article/date/{date}")
+    public Object searchDate(@PathVariable final String date) {
+
+        final BasicResponse result = new BasicResponse();
+        result.status = false;
+        result.data = "fail";
+
+        // System.out.println(email);
+        System.out.println(date);
+
+        System.out.println(articleDao.articleAt(date).get(0).getTitle());
+
+        return null;
+    }
   
 }
 

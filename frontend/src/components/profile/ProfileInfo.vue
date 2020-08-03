@@ -59,9 +59,14 @@
             <i class="fas fa-assistive-listening-systems"></i>
             <br />
             <span>{{ userInfo.following.follow.length }} Followings</span>
-          </a>
+          </a>       
         </div>
       </div>
+
+      <div id ="calendar" style="text-align : right">
+          <Calendar :email="userInfo"/>
+      </div>
+
     </section>
     <section v-if="userInfo.totalArticleCount === 0" class="no-article">
       작성한 글이 없습니다.
@@ -143,12 +148,15 @@
 import SelectSkills from "@/views/SelectSkills.vue";
 import { requestFollow } from "@/api/index.js";
 import { mapState, mapGetters } from "vuex";
+import Calendar from "../calendar/Calendar";
+
 export default {
   props: {
     userInfo: Object,
   },
   components: {
     SelectSkills,
+    Calendar
   },
   data() {
     // let interests = [];
@@ -531,5 +539,7 @@ section {
 }
 .followBtn:hover {
   cursor: pointer;
+}
+#calendar {
 }
 </style>
