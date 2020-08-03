@@ -1,44 +1,50 @@
-import axios from "axios";
+import axios from 'axios';
 
 const instance = axios.create({
   baseURL: process.env.VUE_APP_API_URL,
 });
 function checkEmail(email) {
-  return instance.post("account/checkEmail", email);
+  return instance.post('account/checkEmail', email);
 }
 function checkNickname(nickname) {
-  return instance.post("account/checkNickname", nickname);
+  return instance.post('account/checkNickname', nickname);
 }
 
 function registerUser(userData) {
-  return instance.post("account/signup", userData);
+  return instance.post('account/signup', userData);
 }
-function googleSignup(userData,token) {
-  return instance.post("account/googleSignup", userData,{headers:{id_token: token}})
+function googleSignup(userData, token) {
+  return instance.post('account/googleSignup', userData, {
+    headers: { id_token: token },
+  });
 }
 
 function login(params) {
-  return instance.post("account/login", params);
+  return instance.post('account/login', params);
 }
 
-function selectSkills(params,token) {
-  return instance.post("account/interest/register", params, {headers: {id_token: token}});
+function selectSkills(params, token) {
+  return instance.post('account/interest/register', params, {
+    headers: { id_token: token },
+  });
 }
 
-function deleteSkill(params,token) {
-  return instance.post("account/interest/delete", params, {headers: {id_token: token}});
+function deleteSkill(params, token) {
+  return instance.post('account/interest/delete', params, {
+    headers: { id_token: token },
+  });
 }
 
-function createArticle(params,token) {
-  return instance.post("article", params, {headers: {id_token: token}});
+function createArticle(params, token) {
+  return instance.post('article', params, { headers: { id_token: token } });
 }
 
 function updateArticle(params, token) {
-  return instance.put("article", params, {headers: {id_token: token}});
+  return instance.put('article', params, { headers: { id_token: token } });
 }
 
 function deleteArticle(id, token) {
-  return instance.delete(`article?no=${id}`, {headers: {id_token: token}});
+  return instance.delete(`article?no=${id}`, { headers: { id_token: token } });
 }
 
 function fetchArticles(params) {
@@ -50,19 +56,27 @@ function fetchArticle(id) {
 }
 
 function likeArticle(params, token) {
-  return instance.post(`article/${params.article_id}/likes`, null,{headers: {id_token: token}});
+  return instance.post(`article/${params.article_id}/likes`, null, {
+    headers: { id_token: token },
+  });
 }
 
 function pinArticle(params, token) {
-  return instance.post(`article/${params.article_id}/pin`, null,{headers: {id_token: token}});
+  return instance.post(`article/${params.article_id}/pin`, null, {
+    headers: { id_token: token },
+  });
 }
 
 function requestFollow(params, token) {
-  return instance.post("account/follow", params, {headers: {id_token: token}});
+  return instance.post('account/follow', params, {
+    headers: { id_token: token },
+  });
 }
 
 function createComment(params, token) {
-  return instance.post("article/comment", params, {headers: {id_token: token}});
+  return instance.post('article/comment', params, {
+    headers: { id_token: token },
+  });
 }
 
 function deleteComment(params) {
@@ -76,7 +90,16 @@ function searchArticle(params) {
     `article/search?q=${params.q}&category=${params.category}&page=${params.page}`
   );
 }
-
+function fetchFollowArticles(params, token) {
+  return instance.get(`article/following?page=${params.page}`, {
+    headers: { id_token: token },
+  });
+}
+function fetchPinArticles(params, token) {
+  return instance.get(`article/pin?page=${params.page}`, {
+    headers: { id_token: token },
+  });
+}
 export {
   checkEmail,
   checkNickname,
@@ -97,4 +120,6 @@ export {
   deleteComment,
   fetchMyArticles,
   searchArticle,
+  fetchFollowArticles,
+  fetchPinArticles,
 };

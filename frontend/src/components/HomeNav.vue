@@ -1,15 +1,14 @@
 <template>
   <div class="home-nav">
     <div class="post-nav">
+      <span>Latest</span>
       <span>
-        Latest
+        <router-link v-if="isLoggedIn" to="/follow">Follow</router-link>
       </span>
       <span>
-        Follow
+        <router-link v-if="isLoggedIn" to="/pin">Pinned</router-link>
       </span>
-      <span>
-        Pinned
-      </span>
+      <!-- <span>Pinned</span> -->
     </div>
     <div v-if="$store.getters.isLoggedIn">
       <span>
@@ -19,35 +18,29 @@
       </span>
       <span>
         <button class="writeBtn">
-        <i @click="interestToggle" class="fas fa-fire-alt"></i>
+          <i @click="interestToggle" class="fas fa-fire-alt"></i>
         </button>
       </span>
     </div>
     <div class="interest disabled">
       <div class="interest-menu">
-        <li class="skill">
-          Python
-        </li>
-        <li class="skill">
-          Java
-        </li>
-        <li class="skill">
-          Vuejs
-        </li>
-        <li class="skill">
-          Flutter
-        </li>
-        <li class="skill">
-          AI
-        </li>
+        <li class="skill">Python</li>
+        <li class="skill">Java</li>
+        <li class="skill">Vuejs</li>
+        <li class="skill">Flutter</li>
+        <li class="skill">AI</li>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 export default {
   name: "HomeNav",
+  computed: {
+    ...mapGetters(["isLoggedIn"]),
+  },
   methods: {
     interestToggle() {
       const interest = document.querySelector(".interest");
