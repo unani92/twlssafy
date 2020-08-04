@@ -145,11 +145,13 @@ public class ArticleController {
         
         String email = JWTDecoding.decode(header.get("id_token").get(0));
 
+        
         String nickname = (String) userToken.get("nickname");
         // String nickname = (String) request.get("nickname");
         String title = (String) request.get("title");
         String content = (String) request.get("content");
         String imgurl = (String) request.get("imgUrl");
+        String preview = subStrByte((String) request.get("preview"), 200);
         
         
         Article article = new Article();
@@ -158,6 +160,7 @@ public class ArticleController {
         article.setEmail(email);
         article.setNickname(nickname);
         article.setImgurl(imgurl);
+        article.setPreview(preview);
         
         if(articleDao.save(article)==null){
             result.data = "글쓰기 실패 - DB 저장 실패";
@@ -192,6 +195,27 @@ public class ArticleController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
     
+    // preview 50자 제한
+    private String subStrByte(String str, int len) {
+        if(!str.isEmpty()){
+            str = str.trim();
+            if(str.getBytes().length <= len) {
+                return str;
+            }
+            else {
+                StringBuffer sbf = new StringBuffer(len);
+                int cnt = 0;
+                for(char ch:str.toCharArray()){
+                    cnt+=String.valueOf(ch).getBytes().length;
+                    if(cnt>len) break;
+                    sbf.append(ch);
+                }
+                return sbf.toString()+"...";
+            }
+        }
+        return "";
+    }
+
     @Transactional
     @ApiOperation(value = "글삭제")
     @DeleteMapping("/article")
@@ -237,6 +261,7 @@ public class ArticleController {
         article.setTitle((String)request.get("title"));
         article.setImgurl((String)request.get("imgUrl"));
         article.setUpdatedat(LocalDateTime.now());
+        article.setPreview(subStrByte((String) request.get("preview"), 200));
 
         final BasicResponse result = new BasicResponse();
             result.data = "수정 실패";

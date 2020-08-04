@@ -45,6 +45,8 @@
   import { updateArticle } from "../api";
   import codeSyntaxHightlight from "@toast-ui/editor-plugin-code-syntax-highlight";
   import hljs from "highlight.js";
+  import { validateMarkdown } from "@/utils/validation";
+
   export default {
     name: "ArticleUpdate",
     props: {
@@ -99,11 +101,13 @@
       },
       submitArticle(data) {
         this.article.content = data
+        var preview = validateMarkdown(data)
         const params = {
           articleId: String(this.id),
           title: this.article.title,
           content: this.article.content,
-          keyword: this.article.keywords
+          keyword: this.article.keywords,
+          preview: preview
         }
         const id_token = this.$store.state.id_token
         updateArticle(params, id_token)

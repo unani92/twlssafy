@@ -25,7 +25,7 @@
               <a href="#" style="text-decoration: none;">#{{ k }}</a>
             </span>
           </div>
-          <div class="text">{{ article.content }}</div>
+          <div class="text">{{ article.preview }}</div>
           <div class="createdat-text">
             {{ this.$moment(article.createdat).fromNow() }}
           </div>
