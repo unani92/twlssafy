@@ -10,7 +10,33 @@
     components: {
       NavBar,
     },
-
+    data() {
+      return {
+        scroll: {
+          prev: 0,
+          upDown: null
+        }
+      }
+    },
+    methods: {
+      scrollEvent() {
+        const navBar = document.querySelector(".nav-bar")
+        const homeBar = document.querySelector(".home-nav")
+        const nowScrollY = window.scrollY
+        if (nowScrollY > this.scroll.prev) {
+          navBar.classList.add("disabled")
+          homeBar.classList.add("disabled")
+          this.scroll.prev = nowScrollY
+        } else {
+          navBar.classList.remove("disabled")
+          homeBar.classList.remove("disabled")
+          this.scroll.prev = nowScrollY
+        }
+      },
+    },
+    mounted() {
+      document.addEventListener("scroll", this.scrollEvent)
+    }
   }
 </script>
 <style>
@@ -23,6 +49,9 @@
   body {
     background-color: rgb(249, 249, 249);
     margin: 0 auto;
+  }
+  .disabled {
+    display: none !important;
   }
   /* markdown viewer custom css */
   blockquote {
