@@ -16,6 +16,7 @@ import ArticleCardList from '@/components/article/ArticleCardList.vue';
 import FollowArticleCardList from '@/components/article/FollowArticleCardList.vue';
 import PinArticleCardList from '@/components/article/PinArticleCardList.vue';
 import HotArticleCardList from '@/components/article/HotArticleCardList.vue';
+import FindPwd from '../views/FindPwd.vue';
 Vue.use(VueRouter);
 
 const routes = [
@@ -60,6 +61,12 @@ const routes = [
     path: '/changepwd',
     name: 'ChangePwd',
     component: ChangePwd,
+    props: true
+  },
+  {
+    path: '/findpwd',
+    name: 'FindPwd',
+    component: FindPwd,
   },
   {
     path: '/selectskills',

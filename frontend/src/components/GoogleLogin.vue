@@ -40,7 +40,7 @@ import { mapActions } from 'vuex'
               this.getGoogleUserInfo(id_token)
             }
         })
-          .catch(err => console.log(err))
+          .catch(err => alert("Error : ",err))
       },
       onFailure(err) { console.log("fail -> " + err) },
     },
