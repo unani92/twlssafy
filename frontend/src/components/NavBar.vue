@@ -160,7 +160,7 @@ export default {
   align-items: center;
 }
 .notification {
-  position: absolute;
+  position: fixed;
   top: 70px;
   right: 0;
   z-index: 10;
@@ -224,7 +224,7 @@ i:hover {
   }
 }
 .aside {
-  position: absolute;
+  position: fixed;
   top: 70px;
   right: 0;
   z-index: 10;
