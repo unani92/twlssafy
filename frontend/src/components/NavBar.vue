@@ -32,7 +32,7 @@
         </div>
         <div class="icon" style="display: flex">
           <div style="display: flex">
-            <div class="circle">{{ $store.state.notificationCnt }}</div>
+            <div v-if="$store.getters.isLoggedIn" class="circle">{{ $store.state.notificationCnt }}</div>
             <i @click="notificationIconToggle" class="far fa-bell" />
           </div>
           <i @click="asideBarToggle" class="fas fa-bars"></i>
