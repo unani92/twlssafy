@@ -20,6 +20,7 @@ import com.web.curation.model.Article;
 import com.web.curation.model.BasicResponse;
 import com.web.curation.model.Comment;
 import com.web.curation.model.Keywords;
+import com.web.curation.model.user.User;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -353,9 +354,15 @@ public class ArticleController {
         // 해당 글의 댓글 list 저장
         List<Comment> commentList = commentDao.findAllByArticleidOrderByCommentidDesc(no);
 
+        List<String> commentNickname = new ArrayList<>();
+        for(Comment c : commentList){
+            commentNickname.add(userDao.findUserByEmail(c.getEmail()).get().getNickname());
+        }
 
         result.status = true;
         result.data = "상세 조회 성공";
+
+        User user = userDao.findUserByEmail(article.getEmail()).get();
 
         Map<String,Object> object = new HashMap<>();
         object.put("article", article);
@@ -363,7 +370,8 @@ public class ArticleController {
         object.put("cntLikes", cntLikes);
         object.put("cntPin", cntPin);
         object.put("commentList", commentList);
-        object.put("userinfo", userDao.findUserByEmail(article.getEmail()).get() );
+        object.put("userinfo", user.getInfo());
+        object.put("commentNickname",commentNickname);
         result.object = object;
         
         return new ResponseEntity<>(result, HttpStatus.OK);
@@ -572,18 +580,15 @@ public class ArticleController {
         result.status = false;
         result.data = "fail";
 
-        String[] now = LocalDateTime.now().toString().split("T");
+        // String[] now = LocalDateTime.now().toString().split("T");
 
         List<Article> list = articleDao.articleAt(date, email);
         
         try {
-            if(date.trim().contains(now[0].trim())){
-                list = articleDao.findAllByEmailOrderByArticleidDesc(email);
-            }
-            else if(list.get(0) != null){
+            if(list.get(0) != null){
             }
         } catch (Exception e) {
-            list = articleDao.findAllByEmailOrderByArticleidDesc(email);
+            list = null;
         }
 
 
