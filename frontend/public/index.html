@@ -10,7 +10,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic+Coding:wght@400;700&display=swap" rel="stylesheet">
     <title><%= htmlWebpackPlugin.options.title %></title>
   </head>
-  <body onclick="closeAside()">
+  <body onclick="closeAside(), closeNotification()">
     <noscript>
       <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
     </noscript>
@@ -24,8 +24,18 @@
         const aside = document.querySelector(".aside");
         
         if(aside.getAttribute('class')!='aside disabled'){
-          console.log('close');
           aside.setAttribute('class','aside disabled');
+        }
+     }
+
+    // 화면 클릭 시 열려있는 알림 닫힘
+     function closeNotification(){
+       console.log(event.srcElement)
+        if(event.srcElement && event.srcElement.className=='far fa-bell') return;
+        const bell = document.querySelector(".notification");
+        
+        if(bell.getAttribute('class')!='notification disabled'){
+          bell.setAttribute('class','notification disabled');
         }
      }
   </script>
