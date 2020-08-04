@@ -9,14 +9,15 @@
         <div class="keywords" style="margin-bottom : 1rem;">
           <div v-for="keyword in keywords"
                 :key="keyword"
-                class="keyword">
+                class="keyword"
+                @click="search(keyword)">
             #{{ keyword }} 
           </div>
         </div>
         <div class="username-date">
            <!-- @click="userToggle" -->
           <div>
-            <span style="margin-right : 4px;">
+            <span style="margin-right : 4px; cursor:pointer" @click="gotoWriterPage">
             {{ nickname }}
             </span>
             <span v-if="isWriter">
@@ -33,20 +34,6 @@
           </div>
           <span>{{ updatedAt }}</span>
         </div>
-        <!-- <div class="dropdown disabled">
-          <div>
-            <Router-link
-              :to="{
-                name: 'ArticleUpdate',
-                params: { id, keywords, title, content  }
-            }">
-              수정하기
-            </Router-link>
-          </div>
-          <div @click="removeArticle">
-            삭제하기
-          </div>
-        </div> -->
       </div>
       <div class="nickname-keyword markdown">
         <div id="viewer"/>
@@ -106,6 +93,19 @@
       }
     },
     methods: {
+      gotoWriterPage() {
+        this.$router.push({
+          name: "Profile",
+          params: { nickname: this.article.nickname },
+        });
+      },
+      search(keyword){
+        const params = {
+          q: keyword,
+          category: "keyword",
+        };
+        this.$router.push({ name: "ArticleSearchByStack", query: params });
+      },
       async getArticle() {
         const articleInfo = await fetchArticle(this.id)
         const { article, keyword, commentList, cntLikes, cntPin, userinfo, commentNickname } = articleInfo.data.object

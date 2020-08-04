@@ -4,7 +4,7 @@
       <div class="prifile-detail">
         <img :src="photo" alt="" style="width : 30px; height : 30px;">
         <div class="profile-text">
-          <h3 @click="goProfilePage">{{ this.nickname }}</h3>
+          <h3 style="cursor:pointer" @click="goProfilePage">{{ this.nickname }}</h3>
           <span style="color: gainsboro">{{ this.$moment(this.comment.updatedat).fromNow() }}</span>
         </div>
       </div>

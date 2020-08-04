@@ -2,16 +2,20 @@
   <div class="card-body">
     <div class="blog-card">
       <div class="inner-part">
-        <label for="imgTap" class="img">
+        <label for="imgTap" class="img" @click="
+                $router.push({
+                  name: 'ArticleDetail',
+                  params: { id: article.articleid },
+                })
+              " >
           <img v-if="article.imgurl != null" class="img-1" :src="article.imgurl" />
           <img v-else class="img-1" src="https://picsum.photos/300/200" />
         </label>
         <p>
-          <br />
         </p>
-        <div class="content content-1">
-          <div>
-            <div
+        <div class="content">
+          <div style="margin-bottom : 10px;">
+            <span
               class="title"
               style="cursor:pointer;"
               @click="
@@ -21,14 +25,21 @@
                 })
               ">
               {{ article.title }}
-            </div>
-              <div style="height : 10px; overflow : hidden">
-              <span class="keywords" v-for="k in keywords" :key="k" >
-                <a href="#" style="text-decoration: none;">#{{ k }} </a>
-              </span>
-            </div>
+            </span>
           </div>
-          <div class="text">{{ article.preview }}</div>
+          <div style="height : 20px; overflow : hidden; margin-bottom : 10px">
+            <span class="keywords" v-for="k in keywords" :key="k" >
+              <span id="keyword" @click="search(k)">#{{ k }} </span>
+            </span>
+          </div>
+          <div class="text"
+          @click="
+                $router.push({
+                  name: 'ArticleDetail',
+                  params: { id: article.articleid },
+                })
+              "
+          >{{ article.preview }}</div>
           <div class="createdat-text">
             {{ this.$moment(article.createdat).fromNow() }}
           </div>
@@ -59,6 +70,13 @@ import { mapState } from 'vuex'
 export default {
   name: "ArticleCard",
   methods: {
+    search(k){
+      const params = {
+        q: k,
+        category: "keyword",
+      };
+      this.$router.push({ name: "ArticleSearchByStack", query: params });
+    },
     async like() {
       if (this.isLogin) {
         const params = {
@@ -259,6 +277,10 @@ export default {
 }
 .btns {
   text-align: right;
+}
+#keyword{
+  cursor:pointer; 
+  color : royalblue;
 }
 @media (max-width: 630px) {
   .inner-part {
