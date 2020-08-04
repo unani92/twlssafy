@@ -241,6 +241,7 @@ public class PinLikeFollowController {
         Notification notification = new Notification();
         notification.setContent(content);
         notification.setEmail(article.getEmail());
+        notification.setNickname(article.getNickname());
         notification.setOther(other);
         notification.setType(type);
         notification.setReadn(0);

@@ -12,7 +12,9 @@ import com.web.curation.model.pinlikesfollow.Notification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -58,5 +60,20 @@ public class NotificationController {
         return result;
     }
     
+    @ApiOperation(value = "알림 삭제")
+    @DeleteMapping("/notification/{notificationid}")
+    public Object deleteNotification(@RequestHeader final HttpHeaders header, @PathVariable final int notificationid) throws Exception {
+        final BasicResponse result = new BasicResponse();
+        result.data="fail";
+        result.status=false;
+
+        if(notificationDao.deleteByNotificationid(notificationid)>0){
+            result.data="success";
+            result.status=true;
+        }
+
+        return result;
+    }
+
     
 }

@@ -27,6 +27,7 @@ public interface NotificationDao extends JpaRepository<Notification, Notificatio
    , nativeQuery = true)
    List<Notification> findAllUnread(String email);
    
+   @Transactional
    int deleteByNotificationid(int notificationid);
 
    Notification findNotificationByNotificationid(int notificationid);
