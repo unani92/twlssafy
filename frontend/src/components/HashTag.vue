@@ -3,14 +3,13 @@
     <p class="title">👀 Attention 👀</p>
     <div class="stacks">
       <!-- <div class="stack" v-for="stack in stacks" :key="stack"># {{ stack }}</div> -->
-      <div class="stack" v-for="h in hashTag" :key="h">
-        #{{h}}
-      </div>
+      <div class="stack" v-for="h in hashTag" :key="h" @click="searchByStack(h)">#{{h}}</div>
     </div>
   </div>
 </template>
 
 <script>
+// import { fetchHashTags, searchArticle } from "@/api/index";
 import { fetchHashTags } from "@/api/index";
 
 export default {
@@ -22,9 +21,18 @@ export default {
   },
   methods: {
     async fetchData() {
-        const { data } = await fetchHashTags();
-        this.hashTag = data.object;
-      },
+      const { data } = await fetchHashTags();
+      this.hashTag = data.object;
+    },
+    async searchByStack(skill) {
+      const params = {
+        q: skill,
+        category: "keyword",
+      };
+      // const { data } = await searchArticle(params);
+      // console.log(data);
+      this.$router.push({ name: "ArticleSearchByStack", query: params });
+    },
   },
   created() {
     this.fetchData();

@@ -91,6 +91,13 @@ const routes = [
     path: '/article/search',
     name: 'ArticleSearch',
     component: ArticleSearch,
+    children: [
+      {
+        path: ':q/:category',
+        name: 'ArticleSearchByStack',
+        component: ArticleSearch,
+      },
+    ],
   },
   {
     path: '/social/signup',
