@@ -10,7 +10,7 @@
     </div>
     <div class="notice" v-else-if="noti.type === 'pin'">
       <i style="color: crimson" class="far fa-bookmark"></i>
-      <div>
+      <div :id="noti.notificationid" style="cursor: pointer" @click="goToPage">
         <p>{{ noti.email }} 님이</p>
         <p>{{ noti.content.slice(0,9) }}... 글을 찜했습니다.</p>
       </div>
@@ -39,8 +39,16 @@
         const notificationId = event.target.parentNode.id
         console.log(notificationId)
         axios.get(`http://localhost:8080/notification/${notificationId}`)
-          .then(res => console.log(res))
-          .catch(err => console.log(err))
+          .then(res => {
+            console.log(res)
+            if(res.data.status)
+              this.$store.state.notificationCnt--;
+            }
+          )
+          .catch(err => {
+            console.log(err)
+            }
+          )
       }
     }
   }

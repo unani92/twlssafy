@@ -24,6 +24,7 @@
     "scrollmonitor": "^1.2.4",
     "vue": "^2.6.11",
     "vue-cookies": "^1.7.3",
+    "vue-flatpickr-component": "^8.1.5",
     "vue-google-login": "^2.0.5",
     "vue-moment": "^4.1.0",
     "vue-momentjs": "^1.0.0",

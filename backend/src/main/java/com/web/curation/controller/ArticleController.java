@@ -525,7 +525,64 @@ public class ArticleController {
         
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
+    
 
-  
+    @ApiOperation(value = "게시글 날짜 조회")
+    @GetMapping("/article/date/{date}")
+    public Object searchDate(@PathVariable final String date,@RequestParam (value = "email") final String email) {
+
+        final BasicResponse result = new BasicResponse();
+        result.status = false;
+        result.data = "fail";
+
+        String[] now = LocalDateTime.now().toString().split("T");
+
+        List<Article> list = articleDao.articleAt(date, email);
+        
+        try {
+            if(date.trim().contains(now[0].trim())){
+                list = articleDao.findAllByEmailOrderByArticleidDesc(email);
+            }
+            else if(list.get(0) != null){
+            }
+        } catch (Exception e) {
+            list = articleDao.findAllByEmailOrderByArticleidDesc(email);
+        }
+
+
+        List<List<String>> keywordsList = new ArrayList<>();
+        List<Integer> likesList = new ArrayList<>();
+        List<Integer> pinList = new ArrayList<>();
+
+        for(Article a : list){
+            // 게시글 번호를 이용해 이 글의 키워드 리스트를 받아옴 (ex. 1번글의 키워드 c, c++)
+            List<Keywords> tmpKeyword = keywordsDao.findAllByArticleid(a.getArticleid());
+            if(tmpKeyword!=null){ // 임시리스트 만들어서 키워드들 넣고, 최종 리스트에 담음
+                List<String> tmplist = new ArrayList<>();
+                for(Keywords k : tmpKeyword){
+                    tmplist.add(skillsDao.findSkillBySno(k.getSno()).getName());
+                }
+                keywordsList.add(tmplist);
+                result.status = true;
+                result.data = "글 조회 성공";
+            }
+            else return new ResponseEntity<>(result, HttpStatus.OK); // 글에 keyword 없으면 false return
+
+           likesList.add(likesDao.countByArticleid(a.getArticleid()));
+           pinList.add(pinDao.countByArticleid(a.getArticleid()));
+
+        }
+        
+        Map<String,Object> object = new HashMap<>();
+        object.put("article", list);
+        object.put("keyword", keywordsList);
+        object.put("likesCntList", likesList);
+        object.put("pinCntList", pinList);
+
+        result.object = object;
+        
+        return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
 }
 

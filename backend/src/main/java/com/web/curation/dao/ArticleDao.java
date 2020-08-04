@@ -21,10 +21,18 @@ public interface ArticleDao extends JpaRepository<Article, String> {
     int countByNickname(String nickname);
 
     // select * from article where email in (select followemail from follow where email='vyzynn@gmail.com') order by articleid desc;
-    @Query(value = " select * from article where email in (select followemail from follow where email = ?1) order by articleid desc", nativeQuery = true)
+    @Query(value = "select * from article where email in (select followemail from follow where email = ?1) order by articleid desc", nativeQuery = true)
     List<Article> articleFromFollowing(String email);
 
     @Query(value = "select * from article where articleid in (select articleid from pin where email=?1) order by articleid desc", nativeQuery = true)
-	List<Article> articleFromPin(String email);
+    List<Article> articleFromPin(String email);
+    
+    @Query(value = 
+    "select * from article where date(createdat) =  ?1 and email = ?2 order by articleid desc",
+    nativeQuery = true)
+    List<Article> articleAt(String date,String email);
+
+    List<Article> findAllByEmail(String email);
+    List<Article> findAllByEmailOrderByArticleidDesc(String email);
 
 }
