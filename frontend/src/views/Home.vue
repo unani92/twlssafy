@@ -4,40 +4,14 @@
       <div>
         <HomeNav class="home-nav" />
       </div>
-      <div class="secondary secondary-a">
-        <div class="friends">
-          <p>💌 Friends 💌</p>
-          <li class="user-item friend-item">
-            <figure
-              class="user-photo"
-              style="background-image: url('https://i.pravatar.cc/100?u=배유진');"
-            ></figure>
-            <p class="user-name">배유진</p>
-          </li>
-          <li class="user-item friend-item">
-            <figure
-              class="user-photo"
-              style="background-image: url('https://i.pravatar.cc/100?u=전해인');"
-            ></figure>
-            <p class="user-name">전혜인</p>
-          </li>
-          <li class="user-item friend-item">
-            <figure
-              class="user-photo"
-              style="background-image: url('https://i.pravatar.cc/100?u=신영찬');"
-            ></figure>
-            <p class="user-name">신영찬</p>
-          </li>
+      <div class="main-wrapper">
+        <div class="primary">
+          <br />
+          <router-view></router-view>
         </div>
-      </div>
-      <div class="primary">
-        <p>⚡ News ⚡</p>
-        <br />
-        <router-view></router-view>
-        <!-- <ArticleCardList /> -->
-      </div>
-      <div class="secondary secondary-b">
-        <HashTag />
+        <div class="secondary secondary-b">
+          <HashTag />
+        </div>
       </div>
     </div>
   </div>
@@ -86,17 +60,11 @@ export default {
 }
 .primary {
   padding: 1rem;
-  padding-top: 0;
+  padding-top: 70px;
   width: 100%;
   height: 100vh;
-  /*overflow-y: scroll; /* Add the ability to scroll */
-}
-.secondary-a {
-  background: lightgray;
 }
 .secondary-b {
-  /* background: #666666; */
-  color: lightgray;
   width: 300px;
 }
 .secondary {
@@ -105,6 +73,10 @@ export default {
 }
 .secondary-a {
   display: none;
+}
+.main-wrapper {
+  display: flex;
+  margin: auto;
 }
 @media (max-width: 414px) {
   .home-nav {
@@ -125,27 +97,14 @@ export default {
   .secondary {
     width: 20%;
   }
-  .secondary-a {
-    order: 1;
-    display: block;
-  }
-  .secondary-b {
-    order: 3;
-  }
   .primary {
-    order: 2;
-    width: 60%;
+    width: 80%;
     padding-top: 70px;
-  }
-  .footer {
-    order: 4;
-    width: 100%;
-    background-color: lightgray;
   }
 }
 @media (min-width: 1440px) {
   .secondary {
-    width: 300px;
+    min-width: 300px;
   }
   .primary {
     /* width: calc(100% - 600px); */
@@ -154,11 +113,6 @@ export default {
     /* fixed된 형태로 배치되고 싶다면 width를 사용하기를 추천한다. 줄바꿈이 상관 없다면 -예를 들면, 해쉬태그- flex로 유연하게 하는 것이 좋음 */
   }
 }
-
-.secondary {
-  background-color: #eee;
-}
-
 .user-item {
   margin: 1rem 0;
   display: flex;

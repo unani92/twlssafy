@@ -3,7 +3,12 @@
     <div v-if="isLoading">
       <LoadingSpinner />
     </div>
-    <div>
+    <div v-else>
+      <div class="news-index">
+        <p>⚡ News ⚡</p>
+      </div>
+      <br />
+
       <ArticleCard
         v-for="(article, index) in articles"
         :key="article._id"
@@ -66,6 +71,13 @@ export default {
 </script>
 
 <style>
+.news-index {
+  max-width: 850px;
+  width: 96%;
+  display: flex;
+  justify-content: left;
+  margin: auto;
+}
 #bottomSensor {
   height: 10px;
 }

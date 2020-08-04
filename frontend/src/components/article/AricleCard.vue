@@ -3,7 +3,8 @@
     <div class="blog-card">
       <div class="inner-part">
         <label for="imgTap" class="img">
-          <img class="img-1" src="https://picsum.photos/300/200" />
+          <img v-if="article.imgurl != null" class="img-1" :src="article.imgurl" />
+          <img v-else class="img-1" src="https://picsum.photos/300/200" />
         </label>
         <p>
           <br />

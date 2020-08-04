@@ -41,7 +41,7 @@
     </div>
     <div class="notification" v-if="$store.state.notification.length">
       <Notification
-        v-for="noti in $store.state.notification.filter(noti => noti.readn === 0)"
+        v-for="noti in $store.state.notification"
         :noti="noti"
         :key="noti.notificationid"
       />
@@ -160,7 +160,7 @@ export default {
   align-items: center;
 }
 .notification {
-  position: absolute;
+  position: fixed;
   top: 70px;
   right: 0;
   z-index: 10;
@@ -224,7 +224,7 @@ i:hover {
   }
 }
 .aside {
-  position: absolute;
+  position: fixed;
   top: 70px;
   right: 0;
   z-index: 10;

@@ -1,32 +1,58 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width,initial-scale=1.0">
-    <link rel="icon" href="<%= BASE_URL %>favicon.ico">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.14.0/css/all.css" integrity="sha384-HzLeBuhoNPvSl5KYnjx0BT+WB0QEEqLprO+NBkkk5gbc67FTaL7XIGa2w1L0Xbgc" crossorigin="anonymous">
-    <link href="https://fonts.googleapis.com/css2?family=Rowdies&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic+Coding:wght@400;700&display=swap" rel="stylesheet">
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <link rel="icon" href="<%= BASE_URL %>favicon.ico" />
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.14.0/css/all.css"
+      integrity="sha384-HzLeBuhoNPvSl5KYnjx0BT+WB0QEEqLprO+NBkkk5gbc67FTaL7XIGa2w1L0Xbgc"
+      crossorigin="anonymous"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Rowdies&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nanum+Gothic+Coding:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
     <title><%= htmlWebpackPlugin.options.title %></title>
   </head>
-  <body onclick="closeAside()">
+  <body onclick="closeAside(), closeNotification()">
     <noscript>
-      <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
+      <strong
+        >We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work
+        properly without JavaScript enabled. Please enable it to
+        continue.</strong
+      >
     </noscript>
     <div id="app"></div>
     <!-- built files will be auto injected -->
   </body>
   <script>
     // 화면 클릭 시 열려있는 버거 바 닫힘
-      function closeAside(){
-        if(event.srcElement && event.srcElement.className=='fas fa-bars') return;
-        const aside = document.querySelector(".aside");
-        
-        if(aside.getAttribute('class')!='aside disabled'){
-          console.log('close');
-          aside.setAttribute('class','aside disabled');
-        }
-     }
+    function closeAside() {
+      if (event.srcElement && event.srcElement.className == 'fas fa-bars')
+        return;
+      const aside = document.querySelector('.aside');
+
+      if (aside.getAttribute('class') != 'aside disabled') {
+        aside.setAttribute('class', 'aside disabled');
+      }
+    }
+
+    // 화면 클릭 시 열려있는 알림 닫힘
+    function closeNotification() {
+      if (event.srcElement && event.srcElement.className == 'far fa-bell')
+        return;
+      const bell = document.querySelector('.notification');
+
+      if (bell && bell.getAttribute('class') != 'notification disabled') {
+        bell.setAttribute('class', 'notification disabled');
+      }
+    }
   </script>
 </html>
