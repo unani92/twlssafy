@@ -289,10 +289,9 @@ public class ArticleController {
         int articleId = Integer.parseInt((String)request.get("articleId"));
         
         Article article = articleDao.findByArticleid(articleId);
-
         article.setContent((String)request.get("content"));
         article.setTitle((String)request.get("title"));
-        article.setImgurl((String)request.get("imgUrl"));
+        article.setImgurl(getImgFromArticle((String)request.get("content")));
         article.setUpdatedat(LocalDateTime.now());
         article.setPreview(subStrByte((String) request.get("preview"), 200));
 
