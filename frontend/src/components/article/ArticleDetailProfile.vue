@@ -5,7 +5,7 @@
       <h2 @click="gotoWriterPage" class="writer-page">
         {{ article.nickname }}
       </h2>
-      <span id = "info">User First, Mobile Friendly!! </span>
+      <span id = "info">{{userinfo}} </span>
     </div>
   </div>
 </template>
@@ -15,6 +15,7 @@ export default {
   name: "ArticleDetailProfile",
   props: {
     article: Object,
+    userinfo : String,
   },
   methods: {
     gotoWriterPage() {
@@ -30,6 +31,7 @@ export default {
     },
   },
   mounted() {
+    console.log(this.userinfo)
     console.log(this.article);
   },
 };

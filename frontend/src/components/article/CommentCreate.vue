@@ -16,9 +16,10 @@
 
     <div v-if="commentList.length && toggle">
       <CommentDetail
-          v-for="comment in commentList"
+          v-for="(comment,i) in commentList"
           :comment="comment"
           :key="comment.commentid"
+          :nickname="commentNickname[i]"
           @commentDelete="removeDelete"
       />
     </div>
@@ -32,7 +33,8 @@
     name: "CommentCreate",
     props: {
       commentList: Array,
-      article: Object
+      article: Object,
+      commentNickname : Array,
     },
     components: {
       CommentDetail
@@ -47,11 +49,12 @@
       submitComment() {
         const email = this.$store.state.username
         const content = this.content
+        const nickname = this.$store.state.nickname
         const articleid = String(this.article.articleid)
         const params = {
           email,
           content,
-          articleid
+          articleid,
         }
         const id_token = this.$store.state.id_token
         createComment(params, id_token)
@@ -60,6 +63,7 @@
             const comment = { ...res.data.object, now }
             this.commentList = [comment, ...this.commentList]
             this.content = null
+            this.commentNickname = [nickname, ...this.commentNickname]
           })
           .catch(err => console.log(err))
       },

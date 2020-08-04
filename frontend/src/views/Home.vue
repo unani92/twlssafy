@@ -76,6 +76,7 @@ export default {
 }
 .main-wrapper {
   display: flex;
+  flex-wrap: wrap;
   margin: auto;
 }
 @media (max-width: 414px) {
@@ -86,7 +87,7 @@ export default {
 @media (min-width: 1024px) {
   .home {
     display: flex;
-    flex-wrap: wrap;
+    /* flex-wrap: wrap; */
   }
   .header {
     width: 100%;
@@ -104,7 +105,7 @@ export default {
 }
 @media (min-width: 1440px) {
   .secondary {
-    min-width: 300px;
+    min-width: 15%;
   }
   .primary {
     /* width: calc(100% - 600px); */
