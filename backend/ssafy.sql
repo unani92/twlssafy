@@ -163,13 +163,14 @@ create table `notification` (
  `content` varchar(256) DEFAULT NULL,
  `type` varchar (128) default null,
  `readn` int default null,
+ `ready` boolean default null,
  `articleid` int default null,
  `createtime` datetime default now(),
  unique KEY (`notificationid`),
  primary key (`email`,`other`,`type`,`content`,`articleid`,`readn`),
- FOREIGN KEY (`email`) REFERENCES `member`(`email`) ON DELETE CASCADE ON UPDATE CASCADE,
+ FOREIGN KEY (`email`) REFERENCES `member`(`email`) ON DELETE CASCADE,
  FOREIGN KEY (`other`) REFERENCES `member`(`email`)
- ON DELETE CASCADE ON UPDATE CASCADE
+ ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 -----------------------------------------------------------------
 

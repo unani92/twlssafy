@@ -21,6 +21,7 @@ export default new Vuex.Store({
     interestList: [],
     notification: [],
     userSkills: [],
+    notificationCnt : '',
   },
   getters: {
     isLoggedIn: (state) => !!state.id_token,
@@ -78,6 +79,9 @@ export default new Vuex.Store({
       state.interestList = []
       state.notification = []
     },
+    setNotificationCnt(state, notificationCnt) {
+      state.notificationCnt = notificationCnt;
+    },
   },
   actions: {
     getGoogleUserInfo({ commit }, id_token) {
@@ -98,6 +102,7 @@ export default new Vuex.Store({
             likesList,
             notification,
             pinList,
+            notificationCnt
           } = res.data.object;
           commit("setUsername", email);
           commit("setNickname", nickname);
@@ -108,6 +113,8 @@ export default new Vuex.Store({
           commit("setNotificationlist", notification);
           commit("setPinList", pinList);
           commit("setInterestList", interestList);
+          commit("setNotificationCnt", notificationCnt);
+
         })
         .catch((err) => console.log(err));
     },

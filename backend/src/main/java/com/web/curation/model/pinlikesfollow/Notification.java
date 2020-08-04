@@ -38,6 +38,8 @@ public class Notification {
     private int readn;
     private int articleid;
 
+    private int ready;
+
     @Column(insertable = false, updatable = false)
     private LocalDateTime createtime;
 
