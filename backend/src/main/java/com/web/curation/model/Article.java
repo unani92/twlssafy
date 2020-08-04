@@ -37,6 +37,8 @@ public class Article {
     
     private String imgurl;
 
+    private String preview;
+
     @Column(insertable = false)
     private LocalDateTime updatedat;
 

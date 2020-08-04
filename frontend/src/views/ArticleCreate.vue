@@ -41,6 +41,7 @@
   import Editor from '@/components/Editor.vue'
   import skills from "../skills";
   import { createArticle } from "../api";
+  import { validateMarkdown } from "@/utils/validation";
 
   export default {
     name: "ArticleCreate",
@@ -85,11 +86,15 @@
       },
       submitArticle(data) {
         this.content.content = data
+        
+        var preview = validateMarkdown(data);
+        console.log(preview);
         const params = {
           nickname: this.$store.state.nickname,
           title: this.content.title,
           content: this.content.content,
-          keyword: this.content.keywords
+          keyword: this.content.keywords,
+          preview: preview
         }
         const id_token = this.$store.state.id_token
         createArticle(params,id_token)
@@ -97,7 +102,7 @@
             this.$router.push({name: "ArticleDetail", params: {id:res.data.object}})
           })
           .catch(err => console.log(err))
-        console.log(this.content.content)
+        // console.log(this.content.content)
       },
     },
   }
