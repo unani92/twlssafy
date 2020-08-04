@@ -100,7 +100,7 @@
               requestFollow(userInfo.follower.follower[idx - 1].email, $event)
             "
           >
-            <button class="followBtn">팔로잉</button>
+            <button class="followBtn">팔로우</button>
           </div>
         </div>
         <div v-if="this.userInfo.follower.follower.length === 0">팔로우한 친구가 없습니다.</div>
@@ -126,7 +126,7 @@
               requestFollow(userInfo.following.follow[idx - 1].email, $event)
             "
           >
-            <button class="followBtn">팔로잉</button>
+            <button class="followBtn">팔로우</button>
           </div>
         </div>
         <div v-if="this.userInfo.following.follow.length === 0">팔로우한 친구가 없습니다.</div>
@@ -221,8 +221,10 @@ export default {
         const followerOfLoginUser = this.$store.state.followList.followNickname;
         const numOfFollowerOFLoginUser = followerOfLoginUser.length;
         for (let j = 0; j < numOfFollowerOFLoginUser; j++) {
+          // trim하지 않으면 선택자로 버튼값의 innerHTML값을 가져올 때 양쪽에 공백문자가 삽입되어 비교가 안된다.
           if (
-            followBtns[i].childNodes[0].innerHTML === followerOfLoginUser[j]
+            followBtns[i].childNodes[0].innerHTML.trim() ===
+            followerOfLoginUser[j].trim()
           ) {
             followBtns[i].childNodes[1].childNodes[0].innerHTML = "팔로우 취소";
           }
@@ -523,7 +525,5 @@ section {
 }
 .followBtn:hover {
   cursor: pointer;
-}
-#calendar {
 }
 </style>
