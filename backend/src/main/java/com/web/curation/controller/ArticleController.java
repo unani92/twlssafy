@@ -15,6 +15,7 @@ import com.web.curation.dao.KeywordsDao;
 import com.web.curation.dao.SkillsDao;
 import com.web.curation.dao.pinlikesfollow.LikesDao;
 import com.web.curation.dao.pinlikesfollow.PinDao;
+import com.web.curation.dao.user.UserDao;
 import com.web.curation.model.Article;
 import com.web.curation.model.BasicResponse;
 import com.web.curation.model.Comment;
@@ -70,6 +71,9 @@ public class ArticleController {
 
     @Autowired
     CommentDao commentDao;
+
+    @Autowired
+    UserDao userDao;
     
     @ApiOperation(value = "리스트 조회")
     @GetMapping("/article")
@@ -327,6 +331,7 @@ public class ArticleController {
         object.put("cntLikes", cntLikes);
         object.put("cntPin", cntPin);
         object.put("commentList", commentList);
+        object.put("userinfo", userDao.findUserByEmail(article.getEmail()).get() );
         result.object = object;
         
         return new ResponseEntity<>(result, HttpStatus.OK);
