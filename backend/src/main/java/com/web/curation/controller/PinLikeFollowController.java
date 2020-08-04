@@ -11,6 +11,7 @@ import com.web.curation.dao.pinlikesfollow.FollowDao;
 import com.web.curation.dao.pinlikesfollow.LikesDao;
 import com.web.curation.dao.pinlikesfollow.NotificationDao;
 import com.web.curation.dao.pinlikesfollow.PinDao;
+import com.web.curation.dao.user.UserDao;
 import com.web.curation.model.Article;
 import com.web.curation.model.BasicResponse;
 import com.web.curation.model.pinlikesfollow.Follow;
@@ -57,6 +58,9 @@ public class PinLikeFollowController {
 
     @Autowired
     ArticleDao articleDao;
+
+    @Autowired
+    UserDao userDao;
 
     @Transactional
     @PostMapping("/account/follow")
@@ -241,7 +245,7 @@ public class PinLikeFollowController {
         Notification notification = new Notification();
         notification.setContent(content);
         notification.setEmail(article.getEmail());
-        notification.setNickname(article.getNickname());
+        notification.setNickname(userDao.findUserByEmail(other).get().getNickname());
         notification.setOther(other);
         notification.setType(type);
         notification.setReadn(0);
