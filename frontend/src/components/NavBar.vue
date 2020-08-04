@@ -17,10 +17,11 @@
       </div>
       <div class="article-icon">
         <div v-if="this.$store.getters.isLoggedIn" class="mypage">
+
           <figure
-            v-if="$store.state.img"
+            v-if="$store.state.grade"
             class="user-photo"
-            :style="{ 'background-image': 'url(' + this.$store.state.img + ')' }"
+            :style="{ backgroundImage:'url('+require('@/assets/image/level'+this.$store.state.grade+'.png')+')' }"
             @click="goToMyPage"
           ></figure>
           <figure
