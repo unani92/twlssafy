@@ -2,19 +2,23 @@
   <div class="article-create">
     <h1 style="margin: 1rem 0 1rem 0;">게시글 수정</h1>
     <div class="article-title-skills" >
-      <div class="title">
-        <label style="font-size: 20px; font-weight: bold" for="title">제목</label>
-      </div>
-      <div>
+      <div class="title" style="margin-bottom:32px;">
+        <label style="font-size: 20px; font-weight: bold; margin-right:20px" for="title">제목</label>
         <input v-model="article.title" id="title" type="text">
       </div>
     </div>
     <div class="article-title-skills">
-      <div>
-        <label style="font-size: 20px; font-weight: bold" for="skills">키워드</label>
-      </div>
+        <label style="font-size: 20px; font-weight: bold; margin-right:20px" for="skills">키워드</label>
+        <input v-model="skillInput" @input="submitAutoComplete" id="skills" type="text" placeholder="기술을 검색하세요">
+        <div class="autocomplete disabled">
+          <div @click="searchSkillAdd"
+              v-for="res in result"
+              :key="res"
+              style="cursor: pointer">
+            {{ res }}</div>
+        </div>
+    </div>
       <div class="keywords">
-        <input v-model="skillInput" @input="submitAutoComplete" id="skills" type="text">
         <div class="keyword-badge"
              v-for="keyword in this.article.keywords"
              :key="keyword"
@@ -23,14 +27,6 @@
           <i @click="removeStack" style="cursor:pointer;" class="fas fa-times"></i>
         </div>
       </div>
-      <div class="autocomplete disabled">
-        <div @click="searchSkillAdd"
-             v-for="res in result"
-             :key="res"
-             style="cursor: pointer">
-          {{ res }}</div>
-      </div>
-    </div>
     <div class="editor">
       <div id="editor"/>
     </div>
@@ -156,34 +152,37 @@
     background: transparent;
     border-bottom: 3px solid black;
   }
-  .autocomplete {
+ .autocomplete {
     position: absolute;
-    border: 1px solid black;
+    border: 1.5px solid black;
+    border-radius: 5px;
     width: 300px;
     height: 150px;
     overflow-y: auto;
     background-color: white;
     z-index: 5;
+    padding: 1%;
   }
   .disabled {
     display: none;
   }
-  .keywords {
+  /* .keywords {
     display: flex;
     margin-bottom: 1rem;
-  }
+  } */
   .keyword-badge {
     color: white;
     font-weight: bold;
     background-color: black;
     font-size: small;
-    width: 60px;
-    height: 20px;
     border-radius: 6px;
     display: flex;
     align-items: center;
     justify-content: space-around;
-    margin: 6px;
+    margin-bottom: 1rem;
+    margin-right : 1rem;
+    padding: 5px;
+    float: left;
   }
   .article-title-skills {
     padding: 10px;
@@ -200,5 +199,8 @@
     cursor: pointer;
     background-color: #e6837a;
     color: white;
+  }
+  .editor{
+    clear:both;
   }
 </style>
