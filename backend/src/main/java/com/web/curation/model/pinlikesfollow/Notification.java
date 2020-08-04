@@ -30,7 +30,7 @@ public class Notification {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int notificationid;
-
+    private String nickname;
     private String email;
     private String content;
     private String type;
