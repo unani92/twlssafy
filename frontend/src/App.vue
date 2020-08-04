@@ -21,15 +21,12 @@
     methods: {
       scrollEvent() {
         const navBar = document.querySelector(".nav-bar")
-        const homeBar = document.querySelector(".home-nav")
         const nowScrollY = window.scrollY
         if (nowScrollY > this.scroll.prev) {
           navBar.classList.add("disabled")
-          homeBar.classList.add("disabled")
           this.scroll.prev = nowScrollY
         } else {
           navBar.classList.remove("disabled")
-          homeBar.classList.remove("disabled")
           this.scroll.prev = nowScrollY
         }
       },
@@ -51,7 +48,7 @@
     margin: 0 auto;
   }
   .disabled {
-    display: none !important;
+    display: none;
   }
   /* markdown viewer custom css */
   blockquote {
