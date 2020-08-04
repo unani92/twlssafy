@@ -21,7 +21,7 @@
             <div class="info">
               <i class="far fa-calendar-alt"></i>
               <span>&nbsp;&nbsp;From&nbsp;</span>
-              <span>&nbsp;{{ userInfo.userInfo.createdate }}</span>
+              <span>&nbsp;{{ this.$moment(userInfo.userInfo.createdate).format("L") }}</span>
             </div>
           </li>
 
@@ -33,9 +33,7 @@
           </li>
           <li v-if="skills.length !== 0">
             <div class="skills">
-              <span v-for="skill in skills" :key="skill.name"
-                ># {{ skill.name }}</span
-              >
+              <span v-for="skill in skills" :key="skill.name"># {{ skill.name }}</span>
               <span class="more" data-toggle="modal">➕</span>
             </div>
           </li>
@@ -59,18 +57,15 @@
             <i class="fas fa-assistive-listening-systems"></i>
             <br />
             <span>{{ userInfo.following.follow.length }} Followings</span>
-          </a>       
+          </a>
         </div>
       </div>
 
-      <div id ="calendar" style="text-align : right">
-          <Calendar :userInfo="userInfo"/>
+      <div id="calendar" style="text-align : right">
+        <Calendar :userInfo="userInfo" />
       </div>
-
     </section>
-    <section v-if="userInfo.totalArticleCount === 0" class="no-article">
-      작성한 글이 없습니다.
-    </section>
+    <section v-if="userInfo.totalArticleCount === 0" class="no-article">작성한 글이 없습니다.</section>
 
     <button id="myBtn" style="display:none">Open Modal</button>
 
@@ -79,12 +74,8 @@
       <!-- Modal content -->
       <div class="modal-content">
         <span class="close">&times;</span>
-        <span v-for="skill in skills" :key="skill.name" class="totalSkills"
-          ># {{ skill.name }}</span
-        >
-        <SelectSkills
-          v-if="this.$store.state.nickname === this.$route.params.nickname"
-        ></SelectSkills>
+        <span v-for="skill in skills" :key="skill.name" class="totalSkills"># {{ skill.name }}</span>
+        <SelectSkills v-if="this.$store.state.nickname === this.$route.params.nickname"></SelectSkills>
       </div>
     </div>
 
@@ -99,9 +90,11 @@
           :key="idx"
           class="follower-email-container"
         >
-          <span class="follower-email">{{
+          <span class="follower-email">
+            {{
             userInfo.follower.followerNickname[idx - 1]
-          }}</span>
+            }}
+          </span>
           <div
             @click="
               requestFollow(userInfo.follower.follower[idx - 1].email, $event)
@@ -110,9 +103,7 @@
             <button class="followBtn">팔로잉</button>
           </div>
         </div>
-        <div v-if="this.userInfo.follower.follower.length === 0">
-          팔로우한 친구가 없습니다.
-        </div>
+        <div v-if="this.userInfo.follower.follower.length === 0">팔로우한 친구가 없습니다.</div>
       </div>
     </div>
 
@@ -125,9 +116,11 @@
           :key="idx"
           class="follower-email-container"
         >
-          <span class="follower-email">{{
+          <span class="follower-email">
+            {{
             userInfo.following.followNickname[idx - 1]
-          }}</span>
+            }}
+          </span>
           <div
             @click="
               requestFollow(userInfo.following.follow[idx - 1].email, $event)
@@ -136,9 +129,7 @@
             <button class="followBtn">팔로잉</button>
           </div>
         </div>
-        <div v-if="this.userInfo.following.follow.length === 0">
-          팔로우한 친구가 없습니다.
-        </div>
+        <div v-if="this.userInfo.following.follow.length === 0">팔로우한 친구가 없습니다.</div>
       </div>
     </div>
   </div>
@@ -156,17 +147,9 @@ export default {
   },
   components: {
     SelectSkills,
-    Calendar
+    Calendar,
   },
   data() {
-    // let interests = [];
-    // if (
-    //   this.$store.getters.isLoggedIn &&
-    //   this.$route.params.nickname === this.$store.state.nickname
-    // ) {
-    //   console.log("마이페이지에 오셨군요");
-    //   interests = this.$store.state.interestList;
-    // }
     const userSkills = this.$store.state.userSkills;
     return {
       skills: userSkills,
@@ -250,20 +233,20 @@ export default {
     const skillModal = document.getElementById("skillModal");
     const btn = document.querySelector(".more");
     const span = document.getElementsByClassName("close")[0];
-    btn.onclick = function() {
+    btn.onclick = function () {
       skillModal.style.display = "block";
     };
-    span.onclick = function() {
+    span.onclick = function () {
       skillModal.style.display = "none";
     };
     // follower modal
     const followerModal = document.getElementById("followersModal");
     const followBtn = document.querySelector(".follower-modal");
     const followSpan = document.getElementsByClassName("close")[1];
-    followBtn.onclick = function() {
+    followBtn.onclick = function () {
       followerModal.style.display = "block";
     };
-    followSpan.onclick = function() {
+    followSpan.onclick = function () {
       followerModal.style.display = "none";
     };
 
@@ -271,13 +254,13 @@ export default {
     const followingModal = document.getElementById("followingsModal");
     const followingBtn = document.querySelector(".following-modal");
     const followingSpan = document.getElementsByClassName("close")[2];
-    followingBtn.onclick = function() {
+    followingBtn.onclick = function () {
       followingModal.style.display = "block";
     };
-    followingSpan.onclick = function() {
+    followingSpan.onclick = function () {
       followingModal.style.display = "none";
     };
-    window.onclick = function(event) {
+    window.onclick = function (event) {
       if (
         event.target == skillModal ||
         event.target == followerModal ||
@@ -302,6 +285,7 @@ ul {
 .profile-info {
   max-width: 850px;
   margin: auto;
+  padding-top: 70px;
 }
 /* SECTION CONTAINER */
 .section-container {
