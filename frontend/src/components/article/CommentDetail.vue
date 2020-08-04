@@ -4,7 +4,7 @@
       <div class="prifile-detail">
         <img :src="photo" alt="" style="width : 30px; height : 30px;">
         <div class="profile-text">
-          <h3>{{ this.comment.email }}</h3>
+          <h3 @click="goProfilePage">{{ this.nickname }}</h3>
           <span style="color: gainsboro">{{ this.$moment(this.comment.updatedat).fromNow() }}</span>
         </div>
       </div>
@@ -31,9 +31,11 @@
       canEdit() {
         return this.$store.state.username === this.comment.email
       }
+      
     },
     props: {
-      comment: Object
+      comment: Object,
+      nickname : String,
     },
     methods: {
       commentDelete() {
@@ -44,6 +46,12 @@
             this.$emit("commentDelete",params)
         })
           .catch(err => console.log(err))
+      },
+      goProfilePage(){
+        this.$router.push({
+        name: "Profile",
+        params: { nickname: this.nickname },
+      });
       }
     },
   }
