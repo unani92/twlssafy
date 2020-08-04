@@ -10,7 +10,7 @@
           <div v-for="keyword in keywords"
                 :key="keyword"
                 class="keyword">
-            #{{ keyword }}
+            #{{ keyword }} 
           </div>
         </div>
         <div class="username-date">

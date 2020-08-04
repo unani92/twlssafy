@@ -10,21 +10,23 @@
           <br />
         </p>
         <div class="content content-1">
-          <div
-            class="title"
-            style="cursor:pointer;"
-            @click="
-              $router.push({
-                name: 'ArticleDetail',
-                params: { id: article.articleid },
-              })
-            "
-          >
-            {{ article.title }}
-            <br />
-            <span class="keywords" v-for="k in keywords" :key="k">
-              <a href="#" style="text-decoration: none;">#{{ k }}</a>
-            </span>
+          <div>
+            <div
+              class="title"
+              style="cursor:pointer;"
+              @click="
+                $router.push({
+                  name: 'ArticleDetail',
+                  params: { id: article.articleid },
+                })
+              ">
+              {{ article.title }}
+            </div>
+              <div style="height : 10px; overflow : hidden">
+              <span class="keywords" v-for="k in keywords" :key="k" >
+                <a href="#" style="text-decoration: none;">#{{ k }} </a>
+              </span>
+            </div>
           </div>
           <div class="text">{{ article.preview }}</div>
           <div class="createdat-text">
@@ -206,11 +208,10 @@ export default {
   margin-left: 30px;
   transition: 0.6s;
 }
-.content .title {
+.title {
   font-size: 25px;
   font-weight: 700;
   color: #0d0925;
-  margin-bottom: 30px;
   margin-top: 10px;
   height: 60px;
   overflow: hidden;
@@ -275,7 +276,7 @@ export default {
   .content .text {
     font-size: 16px;
   }
-  .content .title {
+  .title {
     font-size: 22px;
     margin-bottom: 10px;
     margin-top: 0px;
