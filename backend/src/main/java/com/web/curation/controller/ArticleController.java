@@ -147,12 +147,12 @@ public class ArticleController {
 
         
         String nickname = (String) userToken.get("nickname");
-        // String nickname = (String) request.get("nickname");
         String title = (String) request.get("title");
         String content = (String) request.get("content");
-        String imgurl = (String) request.get("imgUrl");
         String preview = subStrByte((String) request.get("preview"), 200);
         
+        // 글에서 이미지 뽑는 함수
+        String imgurl = getImgFromArticle(content);
         
         Article article = new Article();
         article.setTitle(title);
@@ -195,6 +195,39 @@ public class ArticleController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
     
+    // 글에서 이미지 뽑는 함수
+    private String getImgFromArticle(String content) {
+        System.out.println(content);
+        char[] con = content.toCharArray();
+        int if_img1=0;
+        boolean if_img=false;
+        boolean if_url=false;
+        String url = "";
+        for(int i=0;i<content.length();i++){
+            if(!if_img && con[i]=='!') {
+                if_img1+=1;
+            }
+            else if(!if_img && con[i]=='[' && if_img1==1){
+                if_img=true;
+            }
+            else if(!if_img && if_img1==1 && con[i]!='['){
+                if_img1=0;
+                url="";
+            }
+            else if(if_img && con[i]=='('){
+                if_url=true;
+            }
+            else if(con[i]==')' && if_img){
+                return url;
+            }
+            else if(if_url){
+                url+=con[i];
+            }
+        }
+
+        return null;
+    }
+
     // preview 50자 제한
     private String subStrByte(String str, int len) {
         if(!str.isEmpty()){
