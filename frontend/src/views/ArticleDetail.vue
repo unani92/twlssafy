@@ -6,21 +6,34 @@
     <div class="article">
       <div class="nickname-keyword">
       <h1 class="title">{{ title }}</h1>
-        <div class="keywords" style="margin-bottom : 10px;">
-          <span v-for="keyword in keywords"
+        <div class="keywords" style="margin-bottom : 1rem;">
+          <div v-for="keyword in keywords"
                 :key="keyword"
                 class="keyword">
-            # {{ keyword }}
-          </span>
+            #{{ keyword }}
+          </div>
         </div>
         <div class="username-date">
-          <span @click="userToggle"
-                style="cursor: pointer">
+           <!-- @click="userToggle" -->
+          <div>
+            <span style="margin-right : 4px;">
             {{ nickname }}
-          </span>
+            </span>
+            <span v-if="isWriter">
+              <Router-link
+              :to="{
+                name: 'ArticleUpdate',
+                params: { id, keywords, title, content  }
+            }">
+              <i class="fas fa-edit" style="cursor: pointer; margin-right : 4px; color : gray" @click="edit"></i>
+            </Router-link>
+              <i class="fas fa-trash-alt" style="cursor: pointer; color : gray" @click="removeArticle"></i>
+
+            </span>
+          </div>
           <span>{{ updatedAt }}</span>
         </div>
-        <div class="dropdown disabled">
+        <!-- <div class="dropdown disabled">
           <div>
             <Router-link
               :to="{
@@ -33,7 +46,7 @@
           <div @click="removeArticle">
             삭제하기
           </div>
-        </div>
+        </div> -->
       </div>
       <div class="nickname-keyword markdown">
         <div id="viewer"/>
@@ -88,6 +101,7 @@
           isFollowed: null,
           cntLikes: null,
           cntPin: null,
+        isWriter : false,   
         },
       }
     },
@@ -110,6 +124,11 @@
         this.userinfo = userinfo
         this.commentNickname = commentNickname
 
+        const loginUser = this.$store.state.nickname
+        if (this.article.nickname === loginUser) {
+          this.isWriter = true;
+        }
+
         return article.content
       },
       getViewer() {
@@ -121,13 +140,14 @@
           })
         })
       },
-      userToggle(event) {
-        const dropdown = document.querySelector(".dropdown")
-        const loginUser = this.$store.state.nickname
-        if (event.target.innerText === loginUser) {
-          dropdown.classList.toggle("disabled")
-        }
-      },
+      // userToggle() {
+      //   const dropdown = document.querySelector(".dropdown")
+      //   const loginUser = this.$store.state.nickname
+      //   if (this.article.nickname === loginUser) {
+      //     dropdown.classList.toggle("disabled")
+      //   }
+      // },
+      
       removeArticle() {
         deleteArticle(this.id)
           .then(() => this.$router.push('/'))
@@ -139,7 +159,7 @@
     },
     mounted() {
       this.getViewer();
-    }
+    },
   }
 </script>
 
@@ -175,18 +195,21 @@
   .username-date {
     display: flex;
     justify-content: space-between;
-    /* margin-bottom: 1rem; */
     font-size: 13px;
+    clear: both;
   }
   .username-date > span:nth-child(1) {
     font-weight: bold;
   }
   .keyword {
+    float: left;
     margin-right: 5px;
-    padding: 3px;
+    margin-bottom: 5px;
+    padding: 5px;
     border-radius: 3px;
     color: white;
     background-color: #94adff;
+    font-size: 14px;
   }
   .dropdown {
     padding: 3px;
