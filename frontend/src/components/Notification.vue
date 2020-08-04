@@ -37,11 +37,10 @@
     methods: {
       goToPage(event) {
         const notificationId = event.target.parentNode.id
-        console.log(notificationId)
         axios.get(`http://localhost:8080/notification/${notificationId}`)
           .then(res => {
             this.noti.ready = 1
-            this.$router.push({name: 'ArticleDetail', params: {id: this.noti.articleid}})
+            this.$router.push({name: "Dummy", params: {id: this.noti.articleid}})
             if(res.data.status)
               this.$store.state.notificationCnt--;
             }
