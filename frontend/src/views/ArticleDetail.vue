@@ -39,11 +39,11 @@
         <div id="viewer"/>
       </div>
       <div class="nickname-keyword" v-if="article">
-        <ArticleDetailProfile :article="article"/>
+        <ArticleDetailProfile :article="article" :userinfo="userinfo"/>
       </div>
       <div v-if="article" class="nickname-keyword">
         <div>
-          <CommentCreate :article="article" :commentList="sideMenu.commentList"/>
+          <CommentCreate :article="article" :commentList="sideMenu.commentList" :commentNickname="commentNickname"/>
         </div>
       </div>
     <button class="backBtn" @click=goback>뒤로가기</button>
@@ -82,6 +82,7 @@
         article: null,
         content: null,
         updatedAt: null,
+        userinfo : null,
         sideMenu: {
           commentList: null,
           isFollowed: null,
@@ -93,7 +94,7 @@
     methods: {
       async getArticle() {
         const articleInfo = await fetchArticle(this.id)
-        const { article, keyword, commentList, cntLikes, cntPin } = articleInfo.data.object
+        const { article, keyword, commentList, cntLikes, cntPin, userinfo, commentNickname } = articleInfo.data.object
         this.article = article
 
         this.sideMenu.isFollowed = !!this.followList.follow.filter(follow => follow.followemail === this.article.email).length
@@ -106,6 +107,8 @@
         this.sideMenu.commentList = commentList
         this.sideMenu.cntLikes = cntLikes
         this.sideMenu.cntPin = cntPin
+        this.userinfo = userinfo
+        this.commentNickname = commentNickname
 
         return article.content
       },

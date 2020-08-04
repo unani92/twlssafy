@@ -11,6 +11,7 @@ import java.util.Map;
 
 import com.web.curation.JWT.JWTDecoding;
 import com.web.curation.dao.CommentDao;
+import com.web.curation.dao.user.UserDao;
 import com.web.curation.model.BasicResponse;
 import com.web.curation.model.Comment;
 
@@ -65,12 +66,11 @@ public class CommentController {
         comment.setEmail(email);
         comment.setContent(content);
 
+
         if(commentDao.save(comment) == null){
             return new ResponseEntity<>(result, HttpStatus.OK);
         }
         
-
-
         result.status = true;
         result.data = (String) JWTDecoding.getInfo(header.get("id_token").get(0)).get("nickname");
         result.object = comment;
