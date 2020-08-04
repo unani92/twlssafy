@@ -45,6 +45,10 @@ export default {
   data() {
     return {
       hashTag: [],
+      scroll: {
+        prev: 0,
+        upDown: null
+      }
     };
   },
   methods: {
@@ -56,6 +60,22 @@ export default {
       const { data } = await fetchHashTags();
       this.hashTag = data.object;
     },
+    scrollEvent() {
+      const homeBar = document.querySelector(".home-nav")
+      if (homeBar) {
+        const nowScrollY = window.scrollY
+        if (nowScrollY > this.scroll.prev) {
+            homeBar.classList.add("disabled")
+            this.scroll.prev = nowScrollY
+          } else {
+            homeBar.classList.remove("disabled")
+            this.scroll.prev = nowScrollY
+          }
+        }
+      },
+  },
+  mounted() {
+    document.addEventListener("scroll", this.scrollEvent)
   },
   created() {
     this.fetchData();
@@ -116,7 +136,7 @@ export default {
   list-style-type: none;
 }
 .disabled {
-  display: none;
+  display: none !important;
 }
 .writeBtn {
   background-color: rgb(144, 153, 240);
