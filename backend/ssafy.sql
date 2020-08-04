@@ -176,3 +176,7 @@ create table `notification` (
 
 ALTER TABLE `ssafy`.`article` 
 CHANGE COLUMN `content` `content` LONGTEXT NULL DEFAULT NULL ;
+
+-- 2020-08-04 추가
+alter table article add preview varchar(200) default null;
+alter table notification add nickname char(20);

@@ -30,7 +30,6 @@
 
     // 화면 클릭 시 열려있는 알림 닫힘
      function closeNotification(){
-       console.log(event.srcElement)
         if(event.srcElement && event.srcElement.className=='far fa-bell') return;
         const bell = document.querySelector(".notification");
         
