@@ -1,25 +1,25 @@
 <template>
   <div class="notices">
-    <div class="notice" v-if="noti.type === 'like'">
+    <div class="notice" :class="{disabled : noti.ready === 1}" v-if="noti.type === 'like'">
       <i style="color: crimson" class="far fa-heart"></i>
-      <div :id="noti.notificationid" style="cursor: pointer" @click="goToPage">
-        <p>{{ noti.email }} 님이</p>
+      <div class="unread" :id="noti.notificationid" style="cursor: pointer" @click="goToPage">
+        <p>{{ noti.other }} 님이</p>
         <p>{{ noti.content.slice(0,9) }}... 글을 좋아합니다.</p>
       </div>
       <i class="fas fa-times"></i>
     </div>
-    <div class="notice" v-else-if="noti.type === 'pin'">
+    <div class="notice" :class="{disabled : noti.ready === 1}" v-else-if="noti.type === 'pin'">
       <i style="color: crimson" class="far fa-bookmark"></i>
       <div :id="noti.notificationid" style="cursor: pointer" @click="goToPage">
-        <p>{{ noti.email }} 님이</p>
+        <p>{{ noti.other }} 님이</p>
         <p>{{ noti.content.slice(0,9) }}... 글을 찜했습니다.</p>
       </div>
       <i class="fas fa-times"></i>
     </div>
-    <div class="notice" v-else>
+    <div class="notice" :class="{disabled : noti.ready === 1}" v-else>
       <i style="color: crimson" class="far fa-user"></i>
       <div>
-        <p>{{ noti.email }} 님이</p>
+        <p>{{ noti.other }} 님이</p>
         <p>{{ noti.content.slice(0,9) }}... 당신을 팔로우합니다.</p>
       </div>
       <i class="fas fa-times"></i>
@@ -40,7 +40,8 @@
         console.log(notificationId)
         axios.get(`http://localhost:8080/notification/${notificationId}`)
           .then(res => {
-            console.log(res)
+            this.noti.ready = 1
+            this.$router.push({name: 'ArticleDetail', params: {id: this.noti.articleid}})
             if(res.data.status)
               this.$store.state.notificationCnt--;
             }
@@ -70,5 +71,10 @@
   }
   i {
     font-size: 20px;
+  }
+  .disabled {
+    background-color: gainsboro;
+    color: #9fa3af;
+    cursor: none;
   }
 </style>
