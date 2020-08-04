@@ -46,11 +46,6 @@
         :noti="noti"
         :key="noti.notificationid"
       />
-<!--      <div>-->
-<!--        <div v-for="noti in $store.state.notification" :key="noti.notificationid">-->
-<!--          <span>{{ noti.email }} 님이 {{ noti.content }}를 {{ noti.type }}합니다.</span>-->
-<!--        </div>-->
-<!--      </div>-->
     </div>
     <div class="aside disabled">
       <div class="aside-menu" v-if="!this.$store.getters.isLoggedIn">

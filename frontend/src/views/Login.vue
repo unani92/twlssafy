@@ -31,12 +31,11 @@
       <button @click="login" class="login-btn" :class="{ disabled: !isSubmit }">
         Login
       </button>
-      <button @click="$router.push('/signup')" class="signup-btn">
+      <Router-link to="/findpwd" style="text-decoration: none; color: gray; font-size : 13px; margin-top : 5px;"
+        >비밀번호를 잊으셨나요?</Router-link>
+      <button @click="$router.push('/signup')" class="signup-btn" style="margin-bottom : 1rem;">
         Sign Up
       </button>
-      <Router-link to="/changepwd" style="text-decoration: none; color: black"
-        >비밀번호를 잊으셨나요?</Router-link
-      >
     </div>
   </div>
 </template>
@@ -125,7 +124,7 @@ export default {
                 });
               } else this.$router.push("/");
         })
-          .catch(err => console.log(err))
+          .catch(err => alert("Error : " , err))
       } else {
         this.error.email = "아이디, 비밀번호를 확인하세요"
       }
@@ -184,7 +183,7 @@ input {
   height: 50px;
   cursor: pointer;
   margin-top: 1rem;
-  margin-bottom: 1rem;
+  /* margin-bottom: 1rem; */
 }
 @media (min-width: 415px) {
   .socialogin {
