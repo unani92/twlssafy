@@ -16,6 +16,7 @@ import ArticleCardList from '@/components/article/ArticleCardList.vue';
 import FollowArticleCardList from '@/components/article/FollowArticleCardList.vue';
 import PinArticleCardList from '@/components/article/PinArticleCardList.vue';
 import HotArticleCardList from '@/components/article/HotArticleCardList.vue';
+import Dummy from "../components/Dummy";
 Vue.use(VueRouter);
 
 const routes = [
@@ -103,6 +104,11 @@ const routes = [
     name: 'Logout',
     component: Logout,
   },
+  {
+    path: '/dummy/dummy',
+    name: "Dummy",
+    component: Dummy
+  }
 ];
 
 const router = new VueRouter({
