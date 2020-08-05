@@ -184,18 +184,56 @@ alter table notification add nickname char(20);
 
 -----------------------------------------------------------------
 
--- 추천 알고리즘 -> 내 관심사로 등록한 키워드 중 최근 1일
+-- 추천 알고리즘 -> 내 관심사로 등록한 키워드 중 최근 3일 좋아요 높은 순
+select k.articleid from 
+(select i.sno, s.name, i.email from interest as i, skills as s
+where i.sno = s.sno and email = 'asdf@asdf.com') as a,
+keyword as k,
+(select l.articleid, count(*) as cnt, t.createdat as createdat from 
+article as t, likes as l
+where t.articleid = l.articleid
+group by l.articleid
+order by cnt desc) as t
+where a.sno = k.sno
+and t.articleid=k.articleid
+and date(createdat) > date(subdate(now(), INTERVAL 3 DAY))
+order by cnt desc
+limit 5;
 
-select * from article 
-where articleid in 
-(select tmp.articleid from keyword, 
-    (select articleid, count(*) as cnt from likes group by articleid order by cnt desc) 
-    as tmp
-    where keyword.articleid = tmp.articleid
-    and keyword.sno in 
-      (select sno from interest where email=?1)
-order by cnt desc)
-and date(createdat) > date(subdate(now(), INTERVAL 1 DAY));
+
+-- 추천 알고리즘 -> 내 관심사로 등록한 키워드 중 최근 3일 북마크 높은 순
+select k.articleid from 
+(select i.sno, s.name, i.email from interest as i, skills as s
+where i.sno = s.sno and email = 'asdf@asdf.com') as a,
+keyword as k,
+(select l.articleid, count(*) as cnt, t.createdat as createdat from 
+article as t, pin as l
+where t.articleid = l.articleid
+group by l.articleid
+order by cnt desc) as t
+where a.sno = k.sno
+and t.articleid=k.articleid
+and date(createdat) > date(subdate(now(), INTERVAL 3 DAY))
+order by cnt desc
+limit 5;
+
+-- 그냥 좋아요 많은 글들
+select l.articleid, count(*) as cnt from 
+article as t, likes as l
+where t.articleid = l.articleid
+and date(t.createdat) > date(subdate(now(), INTERVAL 3 DAY))
+group by l.articleid
+order by cnt desc
+limit 5; 
+
+-- 그냥 핀 많은 글들
+select l.articleid, count(*) as cnt from 
+article as t, pin as l
+where t.articleid = l.articleid
+and date(t.createdat) > date(subdate(now(), INTERVAL 3 DAY))
+group by l.articleid
+order by cnt desc
+limit 5; 
 
 -----------------------------------------------------------------
 
