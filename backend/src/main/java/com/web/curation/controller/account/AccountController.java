@@ -104,10 +104,7 @@ public class AccountController {
         userInfo.put("pinList", pinDao.findAllByEmail(email));
         userInfo.put("likesList", likesDao.findAllByEmail(email));
         userInfo.put("notificationCnt", notificationDao.countByEmailAndRead(email));
-<<<<<<< HEAD
-=======
         userInfo.put("articleCount", articleDao.countByEmail(email));
->>>>>>> 6acc5858cf9032604dc79d7fc58ab320eaf20c53
             
         // 내가 팔로우 하는 사람 목록            
         List<Follow> follow = followDao.findAllByEmail(email);
@@ -177,10 +174,6 @@ public class AccountController {
         userInfo.setInfo(info);
         userInfo.setImg(JWTDecoding.getImg(header.get("id_token").get(0)));
         userInfo.setType("google");
-<<<<<<< HEAD
-        // userInfo.setGrade(1);
-=======
->>>>>>> 6acc5858cf9032604dc79d7fc58ab320eaf20c53
         userDao.save(userInfo);
         id_token = jwtService.create(userInfo);
 
