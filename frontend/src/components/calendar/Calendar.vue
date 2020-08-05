@@ -1,21 +1,9 @@
 <template>
   <section>
     <div class="form-group">
-      <div class="input-group">
-        <div class="input-group-btn">
-          <button class="btn" type="button" title="Toggle" data-toggle>
-            <i class="fa fa-calendar">
-              <span aria-hidden="true" class="sr-only">Toggle</span>
-            </i>
-          </button>
-          <button class="btn" type="button" title="Clear" data-clear>
-            <i class="fa fa-times">
-              <span aria-hidden="true" class="sr-only">Clear</span>
-            </i>               
-          </button>
-        </div>
-        <flat-pickr
-        v-if="getEmail"
+      <div class="input-group" style="text-align : left">
+         <flat-pickr
+          v-if="getEmail"
           v-model="date"
           :config="config"
           class="form"
@@ -23,6 +11,16 @@
           name="date"
         >
         </flat-pickr>
+        <button class="btn" type="button" title="Toggle" data-toggle>
+          <i class="fa fa-calendar">
+            <span aria-hidden="true" class="sr-only">Toggle</span>
+          </i>
+        </button>
+        <button class="btn" type="button" title="Clear" data-clear>
+          <i class="fa fa-times">
+            <span aria-hidden="true" class="sr-only">Clear</span>
+          </i>               
+        </button>
       </div>
     </div>
   </section>
@@ -122,14 +120,13 @@
   border: #0095f6;
   border-radius: 4px;
   padding: 5px 9px;
-  font-size: 14px;
   color: white;
   margin: 3px;
 }
 .form {
   border: none;
-  background-color: #eeeeee00;
-  text-align: right;
-  font-size: 16px;
+  background-color: #ffffff00;
+  width: 90px;
+  text-align: left;
 }
 </style>
