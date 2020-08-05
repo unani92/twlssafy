@@ -14,8 +14,14 @@
 
     },
     created() {
-      this.$router.push({name: "ArticleDetail", params: {id: this.$route.params.id}})
-    }
+      if (this.$route.params.params !== undefined) {
+        const params = this.$route.params.params
+        this.$router.push({ name: "ArticleSearchByStack", query: params });
+      } else this.$router.push({name: "ArticleDetail", params: {id: this.$route.params.id}})
+    },
+    // mounted() {
+    //   console.log(this.$route)
+    // }
   }
 </script>
 

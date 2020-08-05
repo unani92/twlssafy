@@ -26,7 +26,7 @@
                 name: 'ArticleUpdate',
                 params: { id, keywords, title, content  }
             }">
-              <i class="fas fa-edit" style="cursor: pointer; margin-right : 4px; color : gray" @click="edit"></i>
+              <i class="fas fa-edit" style="cursor: pointer; margin-right : 4px; color : gray"></i>
             </Router-link>
               <i class="fas fa-trash-alt" style="cursor: pointer; color : gray" @click="removeArticle"></i>
 
@@ -88,8 +88,9 @@
           isFollowed: null,
           cntLikes: null,
           cntPin: null,
-        isWriter : false,   
+          isWriter : false,
         },
+        isWriter: false
       }
     },
     methods: {
@@ -104,7 +105,8 @@
           q: keyword,
           category: "keyword",
         };
-        this.$router.push({ name: "ArticleSearchByStack", query: params });
+        this.$router.push({name: "Dummy", params:{params}})
+        // this.$router.push({ name: "ArticleSearchByStack", query: params });
       },
       async getArticle() {
         const articleInfo = await fetchArticle(this.id)
