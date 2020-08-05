@@ -31,6 +31,12 @@
               {{ userInfo.userInfo.email }}
             </div>
           </li>
+          <li v-if="userInfo.userInfo.github != null">
+            <div class="github">
+              <i class="fab fa-github"></i>
+              {{ userInfo.userInfo.github }}
+            </div>
+          </li>
           <li v-if="skills.length !== 0">
             <div class="skills">
               <span v-for="skill in skills" :key="skill.name"># {{ skill.name }}</span>
