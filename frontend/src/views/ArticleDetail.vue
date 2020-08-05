@@ -169,7 +169,9 @@ export default {
     // },
 
     removeArticle() {
-      deleteArticle(this.id)
+      const id_token = this.$store.state.id_token
+
+      deleteArticle(this.id,id_token)
         .then(() => this.$router.push("/"))
         .catch((err) => console.log(err));
     },
