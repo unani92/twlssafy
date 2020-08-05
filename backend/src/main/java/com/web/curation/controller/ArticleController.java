@@ -386,6 +386,7 @@ public class ArticleController {
         Map<String,Object> object = new HashMap<>();
         object.put("article", article);
         object.put("keyword", keywordList);
+        object.put("articleCount", articleDao.countByEmail(user.getEmail()));
         object.put("cntLikes", cntLikes);
         object.put("cntPin", cntPin);
         object.put("commentList", commentList);
