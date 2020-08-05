@@ -94,6 +94,7 @@ public class ArticleController {
         List<List<String>> keywordsList = new ArrayList<>();
         List<Integer> likesList = new ArrayList<>();
         List<Integer> pinList = new ArrayList<>();
+        List<Integer> articleCount = new ArrayList<>();
 
         for(Article a : articles){
             // 게시글 번호를 이용해 이 글의 키워드 리스트를 받아옴 (ex. 1번글의 키워드 c, c++)
@@ -111,14 +112,18 @@ public class ArticleController {
 
            likesList.add(likesDao.countByArticleid(a.getArticleid()));
            pinList.add(pinDao.countByArticleid(a.getArticleid()));
+           articleCount.add(articleDao.countByEmail(a.getEmail()));
 
         }
+
+        
         
         Map<String,Object> object = new HashMap<>();
         object.put("article", articles);
         object.put("keyword", keywordsList);
         object.put("likesCntList", likesList);
         object.put("pinCntList", pinList);
+        object.put("articleCount", articleCount);
 
         result.object = object;
         
@@ -180,22 +185,29 @@ public class ArticleController {
             articleDao.delete(articleDao.findFirstByEmailOrderByArticleidDesc(email));
             return new ResponseEntity<>(result, HttpStatus.OK);
         }
-            int articleId = articleDao.findFirstByEmailOrderByArticleidDesc(email).getArticleid();
-            for(String k : keywords){
-                Keywords keyword = new Keywords();
-                keyword.setArticleid(articleId);
-                keyword.setSno(skillsDao.findSkillByName(k).getSno());
-                if(keywordsDao.save(keyword) == null){ // keyword 저장 못 하면 글 못씀
-                    result.data = "글쓰기 실패 - 키워드 DB 저장 실패";
-                    articleDao.delete(articleDao.findFirstByEmailOrderByArticleidDesc(email));
-                    return new ResponseEntity<>(result, HttpStatus.OK);
-                }
+        int articleId = articleDao.findFirstByEmailOrderByArticleidDesc(email).getArticleid();
+        for(String k : keywords){
+            Keywords keyword = new Keywords();
+            keyword.setArticleid(articleId);
+            keyword.setSno(skillsDao.findSkillByName(k).getSno());
+            if(keywordsDao.save(keyword) == null){ // keyword 저장 못 하면 글 못씀
+                result.data = "글쓰기 실패 - 키워드 DB 저장 실패";
+                articleDao.delete(articleDao.findFirstByEmailOrderByArticleidDesc(email));
+                return new ResponseEntity<>(result, HttpStatus.OK);
+            }
 
         }
 
+        // 글쓴이 총 글 개수 프런트에 전달
+        int articleCount = articleDao.countByEmail(email);
+
+        Map<String, Integer> object = new HashMap<>();
+        object.put("articleId", articleId);
+        object.put("articleCount", articleCount);
+
         result.status = true;
         result.data = "글쓰기 성공";
-        result.object = articleId;
+        result.object = object;
         
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
@@ -257,13 +269,17 @@ public class ArticleController {
     @Transactional
     @ApiOperation(value = "글삭제")
     @DeleteMapping("/article")
-    public Object deleteArticle (@RequestParam(required = true) final int no){
+    public Object deleteArticle (@RequestHeader (required = true) final HttpHeaders header, @RequestParam(required = true) final int no)
+            throws Exception {
         
         final BasicResponse result = new BasicResponse();
+        String email = JWTDecoding.decode(header.get("id_token").get(0));
+
         if(articleDao.deleteByArticleid(no) > 0){
+            int articleCount = articleDao.countByEmail(email);
             result.status = true;
             result.data = "삭제 성공";
-            
+            result.object = articleCount;
         }
         else {
             result.status = false;
@@ -290,7 +306,7 @@ public class ArticleController {
         "keyword" : ["C","Python","DB2"]
        }
         */
-
+        
         int articleId = Integer.parseInt((String)request.get("articleId"));
         
         Article article = articleDao.findByArticleid(articleId);
@@ -353,10 +369,12 @@ public class ArticleController {
 
         // 해당 글의 댓글 list 저장
         List<Comment> commentList = commentDao.findAllByArticleidOrderByCommentidDesc(no);
-
+        
+        List<Integer> commentArticleCountList = new ArrayList<>();
         List<String> commentNickname = new ArrayList<>();
         for(Comment c : commentList){
             commentNickname.add(userDao.findUserByEmail(c.getEmail()).get().getNickname());
+            commentArticleCountList.add(articleDao.countByEmail(c.getEmail()));
         }
 
         result.status = true;
@@ -372,6 +390,7 @@ public class ArticleController {
         object.put("commentList", commentList);
         object.put("userinfo", user.getInfo());
         object.put("commentNickname",commentNickname);
+        object.put("commentArticleCount", commentArticleCountList);
         result.object = object;
         
         return new ResponseEntity<>(result, HttpStatus.OK);
@@ -439,6 +458,7 @@ public class ArticleController {
             object.put("keyword", keywordsList);
             object.put("likesCntList", likesList);
             object.put("pinCntList", pinList);
+            object.put("articleCount", articleDao.countByEmail(email));
     
             result.object = object;
             
@@ -479,6 +499,7 @@ public class ArticleController {
             List<List<String>> keywordsList = new ArrayList<>();
             List<Integer> likesList = new ArrayList<>();
             List<Integer> pinList = new ArrayList<>();
+            List<Integer> articleCount = new ArrayList<>();
     
             for(Article a : articles){
                 // 게시글 번호를 이용해 이 글의 키워드 리스트를 받아옴 (ex. 1번글의 키워드 c, c++)
@@ -497,7 +518,7 @@ public class ArticleController {
                 // 이 글의 총 좋아요, 핀 수
                likesList.add(likesDao.countByArticleid(a.getArticleid()));
                pinList.add(pinDao.countByArticleid(a.getArticleid()));
-    
+               articleCount.add(articleDao.countByEmail(a.getEmail()));
             }
             
             Map<String,Object> object = new HashMap<>();
@@ -505,6 +526,7 @@ public class ArticleController {
             object.put("keyword", keywordsList);
             object.put("likesCntList", likesList);
             object.put("pinCntList", pinList);
+            object.put("articleCount", articleCount);
     
             result.object = object;
         }
@@ -539,6 +561,7 @@ public class ArticleController {
         List<List<String>> keywordsList = new ArrayList<>();
         List<Integer> likesList = new ArrayList<>();
         List<Integer> pinList = new ArrayList<>();
+        List<Integer> articleCount = new ArrayList<>();
 
         for(Article a : articles){
             // 게시글 번호를 이용해 이 글의 키워드 리스트를 받아옴 (ex. 1번글의 키워드 c, c++)
@@ -557,6 +580,7 @@ public class ArticleController {
             // 이 글의 총 좋아요, 핀 수
            likesList.add(likesDao.countByArticleid(a.getArticleid()));
            pinList.add(pinDao.countByArticleid(a.getArticleid()));
+           articleCount.add(articleDao.countByEmail(a.getEmail()));
 
         }
         
@@ -565,6 +589,7 @@ public class ArticleController {
         object.put("keyword", keywordsList);
         object.put("likesCntList", likesList);
         object.put("pinCntList", pinList);
+        object.put("articleCount", articleCount);
 
         result.object = object;
         
@@ -595,6 +620,7 @@ public class ArticleController {
         List<List<String>> keywordsList = new ArrayList<>();
         List<Integer> likesList = new ArrayList<>();
         List<Integer> pinList = new ArrayList<>();
+        List<Integer> articleCount = new ArrayList<>();
 
         for(Article a : list){
             // 게시글 번호를 이용해 이 글의 키워드 리스트를 받아옴 (ex. 1번글의 키워드 c, c++)
@@ -612,6 +638,7 @@ public class ArticleController {
 
            likesList.add(likesDao.countByArticleid(a.getArticleid()));
            pinList.add(pinDao.countByArticleid(a.getArticleid()));
+           articleCount.add(articleDao.countByEmail(a.getEmail()));
 
         }
         
@@ -620,6 +647,7 @@ public class ArticleController {
         object.put("keyword", keywordsList);
         object.put("likesCntList", likesList);
         object.put("pinCntList", pinList);
+        object.put("articleCount", articleCount);
 
         result.object = object;
         

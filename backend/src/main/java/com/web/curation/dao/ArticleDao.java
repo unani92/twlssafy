@@ -19,6 +19,7 @@ public interface ArticleDao extends JpaRepository<Article, String> {
 	// Page<Article> findByArticleid(PageRequest of, int articleid);
 
     int countByNickname(String nickname);
+    int countByEmail(String email);
 
     // select * from article where email in (select followemail from follow where email='vyzynn@gmail.com') order by articleid desc;
     @Query(value = "select * from article where email in (select followemail from follow where email = ?1) order by articleid desc", nativeQuery = true)
