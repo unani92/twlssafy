@@ -46,15 +46,24 @@
           <div class="nicknamePinLikes">
             <div style="float : left; ">{{ article.nickname }}</div>
             <div class="btns">
-              <button @click="pin" class="firstBtn">
-                <i v-if="isPinned" class="fas fa-bookmark"></i>
-                <i v-else class="far fa-bookmark"></i>
+              <button @click="pin" class="firstBtn" style="background-color:white; font-size:16px; width:4%; margin : 3%;">
+                <i v-if="isPinned" class="fas fa-bookmark" style="color : hotpink"> {{pinCnt}}</i>
+                <i v-else class="far fa-bookmark" style="color : hotpink"> {{pinCnt}}</i>
               </button>
-              <!-- <button class="firstBtn"><i class="fas fa-bookmark"></i></button> -->
-              <!-- <button><i class="far fa-heart"></i></button> -->
-              <button @click="like">
-                <i v-if="isliked" class="fas fa-heart"></i>
-                <i v-else class="far fa-heart"></i>
+              <button @click="like" style="background-color:white; font-size:16px; width: 4%;margin : 3%;">
+                <i v-if="isliked" class="fas fa-heart" style="color : hotpink;"> {{likesCnt}}</i>
+                <i v-else class="far fa-heart" style="color : hotpink;"> {{likesCnt}}</i>
+                
+              </button>
+              <button style="background-color:white;font-size:16px; width:4%; margin : 3%;"
+              @click="
+                $router.push({
+                  name: 'ArticleDetail',
+                  params: { id: article.articleid },
+                })" >
+                <i v-if="this.commentCnt>0" class="fas fa-comments" style="color : hotpink;"> {{commentCnt}}</i>
+                <i v-else class="far fa-comments" style="color : hotpink;"> {{commentCnt}}</i>
+
               </button>
             </div>
           </div>
@@ -89,6 +98,7 @@ export default {
         if (data.data === "like 설정") {
           likeList.push(this.article);
           console.log(likeList);
+          this.likesCnt++;
         } else {
           //좋아요 목록에서 삭제 로직
           // const idx = likeList.indexOf(this.article);
@@ -98,6 +108,7 @@ export default {
               likeList.splice(i, 1);
             }
           }
+          this.likesCnt--;
         }
         this.$store.commit("setLikeList", likeList);
         console.log("현재 상태는", this.$store.state.likeList);
@@ -118,12 +129,14 @@ export default {
         const pinList = this.$store.state.pinList;
         if (data.data === "pin 설정") {
           pinList.push(this.article);
+          this.pinCnt ++;
         } else {
           //좋아요 목록에서 삭제 로직
           const len = pinList.length;
           for (let i = 0; i < len; i++) {
             if (this.article.articleid === pinList[i].articleid) {
               pinList.splice(i, 1);
+              this.pinCnt--;
             }
           }
         }
@@ -171,6 +184,15 @@ export default {
       type: Array,
       required: true,
     },
+    pinCnt:{
+      type : Number,
+    },
+    likesCnt:{
+      type : Number
+    },
+    commentCnt:{
+      type : Number
+    }
   },
 };
 </script>
@@ -244,24 +266,22 @@ export default {
   overflow: hidden;
   word-break:break-all;
 }
-.content button {
-  align-items: center;
-  justify-content: center;
-  display: inline-flex;
+button {
+  /* align-items: center;
+  justify-content: center; */
+  /* font-weight: 600; */
+  /* letter-spacing: 1px; */
+  /* border-radius: 50px; */
+  /* display: inline-flex;
   border: none;
-  font-size: 16px;
+  font-size: 10px;
   text-transform: uppercase;
   color: white;
   margin: 1px;
-  width: 32px;
+  width: 25px;
   height: 25px;
-  /* font-weight: 600; */
-  /* letter-spacing: 1px; */
-  border-radius: 50px;
   cursor: pointer;
-  outline: none;
-  border: hotpink;
-  background: hotpink;
+  outline: none; */
 }
 
 .keywords {
@@ -282,7 +302,7 @@ export default {
   cursor:pointer; 
   color : royalblue;
 }
-@media (max-width: 630px) {
+@media (max-width: 768px) {
   .inner-part {
     display: block;
     height: 200px;
@@ -304,8 +324,8 @@ export default {
     margin-top: 0px;
   }
 
-  .content button {
-    display: inline-block;
+  button {
+    margin : 5%;
   }
 }
 </style>

@@ -189,6 +189,7 @@
   #viewer {
     display: block;
     margin-bottom: 2rem;
+    overflow: auto;
   }
   .title {
     font-size: 30px;

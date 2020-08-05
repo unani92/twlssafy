@@ -13,4 +13,6 @@ public interface CommentDao extends JpaRepository<Comment, String> {
 	List<Comment> findAllByArticleidOrderByCommentidDesc(int articleid);
 
 	Comment findByCommentid(int commentid);
+
+	int countByArticleid(int articleid);
 }
