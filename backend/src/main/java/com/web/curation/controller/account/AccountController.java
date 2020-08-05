@@ -99,7 +99,6 @@ public class AccountController {
         userInfo.put("pinList", pinDao.findAllByEmail(email));
         userInfo.put("likesList", likesDao.findAllByEmail(email));
         userInfo.put("notificationCnt", notificationDao.countByEmailAndRead(email));
-        // userInfo.put("grade", userDao.findUserByEmail(email).get().getGrade());
             
         // 내가 팔로우 하는 사람 목록            
         List<Follow> follow = followDao.findAllByEmail(email);
