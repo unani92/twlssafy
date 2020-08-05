@@ -61,7 +61,7 @@ export default {
         q: k,
         category: "keyword",
       };
-      this.$router.push({ name: "ArticleSearchByStack", query: params });
+      this.$router.push({name: "Dummy", params:{params}})
     },
     async like() {
       if (this.isLogin) {

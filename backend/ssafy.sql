@@ -181,12 +181,6 @@ CHANGE COLUMN `content` `content` LONGTEXT NULL DEFAULT NULL ;
 alter table article add preview varchar(200) default null;
 alter table notification add nickname char(20);
 
--- grade 관련 db 추가
-alter table member add grade integer;
-
--- 이전에 가입한 멤버들의 grade 할당
-update member set grade=1 where grade is null;
-
 
 -----------------------------------------------------------------
 
@@ -242,3 +236,5 @@ order by cnt desc
 limit 5; 
 
 -----------------------------------------------------------------
+
+alter table member drop grade;
