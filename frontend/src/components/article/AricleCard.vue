@@ -219,6 +219,7 @@ export default {
   margin: auto;
   border-radius: 25px;
   background: white;
+  box-shadow: 5px 5px 5px gray !important;
 }
 .inner-part {
   display: flex;

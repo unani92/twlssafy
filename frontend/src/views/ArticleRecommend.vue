@@ -1,9 +1,10 @@
 <template>
-  <div id="example" style="padding-top: 100px">
+  <div id="example" style="padding-top: 60px">
+    <HomeNav/>
     <div v-if="isLoading">
       <LoadingSpinner />
     </div>
-    <div v-else>
+    <div v-else style="margin-top: 150px">
       <carousel-3d :width="800" :height="400">
         <Slide v-for="(article, index) in articles" :index="index" :key="index">
           <ArticleCard
@@ -23,6 +24,7 @@
   import { fetchRecommend } from "../api";
   import LoadingSpinner from "@/components/common/LoadingSpinner.vue";
   import ArticleCard from "@/components/article/AricleCard.vue";
+  import HomeNav from "../components/HomeNav";
   export default {
     name: "ArticleRecommend",
     data() {
@@ -40,7 +42,8 @@
       'carousel-3d': Carousel3d,
       Slide,
       LoadingSpinner,
-      ArticleCard
+      ArticleCard,
+      HomeNav
     },
     methods: {
       async fetchData() {
@@ -52,11 +55,6 @@
         this.likesCntList = data.object.likesCntList;
         this.pinCntList = data.object.pinCntList;
         this.commentCntList = data.object.commentCntList;
-        console.log(this.articles)
-        console.log(this.keywords)
-        console.log(this.likesCntList)
-        console.log(this.pinCntList)
-        console.log(this.commentCntList)
       }
     },
     mounted() {
@@ -66,7 +64,15 @@
 </script>
 
 <style scoped>
-  .hashtag {
-    display: none !important;
+  .carousel-3d-slide {
+    border: none;
+    background-color: transparent;
   }
+  .home-nav {
+    display: flex;
+    height: 60px;
+    align-items: center;
+    padding: 0 1rem;
+  }
+
 </style>
