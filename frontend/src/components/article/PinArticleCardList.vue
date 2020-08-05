@@ -14,6 +14,8 @@
         :key="article._id"
         :article="article"
         :keywords="keywords[index]"
+        :pinCnt="pinCntList[index]"
+        :likesCnt="likesCntList[index]"
       />
       <div id="bottomSensor"></div>
     </div>
@@ -36,6 +38,10 @@ export default {
     return {
       articles: [],
       keywords: [],
+      likesCntList : [],
+      pinCntList : [],
+      tmpList : [],
+      commentCntList : [],
       isLoading: true,
       page: 0,
     };
@@ -46,12 +52,13 @@ export default {
         page: this.page++,
       };
       const id_token = this.$store.state.id_token;
-
       const { data } = await fetchPinArticles(params, id_token);
-      console.log(data);
       this.isLoading = false;
+
       this.keywords = [...this.keywords, ...data.object.keyword];
       this.articles = [...this.articles, ...data.object.article];
+      this.likesCntList = [...this.likesCntList, ...data.object.likesCntList];
+      this.pinCntList = [...this.pinCntList, ...data.object.pinCntList];
     },
     addScrollWatcher() {
       const bottomSensor = document.querySelector("#bottomSensor");
