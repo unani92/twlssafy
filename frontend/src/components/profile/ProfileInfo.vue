@@ -5,7 +5,11 @@
         <img src="https://i.pravatar.cc/400?u=정윤환" />
       </div>
       <div class="text">
-        <div class="description follower-email-container">
+        <div
+          :style="{ backgroundImage:'url('+require('@/assets/image/medal-'+grade+'.png')+')'}"
+          class="grade"
+        ></div>
+        <div class="description follower-email-container" style="margin:0">
           <span class="follower-email">{{ userInfo.userInfo.nickname }}</span>
           <div
             v-show="nickname !== this.$store.state.nickname"
@@ -14,6 +18,7 @@
             <button class="followBtn">팔로우</button>
           </div>
         </div>
+
         <div class="intro">{{ userInfo.userInfo.info }}</div>
 
         <ul>
@@ -29,6 +34,12 @@
             <div class="info">
               <i class="fas fa-envelope"></i>
               {{ userInfo.userInfo.email }}
+            </div>
+          </li>
+          <li v-if="userInfo.userInfo.github != null">
+            <div class="github">
+              <i class="fab fa-github"></i>
+              {{ userInfo.userInfo.github }}
             </div>
           </li>
           <li v-if="skills.length !== 0">
@@ -151,10 +162,21 @@ export default {
   },
   data() {
     const userSkills = this.$store.state.userSkills;
+    let grade = 0;
+    if (this.userInfo.totalArticleCount === 0) {
+      grade = 1;
+    } else if (this.userInfo.totalArticleCount <= 10) {
+      grade = 2;
+    } else if (this.userInfo.totalArticleCount <= 30) {
+      grade = 3;
+    } else {
+      grade = 4;
+    }
     return {
       skills: userSkills,
       nickname: this.$route.params.nickname,
       follower: this.userInfo.follower,
+      grade: grade,
     };
   },
   computed: {
@@ -288,6 +310,15 @@ ul {
   max-width: 850px;
   margin: auto;
   padding-top: 70px;
+}
+.grade {
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 100%;
+  margin-right: 0.5em;
 }
 /* SECTION CONTAINER */
 .section-container {

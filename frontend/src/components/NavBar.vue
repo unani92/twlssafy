@@ -3,9 +3,7 @@
     <div class="nav-bar">
       <div class="logo-searchbar">
         <div class="logo">
-          <Router-link class="logo-text" to="/">
-            TWL
-          </Router-link>
+          <Router-link class="logo-text" to="/">TWL</Router-link>
         </div>
         <div class="input-box">
           <i
@@ -16,12 +14,17 @@
         </div>
       </div>
       <div class="article-icon">
+        <div v-if="this.$store.getters.isLoggedIn">
+          <div
+            :style="{ backgroundImage:'url('+require('@/assets/image/medal-'+grade+'.png')+')'}"
+            class="grade"
+          ></div>
+        </div>
         <div v-if="this.$store.getters.isLoggedIn" class="mypage">
-
           <figure
-            v-if="$store.state.grade"
+            v-if="$store.state.img"
             class="user-photo"
-            :style="{ backgroundImage:'url('+require('@/assets/image/level'+this.$store.state.grade+'.png')+')' }"
+            :style="{ 'background-image': 'url(' + this.$store.state.img + ')' }"
             @click="goToMyPage"
           ></figure>
           <figure
@@ -51,20 +54,12 @@
       <div class="aside-menu" v-if="!this.$store.getters.isLoggedIn">
         <GoogleLogin />
         <GithubLogin />
-        <div @click="goToEmailLogin" class="emailogin-text">
-          Email Login
-        </div>
-        <div @click="goToSignup" class="signup-text">
-          Signup
-        </div>
+        <div @click="goToEmailLogin" class="emailogin-text">Email Login</div>
+        <div @click="goToSignup" class="signup-text">Signup</div>
       </div>
       <div v-else class="aside-menu-loggedIn">
-        <div @click="goToMyPage" class="mypage-text">
-          MyPage
-        </div>
-        <div @click="logout" class="emailogin-text">
-          Log Out
-        </div>
+        <div @click="goToMyPage" class="mypage-text">MyPage</div>
+        <div @click="logout" class="emailogin-text">Log Out</div>
       </div>
     </div>
   </div>
@@ -74,7 +69,13 @@
 import GoogleLogin from "./GoogleLogin";
 import GithubLogin from "./GithubLogin";
 import Notification from "./Notification";
+import { getGrade } from "@/utils/calcGrade";
 export default {
+  data() {
+    return {
+      grade: getGrade(this.$store.state.articleCount),
+    };
+  },
   name: "NavBar",
   components: {
     GoogleLogin,
@@ -87,8 +88,8 @@ export default {
       aside.classList.toggle("disabled");
     },
     notificationIconToggle() {
-      const notiDropdown = document.querySelector(".notification")
-      notiDropdown.classList.toggle("disabled")
+      const notiDropdown = document.querySelector(".notification");
+      notiDropdown.classList.toggle("disabled");
     },
     goToEmailLogin() {
       const aside = document.querySelector(".aside");
@@ -109,9 +110,8 @@ export default {
         .catch(() => {});
     },
     logout() {
-      this.$router.push({name: 'Logout'})
-    },    
-
+      this.$router.push({ name: "Logout" });
+    },
   },
 };
 </script>
@@ -154,6 +154,15 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+.grade {
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 100%;
+  margin-right: 0.5em;
 }
 .notification {
   position: fixed;
@@ -245,7 +254,8 @@ i:hover {
   align-items: center;
   margin-right: 1rem;
 }
-.aside-menu > div, .aside-menu-loggedIn > div{
+.aside-menu > div,
+.aside-menu-loggedIn > div {
   margin: 10px;
 }
 .aside-menu-loggedIn > div:nth-child(1) {

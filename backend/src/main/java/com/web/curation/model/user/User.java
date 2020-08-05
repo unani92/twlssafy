@@ -46,6 +46,8 @@ public class User {
 
     private String img;
 
+    private String github;
+
     @Column(insertable = false, updatable = false)
     private LocalDateTime createdate;
 

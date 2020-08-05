@@ -9,6 +9,10 @@ export function validatePassword(value) {
 }
 
 export function validateMarkdown(value) {
-	const re = /[^ㄱ-ㅎ가-힣\s]/g;
-	return value.replace(re,'');
+	const re1 = /[^a-zA-Zㄱ-힣0-9<>.]/g;
+	value.replace(re1,' ');
+	const re2 = /!\[(.*?)\]/;
+	value = value.replace(re2,'');
+	const re3 = /\((.*?)\)/;
+	return value.replace(re3,'');
 }

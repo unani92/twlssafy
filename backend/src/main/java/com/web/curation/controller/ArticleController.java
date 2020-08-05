@@ -98,6 +98,7 @@ public class ArticleController {
         List<Integer> likesList = new ArrayList<>();
         List<Integer> pinList = new ArrayList<>();
         List<Integer> articleCount = new ArrayList<>();
+        List<Integer> commentCntList = new ArrayList<>();
 
         for(Article a : articles){
             // 게시글 번호를 이용해 이 글의 키워드 리스트를 받아옴 (ex. 1번글의 키워드 c, c++)
@@ -116,6 +117,7 @@ public class ArticleController {
            likesList.add(likesDao.countByArticleid(a.getArticleid()));
            pinList.add(pinDao.countByArticleid(a.getArticleid()));
            articleCount.add(articleDao.countByEmail(a.getEmail()));
+           commentCntList.add(commentDao.countByArticleid(a.getArticleid()));
 
         }
 
@@ -127,6 +129,7 @@ public class ArticleController {
         object.put("likesCntList", likesList);
         object.put("pinCntList", pinList);
         object.put("articleCount", articleCount);
+        object.put("commentCntList", commentCntList);
 
         result.object = object;
         
@@ -389,6 +392,7 @@ public class ArticleController {
         Map<String,Object> object = new HashMap<>();
         object.put("article", article);
         object.put("keyword", keywordList);
+        object.put("articleCount", articleDao.countByEmail(user.getEmail()));
         object.put("cntLikes", cntLikes);
         object.put("cntPin", cntPin);
         object.put("commentList", commentList);

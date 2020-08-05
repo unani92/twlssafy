@@ -167,6 +167,7 @@ public class AccountController {
 
         String nickname = (String) body.get("nickname");
         String info = (String)body.get("info");
+        String github = (String)body.get("hithub");
 
         User userInfo = new User();
         userInfo.setEmail(email);
@@ -174,7 +175,9 @@ public class AccountController {
         userInfo.setInfo(info);
         userInfo.setImg(JWTDecoding.getImg(header.get("id_token").get(0)));
         userInfo.setType("google");
+        userInfo.setGithub(github);
         userDao.save(userInfo);
+    
         id_token = jwtService.create(userInfo);
 
         Map<String, String> response = new HashMap<>();
@@ -277,12 +280,14 @@ public class AccountController {
         String password = ((String)request.getPassword());
         String nickname = request.getNickname();
         String info = request.getInfo();
+        String github = request.getGithub();
         
         User user = new User();
         user.setEmail(email);
         user.setPassword(password);
         user.setNickname(nickname);
         user.setInfo(info);
+        user.setGithub(github);
         userDao.save(user);
         final BasicResponse result = new BasicResponse();
         result.status = true;

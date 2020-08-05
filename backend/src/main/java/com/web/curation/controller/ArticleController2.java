@@ -321,6 +321,7 @@ public class ArticleController2 {
     @ApiOperation(value = "추천 게시글")
     @GetMapping("/article/recommend")
     public Object recommend (@RequestHeader final HttpHeaders header) throws Exception {
+
         final BasicResponse result = new BasicResponse();
         result.status = false;
         result.data = "fail";
@@ -361,11 +362,39 @@ public class ArticleController2 {
             random.add(ran.nextInt(setSize));
         }
         
+        List<Integer> likesList = new ArrayList<>();
+        List<Integer> pinList = new ArrayList<>();
+        List<List<String>> keywordsList = new ArrayList<>();
+
         for(int r : random){
-            articles.add(articleDao.findByArticleid((int)set.toArray()[r]));
+            Article a = articleDao.findByArticleid((int)set.toArray()[r]);
+
+            List<Keywords> tmpKeyword = keywordsDao.findAllByArticleid(a.getArticleid());
+            if(tmpKeyword!=null){
+                List<String> tmplist = new ArrayList<>();
+                for(Keywords k : tmpKeyword){
+                    tmplist.add(skillsDao.findSkillBySno(k.getSno()).getName());
+                }
+                keywordsList.add(tmplist);
+            }
+            articles.add(a);
+            likesList.add(likesDao.countByArticleid(a.getArticleid()));
+            pinList.add(pinDao.countByArticleid(a.getArticleid()));
+        }
+        if(articles != null){
+            result.status =true;
+            result.data = "success";
+            Map<String,Object> object = new HashMap<>();
+            object.put("articles", articles);
+            object.put("likesCntList", likesList);
+            object.put("pinCntList", pinList);
+            object.put("keyword", keywordsList);
+
+
+            result.object = object;
         }
         
-        return articles;
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
 }
