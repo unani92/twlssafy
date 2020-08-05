@@ -109,6 +109,11 @@ function fetchHotArticles(params, token) {
 function fetchHashTags() {
   return instance.get(`hashTag`);
 }
+function fetchRecommend(token) {
+  return instance.get('article/recommend', {
+    headers: { id_token: token }
+  })
+}
 
 export {
   checkEmail,
@@ -134,4 +139,5 @@ export {
   fetchPinArticles,
   fetchHotArticles,
   fetchHashTags,
+  fetchRecommend
 };
