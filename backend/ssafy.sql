@@ -182,4 +182,21 @@ alter table article add preview varchar(200) default null;
 alter table notification add nickname char(20);
 
 
+-----------------------------------------------------------------
+
+-- 추천 알고리즘 -> 내 관심사로 등록한 키워드 중 최근 1일
+
+select * from article 
+where articleid in 
+(select tmp.articleid from keyword, 
+    (select articleid, count(*) as cnt from likes group by articleid order by cnt desc) 
+    as tmp
+    where keyword.articleid = tmp.articleid
+    and keyword.sno in 
+      (select sno from interest where email=?1)
+order by cnt desc)
+and date(createdat) > date(subdate(now(), INTERVAL 1 DAY));
+
+-----------------------------------------------------------------
+
 alter table member drop grade;

@@ -1,6 +1,6 @@
 <template>
   <div class="detail-profile">
-    <img :src="photo" alt="" />
+    <img :src="photo" alt="" @click="gotoWriterPage" />
     <div style="margin-left : 15px;">
       <h2 @click="gotoWriterPage" class="writer-page">
         {{ article.nickname }}

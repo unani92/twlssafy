@@ -72,18 +72,18 @@ public class SearchController {
 
         switch(category) {
             case "content":
-                s = Search.searchByContent(q);
+                s = Search.searchByContentOrderByArticleidDesc(q);
                 break;
             case "title" :
-                s = Search.searchByTitle(q);
+                s = Search.searchByTitleOrderByArticleidDesc(q);
                 break;
             case "nickname" :
-                s = Search.searchByNickname(q);
+                s = Search.searchByNicknameOrderByArticleidDesc(q);
                 break;
             case "keyword" :
                 int sno = skillsDao.findSkillByName(q).getSno();
 
-                List<Keywords> keyword = keywordsDao.findAllBySno(sno);
+                List<Keywords> keyword = keywordsDao.findAllBySnoOrderByArticleidDesc(sno);
                 
                 for(int i=0; i<keyword.size(); i++) {
                     aList.add(articleDao.findByArticleid(keyword.get(i).getArticleid()));

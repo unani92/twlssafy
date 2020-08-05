@@ -36,4 +36,10 @@ public interface ArticleDao extends JpaRepository<Article, String> {
     List<Article> findAllByEmail(String email);
     List<Article> findAllByEmailOrderByArticleidDesc(String email);
 
+
+    @Query(value = 
+    "select distinct * from article where articleid in (select tmp.articleid from keyword, (select articleid, count(*) as cnt from likes group by articleid order by cnt desc) as tmp where keyword.articleid = tmp.articleid and keyword.sno in (select sno from interest where email=?1) order by cnt desc) and date(createdat) > date(subdate(now(), INTERVAL 1 DAY))",
+    nativeQuery = true)
+    List<Article> recommendation(String email);
+
 }
