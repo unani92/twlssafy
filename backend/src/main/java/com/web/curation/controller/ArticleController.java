@@ -333,15 +333,16 @@ public class ArticleController {
     @GetMapping("/article/{no}")
     public Object getArticle(@PathVariable final int no) {
 
+        
         final BasicResponse result = new BasicResponse();
         result.status = false;
         result.data = "상세 조회 실패";
-    
+        
         Article article = articleDao.findByArticleid(no);
         List<Keywords> keywords = keywordsDao.findAllByArticleid(no);
         int cntLikes = likesDao.countByArticleid(no);
         int cntPin = pinDao.countByArticleid(no);
-
+        
         if(article == null || keywords == null){
             return new ResponseEntity<>(result, HttpStatus.OK);
         }
@@ -350,20 +351,20 @@ public class ArticleController {
         for(Keywords k : keywords){
             keywordList.add(skillsDao.findSkillBySno(k.getSno()).getName());        
         }
-
+        
         // 해당 글의 댓글 list 저장
         List<Comment> commentList = commentDao.findAllByArticleidOrderByCommentidDesc(no);
-
+        
         List<String> commentNickname = new ArrayList<>();
         for(Comment c : commentList){
             commentNickname.add(userDao.findUserByEmail(c.getEmail()).get().getNickname());
         }
-
+        
         result.status = true;
         result.data = "상세 조회 성공";
-
+        
         User user = userDao.findUserByEmail(article.getEmail()).get();
-
+        
         Map<String,Object> object = new HashMap<>();
         object.put("article", article);
         object.put("keyword", keywordList);
@@ -374,11 +375,17 @@ public class ArticleController {
         object.put("commentNickname",commentNickname);
         result.object = object;
         
+        List<Article> rec = articleDao.recommendation(article.getEmail());
+        for(Article r : rec){
+            System.out.println(r.getArticleid() + " " + r.getTitle() + " " + r.getNickname());
+        }
+
+
         return new ResponseEntity<>(result, HttpStatus.OK);
-
+        
     }
-
-
+    
+    
     
     @ApiOperation(value = "팔로잉 글 조회")
     @GetMapping("/article/following")
@@ -574,18 +581,32 @@ public class ArticleController {
 
     @ApiOperation(value = "게시글 날짜 조회")
     @GetMapping("/article/date/{date}")
-    public Object searchDate(@PathVariable final String date,@RequestParam (value = "email") final String email) {
+    public Object searchDate(@PathVariable final String date,
+    @RequestParam (value = "email") final String email,
+    @RequestParam(value = "page") final int page) {
 
         final BasicResponse result = new BasicResponse();
         result.status = false;
         result.data = "fail";
 
-        // String[] now = LocalDateTime.now().toString().split("T");
-
         List<Article> list = articleDao.articleAt(date, email);
+
+        int totalArticle = list.size();
+        // int totalPage = totalArticle/10;
+        // if (totalArticle%10 > 0) 
+        //     totalPage += 1;
+        
+        List<Article> articles = new ArrayList<>();
+
+        
         
         try {
             if(list.get(0) != null){
+                for(int i=page*10; i<page*10+10; i++) {
+                    if(i<totalArticle) {
+                        articles.add(list.get(i));
+                    }
+                }
             }
         } catch (Exception e) {
             list = null;
@@ -596,7 +617,7 @@ public class ArticleController {
         List<Integer> likesList = new ArrayList<>();
         List<Integer> pinList = new ArrayList<>();
 
-        for(Article a : list){
+        for(Article a : articles){
             // 게시글 번호를 이용해 이 글의 키워드 리스트를 받아옴 (ex. 1번글의 키워드 c, c++)
             List<Keywords> tmpKeyword = keywordsDao.findAllByArticleid(a.getArticleid());
             if(tmpKeyword!=null){ // 임시리스트 만들어서 키워드들 넣고, 최종 리스트에 담음
@@ -616,7 +637,7 @@ public class ArticleController {
         }
         
         Map<String,Object> object = new HashMap<>();
-        object.put("article", list);
+        object.put("article", articles);
         object.put("keyword", keywordsList);
         object.put("likesCntList", likesList);
         object.put("pinCntList", pinList);
