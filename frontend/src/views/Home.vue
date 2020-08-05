@@ -2,12 +2,12 @@
   <div>
     <div class="home">
       <div>
-        <HomeNav class="home-nav" />
+        <HomeNav />
       </div>
       <div class="main-wrapper">
         <div class="primary">
           <br />
-          <router-view></router-view>
+          <router-view :key="$route.fullPath"/>
         </div>
         <div class="secondary secondary-b">
           <HashTag />

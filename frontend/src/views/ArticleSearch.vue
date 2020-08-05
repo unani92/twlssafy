@@ -2,17 +2,21 @@
   <div class="article-search">
     <div class="search">
       <div class="option">
-        <select v-model="category" name="category" id="category">
-          <option value>분류</option>
-          <option value="nickname">닉네임</option>
+        <!-- <select v-model="category" name="category" id="category">
+          <option selected value>분류</option>
           <option value="title">제목</option>
           <option value="content">내용</option>
           <option value="keyword">키워드</option>
-        </select>
+          <option value="nickname">닉네임</option>
+        </select> -->
+        <input type="radio" name="category" value="title" v-model="category">제목
+        <input type="radio" name="category" value="content" v-model="category"> 내용
+        <input type="radio" name="category" value="keyword" v-model="category">키워드
+        <input type="radio" name="category" value="nickname" v-model="category">닉네임
       </div>
-      <div class="searchbar">
-        <i class="fas fa-search"></i>
-        <input @keypress.enter="fetchSearchData" type="text" v-model="input" />
+      <div class="searchbar">        
+        <input @keypress.enter="fetchSearchData" type="text" v-model="input"/>
+        <i class="fas fa-search" @click="fetchSearchData"></i>
       </div>
     </div>
     <div v-if="searchArticles">
@@ -105,33 +109,25 @@ export default {
 
 <style scoped>
 .article-search {
-  padding-top: 100px;
-  max-width: 720px;
-  margin-left: auto;
-  margin-right: auto;
+  padding-top: 70px;
 }
 .search {
-  display: flex;
-  width: 100%;
-  padding: 1rem;
-}
-.option {
-  width: 30%;
-}
-.option > select {
   text-align: center;
-  width: 90%;
-  height: 60px;
-  font-size: 1rem;
-  padding-left: 20px;
-  padding-right: 10px;
+  left : 5%;
+  width: 99%;
+
 }
+  .option {
+    margin : 1rem;
+  }
 .searchbar {
-  width: 70%;
+  width: 50%;
+  margin: 1rem 1rem 1rem 25%;
 }
 .searchbar > i {
   position: absolute;
-  z-index: 100000;
+  right: 25%;
+  /* z-index: 100000; */
   cursor: pointer;
 }
 i {
@@ -143,8 +139,23 @@ i {
 .searchbar > input {
   width: 100%;
   height: 60px;
-  text-align: center;
   font-size: larger;
   z-index: 5;
+  padding-left: 20px;
+  border: none;
 }
+@media (max-width: 768px){
+  .searchbar {
+   width: 70%;
+   margin: 1rem 1rem 1rem 15%;
+  }
+  .searchbar > i {
+  right: 15%;
+}
+.searchbar > input {
+    padding-left: 10px;
+
+}
+}
+
 </style>

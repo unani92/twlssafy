@@ -125,4 +125,7 @@
     font-weight: bold;
     font-size : 20px
   }
+  .commentBtn {
+    width : 70px;
+  }
 </style>

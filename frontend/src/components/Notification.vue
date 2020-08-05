@@ -36,12 +36,13 @@
     },
     methods: {
       goToPage(event) {
-        const notificationId = event.target.parentNode.id
-        axios.get(`http://localhost:8080/notification/${notificationId}`)
-          .then(res => {
-            this.noti.ready = 1
-            this.$router.push({name: "Dummy", params: {id: this.noti.articleid}})
-            if(res.data.status)
+        if (this.$store.getters.isLoggedIn) {
+          const notificationId = event.target.parentNode.id
+          axios.get(`http://localhost:8080/notification/${notificationId}`)
+            .then(res => {
+              this.noti.ready = 1
+              this.$router.push({name: "Dummy", params: {id: this.noti.articleid}})
+              if(res.data.status)
               this.$store.state.notificationCnt--;
             }
           )
@@ -49,16 +50,18 @@
             console.log(err)
             }
           )
+        }
       },
       deleteNotification(event) {
-        console.log('click')
-        const notificationId = event.target.id
-        console.log(notificationId)
-        axios.delete(`http://localhost:8080/notification/${notificationId}`)
-          .then(() => {
-            this.$store.state.notification = this.$store.state.notification.filter(noti => Number(noti.notificationid) !== Number(notificationId))
-          })
-          .catch(err => console.log(err))
+        if (this.$store.getters.isLoggedIn) {
+          const notificationId = event.target.id
+          console.log(notificationId)
+          axios.delete(`http://localhost:8080/notification/${notificationId}`)
+            .then(() => {
+              this.$store.state.notification = this.$store.state.notification.filter(noti => Number(noti.notificationid) !== Number(notificationId))
+            })
+            .catch(err => console.log(err))
+        }
       }
     }
   }
