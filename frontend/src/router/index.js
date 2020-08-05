@@ -18,6 +18,7 @@ import PinArticleCardList from '@/components/article/PinArticleCardList.vue';
 import HotArticleCardList from '@/components/article/HotArticleCardList.vue';
 import FindPwd from '../views/FindPwd.vue';
 import Dummy from "../components/Dummy";
+import ArticleRecommend from "../views/ArticleRecommend";
 Vue.use(VueRouter);
 
 const routes = [
@@ -78,6 +79,11 @@ const routes = [
     path: '/create',
     name: 'ArticleCreate',
     component: ArticleCreate,
+  },
+  {
+    path: '/recommend',
+    name: "ArticleRecommend",
+    component: ArticleRecommend
   },
   {
     path: '/:id',
