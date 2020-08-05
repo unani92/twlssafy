@@ -46,7 +46,7 @@ public class User {
 
     private String img;
 
-    private int grade;
+    // private int grade;
 
     @Column(insertable = false, updatable = false)
     private LocalDateTime createdate;

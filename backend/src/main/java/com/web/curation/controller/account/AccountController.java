@@ -99,7 +99,7 @@ public class AccountController {
         userInfo.put("pinList", pinDao.findAllByEmail(email));
         userInfo.put("likesList", likesDao.findAllByEmail(email));
         userInfo.put("notificationCnt", notificationDao.countByEmailAndRead(email));
-        userInfo.put("grade", userDao.findUserByEmail(email).get().getGrade());
+        // userInfo.put("grade", userDao.findUserByEmail(email).get().getGrade());
             
         // 내가 팔로우 하는 사람 목록            
         List<Follow> follow = followDao.findAllByEmail(email);
@@ -169,7 +169,7 @@ public class AccountController {
         userInfo.setInfo(info);
         userInfo.setImg(JWTDecoding.getImg(header.get("id_token").get(0)));
         userInfo.setType("google");
-        userInfo.setGrade(1);
+        // userInfo.setGrade(1);
         userDao.save(userInfo);
         id_token = jwtService.create(userInfo);
 
@@ -279,7 +279,7 @@ public class AccountController {
         user.setPassword(password);
         user.setNickname(nickname);
         user.setInfo(info);
-        user.setGrade(1);
+        // user.setGrade(1);
         userDao.save(user);
         final BasicResponse result = new BasicResponse();
         result.status = true;
