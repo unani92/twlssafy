@@ -3,8 +3,11 @@ package com.web.curation.controller;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
+import java.util.Set;
 
 import javax.transaction.Transactional;
 
@@ -375,11 +378,6 @@ public class ArticleController {
         object.put("commentNickname",commentNickname);
         result.object = object;
         
-        List<Article> rec = articleDao.recommendation(article.getEmail());
-        for(Article r : rec){
-            System.out.println(r.getArticleid() + " " + r.getTitle() + " " + r.getNickname());
-        }
-
 
         return new ResponseEntity<>(result, HttpStatus.OK);
         
@@ -645,6 +643,56 @@ public class ArticleController {
         result.object = object;
         
         return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "추천 게시글")
+    @GetMapping("/article/recommend")
+    public Object recommend (@RequestHeader final HttpHeaders header) throws Exception {
+        final BasicResponse result = new BasicResponse();
+        result.status = false;
+        result.data = "fail";
+
+        String email = "";
+        String id_token = "";
+
+        try{
+            id_token = header.get("id_token").get(0);
+            if(id_token!=null){
+                email = JWTDecoding.decode(id_token);
+            }
+        }catch(NullPointerException e){
+
+        }
+
+       
+        Set<Integer> set = new HashSet<>();
+        if(email != null){
+            List<Integer> r1 = articleDao.rec1(email);
+            List<Integer> r2 = articleDao.rec2(email);
+            for(int r : r1) set.add(r);
+            for(int r : r2) set.add(r);
+        }
+        List<Integer> r3 = articleDao.rec3();
+        List<Integer> r4 = articleDao.rec4();
+        for(int r : r3) set.add(r);
+        for(int r : r4) set.add(r);
+
+        List<Article> articles = new ArrayList<>();
+        
+        int setSize = set.size();
+        
+        Set<Integer> random = new HashSet<>();
+        
+        Random ran = new Random();
+        while(random.size()<5){
+            random.add(ran.nextInt(setSize));
+        }
+        
+        for(int r : random){
+            articles.add(articleDao.findByArticleid((int)set.toArray()[r]));
+        }
+        
+        return articles;
     }
 
 }
