@@ -25,11 +25,7 @@
                 params: { id, keywords, title, content  }
             }"
               >
-                <i
-                  class="fas fa-edit"
-                  style="cursor: pointer; margin-right : 4px; color : gray"
-                  @click="edit"
-                ></i>
+                <i class="fas fa-edit" style="cursor: pointer; margin-right : 4px; color : gray"></i>
               </Router-link>
               <i
                 class="fas fa-trash-alt"
@@ -84,6 +80,7 @@ export default {
       return this.$store.state.followList;
     },
   },
+
   data() {
     return {
       id: this.$route.params.id,
@@ -94,8 +91,6 @@ export default {
       content: null,
       updatedAt: null,
       userinfo: null,
-      articleCount: 0,
-      commentArticleCount: [],
       sideMenu: {
         commentList: null,
         isFollowed: null,
@@ -103,6 +98,7 @@ export default {
         cntPin: null,
         isWriter: false,
       },
+      isWriter: false,
     };
   },
   methods: {
@@ -117,7 +113,8 @@ export default {
         q: keyword,
         category: "keyword",
       };
-      this.$router.push({ name: "ArticleSearchByStack", query: params });
+      this.$router.push({ name: "Dummy", params: { params } });
+      // this.$router.push({ name: "ArticleSearchByStack", query: params });
     },
     async getArticle() {
       const articleInfo = await fetchArticle(this.id);
@@ -129,14 +126,8 @@ export default {
         cntPin,
         userinfo,
         commentNickname,
-        articleCount,
-        commentArticleCount,
       } = articleInfo.data.object;
-      console.log(articleInfo);
       this.article = article;
-      this.sideMenu.isFollowed = !!this.followList.follow.filter(
-        (follow) => follow.followemail === this.article.email
-      ).length;
 
       this.keywords = keyword;
       this.nickname = article.nickname;
