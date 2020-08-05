@@ -126,6 +126,8 @@ export default {
         cntPin,
         userinfo,
         commentNickname,
+        commentArticleCount,
+        articleCount,
       } = articleInfo.data.object;
       this.article = article;
 
