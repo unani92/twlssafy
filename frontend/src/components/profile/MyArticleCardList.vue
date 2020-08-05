@@ -57,6 +57,7 @@ export default {
       this.keywords = [...this.keywords, ...data.object.keyword];
       this.articles = [...this.articles, ...data.object.article.content];
       this.userInfo = data.object.user;
+      console.log(data);
       // console.log(data.object.interestList);
       this.$emit("setUserInfo", {
         userInfo: this.userInfo,
