@@ -18,6 +18,7 @@ import javax.validation.Valid;
 
 import com.web.curation.JWT.JWTDecoding;
 import com.web.curation.JWT.JwtService;
+import com.web.curation.dao.ArticleDao;
 import com.web.curation.dao.SkillsDao;
 import com.web.curation.dao.pinlikesfollow.FollowDao;
 import com.web.curation.dao.pinlikesfollow.LikesDao;
@@ -57,6 +58,9 @@ public class AccountController {
 
     @Autowired
     UserDao userDao;
+
+    @Autowired
+    ArticleDao articleDao;
     
     @Autowired
     FollowDao followDao;
@@ -88,6 +92,7 @@ public class AccountController {
         String id_token = request.getHeader("id_token");
 
         String email = JWTDecoding.decode(id_token);
+        System.out.println(id_token);
         System.out.println("EMAIL : "+email);
         Map<String, Object> userToken = JWTDecoding.getInfo(id_token);
         System.out.println("USERTOKEN : "+userToken);
@@ -99,7 +104,7 @@ public class AccountController {
         userInfo.put("pinList", pinDao.findAllByEmail(email));
         userInfo.put("likesList", likesDao.findAllByEmail(email));
         userInfo.put("notificationCnt", notificationDao.countByEmailAndRead(email));
-        userInfo.put("grade", userDao.findUserByEmail(email).get().getGrade());
+        userInfo.put("articleCount", articleDao.countByEmail(email));
             
         // 내가 팔로우 하는 사람 목록            
         List<Follow> follow = followDao.findAllByEmail(email);
@@ -162,6 +167,7 @@ public class AccountController {
 
         String nickname = (String) body.get("nickname");
         String info = (String)body.get("info");
+        String github = (String)body.get("hithub");
 
         User userInfo = new User();
         userInfo.setEmail(email);
@@ -169,8 +175,9 @@ public class AccountController {
         userInfo.setInfo(info);
         userInfo.setImg(JWTDecoding.getImg(header.get("id_token").get(0)));
         userInfo.setType("google");
-        userInfo.setGrade(1);
+        userInfo.setGithub(github);
         userDao.save(userInfo);
+    
         id_token = jwtService.create(userInfo);
 
         Map<String, String> response = new HashMap<>();
@@ -273,13 +280,14 @@ public class AccountController {
         String password = ((String)request.getPassword());
         String nickname = request.getNickname();
         String info = request.getInfo();
+        String github = request.getGithub();
         
         User user = new User();
         user.setEmail(email);
         user.setPassword(password);
         user.setNickname(nickname);
         user.setInfo(info);
-        user.setGrade(1);
+        user.setGithub(github);
         userDao.save(user);
         final BasicResponse result = new BasicResponse();
         result.status = true;

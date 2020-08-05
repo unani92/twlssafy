@@ -25,5 +25,5 @@ public class SignupRequest {
     @NotNull
     String nickname;
     String info;
-
+    String github;
 }

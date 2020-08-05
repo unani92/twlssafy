@@ -8,36 +8,35 @@
         <p>⚡ News ⚡</p>
       </div>
       <br />
-
-      <ArticleCard
-        v-for="(article, index) in articles"
-        :key="article._id"
-        :article="article"
-        :keywords="keywords[index]"
-      />
-      <div id="bottomSensor"></div>
+      <carousel-3d>
+        <Slide v-for="(slide, i) in articles.length" :index="i" :key="i">
+          <img src="https://placehold.it/360x270">
+        </Slide>
+      </carousel-3d>
     </div>
   </div>
 </template>
 
 <script>
-import ArticleCard from "@/components/article/AricleCard.vue";
+// import ArticleCard from "@/components/article/AricleCard.vue";
 import LoadingSpinner from "@/components/common/LoadingSpinner.vue";
+import { Carousel3d, Slide } from 'vue-carousel-3d'
 import { fetchHotArticles } from "@/api/index";
-import scrollMonitor from "scrollmonitor";
 
 export default {
   components: {
-    ArticleCard,
+    // ArticleCard,
     LoadingSpinner,
+    'carousel-3d': Carousel3d,
+    Slide
   },
-
   data() {
     return {
       articles: [],
       keywords: [],
       isLoading: true,
       page: 0,
+      slides: 6
     };
   },
   methods: {
@@ -53,19 +52,12 @@ export default {
       this.keywords = [...this.keywords, ...data.object.keyword];
       this.articles = [...this.articles, ...data.object.article];
     },
-    addScrollWatcher() {
-      const bottomSensor = document.querySelector("#bottomSensor");
-      const watcher = scrollMonitor.create(bottomSensor);
-      watcher.enterViewport(() => {
-        this.fetchData();
-      });
-    },
   },
   created() {
     this.fetchData();
   },
   mounted() {
-    setTimeout(() => this.addScrollWatcher(), 1000);
+
   },
 };
 </script>

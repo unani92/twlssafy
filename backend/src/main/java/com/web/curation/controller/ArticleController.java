@@ -3,8 +3,11 @@ package com.web.curation.controller;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
+import java.util.Set;
 
 import javax.transaction.Transactional;
 
@@ -94,6 +97,8 @@ public class ArticleController {
         List<List<String>> keywordsList = new ArrayList<>();
         List<Integer> likesList = new ArrayList<>();
         List<Integer> pinList = new ArrayList<>();
+        List<Integer> articleCount = new ArrayList<>();
+        List<Integer> commentCntList = new ArrayList<>();
 
         for(Article a : articles){
             // 게시글 번호를 이용해 이 글의 키워드 리스트를 받아옴 (ex. 1번글의 키워드 c, c++)
@@ -111,14 +116,20 @@ public class ArticleController {
 
            likesList.add(likesDao.countByArticleid(a.getArticleid()));
            pinList.add(pinDao.countByArticleid(a.getArticleid()));
+           articleCount.add(articleDao.countByEmail(a.getEmail()));
+           commentCntList.add(commentDao.countByArticleid(a.getArticleid()));
 
         }
+
+        
         
         Map<String,Object> object = new HashMap<>();
         object.put("article", articles);
         object.put("keyword", keywordsList);
         object.put("likesCntList", likesList);
         object.put("pinCntList", pinList);
+        object.put("articleCount", articleCount);
+        object.put("commentCntList", commentCntList);
 
         result.object = object;
         
@@ -180,22 +191,29 @@ public class ArticleController {
             articleDao.delete(articleDao.findFirstByEmailOrderByArticleidDesc(email));
             return new ResponseEntity<>(result, HttpStatus.OK);
         }
-            int articleId = articleDao.findFirstByEmailOrderByArticleidDesc(email).getArticleid();
-            for(String k : keywords){
-                Keywords keyword = new Keywords();
-                keyword.setArticleid(articleId);
-                keyword.setSno(skillsDao.findSkillByName(k).getSno());
-                if(keywordsDao.save(keyword) == null){ // keyword 저장 못 하면 글 못씀
-                    result.data = "글쓰기 실패 - 키워드 DB 저장 실패";
-                    articleDao.delete(articleDao.findFirstByEmailOrderByArticleidDesc(email));
-                    return new ResponseEntity<>(result, HttpStatus.OK);
-                }
+        int articleId = articleDao.findFirstByEmailOrderByArticleidDesc(email).getArticleid();
+        for(String k : keywords){
+            Keywords keyword = new Keywords();
+            keyword.setArticleid(articleId);
+            keyword.setSno(skillsDao.findSkillByName(k).getSno());
+            if(keywordsDao.save(keyword) == null){ // keyword 저장 못 하면 글 못씀
+                result.data = "글쓰기 실패 - 키워드 DB 저장 실패";
+                articleDao.delete(articleDao.findFirstByEmailOrderByArticleidDesc(email));
+                return new ResponseEntity<>(result, HttpStatus.OK);
+            }
 
         }
 
+        // 글쓴이 총 글 개수 프런트에 전달
+        int articleCount = articleDao.countByEmail(email);
+
+        Map<String, Integer> object = new HashMap<>();
+        object.put("articleId", articleId);
+        object.put("articleCount", articleCount);
+
         result.status = true;
         result.data = "글쓰기 성공";
-        result.object = articleId;
+        result.object = object;
         
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
@@ -257,13 +275,17 @@ public class ArticleController {
     @Transactional
     @ApiOperation(value = "글삭제")
     @DeleteMapping("/article")
-    public Object deleteArticle (@RequestParam(required = true) final int no){
+    public Object deleteArticle (@RequestHeader (required = true) final HttpHeaders header, @RequestParam(required = true) final int no)
+            throws Exception {
         
         final BasicResponse result = new BasicResponse();
+        String email = JWTDecoding.decode(header.get("id_token").get(0));
+
         if(articleDao.deleteByArticleid(no) > 0){
+            int articleCount = articleDao.countByEmail(email);
             result.status = true;
             result.data = "삭제 성공";
-            
+            result.object = articleCount;
         }
         else {
             result.status = false;
@@ -290,7 +312,7 @@ public class ArticleController {
         "keyword" : ["C","Python","DB2"]
        }
         */
-
+        
         int articleId = Integer.parseInt((String)request.get("articleId"));
         
         Article article = articleDao.findByArticleid(articleId);
@@ -333,15 +355,16 @@ public class ArticleController {
     @GetMapping("/article/{no}")
     public Object getArticle(@PathVariable final int no) {
 
+        
         final BasicResponse result = new BasicResponse();
         result.status = false;
         result.data = "상세 조회 실패";
-    
+        
         Article article = articleDao.findByArticleid(no);
         List<Keywords> keywords = keywordsDao.findAllByArticleid(no);
         int cntLikes = likesDao.countByArticleid(no);
         int cntPin = pinDao.countByArticleid(no);
-
+        
         if(article == null || keywords == null){
             return new ResponseEntity<>(result, HttpStatus.OK);
         }
@@ -350,281 +373,37 @@ public class ArticleController {
         for(Keywords k : keywords){
             keywordList.add(skillsDao.findSkillBySno(k.getSno()).getName());        
         }
-
+        
         // 해당 글의 댓글 list 저장
         List<Comment> commentList = commentDao.findAllByArticleidOrderByCommentidDesc(no);
-
+        
+        List<Integer> commentArticleCountList = new ArrayList<>();
         List<String> commentNickname = new ArrayList<>();
         for(Comment c : commentList){
             commentNickname.add(userDao.findUserByEmail(c.getEmail()).get().getNickname());
+            commentArticleCountList.add(articleDao.countByEmail(c.getEmail()));
         }
-
+        
         result.status = true;
         result.data = "상세 조회 성공";
-
+        
         User user = userDao.findUserByEmail(article.getEmail()).get();
-
+        
         Map<String,Object> object = new HashMap<>();
         object.put("article", article);
         object.put("keyword", keywordList);
+        object.put("articleCount", articleDao.countByEmail(user.getEmail()));
         object.put("cntLikes", cntLikes);
         object.put("cntPin", cntPin);
         object.put("commentList", commentList);
         object.put("userinfo", user.getInfo());
         object.put("commentNickname",commentNickname);
+        object.put("commentArticleCount", commentArticleCountList);
         result.object = object;
         
+
         return new ResponseEntity<>(result, HttpStatus.OK);
-
-    }
-
-
-    
-    @ApiOperation(value = "팔로잉 글 조회")
-    @GetMapping("/article/following")
-    public Object getFollowingArticle(@RequestParam(value = "page") final int page, @RequestHeader final HttpHeaders header) throws Exception {
-
-        final BasicResponse result = new BasicResponse();
-        result.status = false;
-        result.data = "fail";
-
-        String id_token = header.get("id_token").get(0);
-        String email = JWTDecoding.decode(id_token);
-
-        List<Article> list = articleDao.articleFromFollowing(email);
-
-        if(list!=null){
-            result.status = true;
-            result.data = "success";
-
-            int totalArticle = list.size();
-            // int totalPage = totalArticle/10;
-            // if (totalArticle%10 > 0) 
-            //     totalPage += 1;
-            
-            List<Article> articles = new ArrayList<>();
-
-            for(int i=page*10; i<page*10+10; i++) {
-                if(i<totalArticle) {
-                    articles.add(list.get(i));
-                }
-            }
-
-            List<List<String>> keywordsList = new ArrayList<>();
-            List<Integer> likesList = new ArrayList<>();
-            List<Integer> pinList = new ArrayList<>();
-    
-            for(Article a : articles){
-                // 게시글 번호를 이용해 이 글의 키워드 리스트를 받아옴 (ex. 1번글의 키워드 c, c++)
-                List<Keywords> tmpKeyword = keywordsDao.findAllByArticleid(a.getArticleid());
-                if(tmpKeyword!=null){ // 임시리스트 만들어서 키워드들 넣고, 최종 리스트에 담음
-                    List<String> tmplist = new ArrayList<>();
-                    for(Keywords k : tmpKeyword){
-                        tmplist.add(skillsDao.findSkillBySno(k.getSno()).getName());
-                    }
-                    keywordsList.add(tmplist);
-                    result.status = true;
-                    result.data = "글 조회 성공";
-                }
-                else return new ResponseEntity<>(result, HttpStatus.OK); // 글에 keyword 없으면 false return
-    
-                // 이 글의 총 좋아요, 핀 수
-               likesList.add(likesDao.countByArticleid(a.getArticleid()));
-               pinList.add(pinDao.countByArticleid(a.getArticleid()));
-    
-            }
-            
-            Map<String,Object> object = new HashMap<>();
-            object.put("article", articles);
-            object.put("keyword", keywordsList);
-            object.put("likesCntList", likesList);
-            object.put("pinCntList", pinList);
-    
-            result.object = object;
-            
-        }
-        return new ResponseEntity<>(result, HttpStatus.OK);
-    }
-
-    @ApiOperation(value = "북마크 글 조회")
-    @GetMapping("/article/pin")
-    public Object getPinnedArticle(@RequestParam(value = "page") final int page, @RequestHeader final HttpHeaders header) throws Exception {
-
-        final BasicResponse result = new BasicResponse();
-        result.status = false;
-        result.data = "fail";
-
-        String id_token = header.get("id_token").get(0);
-        String email = JWTDecoding.decode(id_token);
-
-        List<Article> list = articleDao.articleFromPin(email);
-
-        if(list!=null){
-            result.status = true;
-            result.data = "success";
-
-            int totalArticle = list.size();
-            // int totalPage = totalArticle/10;
-            // if (totalArticle%10 > 0) 
-            //     totalPage += 1;
-            
-            List<Article> articles = new ArrayList<>();
-
-            for(int i=page*10; i<page*10+10; i++) {
-                if(i<totalArticle) {
-                    articles.add(list.get(i));
-                }
-            }
-
-            List<List<String>> keywordsList = new ArrayList<>();
-            List<Integer> likesList = new ArrayList<>();
-            List<Integer> pinList = new ArrayList<>();
-    
-            for(Article a : articles){
-                // 게시글 번호를 이용해 이 글의 키워드 리스트를 받아옴 (ex. 1번글의 키워드 c, c++)
-                List<Keywords> tmpKeyword = keywordsDao.findAllByArticleid(a.getArticleid());
-                if(tmpKeyword!=null){ // 임시리스트 만들어서 키워드들 넣고, 최종 리스트에 담음
-                    List<String> tmplist = new ArrayList<>();
-                    for(Keywords k : tmpKeyword){
-                        tmplist.add(skillsDao.findSkillBySno(k.getSno()).getName());
-                    }
-                    keywordsList.add(tmplist);
-                    result.status = true;
-                    result.data = "글 조회 성공";
-                }
-                else return new ResponseEntity<>(result, HttpStatus.OK); // 글에 keyword 없으면 false return
-    
-                // 이 글의 총 좋아요, 핀 수
-               likesList.add(likesDao.countByArticleid(a.getArticleid()));
-               pinList.add(pinDao.countByArticleid(a.getArticleid()));
-    
-            }
-            
-            Map<String,Object> object = new HashMap<>();
-            object.put("article", articles);
-            object.put("keyword", keywordsList);
-            object.put("likesCntList", likesList);
-            object.put("pinCntList", pinList);
-    
-            result.object = object;
-        }
-            
-            return new ResponseEntity<>(result, HttpStatus.OK);
-    }
-
-    @ApiOperation(value = "인기글 조회")
-    @GetMapping("/article/hot")
-    public Object getHotArticle(@RequestParam(value = "page") final int page) throws Exception {
-        final BasicResponse result = new BasicResponse();
-        result.status = false;
-        result.data = "글 조회 실패";
-    
-        // 게시글 페이징 10개 단위
-        List<Object[]> list = likesDao.articleFromHot();
-
-        //  keywords list - "keyword": [ ["Swift","Swagger"], ["C"], ["STS", "SQL"], ...]
-        if(list==null){
-            return new ResponseEntity<>(result, HttpStatus.OK);
-        }
-
-        List<Article> articles = new ArrayList<>();
-
-        int totalArticle = list.size();
-        for(int i=page*10; i<page*10+10; i++) {
-            if(i<totalArticle) {
-                articles.add((articleDao.findByArticleid((int) list.get(i)[0])));
-            }
-        }
-
-        List<List<String>> keywordsList = new ArrayList<>();
-        List<Integer> likesList = new ArrayList<>();
-        List<Integer> pinList = new ArrayList<>();
-
-        for(Article a : articles){
-            // 게시글 번호를 이용해 이 글의 키워드 리스트를 받아옴 (ex. 1번글의 키워드 c, c++)
-            List<Keywords> tmpKeyword = keywordsDao.findAllByArticleid(a.getArticleid());
-            if(tmpKeyword!=null){ // 임시리스트 만들어서 키워드들 넣고, 최종 리스트에 담음
-                List<String> tmplist = new ArrayList<>();
-                for(Keywords k : tmpKeyword){
-                    tmplist.add(skillsDao.findSkillBySno(k.getSno()).getName());
-                }
-                keywordsList.add(tmplist);
-                result.status = true;
-                result.data = "글 조회 성공";
-            }
-            else return new ResponseEntity<>(result, HttpStatus.OK); // 글에 keyword 없으면 false return
-
-            // 이 글의 총 좋아요, 핀 수
-           likesList.add(likesDao.countByArticleid(a.getArticleid()));
-           pinList.add(pinDao.countByArticleid(a.getArticleid()));
-
-        }
         
-        Map<String,Object> object = new HashMap<>();
-        object.put("article", articles);
-        object.put("keyword", keywordsList);
-        object.put("likesCntList", likesList);
-        object.put("pinCntList", pinList);
-
-        result.object = object;
-        
-        return new ResponseEntity<>(result, HttpStatus.OK);
     }
     
-
-    @ApiOperation(value = "게시글 날짜 조회")
-    @GetMapping("/article/date/{date}")
-    public Object searchDate(@PathVariable final String date,@RequestParam (value = "email") final String email) {
-
-        final BasicResponse result = new BasicResponse();
-        result.status = false;
-        result.data = "fail";
-
-        // String[] now = LocalDateTime.now().toString().split("T");
-
-        List<Article> list = articleDao.articleAt(date, email);
-        
-        try {
-            if(list.get(0) != null){
-            }
-        } catch (Exception e) {
-            list = null;
-        }
-
-
-        List<List<String>> keywordsList = new ArrayList<>();
-        List<Integer> likesList = new ArrayList<>();
-        List<Integer> pinList = new ArrayList<>();
-
-        for(Article a : list){
-            // 게시글 번호를 이용해 이 글의 키워드 리스트를 받아옴 (ex. 1번글의 키워드 c, c++)
-            List<Keywords> tmpKeyword = keywordsDao.findAllByArticleid(a.getArticleid());
-            if(tmpKeyword!=null){ // 임시리스트 만들어서 키워드들 넣고, 최종 리스트에 담음
-                List<String> tmplist = new ArrayList<>();
-                for(Keywords k : tmpKeyword){
-                    tmplist.add(skillsDao.findSkillBySno(k.getSno()).getName());
-                }
-                keywordsList.add(tmplist);
-                result.status = true;
-                result.data = "글 조회 성공";
-            }
-            else return new ResponseEntity<>(result, HttpStatus.OK); // 글에 keyword 없으면 false return
-
-           likesList.add(likesDao.countByArticleid(a.getArticleid()));
-           pinList.add(pinDao.countByArticleid(a.getArticleid()));
-
-        }
-        
-        Map<String,Object> object = new HashMap<>();
-        object.put("article", list);
-        object.put("keyword", keywordsList);
-        object.put("likesCntList", likesList);
-        object.put("pinCntList", pinList);
-
-        result.object = object;
-        
-        return new ResponseEntity<>(result, HttpStatus.OK);
-    }
-
 }
-

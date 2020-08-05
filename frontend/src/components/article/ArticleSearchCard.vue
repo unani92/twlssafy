@@ -1,33 +1,45 @@
 <template>
-  <div class="card-body">
+ <div class="card-body">
     <div class="blog-card">
       <div class="inner-part">
         <label for="imgTap" class="img">
-          <img class="img-1" src="https://picsum.photos/300/200" />
+          <img v-if="article.imgurl != null" class="img-1" :src="article.imgurl" />
+          <img v-else class="img-1" src="https://picsum.photos/300/200" />
         </label>
         <p>
-          <br />
         </p>
-        <div class="content content-1">
-          <div class="title"
-               style="cursor:pointer;"
-               @click="$router.push({ name: 'ArticleDetail', params:{id:article.articleid} })"
-          >
-            {{ article.title }}
-            <br />
-            <span class="keywords" v-for="k in keywords" :key="k">
-              <a href="#" style="text-decoration: none;">#{{k}}</a>
+        <div class="content">
+          <div style="margin-bottom : 10px;">
+            <span
+              class="title"
+              style="cursor:pointer;"
+              @click="
+                $router.push({
+                  name: 'ArticleDetail',
+                  params: { id: article.articleid },
+                })
+              ">
+              {{ article.title }}
             </span>
           </div>
-          <div class="text">{{ article.content }}</div>
-          <div class="createdat-text">{{ this.$moment(article.createdat).fromNow() }}</div>
+          <div style="height : 20px; overflow : hidden; margin-bottom : 10px">
+            <span class="keywords" v-for="k in keywords" :key="k" >
+              <span id="keyword" @click="search(k)">#{{ k }} </span>
+            </span>
+          </div>
+          <div class="text">{{ article.preview }}</div>
+          <div class="createdat-text">
+            {{ this.$moment(article.createdat).fromNow() }}
+          </div>
           <div class="nicknamePinLikes">
-            <div style="float : left; ">{{article.nickname}}</div>
+            <div style="float : left; ">{{ article.nickname }}</div>
             <div class="btns">
               <button @click="pin" class="firstBtn">
                 <i v-if="isPinned" class="fas fa-bookmark"></i>
                 <i v-else class="far fa-bookmark"></i>
               </button>
+              <!-- <button class="firstBtn"><i class="fas fa-bookmark"></i></button> -->
+              <!-- <button><i class="far fa-heart"></i></button> -->
               <button @click="like">
                 <i v-if="isliked" class="fas fa-heart"></i>
                 <i v-else class="far fa-heart"></i>
@@ -44,6 +56,13 @@
 import { likeArticle, pinArticle } from "@/api/index.js";
 export default {
   methods: {
+    search(k){
+      const params = {
+        q: k,
+        category: "keyword",
+      };
+      this.$router.push({name: "Dummy", params:{params}})
+    },
     async like() {
       if (this.isLogin) {
         const params = {
