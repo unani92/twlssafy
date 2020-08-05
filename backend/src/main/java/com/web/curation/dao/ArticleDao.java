@@ -38,8 +38,63 @@ public interface ArticleDao extends JpaRepository<Article, String> {
 
 
     @Query(value = 
-    "select distinct * from article where articleid in (select tmp.articleid from keyword, (select articleid, count(*) as cnt from likes group by articleid order by cnt desc) as tmp where keyword.articleid = tmp.articleid and keyword.sno in (select sno from interest where email=?1) order by cnt desc) and date(createdat) > date(subdate(now(), INTERVAL 1 DAY))",
-    nativeQuery = true)
-    List<Article> recommendation(String email);
+    "select k.articleid from  " +
+    "(select i.sno, s.name, i.email from interest as i, skills as s " +
+    "where i.sno = s.sno and email = ?1) as a, " +
+    "keyword as k, " +
+    "(select l.articleid, count(*) as cnt, t.createdat as createdat from  " +
+    "article as t, likes as l " +
+    "where t.articleid = l.articleid " +
+    "group by l.articleid " +
+    "order by cnt desc) as t " +
+    "where a.sno = k.sno " +
+    "and t.articleid=k.articleid " +
+    "and date(createdat) > date(subdate(now(), INTERVAL 3 DAY)) " +
+    "order by cnt desc " +
+    "limit 5 "
+    , nativeQuery = true)
+    List<Integer> rec1(String email);
+
+    @Query(value = 
+    "select k.articleid from  " +
+    "(select i.sno, s.name, i.email from interest as i, skills as s " +
+    "where i.sno = s.sno and email = ?1) as a, " +
+    "keyword as k, " +
+    "(select l.articleid, count(*) as cnt, t.createdat as createdat from  " +
+    "article as t, pin as l " +
+    "where t.articleid = l.articleid " +
+    "group by l.articleid " +
+    "order by cnt desc) as t " +
+    "where a.sno = k.sno " +
+    "and t.articleid=k.articleid " +
+    "and date(createdat) > date(subdate(now(), INTERVAL 3 DAY)) " +
+    "order by cnt desc " +
+    "limit 5 "
+    , nativeQuery = true)
+    List<Integer> rec2(String email);
+
+    @Query(value = 
+        "select l.articleid from  " +
+        "article as t, likes as l " +
+        "where t.articleid = l.articleid " +
+        "and date(t.createdat) > date(subdate(now(), INTERVAL 3 DAY)) " +
+        "group by l.articleid " +
+        "order by count(*) desc " +
+        "limit 5 "
+        , nativeQuery = true)
+    List<Integer> rec3();
+
+    @Query(value = 
+        "select l.articleid from  " +
+        "article as t, pin as l " +
+        "where t.articleid = l.articleid " +
+        "and date(t.createdat) > date(subdate(now(), INTERVAL 3 DAY)) " +
+        "group by l.articleid " +
+        "order by count(*) desc " +
+        "limit 5 "
+        , nativeQuery = true)
+    List<Integer> rec4();
+
+
 
 }
