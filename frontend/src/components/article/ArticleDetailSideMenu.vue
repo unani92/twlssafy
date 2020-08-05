@@ -205,7 +205,7 @@
     font-size: 11px;
     }
   }
-  @media (min-width: 1024px) {
+  @media (min-width: 1025px) {
     .sidemenu {
       top: 200px ;
       display: flex;
