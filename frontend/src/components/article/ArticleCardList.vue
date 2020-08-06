@@ -51,6 +51,7 @@ export default {
       const params = {
         page: this.page++,
       };
+
       const { data } = await fetchArticles(params);
       this.isLoading = false;
       this.keywords = [...this.keywords, ...data.object.keyword];
