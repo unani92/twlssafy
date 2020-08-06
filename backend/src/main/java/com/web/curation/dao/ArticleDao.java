@@ -36,6 +36,8 @@ public interface ArticleDao extends JpaRepository<Article, String> {
     List<Article> findAllByEmail(String email);
     List<Article> findAllByEmailOrderByArticleidDesc(String email);
 
+    Page<Article> findAllByIspublic(Pageable pageable, int ispublic);
+
 
     @Query(value = 
     "select k.articleid from  " +

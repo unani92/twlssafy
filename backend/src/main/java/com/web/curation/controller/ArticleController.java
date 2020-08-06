@@ -87,7 +87,7 @@ public class ArticleController {
         result.data = "글 조회 실패";
     
         // 게시글 페이징 10개 단위
-        Page<Article> articles = articleDao.findAll(PageRequest.of(page, 10, Sort.Direction.DESC,"articleid"));
+        Page<Article> articles = articleDao.findAllByIspublic(PageRequest.of(page, 10, Sort.Direction.DESC,"articleid"),1);
 
         //  keywords list - "keyword": [ ["Swift","Swagger"], ["C"], ["STS", "SQL"], ...]
         if(articles==null){
