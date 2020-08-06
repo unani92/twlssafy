@@ -19,6 +19,7 @@ import PinArticleCardList from '@/components/article/PinArticleCardList.vue';
 import FindPwd from '../views/FindPwd.vue';
 import Dummy from '../components/Dummy';
 import ArticleRecommend from '../views/ArticleRecommend';
+import CalendarCardList from '../components/calendar/CalendarCardList.vue';
 import store from '@/store/index';
 
 Vue.use(VueRouter);
@@ -134,6 +135,12 @@ const routes = [
     path: '/dummy/dummy',
     name: 'Dummy',
     component: Dummy,
+  },
+  {
+    path: '/mypage/date',
+    name: 'CalendarCardList',
+    component: CalendarCardList,
+    props: true,
   },
 ];
 

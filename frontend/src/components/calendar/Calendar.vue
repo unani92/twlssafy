@@ -16,7 +16,7 @@
             <span aria-hidden="true" class="sr-only">Toggle</span>
           </i>
         </button>
-        <button class="btn" type="button" title="Clear" data-clear>
+        <button class="btn" type="button" title="Clear" @click="myPage">
           <i class="fa fa-times">
             <span aria-hidden="true" class="sr-only">Clear</span>
           </i>               
@@ -33,7 +33,7 @@
   import 'flatpickr/dist/themes/material_blue.css';
   import { Korean } from 'flatpickr/dist/l10n/ko.js';
   import http from '../../api/http-common.js';
-  
+
   export default {
     name: 'Calendar',
     data () {
@@ -45,7 +45,8 @@
           dateFormat: 'Y-m-d',
           locale: Korean,
           onChange: (e) => (this.onChange(e))
-        },                
+        },
+        page : 0,                
       }
     },
     methods : {
@@ -85,13 +86,28 @@
           let day = tmp[2];
           let year = tmp[3];
 
+
           const targetDate = year+"-"+month+"-"+day;
 
-          http.get(`/article/date/${targetDate}?email=${this.userInfo.userInfo.email}`)
-          .then( res => {
-            console.log(res);
-            });
+          this.getList(targetDate)
+          
           },
+        getList(targetDate){
+          http.get(`/article/date/${targetDate}?email=${this.userInfo.userInfo.email}&page=${this.page}`,)
+          .then( res => {
+            console.log(this.userInfo.userInfo);
+             const data = {
+              data : res,
+              userInfo : this.userInfo,
+            }
+            console.log(data)
+            this.$router.push({name: "Dummy", params : {data}})
+            });
+        },
+        myPage(){
+          this.$router.push({name: "Dummy", params: {userInfo : this.userInfo}})
+
+        }
     },
     computed: {
       getEmail(){
@@ -108,7 +124,7 @@
       flatPickr
     },
     mounted() {
-      console.log(this.userInfo.userInfo.email)
+      this.email = this.userInfo.userInfo.email;
     }
   }
 
@@ -128,5 +144,7 @@
   background-color: #ffffff00;
   width: 90px;
   text-align: left;
+  width : 0.1px;
+  outline: none;
 }
 </style>

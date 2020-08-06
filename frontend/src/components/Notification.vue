@@ -28,7 +28,8 @@
 </template>
 
 <script>
-  import axios from 'axios'
+  // import axios from 'axios'
+  import http from '../api/http-common.js';
   export default {
     name: "Notification",
     props: {
@@ -38,7 +39,7 @@
       goToPage(event) {
         if (this.$store.getters.isLoggedIn) {
           const notificationId = event.target.parentNode.id
-          axios.get(`http://localhost:8080/notification/${notificationId}`)
+          http.get(`/notification/${notificationId}`)
             .then(res => {
               this.noti.ready = 1
               this.$router.push({name: "Dummy", params: {id: this.noti.articleid}})
@@ -57,7 +58,7 @@
         if (this.$store.getters.isLoggedIn) {
           const notificationId = event.target.id
           console.log(notificationId)
-          axios.delete(`http://localhost:8080/notification/${notificationId}`)
+          http.delete(`/notification/${notificationId}`)
             .then(() => {
               this.$store.state.notification = this.$store.state.notification.filter(noti => Number(noti.notificationid) !== Number(notificationId))
             })

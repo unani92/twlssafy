@@ -69,7 +69,7 @@
             <i class="far fa-plus-square"></i>
           </span>
         </li>
-        <div class="sns" style="float">
+        <div class="sns">
           <a>
             <i class="fas fa-pencil-alt"></i>
             <br />
@@ -86,7 +86,7 @@
             <span>{{ userInfo.following.follow.length }} Followings</span>
           </a>
         </div>
-        <div id="calendar" style="text-align : right;">
+        <div id="calendar">
           <Calendar :userInfo="userInfo" />
         </div>
       </div>
@@ -579,5 +579,8 @@ li {
 }
 .followBtn:hover {
   cursor: pointer;
+}
+#calendar {
+  margin-left : 1%;
 }
 </style>
