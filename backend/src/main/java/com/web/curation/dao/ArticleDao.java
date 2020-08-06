@@ -36,7 +36,8 @@ public interface ArticleDao extends JpaRepository<Article, String> {
     List<Article> findAllByEmail(String email);
     List<Article> findAllByEmailOrderByArticleidDesc(String email);
 
-
+    
+    
     @Query(value = 
     "select k.articleid from  " +
     "(select i.sno, s.name, i.email from interest as i, skills as s " +
@@ -55,7 +56,7 @@ public interface ArticleDao extends JpaRepository<Article, String> {
     "limit 5 "
     , nativeQuery = true)
     List<Integer> rec1(String email);
-
+    
     @Query(value = 
     "select k.articleid from  " +
     "(select i.sno, s.name, i.email from interest as i, skills as s " +
@@ -74,7 +75,7 @@ public interface ArticleDao extends JpaRepository<Article, String> {
     "limit 5 "
     , nativeQuery = true)
     List<Integer> rec2(String email);
-
+    
     @Query(value = 
         "select l.articleid from  " +
         "article as t, likes as l " +
@@ -100,5 +101,7 @@ public interface ArticleDao extends JpaRepository<Article, String> {
     List<Integer> rec4(String email);
 
 
-
+    Page<Article> findByIspublicOrEmail(Pageable pageable, int ispublic, String email);
+    Page<Article> findByIspublic(Pageable pageable, int ispublic);
+    
 }

@@ -289,8 +289,9 @@ public class ArticleController2 {
 
 
         List<List<String>> keywordsList = new ArrayList<>();
-        List<Integer> likesList = new ArrayList<>();
-        List<Integer> pinList = new ArrayList<>();
+        List<Integer> likesCntList = new ArrayList<>();
+        List<Integer> pinCntList = new ArrayList<>();
+        List<Integer> commentCntList = new ArrayList<>();
 
         for(Article a : articles){
             // 게시글 번호를 이용해 이 글의 키워드 리스트를 받아옴 (ex. 1번글의 키워드 c, c++)
@@ -306,21 +307,26 @@ public class ArticleController2 {
             }
             else return new ResponseEntity<>(result, HttpStatus.OK); // 글에 keyword 없으면 false return
 
-           likesList.add(likesDao.countByArticleid(a.getArticleid()));
-           pinList.add(pinDao.countByArticleid(a.getArticleid()));
+            int articleid = a.getArticleid();
+            likesCntList.add(likesDao.countByArticleid(articleid));
+            pinCntList.add(pinDao.countByArticleid(articleid));
+            commentCntList.add(commentDao.countByArticleid(articleid));
 
         }
         
-        Map<String,Object> object = new HashMap<>();
-        object.put("article", articles);
-        object.put("keyword", keywordsList);
-        object.put("likesCntList", likesList);
-        object.put("pinCntList", pinList);
+        Map<String,Object> userInfo = new HashMap<>();
+        userInfo.put("article", articles);
+        userInfo.put("keyword", keywordsList);
+        userInfo.put("likesCntList", likesCntList);
+        userInfo.put("pinCntList", pinCntList);
+        userInfo.put("commentCntList", commentCntList);
 
-        result.object = object;
+        result.object = userInfo;
         
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
+
+
 
     @ApiOperation(value = "추천 게시글")
     @GetMapping("/article/recommend")
