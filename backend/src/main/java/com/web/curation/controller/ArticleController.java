@@ -91,7 +91,6 @@ public class ArticleController {
         } catch (Exception e) {
             
         }
-        System.out.println(email);
         
         Page<Article> articles ;
         if(email == null){
@@ -177,9 +176,7 @@ public class ArticleController {
         String title = (String) request.get("title");
         String content = (String) request.get("content");
         String preview = subStrByte((String) request.get("preview"), 200);
-        String tmpispublic = (String) request.get("ispublic");
-        int ispublic = 1;
-        if(tmpispublic.equals("비공개")) ispublic = 3;
+        int ispublic = Integer.parseInt((String) request.get("ispublic"));
         
         // 글에서 이미지 뽑는 함수
         String imgurl = getImgFromArticle(content);
@@ -236,7 +233,6 @@ public class ArticleController {
     
     // 글에서 이미지 뽑는 함수
     private String getImgFromArticle(String content) {
-        System.out.println(content);
         char[] con = content.toCharArray();
         int if_img1=0;
         boolean if_img=false;
@@ -332,9 +328,6 @@ public class ArticleController {
         
         int articleId = Integer.parseInt((String)request.get("articleId"));
 
-        int ispublic = 1;
-        String tmpispulic = (String) request.get("ispublic");
-        if(tmpispulic.equals("비공개")) ispublic=3;
         
         Article article = articleDao.findByArticleid(articleId);
         article.setContent((String)request.get("content"));
@@ -342,7 +335,7 @@ public class ArticleController {
         article.setImgurl(getImgFromArticle((String)request.get("content")));
         article.setUpdatedat(LocalDateTime.now());
         article.setPreview(subStrByte((String) request.get("preview"), 200));
-        article.setIspublic(ispublic);
+        article.setIspublic(Integer.parseInt((String)request.get("ispublic")));
 
 
         final BasicResponse result = new BasicResponse();
@@ -438,10 +431,7 @@ public class ArticleController {
         object.put("userinfo", user.getInfo());
         object.put("commentNickname",commentNickname);
         object.put("commentArticleCount", commentArticleCountList);
-
-        String ispublic = "공개";
-        if(article.getIspublic() == 3) ispublic = "비공개";
-        object.put("ispublic", ispublic);
+        object.put("ispublic", article.getIspublic());
 
         result.object = object;
         
