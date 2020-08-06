@@ -47,12 +47,12 @@ function deleteArticle(id, token) {
   return instance.delete(`article?no=${id}`, { headers: { id_token: token } });
 }
 
-function fetchArticles(params) {
-  return instance.get(`article?page=${params.page}`);
+function fetchArticles(params, token) {
+  return instance.get(`article?page=${params.page}`,{ headers: { id_token: token } });
 }
 
-function fetchArticle(id) {
-  return instance.get(`article/${id}`);
+function fetchArticle(id, token) {
+  return instance.get(`article/${id}`, { headers: { id_token: token } });
 }
 
 function likeArticle(params, token) {

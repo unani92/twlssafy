@@ -19,7 +19,7 @@ public class Search {
             @Override
             public Predicate toPredicate(Root<Article> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
                 query.orderBy(cb.desc(root.get("articleid")));
-                return cb.like(root.get("title"), "%" + title + "%");
+                return cb.and(cb.equal(root.get("ispublic"), 1), cb.like(root.get("title"), "%" + title + "%"));
             }
         };
     }
@@ -35,7 +35,8 @@ public class Search {
             @Override
             public Predicate toPredicate(Root<Article> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
                 query.orderBy(cb.desc(root.get("articleid")));
-                return cb.like(root.get("nickname"), "%" + nickname + "%");
+
+                return cb.and(cb.equal(root.get("ispublic"), 1), cb.like(root.get("nickname"), "%" + nickname + "%"));
             }
         };
     }
@@ -51,7 +52,7 @@ public class Search {
             @Override
             public Predicate toPredicate(Root<Article> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
                 query.orderBy(cb.desc(root.get("articleid")));
-                return cb.like(root.get("content"), "%" + content + "%");
+                return cb.and(cb.equal(root.get("ispublic"), 1), cb.like(root.get("content"), "%" + content + "%"));
             }
         };
     }

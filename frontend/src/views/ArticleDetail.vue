@@ -117,7 +117,8 @@ export default {
       // this.$router.push({ name: "ArticleSearchByStack", query: params });
     },
     async getArticle() {
-      const articleInfo = await fetchArticle(this.id);
+      const token = this.$store.state.id_token;
+      const articleInfo = await fetchArticle(this.id, token);
       const {
         article,
         keyword,
