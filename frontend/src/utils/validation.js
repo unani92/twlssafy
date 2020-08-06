@@ -31,6 +31,12 @@ export function validateMarkdown(value) {
 	value = value.replace(re11,'');
 	const re12 = /(http(s)?:\/\/)([a-z0-9\w]+\.*)+[a-z0-9]{2,4}(\?|\/)?(.*?)/gi;
 	value = value.replace(re12,'');
+	const re13 = /#/gi;
+	value = value.replace(re13,'');
+	const re14 = />/gi;
+	value = value.replace(re14,'');
+	const re15 = /[-]{3,}/gi;
+	value = value.replace(re15,'');
 
 	return value;
 }

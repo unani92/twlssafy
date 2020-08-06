@@ -42,7 +42,6 @@
             .then(res => {
               this.noti.ready = 1
               this.$router.push({name: "Dummy", params: {id: this.noti.articleid}})
-              // this.$router.push({ name: "ArticleDetail", params: {id: this.noti.articleid} })
               if(res.data.status)
               this.$store.state.notificationCnt--;
             }
@@ -56,10 +55,10 @@
       deleteNotification(event) {
         if (this.$store.getters.isLoggedIn) {
           const notificationId = event.target.id
-          console.log(notificationId)
           axios.delete(`http://localhost:8080/notification/${notificationId}`)
             .then(() => {
-              this.$store.state.notification = this.$store.state.notification.filter(noti => Number(noti.notificationid) !== Number(notificationId))
+              this.$store.state.notification = this.$store.state.notification.filter(
+                noti => Number(noti.notificationid) !== Number(notificationId))
             })
             .catch(err => console.log(err))
         }
