@@ -73,7 +73,7 @@ public class ArticleController2 {
         String id_token = header.get("id_token").get(0);
         String email = JWTDecoding.decode(id_token);
 
-        List<Article> list = articleDao.articleFromFollowing(email);
+        List<Article> list = articleDao.articleFromFollowingOnlyPublic(email);
 
         if(list!=null){
             result.status = true;
