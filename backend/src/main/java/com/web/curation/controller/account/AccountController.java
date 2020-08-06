@@ -92,8 +92,6 @@ public class AccountController {
         String id_token = request.getHeader("id_token");
 
         String email = JWTDecoding.decode(id_token);
-        System.out.println(id_token);
-        System.out.println("EMAIL : "+email);
         Map<String, Object> userToken = JWTDecoding.getInfo(id_token);
         System.out.println("USERTOKEN : "+userToken);
         Map<String, Object> userInfo = new TreeMap<>();
@@ -160,7 +158,6 @@ public class AccountController {
         //String email = JWTDecoding.decode(header.get("id_token").get(0));
         // 여기는 구글 토큰 사용함!!
 
-        // System.out.println(header.get("id_token").get(0));
         String id_token = header.get("id_token").get(0);
         
         String email = JWTDecoding.decode(header.get("id_token").get(0));
