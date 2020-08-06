@@ -17,8 +17,10 @@ import FollowArticleCardList from '@/components/article/FollowArticleCardList.vu
 import PinArticleCardList from '@/components/article/PinArticleCardList.vue';
 // import HotArticleCardList from '@/components/article/HotArticleCardList.vue';
 import FindPwd from '../views/FindPwd.vue';
-import Dummy from "../components/Dummy";
-import ArticleRecommend from "../views/ArticleRecommend";
+import Dummy from '../components/Dummy';
+import ArticleRecommend from '../views/ArticleRecommend';
+import store from '@/store/index';
+
 Vue.use(VueRouter);
 
 const routes = [
@@ -36,49 +38,58 @@ const routes = [
         path: 'follow',
         name: 'myfollowArticles',
         component: FollowArticleCardList,
+        beforeEnter: requireLogin,
       },
       {
         path: 'pin',
         name: 'mypinArticles',
         component: PinArticleCardList,
+        beforeEnter: requireLogin,
       },
     ],
   },
   {
     path: '/recommend',
-    name: "ArticleRecommend",
-    component: ArticleRecommend
+    name: 'ArticleRecommend',
+    component: ArticleRecommend,
+    beforeEnter: requireLogin,
   },
   {
     path: '/login',
     name: 'Login',
     component: Login,
+    beforeEnter: alreadyLogin,
   },
   {
     path: '/signup',
     name: 'Signup',
     component: Signup,
+    beforeEnter: alreadyLogin,
   },
   {
     path: '/changepwd',
     name: 'ChangePwd',
     component: ChangePwd,
-    props: true
+    props: true,
+    beforeEnter: requireLogin,
   },
   {
     path: '/findpwd',
     name: 'FindPwd',
     component: FindPwd,
+    beforeEnter: requireLogin,
   },
   {
     path: '/selectskills',
     name: 'SelectSkills',
     component: SelectSkills,
+    beforeEnter: requireLogin,
   },
   {
     path: '/create',
     name: 'ArticleCreate',
     component: ArticleCreate,
+    beforeEnter: requireLogin,
   },
   {
     path: '/:id',
@@ -90,6 +101,7 @@ const routes = [
     name: 'ArticleUpdate',
     component: ArticleUpdate,
     props: true,
+    beforeEnter: requireLogin,
   },
   {
     path: '/account/:nickname',
@@ -121,9 +133,9 @@ const routes = [
   },
   {
     path: '/dummy/dummy',
-    name: "Dummy",
-    component: Dummy
-  }
+    name: 'Dummy',
+    component: Dummy,
+  },
 ];
 
 const router = new VueRouter({
@@ -139,5 +151,12 @@ const router = new VueRouter({
 //   const unauthRequired = authPages.includes(to.name)
 //
 // })
+
+function alreadyLogin(to, from, next) {
+  store.getters['isLoggedIn'] ? next('/') : next();
+}
+function requireLogin(to, from, next) {
+  store.getters['isLoggedIn'] ? next() : next('/login');
+}
 
 export default router;
