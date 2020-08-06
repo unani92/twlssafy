@@ -15,9 +15,10 @@ import Logout from '../views/Logout';
 import ArticleCardList from '@/components/article/ArticleCardList.vue';
 import FollowArticleCardList from '@/components/article/FollowArticleCardList.vue';
 import PinArticleCardList from '@/components/article/PinArticleCardList.vue';
-import HotArticleCardList from '@/components/article/HotArticleCardList.vue';
+// import HotArticleCardList from '@/components/article/HotArticleCardList.vue';
 import FindPwd from '../views/FindPwd.vue';
 import Dummy from "../components/Dummy";
+import ArticleRecommend from "../views/ArticleRecommend";
 Vue.use(VueRouter);
 
 const routes = [
@@ -41,12 +42,12 @@ const routes = [
         name: 'mypinArticles',
         component: PinArticleCardList,
       },
-      {
-        path: 'hot',
-        name: 'myhotArticles',
-        component: HotArticleCardList,
-      },
     ],
+  },
+  {
+    path: '/recommend',
+    name: "ArticleRecommend",
+    component: ArticleRecommend
   },
   {
     path: '/login',

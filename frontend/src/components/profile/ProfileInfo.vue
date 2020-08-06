@@ -36,8 +36,15 @@
               {{ userInfo.userInfo.email }}
             </div>
           </li>
-        </ul>
           <li style="dec" v-if="skills.length !== 0">
+          <li v-if="userInfo.userInfo.github != null">
+            <div class="github">
+              <i class="fab fa-github"></i>
+              {{ userInfo.userInfo.github }}
+            </div>
+          </li>
+        </ul>
+          <li v-if="skills.length !== 0">
             <div class="skills">
               <span v-for="skill in skills" :key="skill.name" style="font-size: 15px;">#{{ skill.name }} </span>
               <span v-if="isMypage" class="more" data-toggle="modal"><i class="far fa-plus-square"></i></span>

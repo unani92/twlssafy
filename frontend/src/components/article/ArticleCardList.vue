@@ -58,8 +58,6 @@ export default {
       this.likesCntList = [...this.likesCntList, ...data.object.likesCntList];
       this.pinCntList = [...this.pinCntList, ...data.object.pinCntList];
       this.commentCntList = [...this.commentCntList, ...data.object.commentCntList];
-      console.log("asdf")
-      console.log(this.commentCntList)
     },
     addScrollWatcher() {
       const bottomSensor = document.querySelector("#bottomSensor");

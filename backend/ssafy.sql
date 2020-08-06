@@ -238,3 +238,8 @@ limit 5;
 -----------------------------------------------------------------
 
 alter table member drop grade;
+
+
+-----------------------------------------------------------
+-- 깃허브 정보 입력
+alter table member add github varchar(300) default null;

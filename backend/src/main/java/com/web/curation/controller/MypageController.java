@@ -83,6 +83,7 @@ public class MypageController {
         result.status = false;
         result.data = "마이페이지 조회 실패";
         Optional<User> user = userDao.findUserByNickname(nickname);
+        System.out.println("USER : "+user.get().getGithub());
         if(user.isPresent()){
             result.status = true;
             result.data = "success";

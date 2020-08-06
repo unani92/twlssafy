@@ -11,7 +11,7 @@
         <router-link v-if="isLoggedIn" to="/pin">Pinned</router-link>
       </span>
       <span>
-        <router-link v-if="isLoggedIn" to="/hot">Hot</router-link>
+        <router-link v-if="isLoggedIn" to="/recommend">Recommend</router-link>
       </span>
     </div>
     <div v-if="$store.getters.isLoggedIn">
