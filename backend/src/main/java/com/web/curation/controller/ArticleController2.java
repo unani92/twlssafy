@@ -10,6 +10,7 @@ import java.util.Set;
 
 import com.web.curation.JWT.JWTDecoding;
 import com.web.curation.dao.ArticleDao;
+import com.web.curation.dao.CommentDao;
 import com.web.curation.dao.KeywordsDao;
 import com.web.curation.dao.SkillsDao;
 import com.web.curation.dao.pinlikesfollow.LikesDao;
@@ -57,6 +58,9 @@ public class ArticleController2 {
 
     @Autowired
     PinDao pinDao;
+
+    @Autowired
+    CommentDao commentDao;
 
     @ApiOperation(value = "팔로잉 글 조회")
     @GetMapping("/article/following")
@@ -371,6 +375,8 @@ public class ArticleController2 {
         }
 
 
+        
+        List<Integer> commentCntList = new ArrayList<>();
         List<Integer> likesList = new ArrayList<>();
         List<Integer> pinList = new ArrayList<>();
         List<List<String>> keywordsList = new ArrayList<>();
@@ -389,8 +395,10 @@ public class ArticleController2 {
                 keywordsList.add(tmplist);
             }
             articles.add(a);
-            likesList.add(likesDao.countByArticleid(a.getArticleid()));
-            pinList.add(pinDao.countByArticleid(a.getArticleid()));
+            int articleid = a.getArticleid();
+            likesList.add(likesDao.countByArticleid(articleid));
+            pinList.add(pinDao.countByArticleid(articleid));
+            commentCntList.add(commentDao.countByArticleid(articleid));
         }
         if(articles != null){
             result.status =true;
