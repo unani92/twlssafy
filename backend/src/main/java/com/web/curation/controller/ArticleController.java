@@ -3,11 +3,8 @@ package com.web.curation.controller;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
-import java.util.Set;
 
 import javax.transaction.Transactional;
 
@@ -81,13 +78,28 @@ public class ArticleController {
     
     @ApiOperation(value = "리스트 조회")
     @GetMapping("/article")
-    public Object getArticleList(@RequestParam(value = "page") final int page) {
+    public Object getArticleList(@RequestParam(value = "page") final int page, @RequestHeader final HttpHeaders header)
+            throws Exception {
         final BasicResponse result = new BasicResponse();
         result.status = false;
         result.data = "글 조회 실패";
-    
-        // 게시글 페이징 10개 단위
-        Page<Article> articles = articleDao.findAllByIspublic(PageRequest.of(page, 10, Sort.Direction.DESC,"articleid"),1);
+
+        String email = "";
+        try {
+            String id_token  = header.get("id_token").get(0);
+            email = JWTDecoding.decode(id_token);
+        } catch (Exception e) {
+            
+        }
+        System.out.println(email);
+        
+        Page<Article> articles ;
+        if(email == null){
+            articles = articleDao.findByIspublic(PageRequest.of(page, 10, Sort.Direction.DESC,"articleid"),1);
+        } else {
+
+            articles = articleDao.findByIspublicOrEmail(PageRequest.of(page, 10, Sort.Direction.DESC,"articleid"),1,email);
+        }
 
         //  keywords list - "keyword": [ ["Swift","Swagger"], ["C"], ["STS", "SQL"], ...]
         if(articles==null){
@@ -121,8 +133,6 @@ public class ArticleController {
 
         }
 
-        
-        
         Map<String,Object> object = new HashMap<>();
         object.put("article", articles);
         object.put("keyword", keywordsList);
@@ -136,6 +146,7 @@ public class ArticleController {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
     
+
     @ApiOperation(value = "글쓰기")
     @ResponseBody
     @PostMapping("/article")
@@ -166,6 +177,9 @@ public class ArticleController {
         String title = (String) request.get("title");
         String content = (String) request.get("content");
         String preview = subStrByte((String) request.get("preview"), 200);
+        String tmpispublic = (String) request.get("ispublic");
+        int ispublic = 1;
+        if(tmpispublic.equals("비공개")) ispublic = 3;
         
         // 글에서 이미지 뽑는 함수
         String imgurl = getImgFromArticle(content);
@@ -177,6 +191,7 @@ public class ArticleController {
         article.setNickname(nickname);
         article.setImgurl(imgurl);
         article.setPreview(preview);
+        article.setIspublic(ispublic);
         
         if(articleDao.save(article)==null){
             result.data = "글쓰기 실패 - DB 저장 실패";
@@ -217,6 +232,7 @@ public class ArticleController {
         
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
+
     
     // 글에서 이미지 뽑는 함수
     private String getImgFromArticle(String content) {
@@ -251,6 +267,7 @@ public class ArticleController {
         return null;
     }
 
+
     // preview 50자 제한
     private String subStrByte(String str, int len) {
         if(!str.isEmpty()){
@@ -271,6 +288,8 @@ public class ArticleController {
         }
         return "";
     }
+
+
 
     @Transactional
     @ApiOperation(value = "글삭제")
@@ -294,14 +313,12 @@ public class ArticleController {
         }
         
         return new ResponseEntity<>(result, HttpStatus.OK);
-        
     }
     
     @Transactional
     @ApiOperation(value = "글수정")
     @PutMapping(value="/article")
     public Object updateArticle (@RequestBody(required = true) final Map<String,Object> request) {
-
 
         /*
         {
@@ -314,6 +331,10 @@ public class ArticleController {
         */
         
         int articleId = Integer.parseInt((String)request.get("articleId"));
+
+        int ispublic = 1;
+        String tmpispulic = (String) request.get("ispublic");
+        if(tmpispulic.equals("비공개")) ispublic=3;
         
         Article article = articleDao.findByArticleid(articleId);
         article.setContent((String)request.get("content"));
@@ -321,6 +342,8 @@ public class ArticleController {
         article.setImgurl(getImgFromArticle((String)request.get("content")));
         article.setUpdatedat(LocalDateTime.now());
         article.setPreview(subStrByte((String) request.get("preview"), 200));
+        article.setIspublic(ispublic);
+
 
         final BasicResponse result = new BasicResponse();
             result.data = "수정 실패";
@@ -353,14 +376,30 @@ public class ArticleController {
 
     @ApiOperation(value = "상세 조회")
     @GetMapping("/article/{no}")
-    public Object getArticle(@PathVariable final int no) {
+    public Object getArticle(@PathVariable final int no, @RequestHeader final HttpHeaders header) throws Exception {
 
         
         final BasicResponse result = new BasicResponse();
         result.status = false;
         result.data = "상세 조회 실패";
+
+        
+        String email = "";
+        
+        try {
+            String id_token = header.get("id_token").get(0);
+            email = JWTDecoding.decode(id_token);
+            
+        } catch (Exception e) {
+        }
         
         Article article = articleDao.findByArticleid(no);
+
+        if(!article.getEmail().equals(email) && article.getIspublic() == 3) { // 남의 글인데 비공개면
+            result.data = "비공개 글";
+            return new ResponseEntity<>(result, HttpStatus.OK);
+        }
+
         List<Keywords> keywords = keywordsDao.findAllByArticleid(no);
         int cntLikes = likesDao.countByArticleid(no);
         int cntPin = pinDao.countByArticleid(no);
@@ -399,6 +438,11 @@ public class ArticleController {
         object.put("userinfo", user.getInfo());
         object.put("commentNickname",commentNickname);
         object.put("commentArticleCount", commentArticleCountList);
+
+        String ispublic = "공개";
+        if(article.getIspublic() == 3) ispublic = "비공개";
+        object.put("ispublic", ispublic);
+
         result.object = object;
         
 
