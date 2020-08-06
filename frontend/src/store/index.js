@@ -22,7 +22,7 @@ export default new Vuex.Store({
     notification: [],
     userSkills: [],
     notificationCnt: '',
-    grade: null,
+    articleCount: 0,
   },
   getters: {
     isLoggedIn: (state) => !!state.id_token,
@@ -69,8 +69,8 @@ export default new Vuex.Store({
     setUserSkills(state, userSkills) {
       state.userSkills = userSkills;
     },
-    setGrade(state, grade) {
-      state.grade = grade;
+    setArticleCount(state, articleCount) {
+      state.articleCount = articleCount;
     },
     clearUser(state) {
       state.username = '';
@@ -82,7 +82,7 @@ export default new Vuex.Store({
       state.pinList = [];
       state.interestList = [];
       state.notification = [];
-      state.grade = null;
+      state.articleCount = 0;
     },
     setNotificationCnt(state, notificationCnt) {
       state.notificationCnt = notificationCnt;
@@ -120,7 +120,7 @@ export default new Vuex.Store({
           commit('setPinList', pinList);
           commit('setInterestList', interestList);
           commit('setNotificationCnt', notificationCnt);
-          commit('setGrade', articleCount);
+          commit('setArticleCount', articleCount);
         })
         .catch((err) => console.log(err));
     },

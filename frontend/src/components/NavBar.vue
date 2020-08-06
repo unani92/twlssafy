@@ -16,7 +16,7 @@
       <div class="article-icon">
         <div v-if="this.$store.getters.isLoggedIn">
           <div
-            :style="{ backgroundImage:'url('+require('@/assets/image/medal-'+grade+'.png')+')'}"
+            :style="{ backgroundImage:'url('+require('@/assets/image/medal-'+calcGrade+'.png')+')'}"
             class="grade"
           ></div>
         </div>
@@ -75,6 +75,11 @@ export default {
     return {
       grade: getGrade(this.$store.state.articleCount),
     };
+  },
+  computed: {
+    calcGrade() {
+      return getGrade(this.$store.state.articleCount);
+    },
   },
   name: "NavBar",
   components: {
