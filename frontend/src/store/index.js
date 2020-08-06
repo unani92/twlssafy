@@ -92,7 +92,7 @@ export default new Vuex.Store({
     getGoogleUserInfo({ commit }, id_token) {
       axios
         .post(
-          'http://localhost:8081/account/googleInfo',
+          'http://i3a407.p.ssafy.io:8081/account/googleInfo',
           { id_token },
           { headers: { id_token: id_token } }
         )
