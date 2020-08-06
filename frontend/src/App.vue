@@ -67,6 +67,7 @@
   }
   .tui-editor-contents > p {
     font-size: 1rem !important;
+    word-break: break-all !important;
   }
   .tui-editor-contents > h1 {
     font-size: 48px !important;

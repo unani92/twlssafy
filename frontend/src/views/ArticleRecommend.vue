@@ -48,7 +48,6 @@
     methods: {
       async fetchData() {
         const id_token = this.$store.state.id_token;
-        console.log(id_token)
         const { data } = await fetchRecommend(id_token)
         this.isLoading = false;
         this.keywords = data.object.keyword;

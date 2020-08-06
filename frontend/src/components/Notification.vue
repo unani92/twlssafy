@@ -42,6 +42,7 @@
             .then(res => {
               this.noti.ready = 1
               this.$router.push({name: "Dummy", params: {id: this.noti.articleid}})
+              // this.$router.push({ name: "ArticleDetail", params: {id: this.noti.articleid} })
               if(res.data.status)
               this.$store.state.notificationCnt--;
             }
