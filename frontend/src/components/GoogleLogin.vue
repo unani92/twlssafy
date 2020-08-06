@@ -30,7 +30,7 @@ import { mapActions } from 'vuex'
       ...mapActions(["getGoogleUserInfo"]),
       onSuccess(googleUser){
         let id_token = googleUser.wc.id_token;
-        axios.post('http://localhost:8080/googlelogin',{ id_token },{headers: {id_token}})
+        axios.post('http://localhost:8081/googlelogin',{ id_token },{headers: {id_token}})
           .then((res) =>{
             const { email } = res.data.object
           if (res.data.data === "failed") {
