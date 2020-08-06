@@ -22,7 +22,7 @@ export default new Vuex.Store({
     notification: [],
     userSkills: [],
     notificationCnt: '',
-    articleCount: null,
+    articleCount: 0,
   },
   getters: {
     isLoggedIn: (state) => !!state.id_token,
@@ -82,7 +82,7 @@ export default new Vuex.Store({
       state.pinList = [];
       state.interestList = [];
       state.notification = [];
-      state.articleCount = null;
+      state.articleCount = 0;
     },
     setNotificationCnt(state, notificationCnt) {
       state.notificationCnt = notificationCnt;

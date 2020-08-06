@@ -6,7 +6,10 @@
       </div>
       <div class="text">
         <div
-          :style="{ backgroundImage:'url('+require('@/assets/image/medal-'+grade+'.png')+')'}"
+          :style="{
+            backgroundImage:
+              'url(' + require('@/assets/image/medal-' + calGrade + '.png') + ')',
+          }"
           class="grade"
         ></div>
         <div class="description follower-email-container" style="margin:0">
@@ -26,7 +29,11 @@
             <div class="info">
               <i class="far fa-calendar-alt"></i>
               <span>&nbsp;&nbsp;From&nbsp;</span>
-              <span>&nbsp;{{ this.$moment(userInfo.userInfo.createdate).format("L") }}</span>
+              <span>
+                &nbsp;{{
+                this.$moment(userInfo.userInfo.createdate).format('L')
+                }}
+              </span>
             </div>
           </li>
 
@@ -36,7 +43,7 @@
               {{ userInfo.userInfo.email }}
             </div>
           </li>
-          <li style="dec" v-if="skills.length !== 0">
+          <li style="dec" v-if="skills.length !== 0"></li>
           <li v-if="userInfo.userInfo.github != null">
             <div class="github">
               <i class="fab fa-github"></i>
@@ -44,16 +51,24 @@
             </div>
           </li>
         </ul>
-          <li v-if="skills.length !== 0">
-            <div class="skills">
-              <span v-for="skill in skills" :key="skill.name" style="font-size: 15px;">#{{ skill.name }} </span>
-              <span v-if="isMypage" class="more" data-toggle="modal"><i class="far fa-plus-square"></i></span>
-            </div>
-          </li>
-          <li v-else>
-            등록된 관심사가 없습니다.
-            <span v-if="isMypage" class="more" data-toggle="modal"><i class="far fa-plus-square"></i></span>
-          </li>
+        <li v-if="skills.length !== 0">
+          <div class="skills">
+            <span
+              v-for="skill in skills"
+              :key="skill.name"
+              style="font-size: 15px;"
+            >#{{ skill.name }}</span>
+            <span v-if="isMypage" class="more" data-toggle="modal">
+              <i class="far fa-plus-square"></i>
+            </span>
+          </div>
+        </li>
+        <li v-else>
+          등록된 관심사가 없습니다.
+          <span v-if="isMypage" class="more" data-toggle="modal">
+            <i class="far fa-plus-square"></i>
+          </span>
+        </li>
         <div class="sns" style="float">
           <a>
             <i class="fas fa-pencil-alt"></i>
@@ -71,11 +86,10 @@
             <span>{{ userInfo.following.follow.length }} Followings</span>
           </a>
         </div>
-          <div id="calendar" style="text-align : right;">
-            <Calendar :userInfo="userInfo" />
-          </div>
+        <div id="calendar" style="text-align : right;">
+          <Calendar :userInfo="userInfo" />
+        </div>
       </div>
-
     </section>
     <section v-if="userInfo.totalArticleCount === 0" class="no-article">작성한 글이 없습니다.</section>
 
@@ -85,7 +99,6 @@
     <div id="skillModal" class="modal">
       <!-- Modal content -->
       <div class="modal-content">
-          
         <!-- <span v-for="skill in skills" :key="skill.name" class="totalSkills"># {{ skill.name }}</span> -->
         <SelectSkills v-if="this.$store.state.nickname === this.$route.params.nickname"></SelectSkills>
         <div class="close2" style="text-align : center; cursor : pointer">완료</div>
@@ -103,11 +116,7 @@
           :key="idx"
           class="follower-email-container"
         >
-          <span class="follower-email">
-            {{
-            userInfo.follower.followerNickname[idx - 1]
-            }}
-          </span>
+          <span class="follower-email">{{ userInfo.follower.followerNickname[idx - 1] }}</span>
           <div
             @click="
               requestFollow(userInfo.follower.follower[idx - 1].email, $event)
@@ -129,11 +138,7 @@
           :key="idx"
           class="follower-email-container"
         >
-          <span class="follower-email">
-            {{
-            userInfo.following.followNickname[idx - 1]
-            }}
-          </span>
+          <span class="follower-email">{{ userInfo.following.followNickname[idx - 1] }}</span>
           <div
             @click="
               requestFollow(userInfo.following.follow[idx - 1].email, $event)
@@ -153,6 +158,7 @@ import SelectSkills from "@/views/SelectSkills.vue";
 import { requestFollow } from "@/api/index.js";
 import { mapState, mapGetters } from "vuex";
 import Calendar from "../calendar/Calendar";
+import { getGrade } from "@/utils/calcGrade";
 
 export default {
   props: {
@@ -164,32 +170,24 @@ export default {
   },
   data() {
     const userSkills = this.$store.state.userSkills;
-    let grade = 0;
-    console.log(this.userInfo)
-    if (this.userInfo.totalArticleCount === 0) {
-      grade = 1;
-    } else if (this.userInfo.totalArticleCount <= 10) {
-      grade = 2;
-    } else if (this.userInfo.totalArticleCount <= 30) {
-      grade = 3;
-    } else {
-      grade = 4;
-    }
     return {
       skills: userSkills,
       nickname: this.$route.params.nickname,
       follower: this.userInfo.follower,
-      grade: grade,
+      grade: 0,
     };
   },
   computed: {
     ...mapGetters(["isLoggedIn"]),
     ...mapState(["id_token", "userSkills"]),
-    isMypage(){
-      if(this.userInfo.userInfo.email == this.$store.state.username)
-      return true;
-      else return false
-    }
+    isMypage() {
+      if (this.userInfo.userInfo.email == this.$store.state.username)
+        return true;
+      else return false;
+    },
+    calGrade() {
+      return getGrade(this.userInfo.totalArticleCount);
+    },
   },
   methods: {
     async requestFollow(followWantingTo, e) {
@@ -533,7 +531,7 @@ li {
     width: 80%;
   }
   .skills span {
-    margin : 0.5% 1% 0.5% 0.5%;
+    margin: 0.5% 1% 0.5% 0.5%;
   }
 }
 .follower-email-container {

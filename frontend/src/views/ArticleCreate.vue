@@ -2,14 +2,15 @@
   <div class="article-create">
     <h1 style="margin: 1rem 0 1rem 0;">게시글 작성</h1>
     <div class="article-title-skills">
-      <div class="title" style="margin-bottom:32px;">
-        <label style="font-size: 20px; font-weight: bold; margin-right:20px" for="title">제목</label>
-        <input v-model="content.title" id="title" type="text" />
+      <div>
+        <input v-model="content.title" id="title" type="text" placeholder="제목을 입력하세요" />
+      </div>
+      <div style="height: 20px">
+
       </div>
     </div>
     <div class="article-title-skills">
       <div>
-        <label style="font-size: 20px; font-weight: bold; margin-right:20px" for="skills">키워드</label>
         <input
           v-model="skillInput"
           @input="submitAutoComplete"
@@ -106,14 +107,12 @@ export default {
       const id_token = this.$store.state.id_token;
       createArticle(params, id_token)
         .then((res) => {
-          console.log(res);
           this.$router.push({
             name: "ArticleDetail",
             params: { id: res.data.object.articleId },
           });
         })
         .catch((err) => console.log(err));
-      // console.log(this.content.content)
     },
   },
 };
@@ -131,7 +130,6 @@ input {
   margin-top: 10px;
   width: 200px;
   text-align: center;
-  font-size: 1rem;
   border: 0;
   outline: 0;
   background: transparent;
@@ -167,9 +165,6 @@ input {
 }
 .article-title-skills {
   padding: 10px;
-}
-.title {
-  margin-top: 1rem;
 }
 .editor {
   clear: both;
