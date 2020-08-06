@@ -14,6 +14,9 @@
         :key="article._id"
         :article="article"
         :keywords="keywords[index]"
+        :commentCnt="commentCntList[index]"
+        :likesCnt="likesCntList[index]"
+        :pinCnt="pinCntList[index]"
       />
       <div id="bottomSensor"></div>
     </div>
@@ -37,6 +40,9 @@ export default {
     return {
       articles: [],
       keywords: [],
+      likesCntList: [],
+      pinCntList: [],
+      commentCntList: [],
       isLoading: true,
       page: 0,
       userInfo: {},
@@ -52,12 +58,17 @@ export default {
         page: this.page++,
         nickname: this.$route.params.nickname,
       };
+      console.log(params.nickname)
       const { data } = await fetchMyArticles(params);
       this.isLoading = false;
       this.keywords = [...this.keywords, ...data.object.keyword];
       this.articles = [...this.articles, ...data.object.article.content];
+      this.likesCntList = [...this.likesCntList, ...data.object.likesCntList]
+      this.commentCntList = [...this.commentCntList, ...data.object.commentCntList];
+      this.pinCntList = [...this.pinCntList, ...data.object.pinCntList];
       this.userInfo = data.object.user;
-      console.log(data);
+
+      // console.log(data);
       // console.log(data.object.interestList);
       this.$emit("setUserInfo", {
         userInfo: this.userInfo,

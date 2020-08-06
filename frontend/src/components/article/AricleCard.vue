@@ -268,13 +268,13 @@ export default {
   word-break:break-all;
 }
 button {
-  /* align-items: center;
-  justify-content: center; */
-  /* font-weight: 600; */
-  /* letter-spacing: 1px; */
-  /* border-radius: 50px; */
-  /* display: inline-flex;
   border: none;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  letter-spacing: 1px;
+  border-radius: 50px;
+  display: inline-flex;
   font-size: 10px;
   text-transform: uppercase;
   color: white;
@@ -282,7 +282,7 @@ button {
   width: 25px;
   height: 25px;
   cursor: pointer;
-  outline: none; */
+  outline: none;
 }
 
 .keywords {

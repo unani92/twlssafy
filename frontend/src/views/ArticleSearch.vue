@@ -25,6 +25,9 @@
         :key="article.articleid"
         :article="article"
         :keywords="keywords[index]"
+        :commentCnt="commentCntList[index]"
+        :likesCnt="likesCntList[index]"
+        :pinCnt="pinCntList[index]"
       />
       <div id="bottomSensor"></div>
     </div>
@@ -45,11 +48,14 @@ export default {
     return {
       searchArticles: [],
       keywords: [],
+      commentCntList : [],
+      pinCntList : [],
+      likesCntList : [],
       isLoading: true,
       page: 0,
       input: null,
       q: null,
-      category: null,
+      category: 'title',
     };
   },
   methods: {
@@ -64,13 +70,16 @@ export default {
         console.log(res);
         const {
           data: {
-            object: { article, keyword },
+            object: { article, keyword, likesCntList, commentCntList, pinCntList},
           },
         } = await searchArticle(params);
         console.log(article);
         console.log(keyword);
         this.keywords = [...this.keywords, ...keyword];
         this.searchArticles = [...this.searchArticles, ...article];
+        this.likesCntList = [...this.likesCntList, ...likesCntList]
+        this.commentCntList = [...this.commentCntList, ...commentCntList];
+        this.pinCntList = [...this.pinCntList, ...pinCntList];
       } else {
         this.q = this.input;
         this.page = 0;
@@ -84,13 +93,17 @@ export default {
         console.log(res);
         const {
           data: {
-            object: { article, keyword },
+            object: { article, keyword, likesCntList, commentCntList, pinCntList},
           },
         } = await searchArticle(params);
         console.log(article);
         console.log(keyword);
         this.keywords = [...this.keywords, ...keyword];
         this.searchArticles = [...this.searchArticles, ...article];
+        this.likesCntList = [...this.likesCntList, ...likesCntList]
+        this.commentCntList = [...this.commentCntList, ...commentCntList];
+        this.pinCntList = [...this.pinCntList, ...pinCntList];
+        console.log(this.pinCntList)
       }
     },
     addScrollWatcher() {
