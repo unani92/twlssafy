@@ -175,7 +175,7 @@ public class ArticleController {
         String nickname = (String) userToken.get("nickname");
         String title = (String) request.get("title");
         String content = (String) request.get("content");
-        String preview = subStrByte((String) request.get("preview"), 200);
+        String preview = subStrByte((String) request.get("preview"), 150);
         int ispublic = Integer.parseInt((String) request.get("ispublic"));
         
         // 글에서 이미지 뽑는 함수

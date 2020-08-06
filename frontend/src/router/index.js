@@ -52,7 +52,6 @@ const routes = [
     path: '/recommend',
     name: 'ArticleRecommend',
     component: ArticleRecommend,
-    beforeEnter: requireLogin,
   },
   {
     path: '/login',
