@@ -74,6 +74,10 @@ export default {
   data() {
     return {
       grade: getGrade(this.$store.state.articleCount),
+      scroll: {
+        prev: 0,
+        upDown: null
+      }
     };
   },
   computed: {
@@ -93,8 +97,10 @@ export default {
       aside.classList.toggle("disabled");
     },
     notificationIconToggle() {
-      const notiDropdown = document.querySelector(".notification");
-      notiDropdown.classList.toggle("disabled");
+      if (this.$store.state.notification.length) {
+        const notiDropdown = document.querySelector(".notification");
+        notiDropdown.classList.toggle("disabled");
+      }
     },
     goToEmailLogin() {
       const aside = document.querySelector(".aside");
@@ -117,7 +123,20 @@ export default {
     logout() {
       this.$router.push({ name: "Logout" });
     },
+    scrollEvent() {
+      const navBar = document.querySelector(".notification")
+      if (navBar) {
+        const nowScrollY = window.scrollY
+          if (nowScrollY > this.scroll.prev) {
+            navBar.classList.add("disabled")
+            this.scroll.prev = nowScrollY
+          }
+        }
+      },
   },
+  mounted() {
+    document.addEventListener("scroll", this.scrollEvent)
+  }
 };
 </script>
 
@@ -171,6 +190,8 @@ export default {
 }
 .notification {
   position: fixed;
+  border-radius: 3px;
+  background-color: #d5dbd9;
   top: 70px;
   right: 0;
   z-index: 10;

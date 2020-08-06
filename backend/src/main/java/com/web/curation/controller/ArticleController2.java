@@ -374,12 +374,12 @@ public class ArticleController2 {
         
         int setSize = set.size();
         
-        Set<Integer> random = new HashSet<>();
+        // Set<Integer> random = new HashSet<>();
         
-        Random ran = new Random();
-        while(random.size()<5){
-            random.add(ran.nextInt(setSize));
-        }
+        // Random ran = new Random();
+        // while(random.size()<5){
+        //     random.add(ran.nextInt(setSize));
+        // }
 
 
         
@@ -388,7 +388,7 @@ public class ArticleController2 {
         List<Integer> pinList = new ArrayList<>();
         List<List<String>> keywordsList = new ArrayList<>();
 
-        for(int r : random){
+        for(int r =0; r < set.size(); r ++ ){
             Article a = articleDao.findByArticleid((int)set.toArray()[r]);
 
             System.out.println("ARTICLE ID : "+a.getArticleid()+" IS PUBLIC:"+a.getIspublic());
@@ -415,6 +415,7 @@ public class ArticleController2 {
             object.put("likesCntList", likesList);
             object.put("pinCntList", pinList);
             object.put("keyword", keywordsList);
+            object.put("commentCntList", commentCntList);
 
 
             result.object = object;

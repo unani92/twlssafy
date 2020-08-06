@@ -43,7 +43,6 @@
             .then(res => {
               this.noti.ready = 1
               this.$router.push({name: "Dummy", params: {id: this.noti.articleid}})
-              // this.$router.push({ name: "ArticleDetail", params: {id: this.noti.articleid} })
               if(res.data.status)
               this.$store.state.notificationCnt--;
             }
@@ -57,10 +56,10 @@
       deleteNotification(event) {
         if (this.$store.getters.isLoggedIn) {
           const notificationId = event.target.id
-          console.log(notificationId)
           http.delete(`/notification/${notificationId}`)
             .then(() => {
-              this.$store.state.notification = this.$store.state.notification.filter(noti => Number(noti.notificationid) !== Number(notificationId))
+              this.$store.state.notification = this.$store.state.notification.filter(
+                noti => Number(noti.notificationid) !== Number(notificationId))
             })
             .catch(err => console.log(err))
         }
