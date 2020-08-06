@@ -104,22 +104,18 @@ export default {
         email: this.email,
         password: this.password,
       };
-      if (this.isSubmit) {
-        login(params)
-          .then((res) => {
-            this.getGoogleUserInfo(res.data.object.id_token);
-            if (this.$route.query.redirect) {
-              const redirect = this.$route.query.redirect;
-              this.$router.push({
-                name: "ArticleDetail",
-                params: { id: Number(redirect) },
-              });
-            } else this.$router.push("/");
-          })
-          .catch((err) => alert("Error : ", err));
-      } else {
-        this.error.email = "아이디, 비밀번호를 확인하세요";
-      }
+      login(params)
+        .then((res) => {
+          this.getGoogleUserInfo(res.data.object.id_token);
+          if (this.$route.query.redirect) {
+            const redirect = this.$route.query.redirect;
+            this.$router.push({
+              name: "ArticleDetail",
+              params: { id: Number(redirect) },
+            });
+          } else this.$router.push("/");
+        })
+        .catch(() => this.error.email = "아이디, 비밀번호를 확인하세요");
     },
   },
   // updated() {
