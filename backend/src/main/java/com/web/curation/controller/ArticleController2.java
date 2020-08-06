@@ -415,6 +415,7 @@ public class ArticleController2 {
             object.put("likesCntList", likesList);
             object.put("pinCntList", pinList);
             object.put("keyword", keywordsList);
+            object.put("commentCntList", commentCntList);
 
 
             result.object = object;
