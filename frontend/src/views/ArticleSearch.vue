@@ -55,7 +55,7 @@ export default {
       page: 0,
       input: null,
       q: null,
-      category: 'title',
+      category: null,
     };
   },
   methods: {
@@ -90,7 +90,7 @@ export default {
           category: this.category,
         };
         const res = await searchArticle(params);
-        console.log(res);
+        console.log(`else: ${res}`);
         const {
           data: {
             object: { article, keyword, likesCntList, commentCntList, pinCntList},

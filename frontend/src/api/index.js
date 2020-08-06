@@ -110,6 +110,7 @@ function fetchHashTags() {
   return instance.get(`hashTag`);
 }
 function fetchRecommend(token) {
+  console.log(token)
   return instance.get('article/recommend', {
     headers: { id_token: token }
   })
