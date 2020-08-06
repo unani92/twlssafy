@@ -194,9 +194,6 @@ export default {
       type : Number
     }
   },
-   created() {
-    this.fetchData();
-  },
 };
 </script>
 

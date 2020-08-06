@@ -14,10 +14,14 @@
 
     },
     created() {
-      if (this.$route.params.params !== undefined) {
-        const params = this.$route.params.params
-        this.$router.push({ name: "ArticleSearchByStack", query: params });
-      } else this.$router.push({name: "ArticleDetail", params: {id: this.$route.params.id}})
+      // this.$router.push({ name: "ArticleSearchByStack", query: params })
+      const params = this.$route.params
+      if (params.id !== undefined) {
+        this.$router.push({ name: "ArticleDetail", params: {id: params.id} })
+      } else if (params.params !== undefined) {
+        console.log(params.params)
+        this.$router.push({ name: "ArticleSearchByStack", query: params.params })
+      } else this.$router.push('/')
     },
     // mounted() {
     //   console.log(this.$route)

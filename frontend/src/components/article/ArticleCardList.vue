@@ -52,7 +52,6 @@ export default {
         page: this.page++,
       };
       const token = this.$store.state.id_token;
-
       const { data } = await fetchArticles(params, token);
       this.isLoading = false;
       this.keywords = [...this.keywords, ...data.object.keyword];
@@ -72,6 +71,9 @@ export default {
   created() {
     this.fetchData();
   },
+  mounted() {
+    setTimeout(() => this.addScrollWatcher(), 1000);
+  }
 };
 </script>
 
