@@ -27,6 +27,9 @@ public interface ArticleDao extends JpaRepository<Article, String> {
 
     @Query(value = "select * from article where articleid in (select articleid from pin where email=?1) order by articleid desc", nativeQuery = true)
     List<Article> articleFromPin(String email);
+
+    @Query(value = "select * from article where (articleid in (select articleid from pin where email=?1) and ispublic=1) or (articleid in (select articleid from pin where email=?1) and email=?1) order by articleid desc", nativeQuery = true)
+    List<Article> articleFromPinOnlyPublic(String email);
     
     @Query(value = 
     "select * from article where date(createdat) =  ?1 and email = ?2 order by articleid desc",

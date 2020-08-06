@@ -139,7 +139,8 @@ public class ArticleController2 {
         String id_token = header.get("id_token").get(0);
         String email = JWTDecoding.decode(id_token);
 
-        List<Article> list = articleDao.articleFromPin(email);
+        // 공개 처리 된 글들 중 핀 찍은 article만 출력
+        List<Article> list = articleDao.articleFromPinOnlyPublic(email);
 
         if(list!=null){
             result.status = true;
