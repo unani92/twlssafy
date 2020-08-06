@@ -30,30 +30,31 @@
             </div>
           </li>
 
-          <li>
+          <li style="height:25px;">
             <div class="info">
               <i class="fas fa-envelope"></i>
               {{ userInfo.userInfo.email }}
             </div>
           </li>
+          <li style="dec" v-if="skills.length !== 0">
           <li v-if="userInfo.userInfo.github != null">
             <div class="github">
               <i class="fab fa-github"></i>
               {{ userInfo.userInfo.github }}
             </div>
           </li>
+        </ul>
           <li v-if="skills.length !== 0">
             <div class="skills">
-              <span v-for="skill in skills" :key="skill.name"># {{ skill.name }}</span>
-              <span class="more" data-toggle="modal">➕</span>
+              <span v-for="skill in skills" :key="skill.name" style="font-size: 15px;">#{{ skill.name }} </span>
+              <span v-if="isMypage" class="more" data-toggle="modal"><i class="far fa-plus-square"></i></span>
             </div>
           </li>
           <li v-else>
             등록된 관심사가 없습니다.
-            <span class="more" data-toggle="modal">➕</span>
+            <span v-if="isMypage" class="more" data-toggle="modal"><i class="far fa-plus-square"></i></span>
           </li>
-        </ul>
-        <div class="sns">
+        <div class="sns" style="float">
           <a>
             <i class="fas fa-pencil-alt"></i>
             <br />
@@ -70,11 +71,11 @@
             <span>{{ userInfo.following.follow.length }} Followings</span>
           </a>
         </div>
+          <div id="calendar" style="text-align : right;">
+            <Calendar :userInfo="userInfo" />
+          </div>
       </div>
 
-      <div id="calendar" style="text-align : right">
-        <Calendar :userInfo="userInfo" />
-      </div>
     </section>
     <section v-if="userInfo.totalArticleCount === 0" class="no-article">작성한 글이 없습니다.</section>
 
@@ -84,9 +85,10 @@
     <div id="skillModal" class="modal">
       <!-- Modal content -->
       <div class="modal-content">
-        <span class="close">&times;</span>
-        <span v-for="skill in skills" :key="skill.name" class="totalSkills"># {{ skill.name }}</span>
+          
+        <!-- <span v-for="skill in skills" :key="skill.name" class="totalSkills"># {{ skill.name }}</span> -->
         <SelectSkills v-if="this.$store.state.nickname === this.$route.params.nickname"></SelectSkills>
+        <div class="close2" style="text-align : center; cursor : pointer">완료</div>
       </div>
     </div>
 
@@ -182,6 +184,11 @@ export default {
   computed: {
     ...mapGetters(["isLoggedIn"]),
     ...mapState(["id_token", "userSkills"]),
+    isMypage(){
+      if(this.userInfo.userInfo.email == this.$store.state.username)
+      return true;
+      else return false
+    }
   },
   methods: {
     async requestFollow(followWantingTo, e) {
@@ -263,6 +270,15 @@ export default {
     span.onclick = function () {
       skillModal.style.display = "none";
     };
+    const skillModal2 = document.getElementById("skillModal");
+    const btn2 = document.querySelector(".more");
+    const span2 = document.getElementsByClassName("close2")[0];
+    btn2.onclick = function () {
+      skillModal2.style.display = "block";
+    };
+    span2.onclick = function () {
+      skillModal2.style.display = "none";
+    };
     // follower modal
     const followerModal = document.getElementById("followersModal");
     const followBtn = document.querySelector(".follower-modal");
@@ -339,6 +355,10 @@ section {
   display: block;
   text-align: center;
   padding: 20px;
+}
+
+li {
+  list-style-type: none;
 }
 
 @media (min-width: 992px) {
@@ -511,6 +531,9 @@ section {
   .follow-modal-content {
     width: 80%;
   }
+  .skills span {
+    margin : 0.5% 1% 0.5% 0.5%;
+  }
 }
 .follower-email-container {
   margin: 1rem 1rem;
@@ -553,6 +576,7 @@ section {
   padding: 5px 9px;
   font-size: 14px;
   color: white;
+  width: 100%;
 }
 .followBtn:hover {
   cursor: pointer;
