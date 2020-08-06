@@ -15,11 +15,11 @@ import Logout from '../views/Logout';
 import ArticleCardList from '@/components/article/ArticleCardList.vue';
 import FollowArticleCardList from '@/components/article/FollowArticleCardList.vue';
 import PinArticleCardList from '@/components/article/PinArticleCardList.vue';
-// import HotArticleCardList from '@/components/article/HotArticleCardList.vue';
 import FindPwd from '../views/FindPwd.vue';
 import Dummy from '../components/Dummy';
 import ArticleRecommend from '../views/ArticleRecommend';
 import store from '@/store/index';
+import NotFound from "../views/NotFound";
 
 Vue.use(VueRouter);
 
@@ -134,6 +134,12 @@ const routes = [
     path: '/dummy/dummy',
     name: 'Dummy',
     component: Dummy,
+  },
+  {
+    path : '/error/404/notfound',
+    alias: '*',
+    name : 'NotFound',
+    component: NotFound
   },
 ];
 

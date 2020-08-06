@@ -117,40 +117,43 @@ export default {
       // this.$router.push({ name: "ArticleSearchByStack", query: params });
     },
     async getArticle() {
-      const token = this.$store.state.id_token;
-      const articleInfo = await fetchArticle(this.id, token);
-      const {
-        article,
-        keyword,
-        commentList,
-        cntLikes,
-        cntPin,
-        userinfo,
-        commentNickname,
-        commentArticleCount,
-        articleCount,
-      } = articleInfo.data.object;
-      this.article = article;
+      try {
+        const token = this.$store.state.id_token;
+        const articleInfo = await fetchArticle(this.id, token);
+        const {
+          article,
+          keyword,
+          commentList,
+          cntLikes,
+          cntPin,
+          userinfo,
+          commentNickname,
+          commentArticleCount,
+          articleCount,
+        } = articleInfo.data.object;
+        this.article = article;
 
-      this.keywords = keyword;
-      this.nickname = article.nickname;
-      this.title = article.title;
-      this.content = article.content;
-      this.updatedAt = this.$moment(article.updatedat).fromNow();
-      this.sideMenu.commentList = commentList;
-      this.sideMenu.cntLikes = cntLikes;
-      this.sideMenu.cntPin = cntPin;
-      this.userinfo = userinfo;
-      this.commentNickname = commentNickname;
-      this.commentArticleCount = commentArticleCount;
-      this.articleCount = articleCount;
+        this.keywords = keyword;
+        this.nickname = article.nickname;
+        this.title = article.title;
+        this.content = article.content;
+        this.updatedAt = this.$moment(article.updatedat).fromNow();
+        this.sideMenu.commentList = commentList;
+        this.sideMenu.cntLikes = cntLikes;
+        this.sideMenu.cntPin = cntPin;
+        this.userinfo = userinfo;
+        this.commentNickname = commentNickname;
+        this.commentArticleCount = commentArticleCount;
+        this.articleCount = articleCount;
 
-      const loginUser = this.$store.state.nickname;
-      if (this.article.nickname === loginUser) {
-        this.isWriter = true;
+        const loginUser = this.$store.state.nickname;
+        if (this.article.nickname === loginUser) {
+          this.isWriter = true;
+        }
+        return article.content;
+      } catch (e) {
+        this.$router.push({ name: 'NotFound' })
       }
-
-      return article.content;
     },
     getViewer() {
       this.getArticle().then((res) => {
