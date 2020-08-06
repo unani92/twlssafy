@@ -335,7 +335,13 @@ public class ArticleController2 {
                 email = JWTDecoding.decode(id_token);
             }
         }catch(NullPointerException e){
-
+            // List<Article> articles = new ArrayList<>();
+            // Set<Integer> random = new HashSet<>();
+            // Random ran = new Random();
+            // while(random.size()<5){
+            //     random.add(ran.nextInt(setSize));
+            // }
+            // likesDao.articleFromHot();
         }
 
        
@@ -345,11 +351,13 @@ public class ArticleController2 {
             List<Integer> r2 = articleDao.rec2(email);
             for(int r : r1) set.add(r);
             for(int r : r2) set.add(r);
+            System.out.println("SIZE : "+set.size());
         }
-        List<Integer> r3 = articleDao.rec3();
-        List<Integer> r4 = articleDao.rec4();
+        List<Integer> r3 = articleDao.rec3(email);
+        List<Integer> r4 = articleDao.rec4(email);
         for(int r : r3) set.add(r);
         for(int r : r4) set.add(r);
+        System.out.println("SIZE : "+set.size());
 
         List<Article> articles = new ArrayList<>();
         
@@ -361,13 +369,16 @@ public class ArticleController2 {
         while(random.size()<5){
             random.add(ran.nextInt(setSize));
         }
-        
+
+
         List<Integer> likesList = new ArrayList<>();
         List<Integer> pinList = new ArrayList<>();
         List<List<String>> keywordsList = new ArrayList<>();
 
         for(int r : random){
             Article a = articleDao.findByArticleid((int)set.toArray()[r]);
+
+            System.out.println("ARTICLE ID : "+a.getArticleid()+" IS PUBLIC:"+a.getIspublic());
 
             List<Keywords> tmpKeyword = keywordsDao.findAllByArticleid(a.getArticleid());
             if(tmpKeyword!=null){

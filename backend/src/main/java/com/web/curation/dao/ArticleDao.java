@@ -44,7 +44,8 @@ public interface ArticleDao extends JpaRepository<Article, String> {
     "keyword as k, " +
     "(select l.articleid, count(*) as cnt, t.createdat as createdat from  " +
     "article as t, likes as l " +
-    "where t.articleid = l.articleid " +
+    "where t.articleid = l.articleid and t.email!=?1 " +
+    "and t.ispublic = 1 " +
     "group by l.articleid " +
     "order by cnt desc) as t " +
     "where a.sno = k.sno " +
@@ -62,7 +63,8 @@ public interface ArticleDao extends JpaRepository<Article, String> {
     "keyword as k, " +
     "(select l.articleid, count(*) as cnt, t.createdat as createdat from  " +
     "article as t, pin as l " +
-    "where t.articleid = l.articleid " +
+    "where t.articleid = l.articleid and t.email!=?1 " +
+    "and t.ispublic = 1 " +
     "group by l.articleid " +
     "order by cnt desc) as t " +
     "where a.sno = k.sno " +
@@ -76,24 +78,26 @@ public interface ArticleDao extends JpaRepository<Article, String> {
     @Query(value = 
         "select l.articleid from  " +
         "article as t, likes as l " +
-        "where t.articleid = l.articleid " +
+        "where t.articleid = l.articleid and t.email!=?1 " +
+        "and t.ispublic = 1 " +
         "and date(t.createdat) > date(subdate(now(), INTERVAL 3 DAY)) " +
         "group by l.articleid " +
         "order by count(*) desc " +
         "limit 5 "
         , nativeQuery = true)
-    List<Integer> rec3();
+    List<Integer> rec3(String email);
 
     @Query(value = 
         "select l.articleid from  " +
         "article as t, pin as l " +
-        "where t.articleid = l.articleid " +
+        "where t.articleid = l.articleid and t.email!=?1 " +
+        "and t.ispublic = 1 " +
         "and date(t.createdat) > date(subdate(now(), INTERVAL 3 DAY)) " +
         "group by l.articleid " +
         "order by count(*) desc " +
         "limit 5 "
         , nativeQuery = true)
-    List<Integer> rec4();
+    List<Integer> rec4(String email);
 
 
 
