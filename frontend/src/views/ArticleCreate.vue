@@ -5,13 +5,34 @@
       <div>
         <input v-model="content.title" id="title" type="text" placeholder="제목을 입력하세요" />
       </div>
-      <div style="height: 20px">
-
+    </div>
+    <div class="ispublic">
+      <label class="box-radio-input">
+        <input type="radio"
+          name="cp_item"
+          value=1
+          v-model="content.ispublic"
+          checked="checked"
+        >
+        <span>전체공개</span>
+      </label>
+      <label class="box-radio-input">
+        <input type="radio"
+          name="cp_item"
+          value=3
+          v-model="content.ispublic"
+        >
+        <span>비공개</span>
+      </label>
+      <div style="margin-top: 10px">
+        <span v-if="content.ispublic === '1'">해당 글은 전체 공개됩니다</span>
+        <span v-else>해당 글은 마이페이지에서 조회 가능합니다.</span>
       </div>
     </div>
     <div class="article-title-skills">
       <div>
         <input
+          class="skills"
           v-model="skillInput"
           @input="submitAutoComplete"
           id="skills"
@@ -64,6 +85,7 @@ export default {
         title: null,
         keywords: [],
         content: null,
+        ispublic: "1"
       },
     };
   },
@@ -96,13 +118,13 @@ export default {
       this.content.content = data;
 
       var preview = validateMarkdown(data);
-      console.log(preview);
       const params = {
         nickname: this.$store.state.nickname,
         title: this.content.title,
         content: this.content.content,
         keyword: this.content.keywords,
         preview: preview,
+        ispublic: this.content.ispublic
       };
       const id_token = this.$store.state.id_token;
       createArticle(params, id_token)
@@ -126,7 +148,41 @@ export default {
   background-color: white;
   margin-bottom: 1rem;
 }
-input {
+#title {
+  width: 100%;
+  height: 40px;
+  background: transparent;
+  border: 0;
+  outline: 0;
+  font-size: 40px;
+}
+.box-radio-input input[type="radio"]{
+    display:none;
+}
+.box-radio-input input[type="radio"] + span{
+    display:inline-block;
+    background:none;
+    border:1px solid #dfdfdf;
+    padding:0px 10px;
+    text-align:center;
+    height:35px;
+    line-height:33px;
+    font-weight:500;
+    cursor:pointer;
+}
+.box-radio-input input[type="radio"]:checked + span{
+    border:1px solid #e6837a;
+    background: #e6837a;
+    border-radius: 4px;
+    color:#fff;
+}
+.ispublic {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  background-color: white;
+  padding: 1rem;
+}
+.skills {
   margin-top: 10px;
   width: 200px;
   text-align: center;
