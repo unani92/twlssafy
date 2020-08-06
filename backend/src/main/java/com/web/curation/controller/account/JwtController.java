@@ -82,7 +82,7 @@ public class JwtController {
 
                 result.data = "success";
 
-                String email = loginUser.get().getEmail();
+                // String email = loginUser.get().getEmail();
 
                 object.put("id_token", token);
                 object.put("isJoined", true);

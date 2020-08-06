@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.data.jpa.domain.Specification;
@@ -19,6 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.google.common.net.HttpHeaders;
 import com.web.curation.dao.ArticleDao;
 import com.web.curation.dao.CommentDao;
 import com.web.curation.dao.KeywordsDao;
@@ -63,11 +65,14 @@ public class SearchController {
 
     @ApiOperation(value = "글 검색")
     @GetMapping("/article/search")
-    public Object searchArticle(@RequestParam String q, @RequestParam String category, @RequestParam int page) {
+    public Object searchArticle(@RequestParam String q, @RequestParam String category, @RequestParam int page
+    // , @RequestHeader HttpHeaders header
+    ) {
         final BasicResponse result = new BasicResponse();
 
         result.status = false;
         result.data = "글 검색 실패";
+
 
 
         // 글 검색

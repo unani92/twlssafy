@@ -25,8 +25,14 @@ public interface ArticleDao extends JpaRepository<Article, String> {
     @Query(value = "select * from article where email in (select followemail from follow where email = ?1) order by articleid desc", nativeQuery = true)
     List<Article> articleFromFollowing(String email);
 
+    @Query(value = "select * from article where (email in (select followemail from follow where email = ?1) and ispublic=1) or (email in (select followemail from follow where email = ?1) and email=?1) order by articleid desc", nativeQuery = true)
+    List<Article> articleFromFollowingOnlyPublic(String email);
+
     @Query(value = "select * from article where articleid in (select articleid from pin where email=?1) order by articleid desc", nativeQuery = true)
     List<Article> articleFromPin(String email);
+
+    @Query(value = "select * from article where (articleid in (select articleid from pin where email=?1) and ispublic=1) or (articleid in (select articleid from pin where email=?1) and email=?1) order by articleid desc", nativeQuery = true)
+    List<Article> articleFromPinOnlyPublic(String email);
     
     @Query(value = 
     "select * from article where date(createdat) =  ?1 and email = ?2 order by articleid desc",
@@ -36,7 +42,8 @@ public interface ArticleDao extends JpaRepository<Article, String> {
     List<Article> findAllByEmail(String email);
     List<Article> findAllByEmailOrderByArticleidDesc(String email);
 
-
+    
+    
     @Query(value = 
     "select k.articleid from  " +
     "(select i.sno, s.name, i.email from interest as i, skills as s " +
@@ -44,7 +51,8 @@ public interface ArticleDao extends JpaRepository<Article, String> {
     "keyword as k, " +
     "(select l.articleid, count(*) as cnt, t.createdat as createdat from  " +
     "article as t, likes as l " +
-    "where t.articleid = l.articleid " +
+    "where t.articleid = l.articleid and t.email!=?1 " +
+    "and t.ispublic = 1 " +
     "group by l.articleid " +
     "order by cnt desc) as t " +
     "where a.sno = k.sno " +
@@ -54,7 +62,7 @@ public interface ArticleDao extends JpaRepository<Article, String> {
     "limit 5 "
     , nativeQuery = true)
     List<Integer> rec1(String email);
-
+    
     @Query(value = 
     "select k.articleid from  " +
     "(select i.sno, s.name, i.email from interest as i, skills as s " +
@@ -62,7 +70,8 @@ public interface ArticleDao extends JpaRepository<Article, String> {
     "keyword as k, " +
     "(select l.articleid, count(*) as cnt, t.createdat as createdat from  " +
     "article as t, pin as l " +
-    "where t.articleid = l.articleid " +
+    "where t.articleid = l.articleid and t.email!=?1 " +
+    "and t.ispublic = 1 " +
     "group by l.articleid " +
     "order by cnt desc) as t " +
     "where a.sno = k.sno " +
@@ -72,29 +81,33 @@ public interface ArticleDao extends JpaRepository<Article, String> {
     "limit 5 "
     , nativeQuery = true)
     List<Integer> rec2(String email);
-
+    
     @Query(value = 
         "select l.articleid from  " +
         "article as t, likes as l " +
-        "where t.articleid = l.articleid " +
+        "where t.articleid = l.articleid and t.email!=?1 " +
+        "and t.ispublic = 1 " +
         "and date(t.createdat) > date(subdate(now(), INTERVAL 3 DAY)) " +
         "group by l.articleid " +
         "order by count(*) desc " +
         "limit 5 "
         , nativeQuery = true)
-    List<Integer> rec3();
+    List<Integer> rec3(String email);
 
     @Query(value = 
         "select l.articleid from  " +
         "article as t, pin as l " +
-        "where t.articleid = l.articleid " +
+        "where t.articleid = l.articleid and t.email!=?1 " +
+        "and t.ispublic = 1 " +
         "and date(t.createdat) > date(subdate(now(), INTERVAL 3 DAY)) " +
         "group by l.articleid " +
         "order by count(*) desc " +
         "limit 5 "
         , nativeQuery = true)
-    List<Integer> rec4();
+    List<Integer> rec4(String email);
 
 
-
+    Page<Article> findByIspublicOrEmail(Pageable pageable, int ispublic, String email);
+    Page<Article> findByIspublic(Pageable pageable, int ispublic);
+    
 }

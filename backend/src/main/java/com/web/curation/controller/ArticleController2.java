@@ -73,7 +73,7 @@ public class ArticleController2 {
         String id_token = header.get("id_token").get(0);
         String email = JWTDecoding.decode(id_token);
 
-        List<Article> list = articleDao.articleFromFollowing(email);
+        List<Article> list = articleDao.articleFromFollowingOnlyPublic(email);
 
         if(list!=null){
             result.status = true;
@@ -139,7 +139,8 @@ public class ArticleController2 {
         String id_token = header.get("id_token").get(0);
         String email = JWTDecoding.decode(id_token);
 
-        List<Article> list = articleDao.articleFromPin(email);
+        // 공개 처리 된 글들 중 핀 찍은 article만 출력
+        List<Article> list = articleDao.articleFromPinOnlyPublic(email);
 
         if(list!=null){
             result.status = true;
@@ -289,8 +290,9 @@ public class ArticleController2 {
 
 
         List<List<String>> keywordsList = new ArrayList<>();
-        List<Integer> likesList = new ArrayList<>();
-        List<Integer> pinList = new ArrayList<>();
+        List<Integer> likesCntList = new ArrayList<>();
+        List<Integer> pinCntList = new ArrayList<>();
+        List<Integer> commentCntList = new ArrayList<>();
 
         for(Article a : articles){
             // 게시글 번호를 이용해 이 글의 키워드 리스트를 받아옴 (ex. 1번글의 키워드 c, c++)
@@ -306,21 +308,26 @@ public class ArticleController2 {
             }
             else return new ResponseEntity<>(result, HttpStatus.OK); // 글에 keyword 없으면 false return
 
-           likesList.add(likesDao.countByArticleid(a.getArticleid()));
-           pinList.add(pinDao.countByArticleid(a.getArticleid()));
+            int articleid = a.getArticleid();
+            likesCntList.add(likesDao.countByArticleid(articleid));
+            pinCntList.add(pinDao.countByArticleid(articleid));
+            commentCntList.add(commentDao.countByArticleid(articleid));
 
         }
         
-        Map<String,Object> object = new HashMap<>();
-        object.put("article", articles);
-        object.put("keyword", keywordsList);
-        object.put("likesCntList", likesList);
-        object.put("pinCntList", pinList);
+        Map<String,Object> userInfo = new HashMap<>();
+        userInfo.put("article", articles);
+        userInfo.put("keyword", keywordsList);
+        userInfo.put("likesCntList", likesCntList);
+        userInfo.put("pinCntList", pinCntList);
+        userInfo.put("commentCntList", commentCntList);
 
-        result.object = object;
+        result.object = userInfo;
         
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
+
+
 
     @ApiOperation(value = "추천 게시글")
     @GetMapping("/article/recommend")
@@ -339,7 +346,13 @@ public class ArticleController2 {
                 email = JWTDecoding.decode(id_token);
             }
         }catch(NullPointerException e){
-
+            // List<Article> articles = new ArrayList<>();
+            // Set<Integer> random = new HashSet<>();
+            // Random ran = new Random();
+            // while(random.size()<5){
+            //     random.add(ran.nextInt(setSize));
+            // }
+            // likesDao.articleFromHot();
         }
 
        
@@ -349,11 +362,13 @@ public class ArticleController2 {
             List<Integer> r2 = articleDao.rec2(email);
             for(int r : r1) set.add(r);
             for(int r : r2) set.add(r);
+            System.out.println("SIZE : "+set.size());
         }
-        List<Integer> r3 = articleDao.rec3();
-        List<Integer> r4 = articleDao.rec4();
+        List<Integer> r3 = articleDao.rec3(email);
+        List<Integer> r4 = articleDao.rec4(email);
         for(int r : r3) set.add(r);
         for(int r : r4) set.add(r);
+        System.out.println("SIZE : "+set.size());
 
         List<Article> articles = new ArrayList<>();
         
@@ -365,6 +380,8 @@ public class ArticleController2 {
         while(random.size()<5){
             random.add(ran.nextInt(setSize));
         }
+
+
         
         List<Integer> commentCntList = new ArrayList<>();
         List<Integer> likesList = new ArrayList<>();
@@ -373,6 +390,8 @@ public class ArticleController2 {
 
         for(int r : random){
             Article a = articleDao.findByArticleid((int)set.toArray()[r]);
+
+            System.out.println("ARTICLE ID : "+a.getArticleid()+" IS PUBLIC:"+a.getIspublic());
 
             List<Keywords> tmpKeyword = keywordsDao.findAllByArticleid(a.getArticleid());
             if(tmpKeyword!=null){
