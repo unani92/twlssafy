@@ -165,6 +165,7 @@ export default {
   data() {
     const userSkills = this.$store.state.userSkills;
     let grade = 0;
+    console.log(this.userInfo)
     if (this.userInfo.totalArticleCount === 0) {
       grade = 1;
     } else if (this.userInfo.totalArticleCount <= 10) {
