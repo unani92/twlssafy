@@ -7,7 +7,7 @@
 
 <script>
 import GoogleLogin from 'vue-google-login';
-import axios from 'axios';
+import http from '../api/http-common.js';
 import { mapActions } from 'vuex'
   export default {
     // name: "GoogleLogin",
@@ -30,7 +30,7 @@ import { mapActions } from 'vuex'
       ...mapActions(["getGoogleUserInfo"]),
       onSuccess(googleUser){
         let id_token = googleUser.wc.id_token;
-        axios.post('http://localhost:8080/googlelogin',{ id_token },{headers: {id_token}})
+        http.post('/googlelogin',{ id_token },{headers: {id_token}})
           .then((res) =>{
             const { email } = res.data.object
           if (res.data.data === "failed") {

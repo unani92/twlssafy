@@ -58,7 +58,7 @@ export default {
         page: this.page++,
         nickname: this.$route.params.nickname,
       };
-      console.log(params.nickname)
+      // console.log(params.nickname)
       const { data } = await fetchMyArticles(params);
       this.isLoading = false;
       this.keywords = [...this.keywords, ...data.object.keyword];
@@ -67,6 +67,7 @@ export default {
       this.commentCntList = [...this.commentCntList, ...data.object.commentCntList];
       this.pinCntList = [...this.pinCntList, ...data.object.pinCntList];
       this.userInfo = data.object.user;
+
 
       // console.log(data);
       // console.log(data.object.interestList);

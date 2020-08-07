@@ -54,7 +54,6 @@ export default {
       const id_token = this.$store.state.id_token;
       const { data } = await fetchPinArticles(params, id_token);
       this.isLoading = false;
-
       this.keywords = [...this.keywords, ...data.object.keyword];
       this.articles = [...this.articles, ...data.object.article];
       this.likesCntList = [...this.likesCntList, ...data.object.likesCntList];

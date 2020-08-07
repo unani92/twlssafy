@@ -21,6 +21,14 @@
       } else if (params.params !== undefined) {
         console.log(params.params)
         this.$router.push({ name: "ArticleSearchByStack", query: params.params })
+      } else if(params.userInfo !== undefined){
+        this.$router
+        .push({
+          name: "Profile",
+          params: { nickname: params.userInfo.userInfo.nickname },
+        })
+      } else if(params.data !== undefined){
+        this.$router.push({ name: "CalendarCardList", params : {data : params.data}})
       } else this.$router.push('/')
     },
     // mounted() {
