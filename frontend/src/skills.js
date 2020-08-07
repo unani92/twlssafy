@@ -281,7 +281,7 @@ const skills = [
 "ITK",
 "Jabbix",
 "Jade",
-"JAVA",
+"Java",
 "Java Persistence API",
 "JDBC(Java Database Connectivity)",
 "Jenkins",

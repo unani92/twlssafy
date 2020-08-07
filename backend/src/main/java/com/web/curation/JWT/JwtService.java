@@ -30,7 +30,7 @@ public class JwtService {
         PrivateKey privateKey = kp.getPrivate();
 
         String jwt = Jwts.builder().setSubject("id_token").signWith(SignatureAlgorithm.RS256, privateKey)
-        .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * expireMin))
+        .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 1))
         .claim("user", user)
         .compact();
 
