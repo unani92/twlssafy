@@ -75,6 +75,7 @@ public class PinLikeFollowController {
           "follow" : "qwer@qwer.com"
           }
          */
+
         String email = JWTDecoding.decode(header.get("id_token").get(0));
         
         String follow = (String) request.get("follow");
@@ -104,7 +105,7 @@ public class PinLikeFollowController {
                 notification.setOther(other);
                 notification.setType(type);
                 notification.setReadn(0);
-                notification.setArticleid(0);
+                notification.setArticleid(1);
                 notification.setContent("");
                 
                 Notification noti = notificationDao.findNotification(follow,email,type,0,"",0);
