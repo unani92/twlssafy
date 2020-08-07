@@ -1,5 +1,6 @@
 package com.web.curation.dao;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import com.web.curation.model.Article;
@@ -109,5 +110,6 @@ public interface ArticleDao extends JpaRepository<Article, String> {
 
     Page<Article> findByIspublicOrEmail(Pageable pageable, int ispublic, String email);
     Page<Article> findByIspublic(Pageable pageable, int ispublic);
+	List<Article> findByNickname(String nickname);
     
 }
