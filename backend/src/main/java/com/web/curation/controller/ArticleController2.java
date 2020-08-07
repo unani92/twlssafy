@@ -1,5 +1,6 @@
 package com.web.curation.controller;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -327,7 +328,27 @@ public class ArticleController2 {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
+    @ApiOperation(value = "게시글 날짜 조회")
+    @GetMapping("/article/datelist/{nickname}")
+    public Object searchDate(@PathVariable final String nickname) {
 
+        final BasicResponse result = new BasicResponse();
+        result.status = false;
+        result.data = "fail";
+
+        List<Article> list = articleDao.findByNickname(nickname);
+        List<String> dateList = new ArrayList<>();
+
+        for(Article a : list){
+            String date = a.getCreatedat().toString();
+            date = date.substring(0,10);
+            dateList.add(date);
+        }
+       
+        return dateList;
+
+        
+    }
 
     @ApiOperation(value = "추천 게시글")
     @GetMapping("/article/recommend")
