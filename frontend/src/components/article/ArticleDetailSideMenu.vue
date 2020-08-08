@@ -115,16 +115,16 @@
               const newFollowList = followLists.filter(followList => {
                 return followList.followemail !== this.article.email
               })
-              this.sideMenu.isFollowed = false
-              this.$store.commit("setFollowListByNickname",newFollowList)
+              this.isFollowed = false
+              this.$store.commit("setFollowListByEmail",newFollowList)
             } else {
               const newFollow = {
                 email: email,
                 followemail: follow
               }
-              this.sideMenu.isFollowed = true
+              this.isFollowed = true
               followLists.push(newFollow)
-              this.$store.commit("setFollowListByNickname",followLists)
+              this.$store.commit("setFollowListByEmail",followLists)
             }
           })
           .catch(err => console.log(err))
@@ -133,7 +133,6 @@
       ...mapActions(["getGoogleUserInfo"])
     },
     mounted() {
-      console.log(this.article)
       if (this.id_token) {
         this.getGoogleUserInfo(this.id_token)
           .then(() => {
