@@ -29,7 +29,13 @@
         })
       } else if(params.data !== undefined){
         this.$router.push({ name: "CalendarCardList", params : {data : params.data}})
-      } else this.$router.push('/')
+      } else if(params.following !== undefined){
+        this.$router
+        .push({
+          name: "Profile",
+          params: { nickname : params.following },
+        })
+      }else this.$router.push('/')
     },
     // mounted() {
     //   console.log(this.$route)
@@ -37,6 +43,9 @@
   }
 </script>
 
-<style scoped>
+<style>
+* {
 
+font-family: 'Montserrat', sans-serif;
+}
 </style>

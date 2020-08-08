@@ -47,13 +47,16 @@ export default {
   padding-right: 16px;
 }
 .title {
-  padding-bottom: 1rem;
   color: black;
+  font-size: 23px;
+  margin: 0;
+  margin-top : 10%
+
 }
 .stack {
   font-size: 1rem;
   color: black;
-  padding: 1rem;
+  padding : 4%;
   border-radius: 1rem;
   font-weight: bolder;
   /* padding: 3px; */

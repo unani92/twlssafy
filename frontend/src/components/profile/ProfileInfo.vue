@@ -37,19 +37,19 @@
             </div>
           </li>
 
-          <li style="height:25px;">
+          <li style="">
             <div class="info">
               <i class="fas fa-envelope"></i>
               {{ userInfo.userInfo.email }}
             </div>
           </li>
-          <li style="dec" v-if="skills.length !== 0"></li>
           <li v-if="userInfo.userInfo.github != null">
-            <div class="github">
+            <div class="info">
               <i class="fab fa-github"></i>
               {{ userInfo.userInfo.github }}
             </div>
           </li>
+          <!-- <li style="dec" v-if="skills.length !== 0"></li> -->
         </ul>
         <li v-if="skills.length !== 0">
           <div class="skills">
@@ -70,7 +70,7 @@
           </span>
         </li>
         <div class="sns">
-          <a>
+          <a style="background-color : white">
             <i class="fas fa-pencil-alt"></i>
             <br />
             <span>{{ userInfo.totalArticleCount }} TILs</span>
@@ -85,9 +85,9 @@
             <br />
             <span>{{ userInfo.following.follow.length }} Followings</span>
           </a>
-        </div>
-        <div id="calendar">
-          <Calendar :userInfo="userInfo" />
+          <div id="calendar">
+            <Calendar :userInfo="userInfo" />
+          </div>
         </div>
       </div>
     </section>
@@ -138,7 +138,8 @@
           :key="idx"
           class="follower-email-container"
         >
-          <span class="follower-email">{{ userInfo.following.followNickname[idx - 1] }}</span>
+          <span @click="goUserPage(userInfo.following.followNickname[idx - 1])" 
+          class="follower-email">{{ userInfo.following.followNickname[idx - 1] }}</span>
           <div
             @click="
               requestFollow(userInfo.following.follow[idx - 1].email, $event)
@@ -159,6 +160,7 @@ import { requestFollow } from "@/api/index.js";
 import { mapState, mapGetters } from "vuex";
 import Calendar from "../calendar/Calendar";
 import { getGrade } from "@/utils/calcGrade";
+// import http from '@/api/http-common.js';
 
 export default {
   props: {
@@ -190,6 +192,15 @@ export default {
     },
   },
   methods: {
+    goUserPage(following){
+      // let userInfo = '';
+      // http.get(`/account/${following}?page=0`).then(res=> {
+      //   userInfo = res 
+      //   console.log(userInfo)
+      //   })
+      this.$router.push({name: "Dummy", params: {following : following}})
+    },
+
     async requestFollow(followWantingTo, e) {
       if (!this.isLoggedIn) {
         console.log("login required");
@@ -281,7 +292,7 @@ export default {
     // follower modal
     const followerModal = document.getElementById("followersModal");
     const followBtn = document.querySelector(".follower-modal");
-    const followSpan = document.getElementsByClassName("close")[1];
+    const followSpan = document.getElementsByClassName("close")[0];
     followBtn.onclick = function () {
       followerModal.style.display = "block";
     };
@@ -292,7 +303,7 @@ export default {
     // following modal
     const followingModal = document.getElementById("followingsModal");
     const followingBtn = document.querySelector(".following-modal");
-    const followingSpan = document.getElementsByClassName("close")[2];
+    const followingSpan = document.getElementsByClassName("close")[1];
     followingBtn.onclick = function () {
       followingModal.style.display = "block";
     };
@@ -498,7 +509,7 @@ li {
 /* Modal Content */
 .modal-content {
   background-color: #fefefe;
-  margin: auto;
+  margin: 10%;
   padding: 20px;
   border: 1px solid #888;
   width: 80%;
@@ -521,7 +532,8 @@ li {
 
 .follow-modal-content {
   background-color: #fefefe;
-  margin: auto;
+  margin :auto;
+  margin-top: 10%;
   padding: 20px;
   border: 1px solid #888;
   width: 40%;

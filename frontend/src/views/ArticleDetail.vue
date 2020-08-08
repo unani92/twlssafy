@@ -17,15 +17,16 @@
         <div class="username-date">
           <!-- @click="userToggle" -->
           <div>
-            <span style="margin-right : 4px; cursor:pointer" @click="gotoWriterPage">{{ nickname }}</span>
+            <span style="margin-right : 4px; cursor:pointer" @click="gotoWriterPage">{{ nickname }} </span>
+            <span v-if="ispublic==3" style="color : gray;">비공개글 </span>
             <span v-if="isWriter">
               <Router-link
                 :to="{
                 name: 'ArticleUpdate',
-                params: { id, keywords, title, content  }
+                params: { id, keywords, title, content, ispublic  }
             }"
-              >
-                <i class="fas fa-edit" style="cursor: pointer; margin-right : 4px; color : gray"></i>
+              > 
+                 <i class="fas fa-edit" style="cursor: pointer; margin-right : 4px; color : gray"></i>
               </Router-link>
               <i
                 class="fas fa-trash-alt"
@@ -91,6 +92,7 @@ export default {
       content: null,
       updatedAt: null,
       userinfo: null,
+      ispublic: '',
       sideMenu: {
         commentList: null,
         isFollowed: null,
@@ -130,6 +132,7 @@ export default {
           commentNickname,
           commentArticleCount,
           articleCount,
+          ispublic,
         } = articleInfo.data.object;
         this.article = article;
 
@@ -145,6 +148,7 @@ export default {
         this.commentNickname = commentNickname;
         this.commentArticleCount = commentArticleCount;
         this.articleCount = articleCount;
+        this.ispublic = ispublic;
 
         const loginUser = this.$store.state.nickname;
         if (this.article.nickname === loginUser) {
@@ -196,7 +200,7 @@ export default {
   margin-bottom: 2rem;
 }
 .article {
-  padding-top: 75px;
+  padding-top: 135px;
   width: 80%;
   margin-right: 5%;
   /* margin-left: 5%; */
@@ -276,6 +280,7 @@ export default {
   outline: none;
   cursor: pointer;
   padding: 5px;
+  width: 70px;
 }
 .commentBtn {
   border-radius: 3px;
