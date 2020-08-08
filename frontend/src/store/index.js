@@ -1,9 +1,9 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import cookies from 'vue-cookies';
-import { registerUser } from '../api';
+import { getInfo, registerUser } from '../api';
 // import axios from 'axios';
-import http from '../api/http-common.js'
+// import http from '../api/http-common.js'
 
 Vue.use(Vuex);
 
@@ -91,12 +91,7 @@ export default new Vuex.Store({
   },
   actions: {
     getGoogleUserInfo({ commit }, id_token) {
-      http
-        .post(
-          '/account/googleInfo',
-          { id_token },
-          { headers: { id_token: id_token } }
-        )
+      getInfo(id_token)
         .then((res) => {
           const {
             email,

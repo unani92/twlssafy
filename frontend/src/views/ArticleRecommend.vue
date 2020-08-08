@@ -25,6 +25,7 @@
 <script>
   import { Carousel3d, Slide } from 'vue-carousel-3d'
   import { fetchRecommend } from "../api";
+  import { mapState, mapActions } from "vuex";
   import LoadingSpinner from "@/components/common/LoadingSpinner.vue";
   import ArticleCard from "@/components/article/AricleCard.vue";
   export default {
@@ -40,6 +41,9 @@
         isLoading: true,
       }
     },
+    computed: {
+      ...mapState(["id_token"]),
+    },
     components: {
       'carousel-3d': Carousel3d,
       Slide,
@@ -47,9 +51,9 @@
       ArticleCard,
     },
     methods: {
+      ...mapActions(["getGoogleUserInfo"]),
       async fetchData() {
-        const id_token = this.$store.state.id_token;
-        const { data } = await fetchRecommend(id_token)
+        const { data } = await fetchRecommend(this.id_token)
         this.isLoading = false;
         this.keywords = data.object.keyword;
         this.articles = data.object.articles;
@@ -59,7 +63,10 @@
       }
     },
     mounted() {
-      this.fetchData();
+      if (this.id_token) {
+        this.getGoogleUserInfo(this.id_token)
+      }
+      this.fetchData()
     }
   }
 </script>

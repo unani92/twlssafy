@@ -7,7 +7,7 @@
 
 <script>
 import GoogleLogin from 'vue-google-login';
-import http from '../api/http-common.js';
+import { socialLogin } from "../api";
 import { mapActions } from 'vuex'
   export default {
     // name: "GoogleLogin",
@@ -30,7 +30,7 @@ import { mapActions } from 'vuex'
       ...mapActions(["getGoogleUserInfo"]),
       onSuccess(googleUser){
         let id_token = googleUser.wc.id_token;
-        http.post('/googlelogin',{ id_token },{headers: {id_token}})
+        socialLogin(id_token)
           .then((res) =>{
             const { email } = res.data.object
           if (res.data.data === "failed") {
