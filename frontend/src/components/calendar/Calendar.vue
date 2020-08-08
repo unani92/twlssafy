@@ -13,7 +13,7 @@
         </flat-pickr>
         <button class="btn" type="button" title="Toggle" data-toggle>
           <i class="fa fa-calendar">
-            <span aria-hidden="true" class="sr-only">Toggle</span>
+            <span aria-hidden="true" class="sr-only"></span>
           </i>
         </button>
         <button class="btn" type="button" title="Clear" @click="myPage">
@@ -38,13 +38,15 @@
     name: 'Calendar',
     data () {
       return {
+        dateList : [],
         date: new Date(),
         calendarEmail : '',
         config: {
           wrap: true,
           dateFormat: 'Y-m-d',
           locale: Korean,
-          onChange: (e) => (this.onChange(e))
+          onChange: (e) => (this.onChange(e)),
+          enable: [],
         },
         page : 0,                
       }
@@ -123,11 +125,10 @@
     components: {
       flatPickr
     },
-    mounted() {
-      this.email = this.userInfo.userInfo.email;
+    created() {
+      http.get(`/article/datelist/${this.userInfo.userInfo.nickname}`).then(res => {this.config.enable = res.data});
     }
   }
-
 </script> 
 
 <style scoped>

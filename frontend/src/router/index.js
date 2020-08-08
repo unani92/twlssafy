@@ -26,23 +26,25 @@ Vue.use(VueRouter);
 
 const routes = [
   {
-    path: '/',
+    
+    path: '/article',
     name: 'Home',
     component: Home,
     children: [
+     
       {
-        path: '',
+        path: '/latest',
         name: 'ArticleCardList',
         component: ArticleCardList,
       },
       {
-        path: 'follow',
+        path: '/follow',
         name: 'myfollowArticles',
         component: FollowArticleCardList,
         beforeEnter: requireLogin,
       },
       {
-        path: 'pin',
+        path: '/pin',
         name: 'mypinArticles',
         component: PinArticleCardList,
         beforeEnter: requireLogin,
@@ -50,7 +52,7 @@ const routes = [
     ],
   },
   {
-    path: '/recommend',
+    path: '/',
     name: 'ArticleRecommend',
     component: ArticleRecommend,
   },
