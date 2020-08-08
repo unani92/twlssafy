@@ -2,7 +2,6 @@
   <div>
     <div class="home">
       <div>
-        <HomeNav />
       </div>
       <div class="main-wrapper">
         <div class="primary">

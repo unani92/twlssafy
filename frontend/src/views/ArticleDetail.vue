@@ -196,7 +196,7 @@ export default {
   margin-bottom: 2rem;
 }
 .article {
-  padding-top: 75px;
+  padding-top: 135px;
   width: 80%;
   margin-right: 5%;
   /* margin-left: 5%; */
@@ -276,6 +276,7 @@ export default {
   outline: none;
   cursor: pointer;
   padding: 5px;
+  width: 70px;
 }
 .commentBtn {
   border-radius: 3px;

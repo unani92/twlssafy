@@ -3,7 +3,7 @@
     <div class="nav-bar">
       <div class="logo-searchbar">
         <div class="logo">
-          <Router-link class="logo-text" to="/">TWL</Router-link>
+          <Router-link class="logo-text" to="/latest">TWL</Router-link>
         </div>
         <div class="input-box">
           <i
@@ -15,7 +15,7 @@
       </div>
       <div class="article-icon">
         <div v-if="this.$store.getters.isLoggedIn">
-          <div
+          <div style="width : 28px;"
             :style="{ backgroundImage:'url('+require('@/assets/image/medal-'+calcGrade+'.png')+')'}"
             class="grade"
           ></div>
@@ -113,12 +113,7 @@ export default {
       aside.classList.toggle("disabled");
     },
     goToMyPage() {
-      this.$router
-        .push({
-          name: "Profile",
-          params: { nickname: this.$store.state.nickname },
-        })
-        .catch(() => {});
+      this.$router.push({name: "Dummy", params: {following : this.$store.state.nickname}})
     },
     logout() {
       this.$router.push({ name: "Logout" });
