@@ -1,8 +1,8 @@
 <template>
   <div class="sidemenu">
     <div class="icon">
-      <i @click="clickFollow" class="far fa-user" :class="{pressed : sideMenu.isFollowed}"></i>
-      <span class="sideCnt" v-if="sideMenu.isFollowed">-</span>
+      <i @click="clickFollow" class="far fa-user" :class="{pressed : isFollowed}"></i>
+      <span class="sideCnt" v-if="isFollowed">-</span>
       <span class="sideCnt" v-else> + </span>
     </div>
     <div class="icon">
@@ -33,6 +33,7 @@
         id: this.$route.params.id,
         isLiked: null,
         isPinned: null,
+        isFollowed: null,
       }
     },
     methods: {
@@ -132,14 +133,15 @@
       ...mapActions(["getGoogleUserInfo"])
     },
     mounted() {
-      // this.isLiked = !!this.likeList.filter(like => Number(like.articleid) === Number(this.id)).length
-      // this.isPinned = !!this.pinList.filter(pin => Number(pin.articleid) === Number(this.id)).length
+      console.log(this.article)
       if (this.id_token) {
         this.getGoogleUserInfo(this.id_token)
           .then(() => {
             this.isLiked = !!this.likeList.filter(like => Number(like.articleid) === Number(this.id)).length
             this.isPinned = !!this.pinList.filter(pin => Number(pin.articleid) === Number(this.id)).length
+            this.isFollowed = !!this.followList.follow.filter(follow => follow.followemail === this.article.email).length
           })
+          .catch(err => console.log(err))
       }
     }
   }
