@@ -17,7 +17,7 @@
           />
         </Slide>
       </carousel-3d>
-      <div id="outro"><h2>Today We Learned에서 매일 공부한 내용을 가볍게 정리하고 팔로워들과 공유하세요 !</h2></div>
+      <div id="outro"><h2>Today We Learned에서 공부한 내용을 매일 가볍게 정리하고 팔로워들과 공유하세요 !</h2></div>
     </div>
   </div>
 </template>

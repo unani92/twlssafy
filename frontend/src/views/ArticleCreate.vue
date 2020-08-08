@@ -1,6 +1,6 @@
 <template>
   <div class="article-create">
-    <h1 style="margin: 1rem 0 1rem 0;">게시글 작성</h1>
+    <!-- <h3 style="margin: 1rem 0 1rem 0;">게시글 작성</h3> -->
     <div class="article-title-skills">
       <div>
         <input v-model="content.title" id="title" type="text" placeholder="제목을 입력하세요" />
@@ -24,7 +24,7 @@
         >
         <span>비공개</span>
       </label>
-      <div style="margin-top: 10px">
+      <div>
         <span v-if="content.ispublic === '1'">해당 글은 전체 공개됩니다</span>
         <span v-else>해당 글은 마이페이지에서 조회 가능합니다.</span>
       </div>
@@ -44,7 +44,7 @@
             @click="searchSkillAdd"
             v-for="res in result"
             :key="res"
-            style="cursor: pointer; margin-bottom:6px"
+            style="cursor: pointer; margin-bottom:6px;"
           >{{ res }}</div>
         </div>
       </div>
@@ -56,7 +56,7 @@
         :key="keyword"
         :id="keyword"
       >
-        <span>{{ keyword }}</span>
+        <span>{{ keyword }} </span>
         <i @click="removeStack" style="cursor:pointer; margin-left : 5px;" class="fas fa-times"></i>
       </div>
     </div>
@@ -142,7 +142,7 @@ export default {
 
 <style scoped>
 .article-create {
-  padding: 60px 2rem 0 2rem;
+  padding: 140px 2rem 0 2rem;
 }
 .article-title-skills {
   background-color: white;
@@ -154,7 +154,8 @@ export default {
   background: transparent;
   border: 0;
   outline: 0;
-  font-size: 40px;
+  font-size: 30px;
+  padding : 5px;
 }
 .box-radio-input input[type="radio"]{
     display:none;
@@ -179,6 +180,8 @@ export default {
 .ispublic {
   margin-top: 1rem;
   margin-bottom: 1rem;
+  width: 95%;
+  margin-left: 2.5%;
   background-color: white;
   padding: 1rem;
 }
@@ -190,6 +193,8 @@ export default {
   outline: 0;
   background: transparent;
   border-bottom: 3px solid black;
+  padding : 10px;
+
 }
 .autocomplete {
   position: absolute;
@@ -215,14 +220,22 @@ export default {
   align-items: center;
   justify-content: space-around;
   margin-bottom: 1rem;
-  margin-right: 1rem;
-  padding: 5px;
+  /* margin-right: 1rem; */
+  padding: 8px;
   float: left;
+  margin-left : 2.5%;
 }
 .article-title-skills {
   padding: 10px;
+  width : 95%;
+  margin-left: 2.5%;
 }
 .editor {
+  width : 95%;
+  margin-left: 2.5%;
   clear: both;
+}
+div {
+  border-radius: 10px;
 }
 </style>

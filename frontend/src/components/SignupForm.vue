@@ -286,7 +286,6 @@ body {
 .wrapper .title {
   font-size: 24px;
   font-weight: 700;
-  margin-bottom: 25px;
   color: #e6837a;
   text-transform: uppercase;
   text-align: center;
