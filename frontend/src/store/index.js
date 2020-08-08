@@ -2,7 +2,8 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import cookies from 'vue-cookies';
 import { registerUser } from '../api';
-import axios from 'axios';
+// import axios from 'axios';
+import http from '../api/http-common.js'
 
 Vue.use(Vuex);
 
@@ -90,9 +91,9 @@ export default new Vuex.Store({
   },
   actions: {
     getGoogleUserInfo({ commit }, id_token) {
-      axios
+      http
         .post(
-          'http://i3a407.p.ssafy.io:8081/account/googleInfo',
+          '/account/googleInfo',
           { id_token },
           { headers: { id_token: id_token } }
         )
