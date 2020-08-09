@@ -266,28 +266,31 @@ public class ArticleController2 {
         result.status = false;
         result.data = "fail";
 
-        List<Article> list = articleDao.articleAt(date, email);
+        List<Article> articles = articleDao.articleAt(date, email);
 
-        int totalArticle = list.size();
+        // List<Article> list = articleDao.articleAt(date, email);
+
+        // int totalArticle = list.size();
         // int totalPage = totalArticle/10;
         // if (totalArticle%10 > 0) 
         //     totalPage += 1;
         
-        List<Article> articles = new ArrayList<>();
 
         
         
-        try {
-            if(list.get(0) != null){
-                for(int i=page*10; i<page*10+10; i++) {
-                    if(i<totalArticle) {
-                        articles.add(list.get(i));
-                    }
-                }
-            }
-        } catch (Exception e) {
-            list = null;
-        }
+        // try {
+        //     if(list.get(0) != null){
+        //         for(int i=page*10; i<page*10+10; i++) {
+        //             if(i<totalArticle) {
+        //                 articles.add(list.get(i));
+        //             }
+        //         }
+        //     }
+        // } catch (Exception e) {
+        //     list = null;
+        // }
+
+        System.out.println(date);
 
 
         List<List<String>> keywordsList = new ArrayList<>();
