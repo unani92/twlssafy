@@ -29,8 +29,6 @@ export default {
         q: skill,
         category: "keyword",
       };
-      // const { data } = await searchArticle(params);
-      // console.log(data);
       this.$router.push({ name: "ArticleSearchByStack", query: params });
     },
   },

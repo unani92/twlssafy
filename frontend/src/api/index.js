@@ -117,7 +117,6 @@ function fetchPinArticles(params, token) {
 }
 
 function fetchHotArticles(params, token) {
-  console.log(params);
   return instance.get(`article/hot?page=${params.page}`, {
     headers: { id_token: token },
   });
