@@ -41,10 +41,12 @@ public class Article {
     
     private String preview;
 
-    @Column(insertable = false)
+    // @Column(insertable = false)
     private LocalDateTime updatedat;
 
-    @Column(insertable = false, updatable = false)
+    // @Column(updatable = false)
     private LocalDateTime createdat;
+
+    private int hits;
 
 }

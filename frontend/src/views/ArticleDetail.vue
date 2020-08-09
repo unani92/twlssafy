@@ -17,7 +17,7 @@
         <div class="username-date">
           <!-- @click="userToggle" -->
           <div>
-            <span style="margin-right : 4px; cursor:pointer" @click="gotoWriterPage">{{ nickname }} </span>
+            <span style="margin-right : 4px; cursor:pointer" @click="gotoWriterPage" id="nickname">{{ nickname }} </span>
             <span v-if="ispublic==3" style="color : gray;">비공개글 </span>
             <span v-if="isWriter">
               <Router-link
@@ -35,7 +35,9 @@
               ></i>
             </span>
           </div>
-          <span>{{ updatedAt }}</span>
+          <span><i class="fas fa-pen-nib" style="margin-right: 15px;"> {{ updatedAt }}  </i>  
+          <i class="fas fa-eye"> {{ hits }}hits</i>
+           </span>
         </div>
       </div>
       <div class="nickname-keyword markdown">
@@ -92,6 +94,7 @@ export default {
       updatedAt: null,
       userinfo: null,
       ispublic: '',
+      hits : 0,
       sideMenu: {
         commentList: null,
         // isFollowed: null,
@@ -131,6 +134,7 @@ export default {
           commentArticleCount,
           articleCount,
           ispublic,
+          hits
         } = articleInfo.data.object;
         this.article = article;
 
@@ -147,6 +151,7 @@ export default {
         this.commentArticleCount = commentArticleCount;
         this.articleCount = articleCount;
         this.ispublic = ispublic;
+        this.hits = hits;
 
         const loginUser = this.$store.state.nickname;
         if (this.article.nickname === loginUser) {
@@ -210,13 +215,13 @@ export default {
 }
 .title {
   font-size: 30px;
-  margin-bottom: 1rem;
+  /* margin-bottom: 1rem; */
 }
 .username-date {
   display: flex;
   justify-content: space-between;
-  font-size: 13px;
   clear: both;
+  font-size: 13px;
 }
 .username-date > span:nth-child(1) {
   font-weight: bold;
@@ -242,6 +247,9 @@ export default {
 }
 .disabled {
   display: none;
+}
+#nickname {
+  font-size: 16px;
 }
 @media (max-width: 414px) {
   .article-detail {
