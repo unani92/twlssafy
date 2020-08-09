@@ -6,7 +6,10 @@
       </div>
       <div class="text">
         <div
-          :style="{ backgroundImage:'url('+require('@/assets/image/medal-'+grade+'.png')+')'}"
+          :style="{
+            backgroundImage:
+              'url(' + require('@/assets/image/medal-' + calGrade + '.png') + ')',
+          }"
           class="grade"
         ></div>
         <div class="description follower-email-container" style="margin:0">
@@ -26,35 +29,48 @@
             <div class="info">
               <i class="far fa-calendar-alt"></i>
               <span>&nbsp;&nbsp;From&nbsp;</span>
-              <span>&nbsp;{{ this.$moment(userInfo.userInfo.createdate).format("L") }}</span>
+              <span>
+                &nbsp;{{
+                this.$moment(userInfo.userInfo.createdate).format('L')
+                }}
+              </span>
             </div>
           </li>
 
-          <li>
+          <li style="">
             <div class="info">
               <i class="fas fa-envelope"></i>
               {{ userInfo.userInfo.email }}
             </div>
           </li>
           <li v-if="userInfo.userInfo.github != null">
-            <div class="github">
+            <div class="info">
               <i class="fab fa-github"></i>
               {{ userInfo.userInfo.github }}
             </div>
           </li>
-          <li v-if="skills.length !== 0">
-            <div class="skills">
-              <span v-for="skill in skills" :key="skill.name"># {{ skill.name }}</span>
-              <span class="more" data-toggle="modal">➕</span>
-            </div>
-          </li>
-          <li v-else>
-            등록된 관심사가 없습니다.
-            <span class="more" data-toggle="modal">➕</span>
-          </li>
+          <!-- <li style="dec" v-if="skills.length !== 0"></li> -->
         </ul>
+        <li v-if="skills.length !== 0">
+          <div class="skills">
+            <span
+              v-for="skill in skills"
+              :key="skill.name"
+              style="font-size: 15px;"
+            >#{{ skill.name }}</span>
+            <span v-if="isMypage" class="more" data-toggle="modal">
+              <i class="far fa-plus-square"></i>
+            </span>
+          </div>
+        </li>
+        <li v-else>
+          등록된 관심사가 없습니다.
+          <span v-if="isMypage" class="more" data-toggle="modal">
+            <i class="far fa-plus-square"></i>
+          </span>
+        </li>
         <div class="sns">
-          <a>
+          <a style="background-color : white">
             <i class="fas fa-pencil-alt"></i>
             <br />
             <span>{{ userInfo.totalArticleCount }} TILs</span>
@@ -69,11 +85,10 @@
             <br />
             <span>{{ userInfo.following.follow.length }} Followings</span>
           </a>
+          <div id="calendar">
+            <Calendar :userInfo="userInfo" />
+          </div>
         </div>
-      </div>
-
-      <div id="calendar" style="text-align : right">
-        <Calendar :userInfo="userInfo" />
       </div>
     </section>
     <section v-if="userInfo.totalArticleCount === 0" class="no-article">작성한 글이 없습니다.</section>
@@ -84,9 +99,9 @@
     <div id="skillModal" class="modal">
       <!-- Modal content -->
       <div class="modal-content">
-        <span class="close">&times;</span>
-        <span v-for="skill in skills" :key="skill.name" class="totalSkills"># {{ skill.name }}</span>
+        <!-- <span v-for="skill in skills" :key="skill.name" class="totalSkills"># {{ skill.name }}</span> -->
         <SelectSkills v-if="this.$store.state.nickname === this.$route.params.nickname"></SelectSkills>
+        <div class="close2" style="text-align : center; cursor : pointer">완료</div>
       </div>
     </div>
 
@@ -101,11 +116,7 @@
           :key="idx"
           class="follower-email-container"
         >
-          <span class="follower-email">
-            {{
-            userInfo.follower.followerNickname[idx - 1]
-            }}
-          </span>
+          <span class="follower-email">{{ userInfo.follower.followerNickname[idx - 1] }}</span>
           <div
             @click="
               requestFollow(userInfo.follower.follower[idx - 1].email, $event)
@@ -127,11 +138,8 @@
           :key="idx"
           class="follower-email-container"
         >
-          <span class="follower-email">
-            {{
-            userInfo.following.followNickname[idx - 1]
-            }}
-          </span>
+          <span @click="goUserPage(userInfo.following.followNickname[idx - 1])" 
+          class="follower-email">{{ userInfo.following.followNickname[idx - 1] }}</span>
           <div
             @click="
               requestFollow(userInfo.following.follow[idx - 1].email, $event)
@@ -151,6 +159,8 @@ import SelectSkills from "@/views/SelectSkills.vue";
 import { requestFollow } from "@/api/index.js";
 import { mapState, mapGetters } from "vuex";
 import Calendar from "../calendar/Calendar";
+import { getGrade } from "@/utils/calcGrade";
+// import http from '@/api/http-common.js';
 
 export default {
   props: {
@@ -162,28 +172,35 @@ export default {
   },
   data() {
     const userSkills = this.$store.state.userSkills;
-    let grade = 0;
-    if (this.userInfo.totalArticleCount === 0) {
-      grade = 1;
-    } else if (this.userInfo.totalArticleCount <= 10) {
-      grade = 2;
-    } else if (this.userInfo.totalArticleCount <= 30) {
-      grade = 3;
-    } else {
-      grade = 4;
-    }
     return {
       skills: userSkills,
       nickname: this.$route.params.nickname,
       follower: this.userInfo.follower,
-      grade: grade,
+      grade: 0,
     };
   },
   computed: {
     ...mapGetters(["isLoggedIn"]),
     ...mapState(["id_token", "userSkills"]),
+    isMypage() {
+      if (this.userInfo.userInfo.email == this.$store.state.username)
+        return true;
+      else return false;
+    },
+    calGrade() {
+      return getGrade(this.userInfo.totalArticleCount);
+    },
   },
   methods: {
+    goUserPage(following){
+      // let userInfo = '';
+      // http.get(`/account/${following}?page=0`).then(res=> {
+      //   userInfo = res 
+      //   console.log(userInfo)
+      //   })
+      this.$router.push({name: "Dummy", params: {following : following}})
+    },
+
     async requestFollow(followWantingTo, e) {
       if (!this.isLoggedIn) {
         console.log("login required");
@@ -263,10 +280,19 @@ export default {
     span.onclick = function () {
       skillModal.style.display = "none";
     };
+    const skillModal2 = document.getElementById("skillModal");
+    const btn2 = document.querySelector(".more");
+    const span2 = document.getElementsByClassName("close2")[0];
+    btn2.onclick = function () {
+      skillModal2.style.display = "block";
+    };
+    span2.onclick = function () {
+      skillModal2.style.display = "none";
+    };
     // follower modal
     const followerModal = document.getElementById("followersModal");
     const followBtn = document.querySelector(".follower-modal");
-    const followSpan = document.getElementsByClassName("close")[1];
+    const followSpan = document.getElementsByClassName("close")[0];
     followBtn.onclick = function () {
       followerModal.style.display = "block";
     };
@@ -277,7 +303,7 @@ export default {
     // following modal
     const followingModal = document.getElementById("followingsModal");
     const followingBtn = document.querySelector(".following-modal");
-    const followingSpan = document.getElementsByClassName("close")[2];
+    const followingSpan = document.getElementsByClassName("close")[1];
     followingBtn.onclick = function () {
       followingModal.style.display = "block";
     };
@@ -339,6 +365,10 @@ section {
   display: block;
   text-align: center;
   padding: 20px;
+}
+
+li {
+  list-style-type: none;
 }
 
 @media (min-width: 992px) {
@@ -479,7 +509,7 @@ section {
 /* Modal Content */
 .modal-content {
   background-color: #fefefe;
-  margin: auto;
+  margin: 10%;
   padding: 20px;
   border: 1px solid #888;
   width: 80%;
@@ -502,7 +532,8 @@ section {
 
 .follow-modal-content {
   background-color: #fefefe;
-  margin: auto;
+  margin :auto;
+  margin-top: 10%;
   padding: 20px;
   border: 1px solid #888;
   width: 40%;
@@ -510,6 +541,9 @@ section {
 @media (max-width: 992px) {
   .follow-modal-content {
     width: 80%;
+  }
+  .skills span {
+    margin: 0.5% 1% 0.5% 0.5%;
   }
 }
 .follower-email-container {
@@ -553,8 +587,12 @@ section {
   padding: 5px 9px;
   font-size: 14px;
   color: white;
+  width: 100%;
 }
 .followBtn:hover {
   cursor: pointer;
+}
+#calendar {
+  margin-left : 1%;
 }
 </style>

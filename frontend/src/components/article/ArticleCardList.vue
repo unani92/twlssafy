@@ -51,7 +51,8 @@ export default {
       const params = {
         page: this.page++,
       };
-      const { data } = await fetchArticles(params);
+      const token = this.$store.state.id_token;
+      const { data } = await fetchArticles(params, token);
       this.isLoading = false;
       this.keywords = [...this.keywords, ...data.object.keyword];
       this.articles = [...this.articles, ...data.object.article.content];
@@ -72,7 +73,7 @@ export default {
   },
   mounted() {
     setTimeout(() => this.addScrollWatcher(), 1000);
-  },
+  }
 };
 </script>
 

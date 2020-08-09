@@ -1,8 +1,9 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import cookies from 'vue-cookies';
-import { registerUser } from '../api';
-import axios from 'axios';
+import { getInfo, registerUser } from '../api';
+// import axios from 'axios';
+// import http from '../api/http-common.js'
 
 Vue.use(Vuex);
 
@@ -22,7 +23,7 @@ export default new Vuex.Store({
     notification: [],
     userSkills: [],
     notificationCnt: '',
-    grade: null,
+    articleCount: 0,
   },
   getters: {
     isLoggedIn: (state) => !!state.id_token,
@@ -69,8 +70,8 @@ export default new Vuex.Store({
     setUserSkills(state, userSkills) {
       state.userSkills = userSkills;
     },
-    setGrade(state, grade) {
-      state.grade = grade;
+    setArticleCount(state, articleCount) {
+      state.articleCount = articleCount;
     },
     clearUser(state) {
       state.username = '';
@@ -82,7 +83,7 @@ export default new Vuex.Store({
       state.pinList = [];
       state.interestList = [];
       state.notification = [];
-      state.grade = null;
+      state.articleCount = 0;
     },
     setNotificationCnt(state, notificationCnt) {
       state.notificationCnt = notificationCnt;
@@ -90,12 +91,7 @@ export default new Vuex.Store({
   },
   actions: {
     getGoogleUserInfo({ commit }, id_token) {
-      axios
-        .post(
-          'http://localhost:8080/account/googleInfo',
-          { id_token },
-          { headers: { id_token: id_token } }
-        )
+      getInfo(id_token)
         .then((res) => {
           const {
             email,
@@ -120,7 +116,7 @@ export default new Vuex.Store({
           commit('setPinList', pinList);
           commit('setInterestList', interestList);
           commit('setNotificationCnt', notificationCnt);
-          commit('setGrade', articleCount);
+          commit('setArticleCount', articleCount);
         })
         .catch((err) => console.log(err));
     },

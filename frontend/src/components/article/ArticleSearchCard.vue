@@ -1,8 +1,13 @@
 <template>
- <div class="card-body">
+  <div class="card-body">
     <div class="blog-card">
       <div class="inner-part">
-        <label for="imgTap" class="img">
+        <label for="imgTap" class="img" @click="
+                $router.push({
+                  name: 'ArticleDetail',
+                  params: { id: article.articleid },
+                })
+              " >
           <img v-if="article.imgurl != null" class="img-1" :src="article.imgurl" />
           <img v-else class="img-1" src="https://picsum.photos/300/200" />
         </label>
@@ -27,22 +32,38 @@
               <span id="keyword" @click="search(k)">#{{ k }} </span>
             </span>
           </div>
-          <div class="text">{{ article.preview }}</div>
+          <div class="text"
+          @click="
+                $router.push({
+                  name: 'ArticleDetail',
+                  params: { id: article.articleid },
+                })
+              "
+          >{{ article.preview }}</div>
           <div class="createdat-text">
             {{ this.$moment(article.createdat).fromNow() }}
           </div>
           <div class="nicknamePinLikes">
             <div style="float : left; ">{{ article.nickname }}</div>
             <div class="btns">
-              <button @click="pin" class="firstBtn">
-                <i v-if="isPinned" class="fas fa-bookmark"></i>
-                <i v-else class="far fa-bookmark"></i>
+              <button @click="pin" class="firstBtn" style="background-color:white; font-size:16px; width:4%; margin : 3%;">
+                <i v-if="isPinned" class="fas fa-bookmark" style="color : hotpink"> {{pinCnt}}</i>
+                <i v-else class="far fa-bookmark" style="color : hotpink"> {{pinCnt}}</i>
               </button>
-              <!-- <button class="firstBtn"><i class="fas fa-bookmark"></i></button> -->
-              <!-- <button><i class="far fa-heart"></i></button> -->
-              <button @click="like">
-                <i v-if="isliked" class="fas fa-heart"></i>
-                <i v-else class="far fa-heart"></i>
+              <button @click="like" style="background-color:white; font-size:16px; width: 4%;margin : 3%;">
+                <i v-if="isliked" class="fas fa-heart" style="color : hotpink;"> {{likesCnt}}</i>
+                <i v-else class="far fa-heart" style="color : hotpink;"> {{likesCnt}}</i>
+                
+              </button>
+              <button style="background-color:white;font-size:16px; width:4%; margin : 3%;"
+              @click="
+                $router.push({
+                  name: 'ArticleDetail',
+                  params: { id: article.articleid },
+                })" >
+                <i v-if="this.commentCnt>0" class="fas fa-comments" style="color : hotpink;"> {{commentCnt}}</i>
+                <i v-else class="far fa-comments" style="color : hotpink;"> {{commentCnt}}</i>
+
               </button>
             </div>
           </div>
@@ -67,14 +88,15 @@ export default {
       if (this.isLogin) {
         const params = {
           article_id: this.article.articleid,
-          email: this.$store.state.username,
         };
-        const { data } = await likeArticle(params);
+        const token = this.$store.state.id_token;
+        const { data } = await likeArticle(params,token);
         console.log(data);
         //프런트에서 스토어 값 갱신
         const likeList = this.$store.state.likeList;
-        if (data.data === "likes 설정") {
+        if (data.data === "like 설정") {
           likeList.push(this.article);
+          this.likesCnt++;
         } else {
           //좋아요 목록에서 삭제 로직
           // const idx = likeList.indexOf(this.article);
@@ -84,6 +106,7 @@ export default {
               likeList.splice(i, 1);
             }
           }
+          this.likesCnt--
         }
         this.$store.commit("setLikeList", likeList);
         console.log("현재 상태는", this.$store.state.likeList);
@@ -97,14 +120,15 @@ export default {
       if (this.isLogin) {
         const params = {
           article_id: this.article.articleid,
-          email: this.$store.state.username,
         };
-        const { data } = await pinArticle(params);
+        const token = this.$store.state.id_token;
+        const { data } = await pinArticle(params,token);
         console.log(data);
         //프런트에서 스토어 값 갱신
         const pinList = this.$store.state.pinList;
         if (data.data === "pin 설정") {
           pinList.push(this.article);
+          this.pinCnt++;
         } else {
           //좋아요 목록에서 삭제 로직
           const len = pinList.length;
@@ -113,6 +137,7 @@ export default {
               pinList.splice(i, 1);
             }
           }
+        this.pinCnt--
         }
         this.$store.commit("setPinList", pinList);
         console.log("현재 상태는", this.$store.state.pinList);
@@ -157,6 +182,15 @@ export default {
     keywords: {
       type: Array,
       required: true,
+    },
+    pinCnt:{
+      type : Number,
+    },
+    commentCnt: {
+      type : Number,
+    },
+    likesCnt : {
+      type : Number,
     },
   },
 };
@@ -213,11 +247,10 @@ export default {
   margin-left: 30px;
   transition: 0.6s;
 }
-.content .title {
+.title {
   font-size: 25px;
   font-weight: 700;
   color: #0d0925;
-  margin-bottom: 30px;
   margin-top: 10px;
   height: 60px;
   overflow: hidden;
@@ -232,24 +265,22 @@ export default {
   overflow: hidden;
   word-break:break-all;
 }
-.content button {
+button {
+  border: none;
   align-items: center;
   justify-content: center;
+  font-weight: 600;
+  letter-spacing: 1px;
+  border-radius: 50px;
   display: inline-flex;
-  border: none;
-  font-size: 16px;
+  font-size: 10px;
   text-transform: uppercase;
   color: white;
   margin: 1px;
-  width: 32px;
+  width: 25px;
   height: 25px;
-  /* font-weight: 600; */
-  /* letter-spacing: 1px; */
-  border-radius: 50px;
   cursor: pointer;
   outline: none;
-  border: hotpink;
-  background: hotpink;
 }
 
 .keywords {
@@ -266,7 +297,11 @@ export default {
 .btns {
   text-align: right;
 }
-@media (max-width: 630px) {
+#keyword{
+  cursor:pointer; 
+  color : royalblue;
+}
+@media (max-width: 768px) {
   .inner-part {
     display: block;
     height: 200px;
@@ -282,16 +317,14 @@ export default {
   .content .text {
     font-size: 16px;
   }
-  .content .title {
+  .title {
     font-size: 22px;
     margin-bottom: 10px;
     margin-top: 0px;
   }
 
-  .content button {
-    display: inline-block;
+  button {
+    margin : 5%;
   }
-}
-@media (min-width: 1024px) {
 }
 </style>

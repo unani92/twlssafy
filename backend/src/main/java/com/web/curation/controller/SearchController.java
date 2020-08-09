@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.data.jpa.domain.Specification;
@@ -19,7 +20,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.google.common.net.HttpHeaders;
 import com.web.curation.dao.ArticleDao;
+import com.web.curation.dao.CommentDao;
 import com.web.curation.dao.KeywordsDao;
 import com.web.curation.dao.SearchDao;
 import com.web.curation.dao.SkillsDao;
@@ -57,13 +60,19 @@ public class SearchController {
     @Autowired
     ArticleDao articleDao;
 
+    @Autowired
+    CommentDao commentDao;
+
     @ApiOperation(value = "글 검색")
     @GetMapping("/article/search")
-    public Object searchArticle(@RequestParam String q, @RequestParam String category, @RequestParam int page) {
+    public Object searchArticle(@RequestParam String q, @RequestParam String category, @RequestParam int page
+    // , @RequestHeader HttpHeaders header
+    ) {
         final BasicResponse result = new BasicResponse();
 
         result.status = false;
         result.data = "글 검색 실패";
+
 
 
         // 글 검색
@@ -108,6 +117,7 @@ public class SearchController {
                 List<List<String>> keywordsList = new ArrayList<>();
                 List<Integer> likesList = new ArrayList<>();
                 List<Integer> pinList = new ArrayList<>();
+                List<Integer> commentCntList = new ArrayList<>();
 
                 for(Article a : articles){
                     List<Keywords> tmpKeyword = keywordsDao.findAllByArticleid(a.getArticleid());
@@ -124,6 +134,8 @@ public class SearchController {
                     }
                     likesList.add(likesDao.countByArticleid(a.getArticleid()));
                     pinList.add(pinDao.countByArticleid(a.getArticleid()));
+                    commentCntList.add(commentDao.countByArticleid(a.getArticleid()));
+
                 }
 
                 Map<String,Object> object = new HashMap<>();
@@ -132,6 +144,8 @@ public class SearchController {
                 object.put("likesCntList", likesList);
                 object.put("pinCntList", pinList);
                 object.put("totalArticleCnt", totalArticle);
+                object.put("commentCntList", commentCntList);
+
 
                 if(!articles.isEmpty()){
                     result.status = true;
@@ -169,6 +183,7 @@ public class SearchController {
         List<List<String>> keywordsList = new ArrayList<>();
         List<Integer> likesList = new ArrayList<>();
         List<Integer> pinList = new ArrayList<>();
+        List<Integer> commentCntList = new ArrayList<>();
 
         for(Article a : articles){
             List<Keywords> tmpKeyword = keywordsDao.findAllByArticleid(a.getArticleid());
@@ -185,6 +200,7 @@ public class SearchController {
             }
             likesList.add(likesDao.countByArticleid(a.getArticleid()));
             pinList.add(pinDao.countByArticleid(a.getArticleid()));
+            commentCntList.add(commentDao.countByArticleid(a.getArticleid()));
         }
 
         Map<String,Object> object = new HashMap<>();
@@ -192,6 +208,7 @@ public class SearchController {
         object.put("keyword", keywordsList);
         object.put("likesCntList", likesList);
         object.put("pinCntList", pinList);
+        object.put("commentCntList", commentCntList);
 
        if(!articles.isEmpty()){
            result.status = true;

@@ -9,10 +9,10 @@
           <option value="keyword">키워드</option>
           <option value="nickname">닉네임</option>
         </select> -->
-        <input type="radio" name="category" value="title" v-model="category">제목
-        <input type="radio" name="category" value="content" v-model="category"> 내용
-        <input type="radio" name="category" value="keyword" v-model="category">키워드
-        <input type="radio" name="category" value="nickname" v-model="category">닉네임
+        <input type="radio" name="category" value="keyword" v-model="category"> 키워드 
+        <input type="radio" name="category" value="title" v-model="category"> 제목 
+        <input type="radio" name="category" value="content" v-model="category">  내용 
+        <input type="radio" name="category" value="nickname" v-model="category"> 닉네임 
       </div>
       <div class="searchbar">        
         <input @keypress.enter="fetchSearchData" type="text" v-model="input"/>
@@ -25,9 +25,13 @@
         :key="article.articleid"
         :article="article"
         :keywords="keywords[index]"
+        :commentCnt="commentCntList[index]"
+        :likesCnt="likesCntList[index]"
+        :pinCnt="pinCntList[index]"
       />
       <div id="bottomSensor"></div>
     </div>
+    <scroll/>
   </div>
 </template>
 
@@ -45,11 +49,14 @@ export default {
     return {
       searchArticles: [],
       keywords: [],
+      commentCntList : [],
+      pinCntList : [],
+      likesCntList : [],
       isLoading: true,
       page: 0,
       input: null,
       q: null,
-      category: null,
+      category: "keyword",
     };
   },
   methods: {
@@ -64,13 +71,16 @@ export default {
         console.log(res);
         const {
           data: {
-            object: { article, keyword },
+            object: { article, keyword, likesCntList, commentCntList, pinCntList},
           },
         } = await searchArticle(params);
         console.log(article);
         console.log(keyword);
         this.keywords = [...this.keywords, ...keyword];
         this.searchArticles = [...this.searchArticles, ...article];
+        this.likesCntList = [...this.likesCntList, ...likesCntList]
+        this.commentCntList = [...this.commentCntList, ...commentCntList];
+        this.pinCntList = [...this.pinCntList, ...pinCntList];
       } else {
         this.q = this.input;
         this.page = 0;
@@ -81,16 +91,20 @@ export default {
           category: this.category,
         };
         const res = await searchArticle(params);
-        console.log(res);
+        console.log(`else: ${res}`);
         const {
           data: {
-            object: { article, keyword },
+            object: { article, keyword, likesCntList, commentCntList, pinCntList},
           },
         } = await searchArticle(params);
         console.log(article);
         console.log(keyword);
         this.keywords = [...this.keywords, ...keyword];
         this.searchArticles = [...this.searchArticles, ...article];
+        this.likesCntList = [...this.likesCntList, ...likesCntList]
+        this.commentCntList = [...this.commentCntList, ...commentCntList];
+        this.pinCntList = [...this.pinCntList, ...pinCntList];
+        console.log(this.pinCntList)
       }
     },
     addScrollWatcher() {
@@ -109,13 +123,12 @@ export default {
 
 <style scoped>
 .article-search {
-  padding-top: 70px;
+  padding-top: 135px;
 }
 .search {
   text-align: center;
   left : 5%;
-  width: 99%;
-
+  width: 100%;
 }
   .option {
     margin : 1rem;
@@ -143,6 +156,8 @@ i {
   z-index: 5;
   padding-left: 20px;
   border: none;
+  border-radius: 1%;
+  outline: none;
 }
 @media (max-width: 768px){
   .searchbar {

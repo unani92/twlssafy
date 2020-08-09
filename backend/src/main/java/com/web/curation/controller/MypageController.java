@@ -7,6 +7,7 @@ import java.util.Optional;
 import java.util.TreeMap;
 
 import com.web.curation.dao.ArticleDao;
+import com.web.curation.dao.CommentDao;
 import com.web.curation.dao.KeywordsDao;
 import com.web.curation.dao.SkillsDao;
 import com.web.curation.dao.pinlikesfollow.FollowDao;
@@ -70,6 +71,8 @@ public class MypageController {
     @Autowired
     InterestDao interestDao;
 
+    @Autowired
+    CommentDao commentDao;
 
     @GetMapping("/account/{nickname}")
     public Object getArticle(@PathVariable String nickname, @RequestParam(value = "page") int page) {
@@ -79,8 +82,8 @@ public class MypageController {
         final BasicResponse result = new BasicResponse();
         result.status = false;
         result.data = "마이페이지 조회 실패";
+        
         Optional<User> user = userDao.findUserByNickname(nickname);
-        System.out.println("USER : "+user.get().getGithub());
         if(user.isPresent()){
             result.status = true;
             result.data = "success";
@@ -124,15 +127,25 @@ public class MypageController {
             }
 
             List<List<String>> keywordsList = new ArrayList<>();
+            List<Integer> likesCntList = new ArrayList<>();
+            List<Integer> pinCntList = new ArrayList<>();
+            List<Integer> commentCntList = new ArrayList<>();
+
             for(Article a : articles){
                 // 게시글 번호를 이용해 이 글의 키워드 리스트를 받아옴 (ex. 1번글의 키워드 c, c++)
-                List<Keywords> tmpKeyword = keywordsDao.findAllByArticleid(a.getArticleid());
+                int articleid = a.getArticleid();
+                List<Keywords> tmpKeyword = keywordsDao.findAllByArticleid(articleid);
                 if(tmpKeyword!=null){ // 임시리스트 만들어서 키워드들 넣고, 최종 리스트에 담음
                     List<String> tmplist = new ArrayList<>();
                     for(Keywords k : tmpKeyword){
                         tmplist.add(skillsDao.findSkillBySno(k.getSno()).getName());
                     }
                     keywordsList.add(tmplist);
+
+                    likesCntList.add(likesDao.countByArticleid(articleid));
+                    pinCntList.add(pinDao.countByArticleid(articleid));
+                    commentCntList.add(commentDao.countByArticleid(articleid));
+
                 }
                 else {
                     result.data="keyword 조회 실패";
@@ -142,6 +155,9 @@ public class MypageController {
             userInfo.put("totalArticleCount", articleDao.countByNickname(nickname));
             userInfo.put("article", articles);
             userInfo.put("keyword", keywordsList);
+            userInfo.put("likesCntList", likesCntList);
+            userInfo.put("pinCntList", pinCntList);
+            userInfo.put("commentCntList", commentCntList);
 
             // 관심사 
             List<Interest> interest = interestDao.findAllByEmail(user.get().getEmail());

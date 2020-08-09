@@ -2,18 +2,13 @@ package com.web.curation.JWT;
 
 import java.security.KeyPair;
 import java.security.PrivateKey;
-import java.security.PublicKey;
 import java.util.Date;
-import java.util.Map;
 
 import com.web.curation.model.user.User;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.impl.crypto.RsaProvider;
@@ -35,7 +30,7 @@ public class JwtService {
         PrivateKey privateKey = kp.getPrivate();
 
         String jwt = Jwts.builder().setSubject("id_token").signWith(SignatureAlgorithm.RS256, privateKey)
-        .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * expireMin))
+        .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 1))
         .claim("user", user)
         .compact();
 

@@ -11,10 +11,15 @@ public class Search {
     // 제목으로 검색
     public static Specification<Article> searchByTitleOrderByArticleidDesc(final String title) {
         return new Specification<Article>() {
+            /**
+             *
+             */
+            private static final long serialVersionUID = 1L;
+
             @Override
             public Predicate toPredicate(Root<Article> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
                 query.orderBy(cb.desc(root.get("articleid")));
-                return cb.like(root.get("title"), "%" + title + "%");
+                return cb.and(cb.equal(root.get("ispublic"), 1), cb.like(root.get("title"), "%" + title + "%"));
             }
         };
     }
@@ -22,10 +27,16 @@ public class Search {
     // 작성자로 검색
     public static Specification<Article> searchByNicknameOrderByArticleidDesc(final String nickname) {
         return new Specification<Article>() {
+            /**
+             *
+             */
+            private static final long serialVersionUID = 1L;
+
             @Override
             public Predicate toPredicate(Root<Article> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
                 query.orderBy(cb.desc(root.get("articleid")));
-                return cb.like(root.get("nickname"), "%" + nickname + "%");
+
+                return cb.and(cb.equal(root.get("ispublic"), 1), cb.like(root.get("nickname"), "%" + nickname + "%"));
             }
         };
     }
@@ -33,10 +44,15 @@ public class Search {
     // 내용으로 검색
     public static Specification<Article> searchByContentOrderByArticleidDesc(final String content) {
         return new Specification<Article>() {
+            /**
+             *
+             */
+            private static final long serialVersionUID = 1L;
+
             @Override
             public Predicate toPredicate(Root<Article> root, CriteriaQuery<?> query, CriteriaBuilder cb) {
                 query.orderBy(cb.desc(root.get("articleid")));
-                return cb.like(root.get("content"), "%" + content + "%");
+                return cb.and(cb.equal(root.get("ispublic"), 1), cb.like(root.get("content"), "%" + content + "%"));
             }
         };
     }

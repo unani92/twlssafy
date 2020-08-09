@@ -16,7 +16,7 @@ export default {
 
 <style>
 .signup-body {
-  padding-top: 100px;
+  padding-top: 110px;
   max-width: 530px;
   margin-bottom: 1rem;
   margin-left: auto;

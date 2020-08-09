@@ -3,7 +3,7 @@
     <div class="nav-bar">
       <div class="logo-searchbar">
         <div class="logo">
-          <Router-link class="logo-text" to="/">TWL</Router-link>
+          <Router-link class="logo-text" to="/latest">TWL</Router-link>
         </div>
         <div class="input-box">
           <i
@@ -15,8 +15,8 @@
       </div>
       <div class="article-icon">
         <div v-if="this.$store.getters.isLoggedIn">
-          <div
-            :style="{ backgroundImage:'url('+require('@/assets/image/medal-'+grade+'.png')+')'}"
+          <div style="width : 28px;"
+            :style="{ backgroundImage:'url('+require('@/assets/image/medal-'+calcGrade+'.png')+')'}"
             class="grade"
           ></div>
         </div>
@@ -74,7 +74,16 @@ export default {
   data() {
     return {
       grade: getGrade(this.$store.state.articleCount),
+      scroll: {
+        prev: 0,
+        upDown: null
+      }
     };
+  },
+  computed: {
+    calcGrade() {
+      return getGrade(this.$store.state.articleCount);
+    },
   },
   name: "NavBar",
   components: {
@@ -88,8 +97,10 @@ export default {
       aside.classList.toggle("disabled");
     },
     notificationIconToggle() {
-      const notiDropdown = document.querySelector(".notification");
-      notiDropdown.classList.toggle("disabled");
+      if (this.$store.state.notification.length) {
+        const notiDropdown = document.querySelector(".notification");
+        notiDropdown.classList.toggle("disabled");
+      }
     },
     goToEmailLogin() {
       const aside = document.querySelector(".aside");
@@ -102,17 +113,25 @@ export default {
       aside.classList.toggle("disabled");
     },
     goToMyPage() {
-      this.$router
-        .push({
-          name: "Profile",
-          params: { nickname: this.$store.state.nickname },
-        })
-        .catch(() => {});
+      this.$router.push({name: "Dummy", params: {following : this.$store.state.nickname}})
     },
     logout() {
       this.$router.push({ name: "Logout" });
     },
+    scrollEvent() {
+      const navBar = document.querySelector(".notification")
+      if (navBar) {
+        const nowScrollY = window.scrollY
+          if (nowScrollY > this.scroll.prev) {
+            navBar.classList.add("disabled")
+            this.scroll.prev = nowScrollY
+          }
+        }
+      },
   },
+  mounted() {
+    document.addEventListener("scroll", this.scrollEvent)
+  }
 };
 </script>
 
@@ -166,6 +185,8 @@ export default {
 }
 .notification {
   position: fixed;
+  border-radius: 3px;
+  background-color: #d5dbd9;
   top: 70px;
   right: 0;
   z-index: 10;
