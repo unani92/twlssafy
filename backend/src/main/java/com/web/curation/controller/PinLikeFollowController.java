@@ -75,6 +75,7 @@ public class PinLikeFollowController {
           "follow" : "qwer@qwer.com"
           }
          */
+
         String email = JWTDecoding.decode(header.get("id_token").get(0));
         
         String follow = (String) request.get("follow");

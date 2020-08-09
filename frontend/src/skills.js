@@ -178,6 +178,7 @@ const skills = [
 "Consul",
 "Dagger2",
 "Dart",
+"Data Base",
 "Data Binding",
 "Data visualization",
 "Db2",

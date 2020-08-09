@@ -1,6 +1,6 @@
 <template>
   <div class="article-detail">
-    <div class="left-sidemenu">
+    <div class="left-sidemenu" v-if="article">
       <ArticleDetailSideMenu :article="article" :sideMenu="sideMenu" />
     </div>
     <div class="article">
@@ -76,12 +76,11 @@ export default {
     ArticleDetailProfile,
     CommentCreate,
   },
-  computed: {
-    followList() {
-      return this.$store.state.followList;
-    },
-  },
-
+  // computed: {
+  //   followList() {
+  //     return this.$store.state.followList;
+  //   },
+  // },
   data() {
     return {
       id: this.$route.params.id,
@@ -95,7 +94,7 @@ export default {
       ispublic: '',
       sideMenu: {
         commentList: null,
-        isFollowed: null,
+        // isFollowed: null,
         cntLikes: null,
         cntPin: null,
         isWriter: false,
@@ -116,7 +115,6 @@ export default {
         category: "keyword",
       };
       this.$router.push({ name: "Dummy", params: { params } });
-      // this.$router.push({ name: "ArticleSearchByStack", query: params });
     },
     async getArticle() {
       try {
@@ -168,14 +166,6 @@ export default {
         });
       });
     },
-    // userToggle() {
-    //   const dropdown = document.querySelector(".dropdown")
-    //   const loginUser = this.$store.state.nickname
-    //   if (this.article.nickname === loginUser) {
-    //     dropdown.classList.toggle("disabled")
-    //   }
-    // },
-
     removeArticle() {
       const id_token = this.$store.state.id_token
 
