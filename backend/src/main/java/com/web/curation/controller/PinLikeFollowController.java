@@ -117,7 +117,7 @@ public class PinLikeFollowController {
 
                 if (notificationDao.save(notification) != null) {
                     // 알림 저장 하면
-                    int cnt = (int) notificationDao.countByEmailAndRead(follow);
+                    int cnt = (int) notificationDao.countByEmail(follow);
                     Map<String, Object> object = new HashMap<>();
                     object.put("notification", notification);
                     object.put("notificationCnt", cnt);
@@ -253,7 +253,7 @@ public class PinLikeFollowController {
         notification.setArticleid(article.getArticleid());
 
         if (notificationDao.save(notification) != null) {
-            int cnt = (int) notificationDao.countByEmailAndRead(article.getEmail());
+            int cnt = (int) notificationDao.countByEmail(article.getEmail());
             Map<String, Object> object = new HashMap<>();
             object.put("notification", notification);
             object.put("cnt", cnt);
