@@ -104,10 +104,10 @@ public class PinLikeFollowController {
                 notification.setOther(other);
                 notification.setType(type);
                 notification.setReadn(0);
-                notification.setArticleid(0);
+                notification.setArticleid(1);
                 notification.setContent("");
                 
-                Notification noti = notificationDao.findNotification(follow,email,type,0,"",0);
+                Notification noti = notificationDao.findNotification(follow,email,type,1,"",0);
                 // "select * from notification where email = ?1 and other = ?2 and type = ?3 and articleid = ?4 and content = ?5"
                 if(noti !=null){ 
                     if(noti.getReady() != 1) // 이미 이 사람이 날 팔로우한다는 알림이 있고, 내가 그걸 안 읽었으면 이전 알림은 지우고 다시 보내줌
@@ -132,12 +132,12 @@ public class PinLikeFollowController {
                 return new ResponseEntity<>(result, HttpStatus.OK);
             }
 
-                Notification noti = notificationDao.findNotification(follow,email,"follow",0,"",0);
+                Notification noti = notificationDao.findNotification(follow,email,"follow",1,"",0);
                 // "select * from notification where email = ?1 and other = ?2 and type = ?3 and articleid = ?4 and content = ?5"
                 if( noti !=null){ 
                     if(noti.getReady() != 1)
                     // 예전에 저 사람이 날 팔로우 했다는 알람을 안 읽었으면 지움
-                    notificationDao.delete(notificationDao.findNotification(follow,email,"follow",0,"",0));
+                    notificationDao.delete(notificationDao.findNotification(follow,email,"follow",1,"",0));
                 }
 
 
