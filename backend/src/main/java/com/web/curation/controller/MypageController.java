@@ -192,7 +192,13 @@ public class MypageController {
         String imgUrl = (String)request.get("imgUrl");
         String email = JWTDecoding.decode(header.get("id_token").get(0));
 
-        String img = imgUrl.substring(imgUrl.indexOf("(")+1,imgUrl.indexOf(")"));
+        String img;
+        try{
+            img = imgUrl.substring(imgUrl.indexOf("(")+1,imgUrl.indexOf(")"));
+        } catch(Exception e) {
+            img = imgUrl;
+        }
+
 
         User updateUser = userDao.getUserByEmail(email);
         updateUser.setImg(img);
