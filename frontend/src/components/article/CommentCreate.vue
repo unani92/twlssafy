@@ -5,14 +5,12 @@
     </div>
     <div>
       <textarea v-model="content" placeholder="댓글을 작성해 주세요" class="create" />
-      <button class="createBtn" @click="submitComment">
-        <i class="fas fa-pencil-alt"></i>
-      </button>
+      <div>
+        <button class="createBtn" @click="submitComment">
+          <i class="fas fa-pencil-alt">댓글 달기</i>
+        </button>
+      </div>
     </div>
-    <button class="commentBtn" @click="readComment">
-      <div v-if="!toggle">댓글 보기</div>
-      <div v-else>댓글 닫기</div>
-    </button>
 
     <div v-if="commentList.length && toggle">
       <CommentDetail
@@ -104,13 +102,12 @@ button {
 }
 .create {
   display: block;
-  width: 90%;
+  width: 100%;
   height: 70px;
   border: 1px solid gainsboro;
   font-weight: bold;
   font-size: 1rem !important;
   padding: 1rem;
-  margin-bottom: 2rem;
   float: left;
   margin-right: 2%;
 }
@@ -119,14 +116,12 @@ button {
 }
 
 .createBtn {
-  width: 7%;
+  width: 100%;
   height: 70px;
   color: #94adff;
-  background-color: white;
+  background-color: #eeeeee00;
   font-weight: bold;
-  font-size: 20px;
-}
-.commentBtn {
-  width: 70px;
+  font-size: 15px;
+  margin-bottom: 1rem;
 }
 </style>

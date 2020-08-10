@@ -68,7 +68,6 @@ export default {
       //   nickname: this.$route.params.nickname,
       // };
       const res = this.data.data
-      console.log(res.data)
       
       this.isLoading = false;
       this.keywords = [...this.keywords, ...res.data.object.keyword];

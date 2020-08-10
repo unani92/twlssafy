@@ -2,7 +2,8 @@
   <div class="profile-info">
     <section class="about-area" id="about">
       <div class="picture">
-        <img src="https://i.pravatar.cc/400?u=정윤환" />
+        <img v-if="userInfo.userInfo.img" :src=userInfo.userInfo.img />
+        <img v-else src="https://i.pravatar.cc/400?u=정윤환" />
       </div>
       <div class="text">
         <div
@@ -37,19 +38,19 @@
             </div>
           </li>
 
-          <li style="height:25px;">
+          <li style="">
             <div class="info">
               <i class="fas fa-envelope"></i>
               {{ userInfo.userInfo.email }}
             </div>
           </li>
-          <li style="dec" v-if="skills.length !== 0"></li>
           <li v-if="userInfo.userInfo.github != null">
-            <div class="github">
+            <div class="info">
               <i class="fab fa-github"></i>
               {{ userInfo.userInfo.github }}
             </div>
           </li>
+          <!-- <li style="dec" v-if="skills.length !== 0"></li> -->
         </ul>
         <li v-if="skills.length !== 0">
           <div class="skills">
@@ -70,7 +71,7 @@
           </span>
         </li>
         <div class="sns">
-          <a>
+          <a style="background-color : white">
             <i class="fas fa-pencil-alt"></i>
             <br />
             <span>{{ userInfo.totalArticleCount }} TILs</span>
@@ -85,9 +86,9 @@
             <br />
             <span>{{ userInfo.following.follow.length }} Followings</span>
           </a>
-        </div>
-        <div id="calendar">
-          <Calendar :userInfo="userInfo" />
+          <div id="calendar">
+            <Calendar :userInfo="userInfo" />
+          </div>
         </div>
       </div>
     </section>
@@ -99,7 +100,6 @@
     <div id="skillModal" class="modal">
       <!-- Modal content -->
       <div class="modal-content">
-        <!-- <span v-for="skill in skills" :key="skill.name" class="totalSkills"># {{ skill.name }}</span> -->
         <SelectSkills v-if="this.$store.state.nickname === this.$route.params.nickname"></SelectSkills>
         <div class="close2" style="text-align : center; cursor : pointer">완료</div>
       </div>
@@ -116,7 +116,8 @@
           :key="idx"
           class="follower-email-container"
         >
-          <span class="follower-email">{{ userInfo.follower.followerNickname[idx - 1] }}</span>
+          <span @click="goUserPage(userInfo.follower.followerNickname[idx - 1])" 
+          class="follower-email">{{ userInfo.follower.followerNickname[idx - 1] }}</span>
           <div
             @click="
               requestFollow(userInfo.follower.follower[idx - 1].email, $event)
@@ -138,7 +139,8 @@
           :key="idx"
           class="follower-email-container"
         >
-          <span class="follower-email">{{ userInfo.following.followNickname[idx - 1] }}</span>
+          <span @click="goUserPage(userInfo.following.followNickname[idx - 1])" 
+          class="follower-email">{{ userInfo.following.followNickname[idx - 1] }}</span>
           <div
             @click="
               requestFollow(userInfo.following.follow[idx - 1].email, $event)
@@ -190,6 +192,10 @@ export default {
     },
   },
   methods: {
+    goUserPage(following){
+      this.$router.push({name: "Dummy", params: {following : following}})
+    },
+
     async requestFollow(followWantingTo, e) {
       if (!this.isLoggedIn) {
         console.log("login required");
@@ -281,7 +287,7 @@ export default {
     // follower modal
     const followerModal = document.getElementById("followersModal");
     const followBtn = document.querySelector(".follower-modal");
-    const followSpan = document.getElementsByClassName("close")[1];
+    const followSpan = document.getElementsByClassName("close")[0];
     followBtn.onclick = function () {
       followerModal.style.display = "block";
     };
@@ -292,7 +298,7 @@ export default {
     // following modal
     const followingModal = document.getElementById("followingsModal");
     const followingBtn = document.querySelector(".following-modal");
-    const followingSpan = document.getElementsByClassName("close")[2];
+    const followingSpan = document.getElementsByClassName("close")[1];
     followingBtn.onclick = function () {
       followingModal.style.display = "block";
     };
@@ -368,8 +374,8 @@ li {
 }
 
 .about-area > .picture > img {
-  max-width: 300px;
-  max-height: 300px;
+  width: 300px;
+  height: 300px;
   border-radius: 50%;
 }
 .name {
@@ -498,7 +504,7 @@ li {
 /* Modal Content */
 .modal-content {
   background-color: #fefefe;
-  margin: auto;
+  margin: 10%;
   padding: 20px;
   border: 1px solid #888;
   width: 80%;
@@ -521,7 +527,8 @@ li {
 
 .follow-modal-content {
   background-color: #fefefe;
-  margin: auto;
+  margin :auto;
+  margin-top: 10%;
   padding: 20px;
   border: 1px solid #888;
   width: 40%;

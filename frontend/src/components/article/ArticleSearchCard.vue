@@ -91,7 +91,6 @@ export default {
         };
         const token = this.$store.state.id_token;
         const { data } = await likeArticle(params,token);
-        console.log(data);
         //프런트에서 스토어 값 갱신
         const likeList = this.$store.state.likeList;
         if (data.data === "like 설정") {

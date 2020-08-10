@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.Set;
 
 import com.web.curation.JWT.JWTDecoding;
@@ -80,9 +79,6 @@ public class ArticleController2 {
             result.data = "success";
 
             int totalArticle = list.size();
-            // int totalPage = totalArticle/10;
-            // if (totalArticle%10 > 0) 
-            //     totalPage += 1;
             
             List<Article> articles = new ArrayList<>();
 
@@ -95,6 +91,7 @@ public class ArticleController2 {
             List<List<String>> keywordsList = new ArrayList<>();
             List<Integer> likesList = new ArrayList<>();
             List<Integer> pinList = new ArrayList<>();
+            List<Integer> commentCntlist = new ArrayList<>();
     
             for(Article a : articles){
                 // 게시글 번호를 이용해 이 글의 키워드 리스트를 받아옴 (ex. 1번글의 키워드 c, c++)
@@ -111,8 +108,10 @@ public class ArticleController2 {
                 else return new ResponseEntity<>(result, HttpStatus.OK); // 글에 keyword 없으면 false return
     
                 // 이 글의 총 좋아요, 핀 수
-               likesList.add(likesDao.countByArticleid(a.getArticleid()));
-               pinList.add(pinDao.countByArticleid(a.getArticleid()));
+                int articleid = a.getArticleid();
+                likesList.add(likesDao.countByArticleid(articleid));
+                pinList.add(pinDao.countByArticleid(articleid));
+                commentCntlist.add(commentDao.countByArticleid(articleid));
     
             }
             
@@ -121,6 +120,7 @@ public class ArticleController2 {
             object.put("keyword", keywordsList);
             object.put("likesCntList", likesList);
             object.put("pinCntList", pinList);
+            object.put("commentCntList", commentCntlist);
     
             result.object = object;
             
@@ -147,9 +147,6 @@ public class ArticleController2 {
             result.data = "success";
 
             int totalArticle = list.size();
-            // int totalPage = totalArticle/10;
-            // if (totalArticle%10 > 0) 
-            //     totalPage += 1;
             
             List<Article> articles = new ArrayList<>();
 
@@ -162,6 +159,7 @@ public class ArticleController2 {
             List<List<String>> keywordsList = new ArrayList<>();
             List<Integer> likesList = new ArrayList<>();
             List<Integer> pinList = new ArrayList<>();
+            List<Integer> commentCntList = new ArrayList<>();
     
             for(Article a : articles){
                 // 게시글 번호를 이용해 이 글의 키워드 리스트를 받아옴 (ex. 1번글의 키워드 c, c++)
@@ -178,8 +176,10 @@ public class ArticleController2 {
                 else return new ResponseEntity<>(result, HttpStatus.OK); // 글에 keyword 없으면 false return
     
                 // 이 글의 총 좋아요, 핀 수
-               likesList.add(likesDao.countByArticleid(a.getArticleid()));
-               pinList.add(pinDao.countByArticleid(a.getArticleid()));
+                int articleid = a.getArticleid();
+               likesList.add(likesDao.countByArticleid(articleid));
+               pinList.add(pinDao.countByArticleid(articleid));
+               commentCntList.add(commentDao.countByArticleid(articleid));
     
             }
             
@@ -188,6 +188,7 @@ public class ArticleController2 {
             object.put("keyword", keywordsList);
             object.put("likesCntList", likesList);
             object.put("pinCntList", pinList);
+            object.put("commentCntList", commentCntList);
     
             result.object = object;
         }
@@ -265,28 +266,31 @@ public class ArticleController2 {
         result.status = false;
         result.data = "fail";
 
-        List<Article> list = articleDao.articleAt(date, email);
+        List<Article> articles = articleDao.articleAt(date, email);
 
-        int totalArticle = list.size();
+        // List<Article> list = articleDao.articleAt(date, email);
+
+        // int totalArticle = list.size();
         // int totalPage = totalArticle/10;
         // if (totalArticle%10 > 0) 
         //     totalPage += 1;
         
-        List<Article> articles = new ArrayList<>();
 
         
         
-        try {
-            if(list.get(0) != null){
-                for(int i=page*10; i<page*10+10; i++) {
-                    if(i<totalArticle) {
-                        articles.add(list.get(i));
-                    }
-                }
-            }
-        } catch (Exception e) {
-            list = null;
-        }
+        // try {
+        //     if(list.get(0) != null){
+        //         for(int i=page*10; i<page*10+10; i++) {
+        //             if(i<totalArticle) {
+        //                 articles.add(list.get(i));
+        //             }
+        //         }
+        //     }
+        // } catch (Exception e) {
+        //     list = null;
+        // }
+
+        System.out.println(date);
 
 
         List<List<String>> keywordsList = new ArrayList<>();
@@ -327,7 +331,27 @@ public class ArticleController2 {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
+    @ApiOperation(value = "게시글 날짜 조회")
+    @GetMapping("/article/datelist/{nickname}")
+    public Object searchDate(@PathVariable final String nickname) {
 
+        final BasicResponse result = new BasicResponse();
+        result.status = false;
+        result.data = "fail";
+
+        List<Article> list = articleDao.findByNickname(nickname);
+        List<String> dateList = new ArrayList<>();
+
+        for(Article a : list){
+            String date = a.getCreatedat().toString();
+            date = date.substring(0,10);
+            dateList.add(date);
+        }
+       
+        return dateList;
+
+        
+    }
 
     @ApiOperation(value = "추천 게시글")
     @GetMapping("/article/recommend")

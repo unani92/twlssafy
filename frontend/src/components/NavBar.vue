@@ -15,7 +15,7 @@
       </div>
       <div class="article-icon">
         <div v-if="this.$store.getters.isLoggedIn">
-          <div
+          <div style="width : 28px;"
             :style="{ backgroundImage:'url('+require('@/assets/image/medal-'+calcGrade+'.png')+')'}"
             class="grade"
           ></div>
@@ -113,12 +113,7 @@ export default {
       aside.classList.toggle("disabled");
     },
     goToMyPage() {
-      this.$router
-        .push({
-          name: "Profile",
-          params: { nickname: this.$store.state.nickname },
-        })
-        .catch(() => {});
+      this.$router.push({name: "Dummy", params: {following : this.$store.state.nickname}})
     },
     logout() {
       this.$router.push({ name: "Logout" });

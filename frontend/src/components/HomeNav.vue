@@ -2,16 +2,16 @@
   <div class="home-nav">
     <div class="post-nav">
       <span>
-        <Router-link to="/" exact>Latest</Router-link>
+        <router-link to="/" exact>Home</router-link>
       </span>
       <span>
-        <router-link to="/recommend">Recommend</router-link>
+        <Router-link to="/latest" >Latest</Router-link>
       </span>
       <span>
         <router-link v-if="isLoggedIn" to="/follow">Follow</router-link>
       </span>
       <span>
-        <router-link v-if="isLoggedIn" to="/pin">Pinned</router-link>
+        <router-link v-if="isLoggedIn" to="/pin">Bookmark</router-link>
       </span>
     </div>
     <div v-if="$store.getters.isLoggedIn">
@@ -21,9 +21,9 @@
         </button>
       </span>
       <span>
-        <button class="writeBtn">
+        <!-- <button class="writeBtn">
           <i @click="interestToggle" class="fas fa-fire-alt"></i>
-        </button>
+        </button> -->
       </span>
     </div>
     <div class="interest disabled">

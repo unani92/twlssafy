@@ -131,7 +131,7 @@ export default {
 
 <style scoped>
 .login {
-  padding-top: 100px;
+  padding-top: 135px;
   text-align: center;
 }
 h1 {

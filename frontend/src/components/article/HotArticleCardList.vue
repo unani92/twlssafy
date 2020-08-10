@@ -47,7 +47,6 @@ export default {
       const id_token = this.$store.state.id_token;
 
       const { data } = await fetchHotArticles(params, id_token);
-      console.log(data);
       this.isLoading = false;
       this.keywords = [...this.keywords, ...data.object.keyword];
       this.articles = [...this.articles, ...data.object.article];

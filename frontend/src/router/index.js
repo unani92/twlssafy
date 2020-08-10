@@ -20,29 +20,29 @@ import Dummy from '../components/Dummy';
 import ArticleRecommend from '../views/ArticleRecommend';
 import CalendarCardList from '../components/calendar/CalendarCardList.vue';
 import store from '@/store/index';
-import NotFound from "../views/NotFound";
+import NotFound from '../views/NotFound';
 
 Vue.use(VueRouter);
 
 const routes = [
   {
-    path: '/',
+    path: '/article',
     name: 'Home',
     component: Home,
     children: [
       {
-        path: '',
+        path: '/latest',
         name: 'ArticleCardList',
         component: ArticleCardList,
       },
       {
-        path: 'follow',
+        path: '/follow',
         name: 'myfollowArticles',
         component: FollowArticleCardList,
         beforeEnter: requireLogin,
       },
       {
-        path: 'pin',
+        path: '/pin',
         name: 'mypinArticles',
         component: PinArticleCardList,
         beforeEnter: requireLogin,
@@ -50,7 +50,7 @@ const routes = [
     ],
   },
   {
-    path: '/recommend',
+    path: '/',
     name: 'ArticleRecommend',
     component: ArticleRecommend,
   },
@@ -71,19 +71,16 @@ const routes = [
     name: 'ChangePwd',
     component: ChangePwd,
     props: true,
-    beforeEnter: requireLogin,
   },
   {
     path: '/findpwd',
     name: 'FindPwd',
     component: FindPwd,
-    beforeEnter: requireLogin,
   },
   {
     path: '/selectskills',
     name: 'SelectSkills',
     component: SelectSkills,
-    beforeEnter: requireLogin,
   },
   {
     path: '/create',
@@ -143,10 +140,10 @@ const routes = [
     props: true,
   },
   {
-    path : '/error/404/notfound',
+    path: '/error/404/notfound',
     alias: '*',
-    name : 'NotFound',
-    component: NotFound
+    name: 'NotFound',
+    component: NotFound,
   },
 ];
 
