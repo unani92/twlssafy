@@ -1,7 +1,8 @@
 <template>
   <div class="sidemenu">
-    <input type="text" name="ShareUrl" id="ShareUrl" />
-
+    <div style="position:relative">
+      <input type="text" name="ShareUrl" id="ShareUrl" />
+    </div>
     <div class="icon">
       <i @click="clickFollow" class="far fa-user" :class="{pressed : isFollowed}"></i>
       <span class="sideCnt" v-if="isFollowed">-</span>
@@ -212,9 +213,9 @@ export default {
 }
 
 #ShareUrl {
+  overflow: hidden;
+  position: absolute;
   opacity: 0;
-  height: 0;
-  width: 0;
 }
 .pressed {
   color: crimson;

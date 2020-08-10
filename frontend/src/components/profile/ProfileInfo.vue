@@ -2,7 +2,7 @@
   <div class="profile-info">
     <section class="about-area" id="about">
       <div class="picture">
-        <img v-if="userInfo.userInfo.img" :src=userInfo.userInfo.img />
+        <img v-if="userInfo.userInfo.img" :src="userInfo.userInfo.img" />
         <img v-else src="https://i.pravatar.cc/400?u=정윤환" />
       </div>
       <div class="text">
@@ -38,7 +38,7 @@
             </div>
           </li>
 
-          <li style="">
+          <li style>
             <div class="info">
               <i class="fas fa-envelope"></i>
               {{ userInfo.userInfo.email }}
@@ -54,19 +54,15 @@
         </ul>
         <li v-if="skills.length !== 0">
           <div class="skills">
-            <span
-              v-for="skill in skills"
-              :key="skill.name"
-              style="font-size: 15px;"
-            >#{{ skill.name }}</span>
-            <span v-if="isMypage" class="more" data-toggle="modal">
+            <span v-for="skill in skills" :key="skill.name">#{{ skill.name }}</span>
+            <button :disabled="!isMypage" class="more" data-toggle="modal">
               <i class="far fa-plus-square"></i>
-            </span>
+            </button>
           </div>
         </li>
         <li v-else>
           등록된 관심사가 없습니다.
-          <span v-if="isMypage" class="more" data-toggle="modal">
+          <span :disabled="!isMypage" class="more" data-toggle="modal">
             <i class="far fa-plus-square"></i>
           </span>
         </li>
@@ -116,8 +112,10 @@
           :key="idx"
           class="follower-email-container"
         >
-          <span @click="goUserPage(userInfo.follower.followerNickname[idx - 1])" 
-          class="follower-email">{{ userInfo.follower.followerNickname[idx - 1] }}</span>
+          <span
+            @click="goUserPage(userInfo.follower.followerNickname[idx - 1])"
+            class="follower-email"
+          >{{ userInfo.follower.followerNickname[idx - 1] }}</span>
           <div
             @click="
               requestFollow(userInfo.follower.follower[idx - 1].email, $event)
@@ -139,8 +137,10 @@
           :key="idx"
           class="follower-email-container"
         >
-          <span @click="goUserPage(userInfo.following.followNickname[idx - 1])" 
-          class="follower-email">{{ userInfo.following.followNickname[idx - 1] }}</span>
+          <span
+            @click="goUserPage(userInfo.following.followNickname[idx - 1])"
+            class="follower-email"
+          >{{ userInfo.following.followNickname[idx - 1] }}</span>
           <div
             @click="
               requestFollow(userInfo.following.follow[idx - 1].email, $event)
@@ -192,8 +192,8 @@ export default {
     },
   },
   methods: {
-    goUserPage(following){
-      this.$router.push({name: "Dummy", params: {following : following}})
+    goUserPage(following) {
+      this.$router.push({ name: "Dummy", params: { following: following } });
     },
 
     async requestFollow(followWantingTo, e) {
@@ -437,9 +437,15 @@ li {
   display: flex;
   /* justify-content: space-between; */
 }
+.more {
+  color: black;
+  background: transparent;
+}
 .more:hover {
   cursor: pointer;
-  background-color: lightblue;
+}
+.more:disabled {
+  opacity: 0;
 }
 @media (max-width: 414px) {
   .about-area > .text > .sns > a {
@@ -527,7 +533,7 @@ li {
 
 .follow-modal-content {
   background-color: #fefefe;
-  margin :auto;
+  margin: auto;
   margin-top: 10%;
   padding: 20px;
   border: 1px solid #888;
@@ -588,6 +594,6 @@ li {
   cursor: pointer;
 }
 #calendar {
-  margin-left : 1%;
+  margin-left: 1%;
 }
 </style>

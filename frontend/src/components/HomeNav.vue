@@ -151,4 +151,16 @@ export default {
   cursor: pointer;
   margin-right: 10px;
 }
+@media (max-width: 500px){
+  span {
+    margin: 0;
+    font-size: 13px;
+  }
+  .writeBtn {
+  
+  width: 25px;
+  height: 25px;
+
+  }
+}
 </style>

@@ -46,16 +46,16 @@
           <div class="nicknamePinLikes">
             <div style="float : left; ">{{ article.nickname }}</div>
             <div class="btns">
-              <button @click="pin" class="firstBtn" style="background-color:white; font-size:16px; width:4%; margin : 3%;">
+              <button @click="pin" class="firstBtn" style="background-color:white; width:4%; margin : 3%;">
                 <i v-if="isPinned" class="fas fa-bookmark" style="color : hotpink"> {{pinCnt}}</i>
                 <i v-else class="far fa-bookmark" style="color : hotpink"> {{pinCnt}}</i>
               </button>
-              <button @click="like" style="background-color:white; font-size:16px; width: 4%;margin : 3%;">
+              <button @click="like" class="firstBtn" style="background-color:white; width: 4%;margin : 3%;">
                 <i v-if="isliked" class="fas fa-heart" style="color : hotpink;"> {{likesCnt}}</i>
                 <i v-else class="far fa-heart" style="color : hotpink;"> {{likesCnt}}</i>
                 
               </button>
-              <button style="background-color:white;font-size:16px; width:4%; margin : 3%;"
+              <button class="firstBtn" style="background-color:white; width:4%; margin : 3%;"
               @click="
                 $router.push({
                   name: 'ArticleDetail',
@@ -263,7 +263,8 @@ export default {
   overflow: hidden;
   word-break:break-all;
 }
-button {
+.firstBtn {
+  font-size:16px;
   border: none;
   align-items: center;
   justify-content: center;
@@ -271,7 +272,6 @@ button {
   letter-spacing: 1px;
   border-radius: 50px;
   display: inline-flex;
-  font-size: 10px;
   text-transform: uppercase;
   color: white;
   margin: 1px;
@@ -321,8 +321,9 @@ button {
     margin-top: 0px;
   }
 
-  button {
-    margin : 5%;
+  .firstBtn {
+    /* margin : 3%; */
+    font-size: 13px;
   }
 }
 </style>
