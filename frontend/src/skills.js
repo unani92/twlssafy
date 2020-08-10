@@ -8,6 +8,7 @@ const skills = [
 "Adobe XD",
 "AEM",
 "Ajax",
+"Algorithm",
 "Amazon Kinesis",
 "ANSYS",
 "Apache Tomcat",
