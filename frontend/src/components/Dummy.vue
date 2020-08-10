@@ -34,7 +34,9 @@
           name: "Profile",
           params: { nickname : params.following },
         })
-      }else this.$router.push('/')
+      } else if (params.nickname !== undefined) {
+        this.$router.push({ name: "Profile", params: {nickname: params.nickname} })
+      } else this.$router.push('/')
     },
   }
 </script>

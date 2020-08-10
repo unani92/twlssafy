@@ -33,6 +33,7 @@
   import 'flatpickr/dist/themes/material_blue.css';
   import { Korean } from 'flatpickr/dist/l10n/ko.js';
   import http from '../../api/http-common.js';
+  import { calender } from "../../api";
 
   export default {
     name: 'Calendar',
@@ -95,16 +96,14 @@
           
           },
         getList(targetDate){
-          http.get(`/article/date/${targetDate}?email=${this.userInfo.userInfo.email}&page=${this.page}`,)
-          .then( res => {
-            console.log(this.userInfo.userInfo);
-             const data = {
-              data : res,
-              userInfo : this.userInfo,
-            }
-            console.log(data)
-            this.$router.push({name: "Dummy", params : {data}})
-            });
+          calender(targetDate, this.userInfo.userInfo.email, this.page)
+            .then( res => {
+               const data = {
+                data : res,
+                userInfo : this.userInfo,
+              }
+              this.$router.push({name: "Dummy", params : {data}})
+              });
         },
         myPage(){
           this.$router.push({name: "Dummy", params: {userInfo : this.userInfo}})

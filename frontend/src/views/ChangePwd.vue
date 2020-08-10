@@ -44,10 +44,10 @@
 </template>
 
 <script>
-import http from "../api/http-common.js";
 import { validatePassword } from "@/utils/validation";
+import { submitChangePwd } from "../api";
 
-  export default {
+export default {
     name: "ChangePwd",
     data() {
     return {
@@ -64,11 +64,11 @@ import { validatePassword } from "@/utils/validation";
   },
   methods: {
     async checkPwd(){
-      if(this.pwd1 != this.pwd2){
+      if(this.pwd1 !== this.pwd2){
         this.msg="비밀번호 불일치"
       } else this.msg = ""
 
-      if(this.msg=="" && this.isPasswordValid){
+      if(this.msg === "" && this.isPasswordValid){
         this.btnEnabled=true;  
       }
     },
@@ -76,15 +76,15 @@ import { validatePassword } from "@/utils/validation";
       this.$router.go(-1)
     },
     async changePwd(){
-      http.post("/account/changePwd",{email : this.email, password : this.pwd1})
-      .then(()=>{
-        alert("비밀번호 변경완료 ! 로그인 해주세요")
-        this.$router.push("/")
-      }
-      ).catch(err =>
-        alert ("Error : " , err)
-      );
-    },
+      submitChangePwd(this.email, this.pwd1)
+        .then(()=>{
+          alert("비밀번호 변경완료 ! 로그인 해주세요")
+          this.$router.push("/")
+        })
+        .catch(err =>
+          alert ("Error : " , err)
+        );
+      },
      checkPasswordForm() {
       if (!this.isPasswordValid) {
         this.validPwd =
