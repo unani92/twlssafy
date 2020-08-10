@@ -374,8 +374,8 @@ li {
 }
 
 .about-area > .picture > img {
-  max-width: 300px;
-  max-height: 300px;
+  width: 300px;
+  height: 300px;
   border-radius: 50%;
 }
 .name {
