@@ -126,10 +126,30 @@ function fetchHashTags() {
   return instance.get(`hashTag`);
 }
 
+function calender(targetDate,email,page) {
+  return instance.get(`/article/date/${targetDate}?email=${email}&page=${page}`)
+}
+
+function submitNotiRead(notificationId) {
+  return instance.get(`/notification/${notificationId}`)
+}
+
+function submitNotiDelete(notificationId) {
+  return instance.delete(`/notification/${notificationId}`)
+}
+
 function fetchRecommend(token) {
   return instance.get('article/recommend', {
     headers: { id_token: token }
   })
+}
+
+function submitChangePwd(email, password) {
+  return instance.post("/account/changePwd",{email: email , password: password})
+}
+
+function submitValidationMail(email) {
+  return instance.post("/account/findPwd",{email: email})
 }
 
 export {
@@ -158,5 +178,10 @@ export {
   fetchPinArticles,
   fetchHotArticles,
   fetchHashTags,
-  fetchRecommend
+  fetchRecommend,
+  calender,
+  submitNotiRead,
+  submitNotiDelete,
+  submitChangePwd,
+  submitValidationMail
 };
