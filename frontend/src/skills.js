@@ -213,7 +213,7 @@ const skills = [
 "Neos",
 "NestJS",
 "New Relic",
-"Networkd",
+"Network",
 "Next.js",
 "Nexus",
 "nGrinder",
