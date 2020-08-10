@@ -1,6 +1,6 @@
 <template>
   <div class="sidemenu">
-    <input type="text" name="ShareUrl" id="ShareUrl" style="display:none" />
+    <input type="text" name="ShareUrl" id="ShareUrl" />
 
     <div class="icon">
       <i @click="clickFollow" class="far fa-user" :class="{pressed : isFollowed}"></i>
@@ -209,6 +209,11 @@ export default {
 }
 .share {
   padding: 5px 5px 5px 5px;
+}
+
+#ShareUrl {
+  opacity: 0;
+  height: 0;
 }
 .pressed {
   color: crimson;
