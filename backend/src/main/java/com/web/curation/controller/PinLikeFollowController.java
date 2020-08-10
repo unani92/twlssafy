@@ -102,7 +102,9 @@ public class PinLikeFollowController {
                 Notification notification = new Notification();
 
                 notification.setEmail(follow);
+                notification.setNickname(userDao.findUserByEmail(follow).get().getNickname());
                 notification.setOther(other);
+                notification.setOthernickname(userDao.findUserByEmail(other).get().getNickname());
                 notification.setType(type);
                 notification.setReadn(0);
                 notification.setArticleid(1);
@@ -246,8 +248,11 @@ public class PinLikeFollowController {
         Notification notification = new Notification();
         notification.setContent(content);
         notification.setEmail(article.getEmail());
-        notification.setNickname(userDao.findUserByEmail(other).get().getNickname());
+        notification.setNickname(userDao.findUserByEmail(article.getEmail()).get().getNickname());
         notification.setOther(other);
+        System.out.println("OTHER : "+other);
+        System.out.println("OTHER NICKNAME : "+userDao.findUserByEmail(other).get().getNickname());
+        notification.setOthernickname(userDao.findUserByEmail(other).get().getNickname());
         notification.setType(type);
         notification.setReadn(0);
         notification.setArticleid(article.getArticleid());
