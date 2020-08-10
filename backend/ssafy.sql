@@ -249,5 +249,5 @@ alter table member add github varchar(300) default null;
 alter table article add ispublic int default null;
 update article set ispublic = 1 where ispublic is null;
 
--- notification nickname
+-- notification nickname 추가
 alter table notification add othernickname char(20) default null;
