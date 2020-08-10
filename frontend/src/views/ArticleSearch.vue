@@ -9,10 +9,10 @@
           <option value="keyword">키워드</option>
           <option value="nickname">닉네임</option>
         </select> -->
-        <input type="radio" name="category" value="title" v-model="category">제목
-        <input type="radio" name="category" value="content" v-model="category"> 내용
-        <input type="radio" name="category" value="keyword" v-model="category">키워드
-        <input type="radio" name="category" value="nickname" v-model="category">닉네임
+        <input type="radio" name="category" value="keyword" v-model="category"> 키워드 
+        <input type="radio" name="category" value="title" v-model="category"> 제목 
+        <input type="radio" name="category" value="content" v-model="category">  내용 
+        <input type="radio" name="category" value="nickname" v-model="category"> 닉네임 
       </div>
       <div class="searchbar">        
         <input @keypress.enter="fetchSearchData" type="text" v-model="input"/>
@@ -31,6 +31,7 @@
       />
       <div id="bottomSensor"></div>
     </div>
+    <scroll/>
   </div>
 </template>
 
@@ -55,7 +56,7 @@ export default {
       page: 0,
       input: null,
       q: null,
-      category: null,
+      category: "keyword",
     };
   },
   methods: {
@@ -122,13 +123,12 @@ export default {
 
 <style scoped>
 .article-search {
-  padding-top: 70px;
+  padding-top: 135px;
 }
 .search {
   text-align: center;
   left : 5%;
-  width: 99%;
-
+  width: 100%;
 }
   .option {
     margin : 1rem;
@@ -156,6 +156,8 @@ i {
   z-index: 5;
   padding-left: 20px;
   border: none;
+  border-radius: 1%;
+  outline: none;
 }
 @media (max-width: 768px){
   .searchbar {

@@ -51,7 +51,7 @@ public class NotificationController {
 
         if(notificationList!=null){
             object.put("notification", notificationList);
-            object.put("notificationCnt",notificationDao.countByEmailAndRead(email));
+            object.put("notificationCnt",notificationDao.countByEmail(email));
             result.object = object;
             result.data="success";
             result.status=true;

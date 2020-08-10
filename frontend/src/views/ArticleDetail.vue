@@ -1,6 +1,6 @@
 <template>
   <div class="article-detail">
-    <div class="left-sidemenu">
+    <div class="left-sidemenu" v-if="article">
       <ArticleDetailSideMenu :article="article" :sideMenu="sideMenu" />
     </div>
     <div class="article">
@@ -17,15 +17,16 @@
         <div class="username-date">
           <!-- @click="userToggle" -->
           <div>
-            <span style="margin-right : 4px; cursor:pointer" @click="gotoWriterPage">{{ nickname }}</span>
+            <span style="margin-right : 4px; cursor:pointer" @click="gotoWriterPage" id="nickname">{{ nickname }} </span>
+            <span v-if="ispublic==3" style="color : gray;">비공개글 </span>
             <span v-if="isWriter">
               <Router-link
                 :to="{
                 name: 'ArticleUpdate',
-                params: { id, keywords, title, content  }
+                params: { id, keywords, title, content, ispublic  }
             }"
-              >
-                <i class="fas fa-edit" style="cursor: pointer; margin-right : 4px; color : gray"></i>
+              > 
+                 <i class="fas fa-edit" style="cursor: pointer; margin-right : 4px; color : gray"></i>
               </Router-link>
               <i
                 class="fas fa-trash-alt"
@@ -34,7 +35,9 @@
               ></i>
             </span>
           </div>
-          <span>{{ updatedAt }}</span>
+          <span><i class="fas fa-pen-nib" style="margin-right: 15px;"> {{ updatedAt }}  </i>  
+          <i class="fas fa-eye"> {{ hits }}hits</i>
+           </span>
         </div>
       </div>
       <div class="nickname-keyword markdown">
@@ -75,12 +78,11 @@ export default {
     ArticleDetailProfile,
     CommentCreate,
   },
-  computed: {
-    followList() {
-      return this.$store.state.followList;
-    },
-  },
-
+  // computed: {
+  //   followList() {
+  //     return this.$store.state.followList;
+  //   },
+  // },
   data() {
     return {
       id: this.$route.params.id,
@@ -91,9 +93,11 @@ export default {
       content: null,
       updatedAt: null,
       userinfo: null,
+      ispublic: '',
+      hits : 0,
       sideMenu: {
         commentList: null,
-        isFollowed: null,
+        // isFollowed: null,
         cntLikes: null,
         cntPin: null,
         isWriter: false,
@@ -114,7 +118,6 @@ export default {
         category: "keyword",
       };
       this.$router.push({ name: "Dummy", params: { params } });
-      // this.$router.push({ name: "ArticleSearchByStack", query: params });
     },
     async getArticle() {
       try {
@@ -130,6 +133,8 @@ export default {
           commentNickname,
           commentArticleCount,
           articleCount,
+          ispublic,
+          hits
         } = articleInfo.data.object;
         this.article = article;
 
@@ -145,6 +150,8 @@ export default {
         this.commentNickname = commentNickname;
         this.commentArticleCount = commentArticleCount;
         this.articleCount = articleCount;
+        this.ispublic = ispublic;
+        this.hits = hits;
 
         const loginUser = this.$store.state.nickname;
         if (this.article.nickname === loginUser) {
@@ -164,14 +171,6 @@ export default {
         });
       });
     },
-    // userToggle() {
-    //   const dropdown = document.querySelector(".dropdown")
-    //   const loginUser = this.$store.state.nickname
-    //   if (this.article.nickname === loginUser) {
-    //     dropdown.classList.toggle("disabled")
-    //   }
-    // },
-
     removeArticle() {
       const id_token = this.$store.state.id_token
 
@@ -196,7 +195,7 @@ export default {
   margin-bottom: 2rem;
 }
 .article {
-  padding-top: 75px;
+  padding-top: 135px;
   width: 80%;
   margin-right: 5%;
   /* margin-left: 5%; */
@@ -216,13 +215,13 @@ export default {
 }
 .title {
   font-size: 30px;
-  margin-bottom: 1rem;
+  /* margin-bottom: 1rem; */
 }
 .username-date {
   display: flex;
   justify-content: space-between;
-  font-size: 13px;
   clear: both;
+  font-size: 13px;
 }
 .username-date > span:nth-child(1) {
   font-weight: bold;
@@ -248,6 +247,9 @@ export default {
 }
 .disabled {
   display: none;
+}
+#nickname {
+  font-size: 16px;
 }
 @media (max-width: 414px) {
   .article-detail {
@@ -276,6 +278,7 @@ export default {
   outline: none;
   cursor: pointer;
   padding: 5px;
+  width: 70px;
 }
 .commentBtn {
   border-radius: 3px;

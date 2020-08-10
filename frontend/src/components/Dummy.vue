@@ -19,7 +19,6 @@
       if (params.id !== undefined) {
         this.$router.push({ name: "ArticleDetail", params: {id: params.id} })
       } else if (params.params !== undefined) {
-        console.log(params.params)
         this.$router.push({ name: "ArticleSearchByStack", query: params.params })
       } else if(params.userInfo !== undefined){
         this.$router
@@ -29,14 +28,20 @@
         })
       } else if(params.data !== undefined){
         this.$router.push({ name: "CalendarCardList", params : {data : params.data}})
-      } else this.$router.push('/')
+      } else if(params.following !== undefined){
+        this.$router
+        .push({
+          name: "Profile",
+          params: { nickname : params.following },
+        })
+      }else this.$router.push('/')
     },
-    // mounted() {
-    //   console.log(this.$route)
-    // }
   }
 </script>
 
-<style scoped>
+<style>
+* {
 
+font-family: 'Montserrat', sans-serif;
+}
 </style>

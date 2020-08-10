@@ -1,14 +1,17 @@
 <template>
   <div id="app">
     <NavBar/>
+    <HomeNav id = "homeNav"/>
     <Router-view/>
   </div>
 </template>
 <script>
   import NavBar from "./components/NavBar";
+  import HomeNav from "./components/HomeNav";
   export default {
     components: {
       NavBar,
+      HomeNav
     },
     data() {
       return {
@@ -21,12 +24,15 @@
     methods: {
       scrollEvent() {
         const navBar = document.querySelector(".nav-bar")
+        const homeNav = document.querySelector(".home-nav")
         const nowScrollY = window.scrollY
         if (nowScrollY > this.scroll.prev) {
           navBar.classList.add("disabled")
+          homeNav.classList.add("disabled")
           this.scroll.prev = nowScrollY
         } else {
           navBar.classList.remove("disabled")
+          homeNav.classList.remove("disabled")
           this.scroll.prev = nowScrollY
         }
       },
@@ -47,9 +53,9 @@
     background-color: rgb(249, 249, 249);
     margin: 0 auto;
   }
-  .disabled {
+  /* .disabled {
     display: none;
-  }
+  } */
   /* markdown viewer custom css */
   blockquote {
     border-left-width: 4px !important;
@@ -89,5 +95,10 @@
   }
   pre > code > span {
     font-size: 1rem !important;
+  }
+  #homeNav{
+    position:fixed;
+    top : 60px;
+    height : 60px;
   }
 </style>

@@ -42,10 +42,6 @@ export default {
       return `https://api.adorable.io/avatars/100/${this.article.email}.png`;
     },
   },
-  mounted() {
-    console.log(this.userinfo);
-    console.log(this.article);
-  },
 };
 </script>
 

@@ -92,12 +92,10 @@ export default {
           article_id: this.article.articleid,
         };
         const { data } = await likeArticle(params, this.id_token);
-        console.log(data);
         //프런트에서 스토어 값 갱신
         const likeList = this.$store.state.likeList;
         if (data.data === "like 설정") {
           likeList.push(this.article);
-          console.log(likeList);
           this.likesCnt++;
         } else {
           //좋아요 목록에서 삭제 로직
@@ -111,7 +109,6 @@ export default {
           this.likesCnt--;
         }
         this.$store.commit("setLikeList", likeList);
-        console.log("현재 상태는", this.$store.state.likeList);
       } else {
         if (confirm("좋아요 하시려면 로그인 해야 합니다. 하시겠습니까")) {
           this.$router.push("/login");
@@ -124,7 +121,6 @@ export default {
           article_id: this.article.articleid,
         };
         const { data } = await pinArticle(params, this.id_token);
-        console.log(data);
         //프런트에서 스토어 값 갱신
         const pinList = this.$store.state.pinList;
         if (data.data === "pin 설정") {
