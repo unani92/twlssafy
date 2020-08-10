@@ -99,7 +99,6 @@
     <div id="skillModal" class="modal">
       <!-- Modal content -->
       <div class="modal-content">
-        <!-- <span v-for="skill in skills" :key="skill.name" class="totalSkills"># {{ skill.name }}</span> -->
         <SelectSkills v-if="this.$store.state.nickname === this.$route.params.nickname"></SelectSkills>
         <div class="close2" style="text-align : center; cursor : pointer">완료</div>
       </div>
@@ -116,7 +115,8 @@
           :key="idx"
           class="follower-email-container"
         >
-          <span class="follower-email">{{ userInfo.follower.followerNickname[idx - 1] }}</span>
+          <span @click="goUserPage(userInfo.follower.followerNickname[idx - 1])" 
+          class="follower-email">{{ userInfo.follower.followerNickname[idx - 1] }}</span>
           <div
             @click="
               requestFollow(userInfo.follower.follower[idx - 1].email, $event)
@@ -160,7 +160,6 @@ import { requestFollow } from "@/api/index.js";
 import { mapState, mapGetters } from "vuex";
 import Calendar from "../calendar/Calendar";
 import { getGrade } from "@/utils/calcGrade";
-// import http from '@/api/http-common.js';
 
 export default {
   props: {
@@ -193,11 +192,6 @@ export default {
   },
   methods: {
     goUserPage(following){
-      // let userInfo = '';
-      // http.get(`/account/${following}?page=0`).then(res=> {
-      //   userInfo = res 
-      //   console.log(userInfo)
-      //   })
       this.$router.push({name: "Dummy", params: {following : following}})
     },
 
