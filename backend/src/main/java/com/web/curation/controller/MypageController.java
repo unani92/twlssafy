@@ -192,8 +192,10 @@ public class MypageController {
         String imgUrl = (String)request.get("imgUrl");
         String email = JWTDecoding.decode(header.get("id_token").get(0));
 
+        String img = imgUrl.substring(imgUrl.indexOf("(")+1,imgUrl.indexOf(")"));
+
         User updateUser = userDao.getUserByEmail(email);
-        updateUser.setImg(imgUrl);
+        updateUser.setImg(img);
 
         final BasicResponse result = new BasicResponse();
         result.data = "수정 실패";

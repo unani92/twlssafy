@@ -2,7 +2,8 @@
   <div class="profile-info">
     <section class="about-area" id="about">
       <div class="picture">
-        <img src="https://i.pravatar.cc/400?u=정윤환" />
+        <img v-if="userInfo.userInfo.img" :src=userInfo.userInfo.img />
+        <!-- <div v-if="userInfo.userInfo.img != 'null'" :style="https://i.pravatar.cc/400?u=정윤환" ></div> -->
       </div>
       <div class="text">
         <div
