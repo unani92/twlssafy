@@ -35,6 +35,7 @@ public class Notification {
     private String content;
     private String type;
     private String other;
+    private String othernickname;
     private int readn;
     private int articleid;
 

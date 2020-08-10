@@ -11,7 +11,7 @@
         <router-link v-if="isLoggedIn" to="/follow">Follow</router-link>
       </span>
       <span>
-        <router-link v-if="isLoggedIn" to="/pin">Pinned</router-link>
+        <router-link v-if="isLoggedIn" to="/pin">Bookmark</router-link>
       </span>
     </div>
     <div v-if="$store.getters.isLoggedIn">
