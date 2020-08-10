@@ -248,3 +248,6 @@ alter table member add github varchar(300) default null;
 -- 게시글 공개 / 비공개
 alter table article add ispublic int default null;
 update article set ispublic = 1 where ispublic is null;
+
+-- notification nickname
+alter table notification add othernickname char(20) default null;

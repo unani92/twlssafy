@@ -38,6 +38,7 @@
     methods: {
       goToPage(event) {
         if (this.$store.getters.isLoggedIn) {
+          console.log(this.noti);
           const notificationId = event.target.parentNode.id
           http.get(`/notification/${notificationId}`)
             .then(res => {
