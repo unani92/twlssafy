@@ -214,6 +214,7 @@ export default {
 #ShareUrl {
   opacity: 0;
   height: 0;
+  width: 0;
 }
 .pressed {
   color: crimson;
