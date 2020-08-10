@@ -127,4 +127,10 @@ export default {
   border-right: 0.05em solid;
   animation: typing 6s steps(60), caret 1s steps(1) infinite;
 }
+@media (max-width: 562px) {
+  .outro-text {
+    font-size: 0.625rem;
+    font-weight: 900;
+  }
+}
 </style>
