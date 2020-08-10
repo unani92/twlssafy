@@ -20,18 +20,16 @@ import Dummy from '../components/Dummy';
 import ArticleRecommend from '../views/ArticleRecommend';
 import CalendarCardList from '../components/calendar/CalendarCardList.vue';
 import store from '@/store/index';
-import NotFound from "../views/NotFound";
+import NotFound from '../views/NotFound';
 
 Vue.use(VueRouter);
 
 const routes = [
   {
-    
     path: '/article',
     name: 'Home',
     component: Home,
     children: [
-     
       {
         path: '/latest',
         name: 'ArticleCardList',
@@ -85,7 +83,6 @@ const routes = [
     path: '/selectskills',
     name: 'SelectSkills',
     component: SelectSkills,
-    beforeEnter: requireLogin,
   },
   {
     path: '/create',
@@ -145,10 +142,10 @@ const routes = [
     props: true,
   },
   {
-    path : '/error/404/notfound',
+    path: '/error/404/notfound',
     alias: '*',
-    name : 'NotFound',
-    component: NotFound
+    name: 'NotFound',
+    component: NotFound,
   },
 ];
 
