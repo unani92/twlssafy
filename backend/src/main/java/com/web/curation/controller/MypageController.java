@@ -6,6 +6,9 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.TreeMap;
 
+import javax.transaction.Transactional;
+
+import com.web.curation.JWT.JWTDecoding;
 import com.web.curation.dao.ArticleDao;
 import com.web.curation.dao.CommentDao;
 import com.web.curation.dao.KeywordsDao;
@@ -25,16 +28,21 @@ import com.web.curation.model.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.data.domain.Sort;
 
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
@@ -174,5 +182,30 @@ public class MypageController {
         }
         
         return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    @Transactional
+    @ApiOperation(value = "프로필 사진 수정")
+    @PutMapping(value="/account/changeprofileImage")
+    public Object updateProfileImage (@RequestHeader(required = true) final HttpHeaders header, @RequestBody(required = true) final Map<String,Object> request)
+            throws Exception {
+        String imgUrl = (String)request.get("imgUrl");
+        String email = JWTDecoding.decode(header.get("id_token").get(0));
+
+        String img = imgUrl.substring(imgUrl.indexOf("(")+1,imgUrl.indexOf(")"));
+
+        User updateUser = userDao.getUserByEmail(email);
+        updateUser.setImg(img);
+
+        final BasicResponse result = new BasicResponse();
+        result.data = "수정 실패";
+        result.status = false;
+        
+        if(userDao.save(updateUser) != null){
+            result.status = true;
+            result.data = "수정 성공";
+        }
+        return result;
+
     }
 }

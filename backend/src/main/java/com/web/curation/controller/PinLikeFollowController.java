@@ -250,8 +250,6 @@ public class PinLikeFollowController {
         notification.setEmail(article.getEmail());
         notification.setNickname(userDao.findUserByEmail(article.getEmail()).get().getNickname());
         notification.setOther(other);
-        System.out.println("OTHER : "+other);
-        System.out.println("OTHER NICKNAME : "+userDao.findUserByEmail(other).get().getNickname());
         notification.setOthernickname(userDao.findUserByEmail(other).get().getNickname());
         notification.setType(type);
         notification.setReadn(0);
