@@ -14,6 +14,7 @@
             :keywords="keywords[index]"
             :pinCnt="pinCntList[index]"
             :likesCnt="likesCntList[index]"
+            :commentCnt="commentCntList[index]"
           />
         </Slide>
       </carousel-3d>
@@ -36,7 +37,6 @@
         keywords: [],
         likesCntList : [],
         pinCntList : [],
-        tmpList : [],
         commentCntList : [],
         isLoading: true,
       }

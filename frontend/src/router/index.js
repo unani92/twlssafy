@@ -71,13 +71,11 @@ const routes = [
     name: 'ChangePwd',
     component: ChangePwd,
     props: true,
-    beforeEnter: requireLogin,
   },
   {
     path: '/findpwd',
     name: 'FindPwd',
     component: FindPwd,
-    beforeEnter: requireLogin,
   },
   {
     path: '/selectskills',
