@@ -152,6 +152,10 @@ function submitValidationMail(email) {
   return instance.post("/account/findPwd",{email: email})
 }
 
+function getCreateDate(nickname) {
+  return instance.get(`/article/datelist/${nickname}`)
+}
+
 export {
   checkEmail,
   checkNickname,
@@ -183,5 +187,6 @@ export {
   submitNotiRead,
   submitNotiDelete,
   submitChangePwd,
-  submitValidationMail
+  submitValidationMail,
+  getCreateDate
 };

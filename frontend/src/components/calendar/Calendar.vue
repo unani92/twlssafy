@@ -33,7 +33,7 @@
   import 'flatpickr/dist/themes/material_blue.css';
   import { Korean } from 'flatpickr/dist/l10n/ko.js';
   import http from '../../api/http-common.js';
-  import { calender } from "../../api";
+  import { calender, getCreateDate } from "../../api";
 
   export default {
     name: 'Calendar',
@@ -125,7 +125,8 @@
       flatPickr
     },
     created() {
-      http.get(`/article/datelist/${this.userInfo.userInfo.nickname}`).then(res => {this.config.enable = res.data});
+      getCreateDate(this.userInfo.userInfo.nickname)
+        .then(res => {this.config.enable = res.data});
     }
   }
 </script> 
