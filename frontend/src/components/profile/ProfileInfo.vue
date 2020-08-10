@@ -3,7 +3,7 @@
     <section class="about-area" id="about">
       <div class="picture">
         <img v-if="userInfo.userInfo.img" :src=userInfo.userInfo.img />
-        <!-- <div v-if="userInfo.userInfo.img != 'null'" :style="https://i.pravatar.cc/400?u=정윤환" ></div> -->
+        <img v-else src="https://i.pravatar.cc/400?u=정윤환" />
       </div>
       <div class="text">
         <div
