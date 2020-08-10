@@ -32,7 +32,6 @@
   import 'flatpickr/dist/flatpickr.css';
   import 'flatpickr/dist/themes/material_blue.css';
   import { Korean } from 'flatpickr/dist/l10n/ko.js';
-  import http from '../../api/http-common.js';
   import { calender, getCreateDate } from "../../api";
 
   export default {
