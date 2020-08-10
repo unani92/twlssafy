@@ -1,5 +1,5 @@
 <template>
-  <div style>
+  <div class="calendar-list-container">
     <ProfileInfo :userInfo="userInfo"></ProfileInfo>
     <div v-if="isLoading">
       <LoadingSpinner />
