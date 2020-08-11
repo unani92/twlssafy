@@ -282,23 +282,4 @@ public class PinLikeFollowController {
         } else
             return null;
     }
-
-    @ApiOperation(value = "알림 리스트")
-    @GetMapping("/notification/{notificationid}")
-    public Object notification(@PathVariable final int notificationid){
-        final BasicResponse result = new BasicResponse();
-        result.data="fail";
-        result.status=false;
-
-        Notification notification = notificationDao.findNotificationByNotificationid(notificationid);
-        if(notification.getReady() == 0)
-        {
-            notification.setReady(1);
-            notificationDao.delete(notification);
-            result.data="알림 - 읽음 처리";
-            result.status=true;
-        }
-        
-        return result;
-    }
 }

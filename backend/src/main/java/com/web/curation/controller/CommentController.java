@@ -105,22 +105,23 @@ public class CommentController {
         
         // notification
         Article a = articledao.findByArticleid(articleid);
+        if(!a.getEmail().equals(email)){
 
-        Notification noti = new Notification();
-        noti.setArticleid(articleid);
-        noti.setContent(a.getTitle());
-        noti.setEmail(a.getEmail());
-        noti.setNickname(a.getNickname());
-        noti.setOther(email);
-        noti.setOthernickname((String) JWTDecoding.getInfo(id_token).get("nickname"));
-        noti.setReadn(0);
-        noti.setReady(0);
-        noti.setType("comment");
+            Notification noti = new Notification();
+            noti.setArticleid(articleid);
+            noti.setContent(a.getTitle());
+            noti.setEmail(a.getEmail());
+            noti.setNickname(a.getNickname());
+            noti.setOther(email);
+            noti.setOthernickname((String) JWTDecoding.getInfo(id_token).get("nickname"));
+            noti.setReadn(0);
+            noti.setReady(0);
+            noti.setType("comment");
 
-        if(notiDao.save(noti)==null){ // 저장 못 하면
-            System.out.println("noti failed");
+            if(notiDao.save(noti)==null){ // 저장 못 하면
+                System.out.println("noti failed");
+            }
         }
-
         return new ResponseEntity<>(result,HttpStatus.OK);
     }
 
