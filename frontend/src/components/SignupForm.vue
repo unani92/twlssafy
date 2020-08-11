@@ -12,7 +12,6 @@
         <div class="inputfield logo" style></div>
         <div style="text-align: center;">회원가입을 하고 배운 지식을 친구들과 공유해보세요</div>
         <div class="inputfield">
-          <GithubLogin />
           <GoogleLogin />
         </div>
         <p class="join-warning guide-text">{{ logMessage.email }}</p>
@@ -114,7 +113,6 @@
 </template>
 
 <script>
-import GithubLogin from "../components/GithubLogin";
 import GoogleLogin from "../components/GoogleLogin";
 import { validateEmail, validatePassword } from "@/utils/validation";
 import { checkEmail, checkNickname, registerUser } from "@/api/index";
@@ -145,7 +143,6 @@ export default {
   },
 
   components: {
-    GithubLogin,
     GoogleLogin,
   },
   computed: {
@@ -179,7 +176,7 @@ export default {
             "인증번호를 발송했습니다. \n인증번호가 오지 않으면 입력하신 정보가 정확한지 확인하여 주세요. \n이미 가입된 메일은 가상전화번호는 인증번호를 받을 수 없습니다.";
           this.validationNumberFromBE = res.data.object.code;
           this.confirmedEmail = true;
-          console.log(this.validationNumberFromBE)
+          console.log(this.validationNumberFromBE);
         } else {
           this.logMessage.email = "이미 가입된 메일입니다.";
         }
