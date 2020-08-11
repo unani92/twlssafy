@@ -1,13 +1,21 @@
-export function getGrade(articleCount) {
+export function getGrade(score) {
   let grade = 0;
-  if (articleCount === 0) {
+  if (score <= 0) {
     grade = 1;
-  } else if (articleCount <= 99) {
-    grade = 2;
-  } else if (articleCount <= 199) {
-    grade = 3;
-  } else {
-    grade = 4;
+    return grade;
+  } else if (score <= 50) {
+    grade++;
+    return grade;
+  } else if (score <= 150) {
+    grade++;
+    return grade;
+  } else if (score <= 300) {
+    grade++;
+    return grade;
+  } else if (score <= 600) {
+    grade++;
+    return grade;
   }
+  grade++;
   return grade;
 }
