@@ -1,6 +1,7 @@
 <template>
   <div class="detail-profile">
-    <img :src="photo" alt @click="gotoWriterPage" />
+    <!-- <img :src="photo" alt @click="gotoWriterPage" /> -->
+    <img :src="userImg" alt @click="gotoWriterPage" />
     <div style="margin-left : 15px;">
       <div @click="gotoWriterPage" class="writer-page">
         <div
@@ -22,6 +23,7 @@ export default {
   props: {
     article: Object,
     userinfo: String,
+    userImg: String,
     articleCount: Number,
   },
   data() {
@@ -38,9 +40,9 @@ export default {
     },
   },
   computed: {
-    photo() {
-      return `https://api.adorable.io/avatars/100/${this.article.email}.png`;
-    },
+    // photo() {
+    //   return `https://api.adorable.io/avatars/100/${this.article.email}.png`;
+    // },
   },
 };
 </script>

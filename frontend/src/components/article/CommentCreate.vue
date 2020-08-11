@@ -16,6 +16,7 @@
       <CommentDetail
         v-for="(comment,i) in commentList"
         :comment="comment"
+        :image="commentImg"
         :key="comment.commentid"
         :nickname="commentNickname[i]"
         :commentArticleCount="commentArticleCount[i]"
@@ -35,6 +36,7 @@ export default {
     article: Object,
     commentNickname: Array,
     commentArticleCount: Array,
+    commentImg: Array,
   },
   components: {
     CommentDetail,
@@ -60,10 +62,11 @@ export default {
       createComment(params, id_token)
         .then((res) => {
           const now = new Date();
-          const comment = { ...res.data.object, now };
+          const comment = { ...res.data.object.comment, now };
           this.commentList = [comment, ...this.commentList];
           this.content = null;
           this.commentNickname = [nickname, ...this.commentNickname];
+          this.commentImg = [res.data.object.img, ...this.commentImg];
         })
         .catch((err) => console.log(err));
     },

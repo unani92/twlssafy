@@ -44,7 +44,7 @@
         <div id="viewer" />
       </div>
       <div class="nickname-keyword" v-if="article">
-        <ArticleDetailProfile :article="article" :userinfo="userinfo" :articleCount="articleCount" />
+        <ArticleDetailProfile :article="article" :userImg="userImg" :userinfo="userinfo" :articleCount="articleCount" />
       </div>
       <div v-if="article" class="nickname-keyword">
         <div>
@@ -52,6 +52,7 @@
             :article="article"
             :commentList="sideMenu.commentList"
             :commentNickname="commentNickname"
+            :commentImg="commentImg"
             :commentArticleCount="commentArticleCount"
           />
         </div>
@@ -93,6 +94,7 @@ export default {
       content: null,
       updatedAt: null,
       userinfo: null,
+      userImg: null,
       ispublic: '',
       hits : 0,
       sideMenu: {
@@ -129,7 +131,9 @@ export default {
           commentList,
           cntLikes,
           cntPin,
+          userImg,
           userinfo,
+          commentImg,
           commentNickname,
           commentArticleCount,
           articleCount,
@@ -147,8 +151,10 @@ export default {
         this.sideMenu.cntLikes = cntLikes;
         this.sideMenu.cntPin = cntPin;
         this.userinfo = userinfo;
+        this.userImg = userImg;
         this.commentNickname = commentNickname;
         this.commentArticleCount = commentArticleCount;
+        this.commentImg = commentImg;
         this.articleCount = articleCount;
         this.ispublic = ispublic;
         this.hits = hits;
