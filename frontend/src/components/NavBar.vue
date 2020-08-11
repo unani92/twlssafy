@@ -38,7 +38,7 @@
         <div class="icon" style="display: flex">
           <div style="display: flex">
             <div v-if="$store.getters.isLoggedIn" class="circle">{{ $store.state.notificationCnt }}</div>
-            <i @click="notificationIconToggle" class="far fa-bell" />
+            <i v-if="$store.getters.isLoggedIn" @click="notificationIconToggle" class="far fa-bell" />
           </div>
           <i @click="asideBarToggle" class="fas fa-bars"></i>
         </div>
@@ -190,6 +190,8 @@ export default {
   background-color: #d5dbd9;
   top: 70px;
   right: 0;
+  overflow: auto;
+  height: 268px;
   z-index: 10;
 }
 i {
