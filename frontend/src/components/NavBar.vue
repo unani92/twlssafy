@@ -17,7 +17,12 @@
         <div v-if="this.$store.getters.isLoggedIn">
           <div
             style="width : 28px;"
-            :style="{ backgroundImage:'url('+require('@/assets/image/medal-'+calcGrade+'.png')+')'}"
+            :style="{
+              backgroundImage:
+                'url(' +
+                require('@/assets/image/medal-' + calcGrade + '.png') +
+                ')',
+            }"
             class="grade"
           ></div>
         </div>
@@ -25,20 +30,33 @@
           <figure
             v-if="$store.state.img"
             class="user-photo"
-            :style="{ 'background-image': 'url(' + this.$store.state.img + ')' }"
+            :style="{
+              'background-image': 'url(' + this.$store.state.img + ')',
+            }"
             @click="goToMyPage"
           ></figure>
           <figure
             v-else
             class="user-photo"
-            :style="{ 'background-image': 'url(' + `https://api.adorable.io/avatars/100/${this.$store.state.username}.png` + ')' }"
+            :style="{
+              'background-image':
+                'url(' +
+                `https://api.adorable.io/avatars/100/${this.$store.state.username}.png` +
+                ')',
+            }"
             @click="goToMyPage"
           ></figure>
         </div>
         <div class="icon" style="display: flex">
           <div style="display: flex">
-            <div v-if="$store.getters.isLoggedIn" class="circle">{{ $store.state.notificationCnt }}</div>
-            <i v-if="$store.getters.isLoggedIn" @click="notificationIconToggle" class="far fa-bell" />
+            <div v-if="$store.getters.isLoggedIn" class="circle">
+              {{ $store.state.notificationCnt }}
+            </div>
+            <i
+              v-if="$store.getters.isLoggedIn"
+              @click="notificationIconToggle"
+              class="far fa-bell"
+            />
           </div>
           <i @click="asideBarToggle" class="fas fa-bars"></i>
         </div>
@@ -66,13 +84,13 @@
 </template>
 
 <script>
-import GoogleLogin from "./GoogleLogin";
-import Notification from "./Notification";
-import { getGrade } from "@/utils/calcGrade";
+import GoogleLogin from './GoogleLogin';
+import Notification from './Notification';
+import { getGrade } from '@/utils/calcGrade';
 export default {
   data() {
     return {
-      grade: getGrade(this.$store.state.articleCount),
+      grade: getGrade(this.$store.state.score),
       scroll: {
         prev: 0,
         upDown: null,
@@ -84,54 +102,54 @@ export default {
       return getGrade(this.$store.state.articleCount);
     },
   },
-  name: "NavBar",
+  name: 'NavBar',
   components: {
     GoogleLogin,
     Notification,
   },
   methods: {
     asideBarToggle() {
-      const aside = document.querySelector(".aside");
-      aside.classList.toggle("disabled");
+      const aside = document.querySelector('.aside');
+      aside.classList.toggle('disabled');
     },
     notificationIconToggle() {
       if (this.$store.state.notification.length) {
-        const notiDropdown = document.querySelector(".notification");
-        notiDropdown.classList.toggle("disabled");
+        const notiDropdown = document.querySelector('.notification');
+        notiDropdown.classList.toggle('disabled');
       }
     },
     goToEmailLogin() {
-      const aside = document.querySelector(".aside");
-      this.$router.push({ name: "Login" });
-      aside.classList.toggle("disabled");
+      const aside = document.querySelector('.aside');
+      this.$router.push({ name: 'Login' });
+      aside.classList.toggle('disabled');
     },
     goToSignup() {
-      const aside = document.querySelector(".aside");
-      this.$router.push({ name: "Signup" });
-      aside.classList.toggle("disabled");
+      const aside = document.querySelector('.aside');
+      this.$router.push({ name: 'Signup' });
+      aside.classList.toggle('disabled');
     },
     goToMyPage() {
       this.$router.push({
-        name: "Dummy",
+        name: 'Dummy',
         params: { following: this.$store.state.nickname },
       });
     },
     logout() {
-      this.$router.push({ name: "Logout" });
+      this.$router.push({ name: 'Logout' });
     },
     scrollEvent() {
-      const navBar = document.querySelector(".notification");
+      const navBar = document.querySelector('.notification');
       if (navBar) {
         const nowScrollY = window.scrollY;
         if (nowScrollY > this.scroll.prev) {
-          navBar.classList.add("disabled");
+          navBar.classList.add('disabled');
           this.scroll.prev = nowScrollY;
         }
       }
     },
   },
   mounted() {
-    document.addEventListener("scroll", this.scrollEvent);
+    document.addEventListener('scroll', this.scrollEvent);
   },
 };
 </script>
@@ -156,7 +174,7 @@ export default {
   background-color: black;
   width: 80px;
   color: white;
-  font-family: "Rowdies", cursive;
+  font-family: 'Rowdies', cursive;
   font-size: 28px;
   text-align: center;
   border-radius: 3px;
