@@ -22,10 +22,7 @@
       <CommentDetail
         v-for="(comment, i) in commentList"
         :comment="comment"
-        :image="commentImg[i]"
-        :key="comment.commentid"
-        :nickname="commentNickname[i]"
-        :commentArticleCount="commentArticleCount[i]"
+        :key="i"
         @commentDelete="removeDelete"
       />
     </div>
@@ -41,7 +38,6 @@ export default {
     commentList: Array,
     article: Object,
     commentNickname: Array,
-    commentArticleCount: Array,
     commentImg: Array,
   },
   components: {
@@ -57,7 +53,6 @@ export default {
     submitComment() {
       const email = this.$store.state.username;
       const content = this.content;
-      const nickname = this.$store.state.nickname;
       const articleid = String(this.article.articleid);
       const params = {
         email,
@@ -67,17 +62,12 @@ export default {
       const id_token = this.$store.state.id_token;
       createComment(params, id_token)
         .then((res) => {
-          console.log(res.data.object.score);
+          console.log(res.data.object);
           const now = new Date();
-          const comment = { ...res.data.object.comment, now };
+          const comment = { ...res.data.object, now };
           this.commentList = [comment, ...this.commentList];
           this.content = null;
-          this.commentNickname = [nickname, ...this.commentNickname];
-          this.commentImg = [res.data.object.img, ...this.commentImg];
-          this.commentArticleCount = [
-            res.data.object.score,
-            ...this.commentArticleCount,
-          ];
+          console.log(this.content)
         })
         .catch((err) => console.log(err));
     },

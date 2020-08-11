@@ -69,9 +69,6 @@
           <CommentCreate
             :article="article"
             :commentList="sideMenu.commentList"
-            :commentNickname="commentNickname"
-            :commentImg="commentImg"
-            :commentArticleCount="commentArticleCount"
           />
         </div>
       </div>
@@ -144,6 +141,7 @@ export default {
       try {
         const token = this.$store.state.id_token;
         const articleInfo = await fetchArticle(this.id, token);
+        console.log(articleInfo)
         const {
           article,
           keyword,
@@ -152,8 +150,6 @@ export default {
           cntPin,
           userImg,
           userinfo,
-          commentImg,
-          commentNickname,
           commentArticleCount,
           articleCount,
           ispublic,
@@ -172,9 +168,7 @@ export default {
         this.sideMenu.cntPin = cntPin;
         this.userinfo = userinfo;
         this.userImg = userImg;
-        this.commentNickname = commentNickname;
         this.commentArticleCount = commentArticleCount;
-        this.commentImg = commentImg;
         this.articleCount = articleCount;
         this.ispublic = ispublic;
         this.hits = hits;
@@ -186,6 +180,7 @@ export default {
         }
         return article.content;
       } catch (e) {
+        console.log(e)
         this.$router.push({ name: 'NotFound' });
       }
     },
