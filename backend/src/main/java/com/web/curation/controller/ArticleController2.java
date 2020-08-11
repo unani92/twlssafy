@@ -295,9 +295,6 @@ public class ArticleController2 {
         //     list = null;
         // }
 
-        System.out.println(date);
-
-
         List<List<String>> keywordsList = new ArrayList<>();
         List<Integer> likesCntList = new ArrayList<>();
         List<Integer> pinCntList = new ArrayList<>();

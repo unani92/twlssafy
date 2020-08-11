@@ -38,9 +38,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -454,29 +452,4 @@ public class AccountController {
         return new ResponseEntity<>(result, HttpStatus.OK);
 
     }
-
-    @Transactional
-    @DeleteMapping("/account/delete")
-    @ApiOperation(value = "회원 탈퇴")
-    public Object deleteAccount(@RequestHeader(required = true) final HttpHeaders headers) throws Exception {
-
-        String id_token = headers.get("id_token").get(0);
-        System.out.println(id_token);
-        String email = JWTDecoding.decode(id_token);
-        System.out.println(email);
-
-        final BasicResponse result = new BasicResponse();
-        result.status = false;
-        result.data = "fail";
-            
-        
-        if(userDao.deleteByEmail(email)>0){
-            result.status = true;
-            result.data = "success";
-            return new ResponseEntity<>(result, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(result, HttpStatus.ACCEPTED);
-        }
-    }
-
 }
