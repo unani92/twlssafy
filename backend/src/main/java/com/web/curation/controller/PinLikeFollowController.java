@@ -177,7 +177,7 @@ public class PinLikeFollowController {
                 result.data = "pin 취소";
 
                 User user = userDao.getUserByEmail(articleDao.findByArticleid(no).getEmail());
-                user.setScore(user.getScore()-3);
+                user.setScore(user.getScore()-1);
                 userDao.save(user);
             } else { // 지우는 거 실패
                 result.data = "pin 취소 실패";
@@ -191,7 +191,7 @@ public class PinLikeFollowController {
                     result.object = saveNotification(article, email, "pin"); // 알림 설정
 
                     User user = userDao.getUserByEmail(articleDao.findByArticleid(no).getEmail());
-                    user.setScore(user.getScore()+3);
+                    user.setScore(user.getScore()+1);
                     userDao.save(user);
                 }
                 result.data = "pin 설정";
@@ -226,7 +226,7 @@ public class PinLikeFollowController {
                 result.data = "like 취소";
 
                 User user = userDao.getUserByEmail(articleDao.findByArticleid(no).getEmail());
-                user.setScore(user.getScore()-3);
+                user.setScore(user.getScore()-1);
                 userDao.save(user);
             } else { // 지우는 거 실패
                 result.data = "like 취소 실패";
@@ -240,7 +240,7 @@ public class PinLikeFollowController {
                     result.object = saveNotification(article, email, "like"); // 알림 설정
                         
                     User user = userDao.getUserByEmail(articleDao.findByArticleid(no).getEmail());
-                    user.setScore(user.getScore()+3);
+                    user.setScore(user.getScore()+1);
                     userDao.save(user);
                 }
                 result.data = "like 설정";

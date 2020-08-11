@@ -119,8 +119,6 @@ public class ArticleController2 {
                 commentCntlist.add(commentDao.countByArticleid(articleid));
     
             }
-
-            User user = userDao.getUserByEmail(email);
             
             Map<String,Object> object = new HashMap<>();
             object.put("article", articles);
@@ -128,7 +126,6 @@ public class ArticleController2 {
             object.put("likesCntList", likesList);
             object.put("pinCntList", pinList);
             object.put("commentCntList", commentCntlist);
-            object.put("score", user.getScore());
     
             result.object = object;
             
@@ -190,8 +187,6 @@ public class ArticleController2 {
                commentCntList.add(commentDao.countByArticleid(articleid));
     
             }
-            
-            User user = userDao.getUserByEmail(email);
 
             Map<String,Object> object = new HashMap<>();
             object.put("article", articles);
@@ -199,7 +194,6 @@ public class ArticleController2 {
             object.put("likesCntList", likesList);
             object.put("pinCntList", pinList);
             object.put("commentCntList", commentCntList);
-            object.put("score", user.getScore());
     
             result.object = object;
         }
@@ -260,16 +254,6 @@ public class ArticleController2 {
         object.put("keyword", keywordsList);
         object.put("likesCntList", likesList);
         object.put("pinCntList", pinList);
-
-        try {
-            String id_token = header.get("id_token").get(0);
-            String email = JWTDecoding.decode(id_token);
-            User user = userDao.getUserByEmail(email);
-            object.put("score", user.getScore());
-    
-        } catch(Exception e) {
-
-        }
 
         result.object = object;
         
@@ -340,15 +324,12 @@ public class ArticleController2 {
 
         }
 
-        User user = userDao.getUserByEmail(email);
-
         Map<String,Object> userInfo = new HashMap<>();
         userInfo.put("article", articles);
         userInfo.put("keyword", keywordsList);
         userInfo.put("likesCntList", likesCntList);
         userInfo.put("pinCntList", pinCntList);
-        userInfo.put("commentCntList", commentCntList);        
-        userInfo.put("score", user.getScore());
+        userInfo.put("commentCntList", commentCntList);       
 
         result.object = userInfo;
         
@@ -388,14 +369,11 @@ public class ArticleController2 {
         String email = "";
         String id_token = "";
 
-        int score = -1;
-
         try{
             id_token = header.get("id_token").get(0);
             if(id_token!=null){
                 email = JWTDecoding.decode(id_token);               
                 User user = userDao.getUserByEmail(email);
-                score = user.getScore();
             }
         }catch(NullPointerException e){
 
@@ -462,11 +440,6 @@ public class ArticleController2 {
             object.put("pinCntList", pinList);
             object.put("keyword", keywordsList);
             object.put("commentCntList", commentCntList);
-
-            if(score>=0) { 
-                object.put("score", score);
-            }
-
 
             result.object = object;
         }

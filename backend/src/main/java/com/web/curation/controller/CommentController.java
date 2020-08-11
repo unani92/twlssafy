@@ -74,12 +74,10 @@ public class CommentController {
             return new ResponseEntity<>(result, HttpStatus.OK);
         }
 
-        // 게이미피케이션 점수 반영 + 5점
+        // 게이미피케이션 점수 반영 + 3점
         User user = userDao.getUserByEmail(email);
-        user.setScore(user.getScore()+5);
+        user.setScore(user.getScore()+3);
         userDao.save(user);
-
-        System.out.println("USER SCORE : "+user.getScore());
         
         result.status = true;
         result.data = (String) JWTDecoding.getInfo(header.get("id_token").get(0)).get("nickname");
@@ -97,9 +95,9 @@ public class CommentController {
         String email = commentDao.findByCommentid(no).getEmail();
 
         if(commentDao.deleteByCommentid(no) > 0) {
-            // 게이미피케이션 점수 반영 - 5점
+            // 게이미피케이션 점수 반영 - 3점
             User user = userDao.getUserByEmail(email);
-            user.setScore(user.getScore()-5);
+            user.setScore(user.getScore()-3);
             userDao.save(user);
             
             result.status = true;
