@@ -174,6 +174,9 @@ function getCreateDate(nickname) {
 function changeImg(imgUrl, token) {
   return instance.put('/account/changeprofileImage', {imgUrl: imgUrl},{ headers: { id_token: token } } )
 }
+function delAccount(token) {
+  return instance.delete('/account/delete', { headers: { id_token: token } } )
+}
 
 export {
   checkEmail,
@@ -209,5 +212,6 @@ export {
   submitChangePwd,
   submitValidationMail,
   getCreateDate,
-  changeImg
+  changeImg,
+  delAccount
 };

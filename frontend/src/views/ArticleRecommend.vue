@@ -23,6 +23,8 @@
         <div class="outro-text">Today We Learned에서 공부한 내용을 매일 가볍게 정리하고 팔로워들과 공유하세요 !</div>
       </div>
     </div>
+    <Footer/>
+
   </div>
 </template>
 
@@ -32,6 +34,8 @@ import { fetchRecommend } from "../api";
 import { mapState, mapActions } from "vuex";
 import LoadingSpinner from "@/components/common/LoadingSpinner.vue";
 import ArticleCard from "@/components/article/AricleCard.vue";
+import Footer from "../components/Footer";
+
 export default {
   name: "ArticleRecommend",
   data() {
@@ -52,6 +56,7 @@ export default {
     Slide,
     LoadingSpinner,
     ArticleCard,
+    Footer,
   },
   methods: {
     ...mapActions(["getGoogleUserInfo"]),

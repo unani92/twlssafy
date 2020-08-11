@@ -416,11 +416,8 @@ public class ArticleController {
         
         List<Integer> commentArticleCountList = new ArrayList<>();
         List<String> commentNickname = new ArrayList<>();
-        List<String> commentImg = new ArrayList<>();
-
         for(Comment c : commentList){
             commentNickname.add(userDao.findUserByEmail(c.getEmail()).get().getNickname());
-            commentImg.add(userDao.findUserByEmail(c.getEmail()).get().getImg());
             commentArticleCountList.add(articleDao.countByEmail(c.getEmail()));
         }
         
@@ -442,10 +439,8 @@ public class ArticleController {
         object.put("cntPin", cntPin);
         object.put("commentList", commentList);
         object.put("userinfo", user.getInfo());
-        object.put("userImg", user.getImg());
         object.put("commentNickname",commentNickname);
         object.put("commentArticleCount", commentArticleCountList);
-        object.put("commentImg", commentImg);
         object.put("ispublic", article.getIspublic());
         object.put("hits", article.getHits());
 
