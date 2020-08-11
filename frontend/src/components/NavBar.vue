@@ -298,6 +298,15 @@ i:hover {
   align-items: center;
   justify-content: center;
 }
+.aside-menu-loggedIn > div:nth-child(2) {
+  width: 250px;
+  height: 50px;
+  border-radius: 3px;
+  background-color: rgb(204, 93, 65);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 .aside-menu > div:nth-child(3) {
   width: 250px;
   height: 50px;
