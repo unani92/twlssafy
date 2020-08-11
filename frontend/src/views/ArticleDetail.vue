@@ -12,21 +12,31 @@
             :key="keyword"
             class="keyword"
             @click="search(keyword)"
-          >#{{ keyword }}</div>
+          >
+            #{{ keyword }}
+          </div>
         </div>
         <div class="username-date">
           <!-- @click="userToggle" -->
           <div>
-            <span style="margin-right : 4px; cursor:pointer" @click="gotoWriterPage" id="nickname">{{ nickname }} </span>
-            <span v-if="ispublic==3" style="color : gray;">비공개글 </span>
+            <span
+              style="margin-right : 4px; cursor:pointer"
+              @click="gotoWriterPage"
+              id="nickname"
+              >{{ nickname }}
+            </span>
+            <span v-if="ispublic == 3" style="color : gray;">비공개글 </span>
             <span v-if="isWriter">
               <Router-link
                 :to="{
-                name: 'ArticleUpdate',
-                params: { id, keywords, title, content, ispublic  }
-            }"
-              > 
-                 <i class="fas fa-edit" style="cursor: pointer; margin-right : 4px; color : gray"></i>
+                  name: 'ArticleUpdate',
+                  params: { id, keywords, title, content, ispublic },
+                }"
+              >
+                <i
+                  class="fas fa-edit"
+                  style="cursor: pointer; margin-right : 4px; color : gray"
+                ></i>
               </Router-link>
               <i
                 class="fas fa-trash-alt"
@@ -35,16 +45,24 @@
               ></i>
             </span>
           </div>
-          <span><i class="fas fa-pen-nib" style="margin-right: 15px;"> {{ updatedAt }}  </i>  
-          <i class="fas fa-eye"> {{ hits }}hits</i>
-           </span>
+          <span
+            ><i class="fas fa-pen-nib" style="margin-right: 15px;">
+              {{ updatedAt }}
+            </i>
+            <i class="fas fa-eye"> {{ hits }}hits</i>
+          </span>
         </div>
       </div>
       <div class="nickname-keyword markdown">
         <div id="viewer" />
       </div>
       <div class="nickname-keyword" v-if="article">
-        <ArticleDetailProfile :article="article" :userImg="userImg" :userinfo="userinfo" :articleCount="articleCount" />
+        <ArticleDetailProfile
+          :article="article"
+          :userImg="userImg"
+          :userinfo="userinfo"
+          :score="score"
+        />
       </div>
       <div v-if="article" class="nickname-keyword">
         <div>
@@ -63,17 +81,17 @@
 </template>
 
 <script>
-import { fetchArticle, deleteArticle } from "../api";
-import "@toast-ui/editor/dist/toastui-editor-viewer.css";
-import "highlight.js/styles/github.css";
-import Viewer from "@toast-ui/editor/dist/toastui-editor-viewer";
-import codeSyntaxHightlight from "@toast-ui/editor-plugin-code-syntax-highlight";
-import hljs from "highlight.js";
-import ArticleDetailSideMenu from "../components/article/ArticleDetailSideMenu";
-import ArticleDetailProfile from "../components/article/ArticleDetailProfile";
-import CommentCreate from "../components/article/CommentCreate";
+import { fetchArticle, deleteArticle } from '../api';
+import '@toast-ui/editor/dist/toastui-editor-viewer.css';
+import 'highlight.js/styles/github.css';
+import Viewer from '@toast-ui/editor/dist/toastui-editor-viewer';
+import codeSyntaxHightlight from '@toast-ui/editor-plugin-code-syntax-highlight';
+import hljs from 'highlight.js';
+import ArticleDetailSideMenu from '../components/article/ArticleDetailSideMenu';
+import ArticleDetailProfile from '../components/article/ArticleDetailProfile';
+import CommentCreate from '../components/article/CommentCreate';
 export default {
-  name: "ArticleDetail",
+  name: 'ArticleDetail',
   components: {
     ArticleDetailSideMenu,
     ArticleDetailProfile,
@@ -96,7 +114,8 @@ export default {
       userinfo: null,
       userImg: null,
       ispublic: '',
-      hits : 0,
+      hits: 0,
+      score: 0,
       sideMenu: {
         commentList: null,
         // isFollowed: null,
@@ -110,16 +129,16 @@ export default {
   methods: {
     gotoWriterPage() {
       this.$router.push({
-        name: "Profile",
+        name: 'Profile',
         params: { nickname: this.article.nickname },
       });
     },
     search(keyword) {
       const params = {
         q: keyword,
-        category: "keyword",
+        category: 'keyword',
       };
-      this.$router.push({ name: "Dummy", params: { params } });
+      this.$router.push({ name: 'Dummy', params: { params } });
     },
     async getArticle() {
       try {
@@ -138,7 +157,8 @@ export default {
           commentArticleCount,
           articleCount,
           ispublic,
-          hits
+          hits,
+          score,
         } = articleInfo.data.object;
         this.article = article;
 
@@ -158,6 +178,7 @@ export default {
         this.articleCount = articleCount;
         this.ispublic = ispublic;
         this.hits = hits;
+        this.score = score;
 
         const loginUser = this.$store.state.nickname;
         if (this.article.nickname === loginUser) {
@@ -165,23 +186,23 @@ export default {
         }
         return article.content;
       } catch (e) {
-        this.$router.push({ name: 'NotFound' })
+        this.$router.push({ name: 'NotFound' });
       }
     },
     getViewer() {
       this.getArticle().then((res) => {
         new Viewer({
-          el: document.querySelector("#viewer"),
+          el: document.querySelector('#viewer'),
           initialValue: res,
           plugins: [[codeSyntaxHightlight, { hljs }]],
         });
       });
     },
     removeArticle() {
-      const id_token = this.$store.state.id_token
+      const id_token = this.$store.state.id_token;
 
-      deleteArticle(this.id,id_token)
-        .then(() => this.$router.push("/"))
+      deleteArticle(this.id, id_token)
+        .then(() => this.$router.push('/'))
         .catch((err) => console.log(err));
     },
     goback() {

@@ -5,41 +5,53 @@
     <div style="margin-left : 15px;">
       <div @click="gotoWriterPage" class="writer-page">
         <div
-          :style="{ backgroundImage:'url('+require('@/assets/image/medal-'+grade+'.png')+')'}"
+          :style="{
+            backgroundImage:
+              'url(' +
+              require('@/assets/image/medal-' + calcGrade + '.png') +
+              ')',
+          }"
           class="grade"
         ></div>
-        <span style="font-weight:bold; font-size:1.25rem">{{ article.nickname }}</span>
+
+        <span style="font-weight:bold; font-size:1.25rem">{{
+          article.nickname
+        }}</span>
       </div>
-      <span id="info">{{userinfo}}</span>
+      <span id="info">{{ userinfo }}</span>
     </div>
   </div>
 </template>
 
 <script>
-import { getGrade } from "@/utils/calcGrade";
+import { getGrade } from '@/utils/calcGrade';
 
 export default {
-  name: "ArticleDetailProfile",
+  name: 'ArticleDetailProfile',
   props: {
     article: Object,
     userinfo: String,
     userImg: String,
-    articleCount: Number,
+    score: Number,
   },
   data() {
     return {
-      grade: getGrade(this.articleCount),
+      grade: getGrade(this.score),
     };
   },
   methods: {
     gotoWriterPage() {
       this.$router.push({
-        name: "Profile",
+        name: 'Profile',
         params: { nickname: this.article.nickname },
       });
     },
   },
   computed: {
+    calcGrade() {
+      console.log(getGrade(this.score));
+      return getGrade(this.score);
+    },
     // photo() {
     //   return `https://api.adorable.io/avatars/100/${this.article.email}.png`;
     // },
@@ -48,6 +60,15 @@ export default {
 </script>
 
 <style scoped>
+.grade {
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 100%;
+  margin-right: 0.5em;
+}
 .detail-profile {
   display: flex;
 }
