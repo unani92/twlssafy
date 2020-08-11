@@ -2,20 +2,16 @@ export function getGrade(score) {
   let grade = 0;
   if (score <= 0) {
     grade = 1;
-    return grade;
   } else if (score <= 50) {
-    grade++;
-    return grade;
+    grade = 2;
   } else if (score <= 150) {
-    grade++;
-    return grade;
+    grade = 3;
   } else if (score <= 300) {
-    grade++;
-    return grade;
+    grade = 4;
   } else if (score <= 600) {
-    grade++;
-    return grade;
+    grade = 5;
+  } else {
+    grade = 6;
   }
-  grade++;
   return grade;
 }
