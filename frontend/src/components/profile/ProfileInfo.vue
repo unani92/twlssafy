@@ -4,8 +4,10 @@
       <div class="picture">
         <img v-if="userInfo.userInfo.img" :src="userInfo.userInfo.img" />
         <img v-else src="https://i.pravatar.cc/400?u=정윤환" />
-        <i v-if="!openDropZone" @click="toggleDropZone" class="far fa-plus-square dropzone-icon"></i>
-        <i v-else @click="toggleDropZone" class="far fa-minus-square dropzone-icon"></i>
+        <div v-if="this.userInfo.userInfo.email === this.$store.state.username">
+          <i v-if="!openDropZone && userInfo" @click="toggleDropZone" class="far fa-plus-square dropzone-icon"></i>
+          <i v-else @click="toggleDropZone" class="far fa-minus-square dropzone-icon"></i>
+        </div>
       </div>
       <div class="text">
         <div
@@ -222,7 +224,9 @@ export default {
     },
   },
   methods: {
+    // 유저 이미지 변경하기
     toggleDropZone() {
+      if (this.userInfo.userInfo.email === this.$store.state.username)
       this.openDropZone = !this.openDropZone;
     },
     async afterComplete(upload) {
