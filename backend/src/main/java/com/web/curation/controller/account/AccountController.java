@@ -103,6 +103,7 @@ public class AccountController {
         userInfo.put("likesList", likesDao.findAllByEmail(email));
         userInfo.put("notificationCnt", notificationDao.countByEmail(email));
         userInfo.put("articleCount", articleDao.countByEmail(email));
+        userInfo.put("score", userDao.getUserByEmail(email).getScore());
             
         // 내가 팔로우 하는 사람 목록            
         List<Follow> follow = followDao.findAllByEmail(email);
@@ -164,7 +165,7 @@ public class AccountController {
 
         String nickname = (String) body.get("nickname");
         String info = (String)body.get("info");
-        String github = (String)body.get("hithub");
+        String github = (String)body.get("github");
 
         User userInfo = new User();
         userInfo.setEmail(email);
@@ -363,7 +364,7 @@ public class AccountController {
         message.setText("안녕하세요. 인증 번호는 "+ranString+"입니다.");
         message.setSentDate(new Date());
         javaMailSender.send(message);
-
+        System.out.println(ranString);
         return ranString.toString();
     }
     

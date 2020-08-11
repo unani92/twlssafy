@@ -27,6 +27,10 @@
           <input class="input" id="info" type="text" placeholder="한 줄 소개 부탁해요" v-model="info" />
         </div>
         <p class="join-warning guide-text">{{ logMessage.info }}</p>
+
+        <div class="inputfield">
+          <input class="input" id="info" type="text" placeholder="깃허브 주소를 입력해주세요" v-model="github" />
+        </div>
         <!-- 버튼 활성화 OK -->
         <div class="inputfield">
           <button
@@ -56,6 +60,7 @@ export default {
     return {
       nickname: "",
       info: "",
+      github: "",
       logMessage: {
         nickname: "",
       },
@@ -90,6 +95,7 @@ export default {
       const userData = {
         nickname: this.nickname,
         info: this.info,
+        github: this.github,
       };
 
       googleSignup(userData, this.id_token)
