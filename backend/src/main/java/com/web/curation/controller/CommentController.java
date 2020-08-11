@@ -10,8 +10,10 @@ import java.util.Map;
 
 import com.web.curation.JWT.JWTDecoding;
 import com.web.curation.dao.CommentDao;
+import com.web.curation.dao.user.UserDao;
 import com.web.curation.model.BasicResponse;
 import com.web.curation.model.Comment;
+import com.web.curation.model.user.User;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -38,6 +40,9 @@ public class CommentController {
 
     @Autowired
     CommentDao commentDao; 
+
+    @Autowired
+    UserDao userDao;
     
     @ApiOperation(value = "댓글 등록")
     @PostMapping("/article/comment")
@@ -68,6 +73,11 @@ public class CommentController {
         if(commentDao.save(comment) == null){
             return new ResponseEntity<>(result, HttpStatus.OK);
         }
+
+        // 게이미피케이션 점수 반영 + 3점
+        User user = userDao.getUserByEmail(email);
+        user.setScore(user.getScore()+3);
+        userDao.save(user);
         
         result.status = true;
         result.data = (String) JWTDecoding.getInfo(header.get("id_token").get(0)).get("nickname");
@@ -82,9 +92,17 @@ public class CommentController {
     public Object deleteComment (@RequestParam(required = true) int no) {
         final BasicResponse result = new BasicResponse();
 
+        String email = commentDao.findByCommentid(no).getEmail();
+
         if(commentDao.deleteByCommentid(no) > 0) {
+            // 게이미피케이션 점수 반영 - 3점
+            User user = userDao.getUserByEmail(email);
+            user.setScore(user.getScore()-3);
+            userDao.save(user);
+            
             result.status = true;
             result.data = "삭제 성공";
+            result.object = user.getScore();
         }
         else {
             result.status = false;
