@@ -75,12 +75,14 @@ public class CommentController {
         String email = JWTDecoding.decode(id_token);
         int articleid = Integer.parseInt((String)request.get("articleid"));
         String content = (String) request.get("content");
+        Map<String,Object> userToken = JWTDecoding.getInfo(id_token);
 
         Comment comment = new Comment();
         comment.setArticleid(articleid);
         comment.setEmail(email);
         comment.setContent(content);
-
+        comment.setNickname((String)userToken.get("nickname"));
+        comment.setImg((String)userToken.get("img"));
 
         if(commentDao.save(comment) == null){
             return new ResponseEntity<>(result, HttpStatus.OK);
@@ -96,8 +98,8 @@ public class CommentController {
         
         Map<String,Object> object= new HashMap<>();
         object.put("comment", comment);
-        object.put("nickname",(String) JWTDecoding.getInfo(header.get("id_token").get(0)).get("nickname"));
-        object.put("img", (String)JWTDecoding.getInfo(header.get("id_token").get(0)).get("img"));
+        // object.put("nickname",(String) JWTDecoding.getInfo(header.get("id_token").get(0)).get("nickname"));
+        // object.put("img", (String)JWTDecoding.getInfo(header.get("id_token").get(0)).get("img"));
         
         object.put("score", user.getScore());
 

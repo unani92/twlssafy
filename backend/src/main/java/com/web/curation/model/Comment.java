@@ -30,6 +30,8 @@ public class Comment {
     private String email;
     private int articleid;
     private String content;
+    private String img;
+    private String nickname;
 
     @Column(insertable = false)
     private LocalDateTime updatedat;
