@@ -32,6 +32,7 @@ public class Comment {
     private String content;
     private String img;
     private String nickname;
+    private int score;
 
     @Column(insertable = false)
     private LocalDateTime updatedat;
