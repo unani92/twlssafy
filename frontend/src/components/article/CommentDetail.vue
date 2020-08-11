@@ -2,7 +2,8 @@
   <div :id="comment.commentid" class="comment-detail">
     <div class="profile">
       <div class="prifile-detail">
-        <img :src="photo" alt style="width : 30px; height : 30px;" />
+        <img :src="image" style="width : 30px; height : 30px; cursor : pointer" @click="goProfilePage" />
+        <!-- <img :src="photo" alt style="width : 30px; height : 30px;" /> -->
         <div class="profile-text">
           <div>
             <div
@@ -44,9 +45,9 @@ import { getGrade } from "@/utils/calcGrade";
 export default {
   name: "CommentDetail",
   computed: {
-    photo() {
-      return `https://api.adorable.io/avatars/75/${this.comment.email}.png`;
-    },
+    // photo() {
+    //   return `https://api.adorable.io/avatars/75/${this.comment.email}.png`;
+    // },
     canEdit() {
       return this.$store.state.username === this.comment.email;
     },
@@ -66,6 +67,7 @@ export default {
   props: {
     comment: Object,
     nickname: String,
+    image: Array,
     commentArticleCount: Number,
   },
   methods: {
