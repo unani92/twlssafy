@@ -4,20 +4,8 @@
       <div class="picture">
         <img v-if="userInfo.userInfo.img" :src="userInfo.userInfo.img" />
         <img v-else src="https://i.pravatar.cc/400?u=정윤환" />
-        <i style="font-size: 2rem; margin-top: 2rem; cursor: pointer" class="far fa-plus-square"></i>
-      </div>
-      <div>
-        <vue2-dropzone
-          ref="imgDropZone"
-          id="customdropzone"
-          :options="dropzoneOptions"
-          @vdropzone-complete="afterComplete"
-        />
-        <div v-if="images" class="image-div">
-          <div v-if="images">
-            <img :src="images" class="image" />
-          </div>
-        </div>
+        <i v-if="!openDropZone" @click="toggleDropZone" class="far fa-plus-square dropzone-icon"></i>
+        <i v-else @click="toggleDropZone" class="far fa-minus-square dropzone-icon"></i>
       </div>
       <div class="text">
         <div
@@ -166,6 +154,16 @@
         <div v-if="this.userInfo.following.follow.length === 0">팔로우한 친구가 없습니다.</div>
       </div>
     </div>
+<!--    드래그앤드랍      -->
+    <div v-if="openDropZone">
+      <vue2-dropzone
+        ref="imgDropZone"
+        id="customdropzone"
+        :options="dropzoneOptions"
+        @vdropzone-complete="afterComplete"
+      />
+    </div>
+
   </div>
 </template>
 
@@ -203,10 +201,11 @@ export default {
         thumbnailHeight: 150,
         addRemoveLinks: false,
         acceptedFiles: ".jpg, .jpeg, .png",
-        dictDefaultMessage: `<p class='text-default'><i class='fa fa-cloud-upload mr-2'></i> + </p>
-          <p class="form-text">Allowed Files: .jpg, .jpeg, .png</p>
+        dictDefaultMessage: `<p class='text-default'><i class="far fa-plus-square dropzone-icon"></i></p>
+          <p class="form-text">프로필 이미지를 변경합니다</p>
           `
       },
+      openDropZone: false,
       images: null
     };
   },
@@ -223,6 +222,9 @@ export default {
     },
   },
   methods: {
+    toggleDropZone() {
+      this.openDropZone = !this.openDropZone;
+    },
     async afterComplete(upload) {
       let imageName = uuid.v1()
       const div = document.querySelector(".picture")
@@ -363,9 +365,9 @@ export default {
     };
     window.onclick = function (event) {
       if (
-        event.target == skillModal ||
-        event.target == followerModal ||
-        event.target == followingModal
+        event.target === skillModal ||
+        event.target === followerModal ||
+        event.target === followingModal
       ) {
         skillModal.style.display = "none";
         followerModal.style.display = "none";
@@ -380,6 +382,11 @@ export default {
 </script>
 
 <style>
+.dropzone-icon {
+  font-size: 2rem;
+  /*margin: 2rem;*/
+  cursor: pointer
+}
 .image-div {
   display: flex;
   margin: 25px;
@@ -425,10 +432,11 @@ section {
   text-align: center;
   padding: 10px;
 
-  /*display: flex;*/
+  /*display: flex !important;*/
   /*justify-content: space-between;*/
   /*flex-direction: column;*/
   /*align-items: center;*/
+  /*height: 400px;*/
 }
 
 li {
