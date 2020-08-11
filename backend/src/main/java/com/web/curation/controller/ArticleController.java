@@ -428,12 +428,13 @@ public class ArticleController {
         List<Integer> commentArticleCountList = new ArrayList<>();
         List<String> commentNickname = new ArrayList<>();
         List<String> commentImg = new ArrayList<>();
+        List<Integer> commentScore = new ArrayList<>();
 
         for(Comment c : commentList){
             commentNickname.add(userDao.findUserByEmail(c.getEmail()).get().getNickname());
             commentArticleCountList.add(articleDao.countByEmail(c.getEmail()));
             commentImg.add(userDao.findUserByEmail(c.getEmail()).get().getImg());
-
+            commentScore.add(userDao.findUserByEmail(c.getEmail()).get().getScore());
         }
         
 
@@ -461,7 +462,7 @@ public class ArticleController {
         object.put("score", user.getScore());
         object.put("userImg", user.getImg());
         object.put("commentImg", commentImg);
-
+        object.put("commentScore", commentScore);
 
         result.object = object;
         
