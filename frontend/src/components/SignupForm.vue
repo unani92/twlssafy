@@ -238,9 +238,10 @@ export default {
 
       const { data } = await registerUser(userData);
       // 토큰 보내주세요.... 셀렉스킬에 넘겨줄예정
-      console.log(data);
+      console.log(data.data);
       this.$store.commit("setUsername", userData.email);
       this.$store.commit("setNickname", userData.nickname);
+      this.$store.commit("setToken", data.data);
       this.$router.push("/selectskills");
     },
     initForm() {
