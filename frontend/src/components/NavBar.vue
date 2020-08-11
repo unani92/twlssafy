@@ -44,7 +44,7 @@
         </div>
       </div>
     </div>
-    <div class="notification" v-if="$store.state.notification.length">
+    <div class="notification disabled" v-if="$store.state.notification.length">
       <Notification
         v-for="noti in $store.state.notification"
         :noti="noti"
