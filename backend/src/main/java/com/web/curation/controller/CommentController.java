@@ -10,10 +10,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.web.curation.JWT.JWTDecoding;
+import com.web.curation.dao.ArticleDao;
 import com.web.curation.dao.CommentDao;
+import com.web.curation.dao.pinlikesfollow.NotificationDao;
 import com.web.curation.dao.user.UserDao;
+import com.web.curation.model.Article;
 import com.web.curation.model.BasicResponse;
 import com.web.curation.model.Comment;
+import com.web.curation.model.pinlikesfollow.Notification;
 import com.web.curation.model.user.User;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +49,12 @@ public class CommentController {
     @Autowired
     UserDao userDao;
     
+    @Autowired
+    ArticleDao articledao;
+
+    @Autowired
+    NotificationDao notiDao;
+    
     @ApiOperation(value = "댓글 등록")
     @PostMapping("/article/comment")
     public Object writeComment(@RequestBody(required = true) final Map<String, Object> request, @RequestHeader final HttpHeaders header)
@@ -61,7 +71,8 @@ public class CommentController {
         result.status = false;
         result.data = "댓글 등록 실패";
 
-        String email = JWTDecoding.decode(header.get("id_token").get(0));
+        String id_token = header.get("id_token").get(0);
+        String email = JWTDecoding.decode(id_token);
         int articleid = Integer.parseInt((String)request.get("articleid"));
         String content = (String) request.get("content");
 
@@ -74,7 +85,7 @@ public class CommentController {
         if(commentDao.save(comment) == null){
             return new ResponseEntity<>(result, HttpStatus.OK);
         }
-
+        
         // 게이미피케이션 점수 반영 + 3점
         User user = userDao.getUserByEmail(email);
         user.setScore(user.getScore()+3);
@@ -82,13 +93,31 @@ public class CommentController {
         
         result.status = true;
         result.data = "success";
-
+        
         Map<String,Object> object= new HashMap<>();
         object.put("comment", comment);
         object.put("nickname",(String) JWTDecoding.getInfo(header.get("id_token").get(0)).get("nickname"));
         object.put("img", (String)JWTDecoding.getInfo(header.get("id_token").get(0)).get("img"));
-
+        
         result.object = object;
+        
+        // notification
+        Article a = articledao.findByArticleid(articleid);
+
+        Notification noti = new Notification();
+        noti.setArticleid(articleid);
+        noti.setContent(a.getTitle());
+        noti.setEmail(a.getEmail());
+        noti.setNickname(a.getNickname());
+        noti.setOther(email);
+        noti.setOthernickname((String) JWTDecoding.getInfo(id_token).get("nickname"));
+        noti.setReadn(0);
+        noti.setReady(0);
+        noti.setType("comment");
+
+        if(notiDao.save(noti)==null){ // 저장 못 하면
+            System.out.println("noti failed");
+        }
 
         return new ResponseEntity<>(result,HttpStatus.OK);
     }

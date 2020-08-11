@@ -294,7 +294,7 @@ public class PinLikeFollowController {
         if(notification.getReady() == 0)
         {
             notification.setReady(1);
-            notificationDao.save(notification);
+            notificationDao.delete(notification);
             result.data="알림 - 읽음 처리";
             result.status=true;
         }
