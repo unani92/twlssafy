@@ -217,12 +217,18 @@ public class ArticleController {
 
         }
 
+        // 게이미피케이션 점수 반영 + 10점
+        User user = userDao.getUserByEmail(email);
+        user.setScore(user.getScore()+10);
+        userDao.save(user);
+
         // 글쓴이 총 글 개수 프런트에 전달
         int articleCount = articleDao.countByEmail(email);
 
         Map<String, Integer> object = new HashMap<>();
         object.put("articleId", articleId);
         object.put("articleCount", articleCount);
+        object.put("score", user.getScore());
 
         result.status = true;
         result.data = "글쓰기 성공";
@@ -298,6 +304,11 @@ public class ArticleController {
         String email = JWTDecoding.decode(header.get("id_token").get(0));
 
         if(articleDao.deleteByArticleid(no) > 0){
+            // 게이미피케이션 점수 반영 - 10점
+            User user = userDao.getUserByEmail(email);
+            user.setScore(user.getScore()-10);
+            userDao.save(user);
+    
             int articleCount = articleDao.countByEmail(email);
             result.status = true;
             result.data = "삭제 성공";
@@ -443,6 +454,7 @@ public class ArticleController {
         object.put("commentArticleCount", commentArticleCountList);
         object.put("ispublic", article.getIspublic());
         object.put("hits", article.getHits());
+        object.put("score", user.getScore());
 
         result.object = object;
         

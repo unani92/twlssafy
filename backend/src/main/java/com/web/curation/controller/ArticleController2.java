@@ -14,9 +14,11 @@ import com.web.curation.dao.KeywordsDao;
 import com.web.curation.dao.SkillsDao;
 import com.web.curation.dao.pinlikesfollow.LikesDao;
 import com.web.curation.dao.pinlikesfollow.PinDao;
+import com.web.curation.dao.user.UserDao;
 import com.web.curation.model.Article;
 import com.web.curation.model.BasicResponse;
 import com.web.curation.model.Keywords;
+import com.web.curation.model.user.User;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -60,6 +62,9 @@ public class ArticleController2 {
 
     @Autowired
     CommentDao commentDao;
+
+    @Autowired
+    UserDao userDao;
 
     @ApiOperation(value = "팔로잉 글 조회")
     @GetMapping("/article/following")
@@ -114,6 +119,8 @@ public class ArticleController2 {
                 commentCntlist.add(commentDao.countByArticleid(articleid));
     
             }
+
+            User user = userDao.getUserByEmail(email);
             
             Map<String,Object> object = new HashMap<>();
             object.put("article", articles);
@@ -121,6 +128,7 @@ public class ArticleController2 {
             object.put("likesCntList", likesList);
             object.put("pinCntList", pinList);
             object.put("commentCntList", commentCntlist);
+            object.put("score", user.getScore());
     
             result.object = object;
             
@@ -183,12 +191,15 @@ public class ArticleController2 {
     
             }
             
+            User user = userDao.getUserByEmail(email);
+
             Map<String,Object> object = new HashMap<>();
             object.put("article", articles);
             object.put("keyword", keywordsList);
             object.put("likesCntList", likesList);
             object.put("pinCntList", pinList);
             object.put("commentCntList", commentCntList);
+            object.put("score", user.getScore());
     
             result.object = object;
         }
@@ -198,7 +209,7 @@ public class ArticleController2 {
 
     @ApiOperation(value = "인기글 조회")
     @GetMapping("/article/hot")
-    public Object getHotArticle(@RequestParam(value = "page") final int page) throws Exception {
+    public Object getHotArticle(@RequestParam(value = "page") final int page, @RequestHeader final HttpHeaders header) throws Exception {
         final BasicResponse result = new BasicResponse();
         result.status = false;
         result.data = "글 조회 실패";
@@ -249,6 +260,16 @@ public class ArticleController2 {
         object.put("keyword", keywordsList);
         object.put("likesCntList", likesList);
         object.put("pinCntList", pinList);
+
+        try {
+            String id_token = header.get("id_token").get(0);
+            String email = JWTDecoding.decode(id_token);
+            User user = userDao.getUserByEmail(email);
+            object.put("score", user.getScore());
+    
+        } catch(Exception e) {
+
+        }
 
         result.object = object;
         
@@ -318,13 +339,16 @@ public class ArticleController2 {
             commentCntList.add(commentDao.countByArticleid(articleid));
 
         }
-        
+
+        User user = userDao.getUserByEmail(email);
+
         Map<String,Object> userInfo = new HashMap<>();
         userInfo.put("article", articles);
         userInfo.put("keyword", keywordsList);
         userInfo.put("likesCntList", likesCntList);
         userInfo.put("pinCntList", pinCntList);
-        userInfo.put("commentCntList", commentCntList);
+        userInfo.put("commentCntList", commentCntList);        
+        userInfo.put("score", user.getScore());
 
         result.object = userInfo;
         
@@ -364,19 +388,17 @@ public class ArticleController2 {
         String email = "";
         String id_token = "";
 
+        int score = -1;
+
         try{
             id_token = header.get("id_token").get(0);
             if(id_token!=null){
-                email = JWTDecoding.decode(id_token);
+                email = JWTDecoding.decode(id_token);               
+                User user = userDao.getUserByEmail(email);
+                score = user.getScore();
             }
         }catch(NullPointerException e){
-            // List<Article> articles = new ArrayList<>();
-            // Set<Integer> random = new HashSet<>();
-            // Random ran = new Random();
-            // while(random.size()<5){
-            //     random.add(ran.nextInt(setSize));
-            // }
-            // likesDao.articleFromHot();
+
         }
 
        
@@ -440,6 +462,10 @@ public class ArticleController2 {
             object.put("pinCntList", pinList);
             object.put("keyword", keywordsList);
             object.put("commentCntList", commentCntList);
+
+            if(score>=0) { 
+                object.put("score", score);
+            }
 
 
             result.object = object;
