@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.Map;
 
 import com.web.curation.JWT.JWTDecoding;
@@ -80,8 +81,14 @@ public class CommentController {
         userDao.save(user);
         
         result.status = true;
-        result.data = (String) JWTDecoding.getInfo(header.get("id_token").get(0)).get("nickname");
-        result.object = comment;
+        result.data = "success";
+
+        Map<String,Object> object= new HashMap<>();
+        object.put("comment", comment);
+        object.put("nickname",(String) JWTDecoding.getInfo(header.get("id_token").get(0)).get("nickname"));
+        object.put("img", (String)JWTDecoding.getInfo(header.get("id_token").get(0)).get("img"));
+
+        result.object = object;
 
         return new ResponseEntity<>(result,HttpStatus.OK);
     }
