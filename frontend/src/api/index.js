@@ -156,6 +156,10 @@ function getCreateDate(nickname) {
   return instance.get(`/article/datelist/${nickname}`)
 }
 
+function changeImg(imgUrl, token) {
+  return instance.put('/account/changeprofileImage', {imgUrl: imgUrl},{ headers: { id_token: token } } )
+}
+
 export {
   checkEmail,
   checkNickname,
@@ -188,5 +192,6 @@ export {
   submitNotiDelete,
   submitChangePwd,
   submitValidationMail,
-  getCreateDate
+  getCreateDate,
+  changeImg
 };
