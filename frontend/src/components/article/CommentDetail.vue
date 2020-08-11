@@ -22,7 +22,8 @@
         <i @click="commentDelete" class="far fa-trash-alt editDelete"></i>
       </div>
     </div>
-
+    <!-- 댓글 내용을 보여주거나 수정 하는 코드입니다 update하는 아이콘을 누르면 openUpdateInput data값이 수정되고 
+    data값을 평가하는 isUpdating값이 바뀝니다. isUpdating이 true가 되면 수정 input이 열립니다-->
     <div v-if="isUpdating">
       <textarea v-model="content" class="update" />
       <div>
@@ -80,6 +81,7 @@ export default {
     commentUpdate() {
       this.openUpdateInput = !this.openUpdateInput;
     },
+    // 댓글이 수정이 완료되고 나면 댓글 id를 string으로 보내지 않으면 오류 발생
     submitComment() {
       const params = {
         commentId: `${this.comment.commentid}`,
@@ -88,6 +90,7 @@ export default {
       console.log(params);
       updateComment(params)
         .then(() => {
+          // 수정 input창을 닫고 내용도 수정
           this.openUpdateInput = false;
           this.comment.content = this.content;
         })
