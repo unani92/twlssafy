@@ -98,7 +98,7 @@ public class AccountController {
         userInfo.put("id_token", id_token);
         userInfo.put("email", email);
         userInfo.put("nickname", userToken.get("nickname"));
-        userInfo.put("img", userToken.get("img"));
+        userInfo.put("img", userDao.getUserByEmail(email).getImg());
         userInfo.put("pinList", pinDao.findAllByEmail(email));
         userInfo.put("likesList", likesDao.findAllByEmail(email));
         userInfo.put("notificationCnt", notificationDao.countByEmail(email));
