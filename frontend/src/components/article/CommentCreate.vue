@@ -16,7 +16,7 @@
       <CommentDetail
         v-for="(comment,i) in commentList"
         :comment="comment"
-        :image="commentImg"
+        :image="commentImg[i]"
         :key="comment.commentid"
         :nickname="commentNickname[i]"
         :commentArticleCount="commentArticleCount[i]"
