@@ -15,4 +15,6 @@ public interface CommentDao extends JpaRepository<Comment, String> {
 	Comment findByCommentid(int commentid);
 
 	int countByArticleid(int articleid);
+
+	Comment findFirstByEmailOrderByCommentidDesc(String email);
 }

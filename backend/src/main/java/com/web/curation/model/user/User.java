@@ -48,6 +48,8 @@ public class User {
 
     private String github;
 
+    private int score;
+
     @Column(insertable = false, updatable = false)
     private LocalDateTime createdate;
 

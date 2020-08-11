@@ -10,5 +10,4 @@ public class NotificationMultiId implements Serializable {
     String other;
     String content;
     String type;
-    int readn;
 }

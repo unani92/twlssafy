@@ -17,7 +17,7 @@ function registerUser(userData) {
 }
 
 function socialLogin(id_token) {
-  return instance.post('/googlelogin',{ id_token },{headers: {id_token}})
+  return instance.post('/googlelogin', { id_token }, { headers: { id_token } });
 }
 
 function googleSignup(userData, token) {
@@ -27,7 +27,11 @@ function googleSignup(userData, token) {
 }
 
 function getInfo(id_token) {
-  return instance.post('account/googleInfo', { id_token }, { headers: { id_token: id_token } })
+  return instance.post(
+    'account/googleInfo',
+    { id_token },
+    { headers: { id_token: id_token } }
+  );
 }
 
 function login(params) {
@@ -59,7 +63,9 @@ function deleteArticle(id, token) {
 }
 
 function fetchArticles(params, token) {
-  return instance.get(`article?page=${params.page}`,{ headers: { id_token: token } });
+  return instance.get(`article?page=${params.page}`, {
+    headers: { id_token: token },
+  });
 }
 
 function fetchArticle(id, token) {
@@ -89,7 +95,11 @@ function createComment(params, token) {
     headers: { id_token: token },
   });
 }
-
+function updateComment(params, token) {
+  return instance.put('article/comment', params, {
+    headers: { id_token: token },
+  });
+}
 function deleteComment(params) {
   return instance.delete(`article/comment?no=${params}`);
 }
@@ -126,34 +136,52 @@ function fetchHashTags() {
   return instance.get(`hashTag`);
 }
 
-function calender(targetDate,email,page) {
-  return instance.get(`/article/date/${targetDate}?email=${email}&page=${page}`)
+function calender(targetDate, email, page) {
+  return instance.get(
+    `/article/date/${targetDate}?email=${email}&page=${page}`
+  );
 }
 
 function submitNotiRead(notificationId) {
-  return instance.get(`/notification/${notificationId}`)
+  return instance.get(`/notification/${notificationId}`);
 }
 
 function submitNotiDelete(notificationId) {
-  return instance.delete(`/notification/${notificationId}`)
+  return instance.delete(`/notification/${notificationId}`);
 }
 
 function fetchRecommend(token) {
   return instance.get('article/recommend', {
-    headers: { id_token: token }
-  })
+    headers: { id_token: token },
+  });
 }
 
 function submitChangePwd(email, password) {
-  return instance.post("/account/changePwd",{email: email , password: password})
+  return instance.post('/account/changePwd', {
+    email: email,
+    password: password,
+  });
 }
 
 function submitValidationMail(email) {
-  return instance.post("/account/findPwd",{email: email})
+  return instance.post('/account/findPwd', { email: email });
 }
 
 function getCreateDate(nickname) {
-  return instance.get(`/article/datelist/${nickname}`)
+  return instance.get(`/article/datelist/${nickname}`);
+}
+
+function changeImg(imgUrl, token) {
+  return instance.put('/account/changeprofileImage', {imgUrl: imgUrl},{ headers: { id_token: token } } )
+}
+function delAccount(token) {
+  return instance.delete('/account', { headers: { id_token: token } } )
+}
+function modifyIntro(params, token) {
+  return instance.put('/account/intro',params ,{ headers: { id_token: token } } )
+}
+function modifyGit(params, token) {
+  return instance.put('/account/git',params ,{ headers: { id_token: token } } )
 }
 
 export {
@@ -175,6 +203,7 @@ export {
   pinArticle,
   requestFollow,
   createComment,
+  updateComment,
   deleteComment,
   fetchMyArticles,
   searchArticle,
@@ -188,5 +217,9 @@ export {
   submitNotiDelete,
   submitChangePwd,
   submitValidationMail,
-  getCreateDate
+  getCreateDate,
+  changeImg,
+  delAccount,
+  modifyGit,
+  modifyIntro
 };
