@@ -2,7 +2,7 @@
   <div :id="comment.commentid" class="comment-detail">
     <div class="profile">
       <div class="prifile-detail">
-        <img :src="image" style="width : 30px; height : 30px;" />
+        <img :src="image" style="width : 30px; height : 30px; cursor : pointer" @click="goProfilePage" />
         <!-- <img :src="photo" alt style="width : 30px; height : 30px;" /> -->
         <div class="profile-text">
           <div>

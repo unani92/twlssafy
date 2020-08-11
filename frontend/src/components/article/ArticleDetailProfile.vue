@@ -1,7 +1,7 @@
 <template>
   <div class="detail-profile">
     <!-- <img :src="photo" alt @click="gotoWriterPage" /> -->
-    <img :src="userImg" alt @click="gotoWriterPage" />
+    <img :src="userImg" alt @click="gotoWriterPage" style="cursor : pointer" />
     <div style="margin-left : 15px;">
       <div @click="gotoWriterPage" class="writer-page">
         <div
