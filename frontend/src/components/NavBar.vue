@@ -15,7 +15,8 @@
       </div>
       <div class="article-icon">
         <div v-if="this.$store.getters.isLoggedIn">
-          <div style="width : 28px;"
+          <div
+            style="width : 28px;"
             :style="{ backgroundImage:'url('+require('@/assets/image/medal-'+calcGrade+'.png')+')'}"
             class="grade"
           ></div>
@@ -53,7 +54,6 @@
     <div class="aside disabled">
       <div class="aside-menu" v-if="!this.$store.getters.isLoggedIn">
         <GoogleLogin />
-        <GithubLogin />
         <div @click="goToEmailLogin" class="emailogin-text">Email Login</div>
         <div @click="goToSignup" class="signup-text">Signup</div>
       </div>
@@ -67,7 +67,6 @@
 
 <script>
 import GoogleLogin from "./GoogleLogin";
-import GithubLogin from "./GithubLogin";
 import Notification from "./Notification";
 import { getGrade } from "@/utils/calcGrade";
 export default {
@@ -76,8 +75,8 @@ export default {
       grade: getGrade(this.$store.state.articleCount),
       scroll: {
         prev: 0,
-        upDown: null
-      }
+        upDown: null,
+      },
     };
   },
   computed: {
@@ -88,7 +87,6 @@ export default {
   name: "NavBar",
   components: {
     GoogleLogin,
-    GithubLogin,
     Notification,
   },
   methods: {
@@ -113,25 +111,28 @@ export default {
       aside.classList.toggle("disabled");
     },
     goToMyPage() {
-      this.$router.push({name: "Dummy", params: {following : this.$store.state.nickname}})
+      this.$router.push({
+        name: "Dummy",
+        params: { following: this.$store.state.nickname },
+      });
     },
     logout() {
       this.$router.push({ name: "Logout" });
     },
     scrollEvent() {
-      const navBar = document.querySelector(".notification")
+      const navBar = document.querySelector(".notification");
       if (navBar) {
-        const nowScrollY = window.scrollY
-          if (nowScrollY > this.scroll.prev) {
-            navBar.classList.add("disabled")
-            this.scroll.prev = nowScrollY
-          }
+        const nowScrollY = window.scrollY;
+        if (nowScrollY > this.scroll.prev) {
+          navBar.classList.add("disabled");
+          this.scroll.prev = nowScrollY;
         }
-      },
+      }
+    },
   },
   mounted() {
-    document.addEventListener("scroll", this.scrollEvent)
-  }
+    document.addEventListener("scroll", this.scrollEvent);
+  },
 };
 </script>
 
@@ -288,6 +289,15 @@ i:hover {
   align-items: center;
   justify-content: center;
 }
+.aside-menu > div:nth-child(2) {
+  width: 250px;
+  height: 50px;
+  border-radius: 3px;
+  background-color: rgb(204, 93, 65);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 .aside-menu-loggedIn > div:nth-child(2) {
   width: 250px;
   height: 50px;
@@ -298,15 +308,6 @@ i:hover {
   justify-content: center;
 }
 .aside-menu > div:nth-child(3) {
-  width: 250px;
-  height: 50px;
-  border-radius: 3px;
-  background-color: rgb(204, 93, 65);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.aside-menu > div:nth-child(4) {
   width: 250px;
   height: 50px;
   border-radius: 3px;

@@ -2,7 +2,6 @@
   <div class="login">
     <h1>반갑습니다</h1>
     <div class="socialogin">
-      <GithubLogin />
       <GoogleLogin />
     </div>
     <div class="emailogin">
@@ -35,7 +34,6 @@
 <script>
 import PV from "password-validator";
 import * as EmailValidator from "email-validator";
-import GithubLogin from "../components/GithubLogin";
 import GoogleLogin from "../components/GoogleLogin";
 import { login } from "../api";
 import { mapActions } from "vuex";
@@ -70,7 +68,6 @@ export default {
     };
   },
   components: {
-    GithubLogin,
     GoogleLogin,
   },
   methods: {
@@ -115,7 +112,7 @@ export default {
             });
           } else this.$router.push("/");
         })
-        .catch(() => this.error.email = "아이디, 비밀번호를 확인하세요");
+        .catch(() => (this.error.email = "아이디, 비밀번호를 확인하세요"));
     },
   },
   // updated() {
