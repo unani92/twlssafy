@@ -46,6 +46,7 @@ export default {
         locale: Korean,
         onChange: (e) => this.onChange(e),
         enable: [],
+        disableMobile:"true"
       },
       page: 0,
     };

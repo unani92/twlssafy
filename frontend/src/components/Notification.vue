@@ -7,6 +7,13 @@
       </div>
       <i style="cursor: pointer" class="fas fa-times" :id="noti.notificationid" @click="deleteNotification"></i>
     </div>
+    <div class="notice" :class="{read : noti.ready === 1}" v-else-if="noti.type === 'comment'">
+      <i style="color: crimson" class="far fa-heart"></i>
+      <div class="noti-text" :id="noti.notificationid" @click="goToPage">
+        <p>{{ noti.othernickname }} 님이 {{ noti.content.slice(0,9) }}... 글에 댓글을 남겼습니다.</p>
+      </div>
+      <i style="cursor: pointer" class="fas fa-times" :id="noti.notificationid" @click="deleteNotification"></i>
+    </div>
     <div class="notice" :class="{read : noti.ready === 1}" v-else-if="noti.type === 'pin'">
       <i style="color: crimson" class="far fa-bookmark"></i>
       <div class="noti-text" :id="noti.notificationid" @click="goToPage">

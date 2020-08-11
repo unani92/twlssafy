@@ -4,12 +4,26 @@
       <div class="picture">
         <img v-if="userInfo.userInfo.img" :src="userInfo.userInfo.img" />
         <img v-else src="https://i.pravatar.cc/400?u=정윤환" />
+        <div v-if="this.userInfo.userInfo.email === this.$store.state.username">
+          <i
+            v-if="!openDropZone && userInfo"
+            @click="toggleDropZone"
+            class="far fa-plus-square dropzone-icon"
+          ></i>
+          <i
+            v-else
+            @click="toggleDropZone"
+            class="far fa-minus-square dropzone-icon"
+          ></i>
+        </div>
       </div>
       <div class="text">
         <div
           :style="{
             backgroundImage:
-              'url(' + require('@/assets/image/medal-' + calGrade + '.png') + ')',
+              'url(' +
+              require('@/assets/image/medal-' + calGrade + '.png') +
+              ')',
           }"
           class="grade"
         ></div>
@@ -32,7 +46,7 @@
               <span>&nbsp;&nbsp;From&nbsp;</span>
               <span>
                 &nbsp;{{
-                this.$moment(userInfo.userInfo.createdate).format('L')
+                  this.$moment(userInfo.userInfo.createdate).format('L')
                 }}
               </span>
             </div>
@@ -54,7 +68,9 @@
         </ul>
         <li v-if="skills.length !== 0">
           <div class="skills">
-            <span v-for="skill in skills" :key="skill.name">#{{ skill.name }}</span>
+            <span v-for="skill in skills" :key="skill.name"
+              >#{{ skill.name }}</span
+            >
             <button :disabled="!isMypage" class="more" data-toggle="modal">
               <i class="far fa-plus-square"></i>
             </button>
@@ -88,7 +104,9 @@
         </div>
       </div>
     </section>
-    <section v-if="userInfo.totalArticleCount === 0" class="no-article">작성한 글이 없습니다.</section>
+    <section v-if="userInfo.totalArticleCount === 0" class="no-article">
+      작성한 글이 없습니다.
+    </section>
 
     <button id="myBtn" style="display:none">Open Modal</button>
 
@@ -96,8 +114,12 @@
     <div id="skillModal" class="modal">
       <!-- Modal content -->
       <div class="modal-content">
-        <SelectSkills v-if="this.$store.state.nickname === this.$route.params.nickname"></SelectSkills>
-        <div class="close2" style="text-align : center; cursor : pointer">완료</div>
+        <SelectSkills
+          v-if="this.$store.state.nickname === this.$route.params.nickname"
+        ></SelectSkills>
+        <div class="close2" style="text-align : center; cursor : pointer">
+          완료
+        </div>
       </div>
     </div>
 
@@ -115,7 +137,8 @@
           <span
             @click="goUserPage(userInfo.follower.followerNickname[idx - 1])"
             class="follower-email"
-          >{{ userInfo.follower.followerNickname[idx - 1] }}</span>
+            >{{ userInfo.follower.followerNickname[idx - 1] }}</span
+          >
           <div
             @click="
               requestFollow(userInfo.follower.follower[idx - 1].email, $event)
@@ -124,7 +147,9 @@
             <button class="followBtn">팔로우</button>
           </div>
         </div>
-        <div v-if="this.userInfo.follower.follower.length === 0">팔로우한 친구가 없습니다.</div>
+        <div v-if="this.userInfo.follower.follower.length === 0">
+          팔로우한 친구가 없습니다.
+        </div>
       </div>
     </div>
 
@@ -140,7 +165,8 @@
           <span
             @click="goUserPage(userInfo.following.followNickname[idx - 1])"
             class="follower-email"
-          >{{ userInfo.following.followNickname[idx - 1] }}</span>
+            >{{ userInfo.following.followNickname[idx - 1] }}</span
+          >
           <div
             @click="
               requestFollow(userInfo.following.follow[idx - 1].email, $event)
@@ -149,18 +175,34 @@
             <button class="followBtn">팔로우</button>
           </div>
         </div>
-        <div v-if="this.userInfo.following.follow.length === 0">팔로우한 친구가 없습니다.</div>
+        <div v-if="this.userInfo.following.follow.length === 0">
+          팔로우한 친구가 없습니다.
+        </div>
       </div>
+    </div>
+    <!--    드래그앤드랍      -->
+    <div v-if="openDropZone">
+      <vue2-dropzone
+        ref="imgDropZone"
+        id="customdropzone"
+        :options="dropzoneOptions"
+        @vdropzone-complete="afterComplete"
+      />
     </div>
   </div>
 </template>
 
 <script>
-import SelectSkills from "@/views/SelectSkills.vue";
-import { requestFollow } from "@/api/index.js";
-import { mapState, mapGetters } from "vuex";
-import Calendar from "../calendar/Calendar";
-import { getGrade } from "@/utils/calcGrade";
+import SelectSkills from '@/views/SelectSkills.vue';
+import { requestFollow, changeImg } from '@/api/index.js';
+import { mapState, mapGetters } from 'vuex';
+import Calendar from '../calendar/Calendar';
+import { getGrade } from '@/utils/calcGrade';
+// drag and drop
+import firebase from 'firebase';
+import vue2Dropzone from 'vue2-dropzone';
+import 'vue2-dropzone/dist/vue2Dropzone.min.css';
+let uuid = require('uuid');
 
 export default {
   props: {
@@ -169,6 +211,7 @@ export default {
   components: {
     SelectSkills,
     Calendar,
+    vue2Dropzone,
   },
   data() {
     const userSkills = this.$store.state.userSkills;
@@ -176,31 +219,73 @@ export default {
       skills: userSkills,
       nickname: this.$route.params.nickname,
       follower: this.userInfo.follower,
-      grade: 0,
+      // grade: 0,
+      dropzoneOptions: {
+        url: 'https://httpbin.org/post',
+        thumbnailWidth: 150,
+        thumbnailHeight: 150,
+        addRemoveLinks: false,
+        acceptedFiles: '.jpg, .jpeg, .png',
+        dictDefaultMessage: `<p class='text-default'><i class="far fa-plus-square dropzone-icon"></i></p>
+          <p class="form-text">프로필 이미지를 변경합니다</p>
+          `,
+      },
+      openDropZone: false,
+      images: null,
     };
   },
   computed: {
-    ...mapGetters(["isLoggedIn"]),
-    ...mapState(["id_token", "userSkills"]),
+    ...mapGetters(['isLoggedIn']),
+    ...mapState(['id_token', 'userSkills']),
     isMypage() {
       if (this.userInfo.userInfo.email == this.$store.state.username)
         return true;
       else return false;
     },
     calGrade() {
-      return getGrade(this.userInfo.totalArticleCount);
+      return getGrade(this.userInfo.userInfo.score);
     },
   },
   methods: {
+    // 유저 이미지 변경하기
+    toggleDropZone() {
+      if (this.userInfo.userInfo.email === this.$store.state.username)
+        this.openDropZone = !this.openDropZone;
+    },
+    async afterComplete(upload) {
+      let imageName = uuid.v1();
+      const div = document.querySelector('.picture');
+      const imgField = div.querySelector('img');
+      this.isLoading = true;
+      try {
+        let file = upload;
+        const metaData = {
+          contentType: 'image/png',
+        };
+        const storageRef = firebase.storage().ref();
+        const imageRef = storageRef.child(`images/${imageName}.png`);
+        await imageRef.put(file, metaData);
+        const downloadURL = await imageRef.getDownloadURL();
+        this.images = downloadURL;
+        imgField.src = this.images;
+        // 백앤드에 이미지 수정 요청
+        changeImg(downloadURL, this.id_token)
+          .then((res) => console.log(res))
+          .catch((err) => console.log(err));
+      } catch (error) {
+        console.log(error);
+      }
+      this.$refs.imgDropZone.removeFile(upload);
+    },
     goUserPage(following) {
-      this.$router.push({ name: "Dummy", params: { following: following } });
+      this.$router.push({ name: 'Dummy', params: { following: following } });
     },
 
     async requestFollow(followWantingTo, e) {
       if (!this.isLoggedIn) {
-        console.log("login required");
-        if (confirm("팔로우 하시려면 로그인을 해야 합니다")) {
-          this.$router.push("/login");
+        console.log('login required');
+        if (confirm('팔로우 하시려면 로그인을 해야 합니다')) {
+          this.$router.push('/login');
         }
       } else {
         const params = {
@@ -211,13 +296,13 @@ export default {
         // 프런트에서 처리
         const followList = this.$store.state.followList.followNickname;
         const nicknameOfThisBlog = this.$route.params.nickname;
-        if (data.data === "follow") {
+        if (data.data === 'follow') {
           followList.push(nicknameOfThisBlog);
-          e.target.innerHTML = "팔로우 취소";
+          e.target.innerHTML = '팔로우 취소';
 
           //로그인한 사용자의 스토어에 this.userInfo.userInfo.email추가하기
         } else {
-          e.target.innerHTML = "팔로우";
+          e.target.innerHTML = '팔로우';
 
           const len = followList.length;
           for (let i = 0; i < len; i++) {
@@ -227,7 +312,7 @@ export default {
             }
           }
         }
-        this.$store.commit("setFollowListByNickname", followList);
+        this.$store.commit('setFollowListByNickname', followList);
       }
     },
     isFollowing(follow) {
@@ -248,7 +333,7 @@ export default {
   updated() {
     if (this.$store.getters.isLoggedIn) {
       const followBtns = [
-        ...document.querySelectorAll(".follower-email-container"),
+        ...document.querySelectorAll('.follower-email-container'),
       ];
       const len = followBtns.length;
       for (let i = 0; i < len; i++) {
@@ -260,60 +345,60 @@ export default {
             followBtns[i].childNodes[0].innerHTML.trim() ===
             followerOfLoginUser[j].trim()
           ) {
-            followBtns[i].childNodes[1].childNodes[0].innerHTML = "팔로우 취소";
+            followBtns[i].childNodes[1].childNodes[0].innerHTML = '팔로우 취소';
           }
         }
       }
     }
     //스킬
-    const skillModal = document.getElementById("skillModal");
-    const btn = document.querySelector(".more");
-    const span = document.getElementsByClassName("close")[0];
-    btn.onclick = function () {
-      skillModal.style.display = "block";
+    const skillModal = document.getElementById('skillModal');
+    const btn = document.querySelector('.more');
+    const span = document.getElementsByClassName('close')[0];
+    btn.onclick = function() {
+      skillModal.style.display = 'block';
     };
-    span.onclick = function () {
-      skillModal.style.display = "none";
+    span.onclick = function() {
+      skillModal.style.display = 'none';
     };
-    const skillModal2 = document.getElementById("skillModal");
-    const btn2 = document.querySelector(".more");
-    const span2 = document.getElementsByClassName("close2")[0];
-    btn2.onclick = function () {
-      skillModal2.style.display = "block";
+    const skillModal2 = document.getElementById('skillModal');
+    const btn2 = document.querySelector('.more');
+    const span2 = document.getElementsByClassName('close2')[0];
+    btn2.onclick = function() {
+      skillModal2.style.display = 'block';
     };
-    span2.onclick = function () {
-      skillModal2.style.display = "none";
+    span2.onclick = function() {
+      skillModal2.style.display = 'none';
     };
     // follower modal
-    const followerModal = document.getElementById("followersModal");
-    const followBtn = document.querySelector(".follower-modal");
-    const followSpan = document.getElementsByClassName("close")[0];
-    followBtn.onclick = function () {
-      followerModal.style.display = "block";
+    const followerModal = document.getElementById('followersModal');
+    const followBtn = document.querySelector('.follower-modal');
+    const followSpan = document.getElementsByClassName('close')[0];
+    followBtn.onclick = function() {
+      followerModal.style.display = 'block';
     };
-    followSpan.onclick = function () {
-      followerModal.style.display = "none";
+    followSpan.onclick = function() {
+      followerModal.style.display = 'none';
     };
 
     // following modal
-    const followingModal = document.getElementById("followingsModal");
-    const followingBtn = document.querySelector(".following-modal");
-    const followingSpan = document.getElementsByClassName("close")[1];
-    followingBtn.onclick = function () {
-      followingModal.style.display = "block";
+    const followingModal = document.getElementById('followingsModal');
+    const followingBtn = document.querySelector('.following-modal');
+    const followingSpan = document.getElementsByClassName('close')[1];
+    followingBtn.onclick = function() {
+      followingModal.style.display = 'block';
     };
-    followingSpan.onclick = function () {
-      followingModal.style.display = "none";
+    followingSpan.onclick = function() {
+      followingModal.style.display = 'none';
     };
-    window.onclick = function (event) {
+    window.onclick = function(event) {
       if (
-        event.target == skillModal ||
-        event.target == followerModal ||
-        event.target == followingModal
+        event.target === skillModal ||
+        event.target === followerModal ||
+        event.target === followingModal
       ) {
-        skillModal.style.display = "none";
-        followerModal.style.display = "none";
-        followingModal.style.display = "none";
+        skillModal.style.display = 'none';
+        followerModal.style.display = 'none';
+        followingModal.style.display = 'none';
       }
     };
   },
@@ -324,6 +409,19 @@ export default {
 </script>
 
 <style>
+.dropzone-icon {
+  font-size: 2rem;
+  /*margin: 2rem;*/
+  cursor: pointer;
+}
+.image-div {
+  display: flex;
+  margin: 25px;
+}
+.image {
+  max-width: 250px;
+  margin: 15px;
+}
 ul {
   list-style-type: none;
 }
@@ -359,7 +457,13 @@ section {
 .about-area > .picture {
   display: block;
   text-align: center;
-  padding: 20px;
+  padding: 10px;
+
+  /*display: flex !important;*/
+  /*justify-content: space-between;*/
+  /*flex-direction: column;*/
+  /*align-items: center;*/
+  /*height: 400px;*/
 }
 
 li {
@@ -386,7 +490,7 @@ li {
 
 .description {
   font-size: 14px;
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: 'Noto Sans KR', sans-serif;
 }
 
 .about-area > .text {
@@ -412,7 +516,7 @@ li {
 
 .about-area > .text > .intro {
   padding: 20px 0;
-  font-family: "Noto Sans KR", sans-serif;
+  font-family: 'Noto Sans KR', sans-serif;
   letter-spacing: 1.5px;
 }
 

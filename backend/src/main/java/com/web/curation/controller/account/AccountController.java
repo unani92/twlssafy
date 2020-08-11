@@ -98,11 +98,12 @@ public class AccountController {
         userInfo.put("id_token", id_token);
         userInfo.put("email", email);
         userInfo.put("nickname", userToken.get("nickname"));
-        userInfo.put("img", userToken.get("img"));
+        userInfo.put("img", userDao.getUserByEmail(email).getImg());
         userInfo.put("pinList", pinDao.findAllByEmail(email));
         userInfo.put("likesList", likesDao.findAllByEmail(email));
         userInfo.put("notificationCnt", notificationDao.countByEmail(email));
         userInfo.put("articleCount", articleDao.countByEmail(email));
+        userInfo.put("score", userDao.getUserByEmail(email).getScore());
             
         // 내가 팔로우 하는 사람 목록            
         List<Follow> follow = followDao.findAllByEmail(email);
@@ -164,7 +165,7 @@ public class AccountController {
 
         String nickname = (String) body.get("nickname");
         String info = (String)body.get("info");
-        String github = (String)body.get("hithub");
+        String github = (String)body.get("github");
 
         User userInfo = new User();
         userInfo.setEmail(email);
@@ -285,10 +286,22 @@ public class AccountController {
         user.setNickname(nickname);
         user.setInfo(info);
         user.setGithub(github);
+
+        Random ran = new Random();
+        if(ran.nextInt(3) == 0)
+            user.setImg("https://firebasestorage.googleapis.com/v0/b/twl-image-storage.appspot.com/o/v.jpg?alt=media&token=0b61d5f6-5b94-4304-95f3-7b8490625181");
+        else if(ran.nextInt(3)== 1)
+            user.setImg("https://firebasestorage.googleapis.com/v0/b/twl-image-storage.appspot.com/o/default.jpg?alt=media&token=2bc41dac-53bd-4cfa-9b54-697a80e36a95");
+        else
+            user.setImg("https://firebasestorage.googleapis.com/v0/b/twl-image-storage.appspot.com/o/u.png?alt=media&token=94accefd-0e3f-4055-b69e-db0b679ee65b");
+
         userDao.save(user);
+
+        String id_token = jwtService.create(user);
+
         final BasicResponse result = new BasicResponse();
         result.status = true;
-        result.data = "success";
+        result.data = id_token;
         result.object = userDao.findUserByEmail(email).get(); 
         
         return new ResponseEntity<>(result, HttpStatus.OK);
@@ -363,7 +376,7 @@ public class AccountController {
         message.setText("안녕하세요. 인증 번호는 "+ranString+"입니다.");
         message.setSentDate(new Date());
         javaMailSender.send(message);
-
+        System.out.println(ranString);
         return ranString.toString();
     }
     

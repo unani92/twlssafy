@@ -177,6 +177,8 @@ public class MypageController {
 
             userInfo.put("interestList", interestList);
 
+            userInfo.put("score", user.get().getScore());
+
             
             result.object = userInfo;
         }
