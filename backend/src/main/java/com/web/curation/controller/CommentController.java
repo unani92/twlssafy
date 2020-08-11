@@ -87,6 +87,7 @@ public class CommentController {
         object.put("comment", comment);
         object.put("nickname",(String) JWTDecoding.getInfo(header.get("id_token").get(0)).get("nickname"));
         object.put("img", (String)JWTDecoding.getInfo(header.get("id_token").get(0)).get("img"));
+        object.put("score", user.getScore());
 
         result.object = object;
 
