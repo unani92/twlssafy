@@ -18,6 +18,7 @@ import com.web.curation.model.pinlikesfollow.Follow;
 import com.web.curation.model.pinlikesfollow.Likes;
 import com.web.curation.model.pinlikesfollow.Notification;
 import com.web.curation.model.pinlikesfollow.Pin;
+import com.web.curation.model.user.User;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -174,6 +175,10 @@ public class PinLikeFollowController {
             if (pinDao.deleteByEmailAndArticleid(email, no) > 0) { // 핀 지우기
                 notificationDao.deleteByOtherAndArticleidAndTypeAndReadn(email, no, "pin",0); // 알림 안 읽었으면 지우기
                 result.data = "pin 취소";
+
+                User user = userDao.getUserByEmail(articleDao.findByArticleid(no).getEmail());
+                user.setScore(user.getScore()-1);
+                userDao.save(user);
             } else { // 지우는 거 실패
                 result.data = "pin 취소 실패";
             }
@@ -184,6 +189,10 @@ public class PinLikeFollowController {
                 Article article = articleDao.findByArticleid(Integer.parseInt(article_id));
                 if (!article.getEmail().equals(email)) {
                     result.object = saveNotification(article, email, "pin"); // 알림 설정
+
+                    User user = userDao.getUserByEmail(articleDao.findByArticleid(no).getEmail());
+                    user.setScore(user.getScore()+1);
+                    userDao.save(user);
                 }
                 result.data = "pin 설정";
             }
@@ -215,6 +224,10 @@ public class PinLikeFollowController {
             if (likesDao.deleteByEmailAndArticleid(email, no) > 0) { // 좋아요 지우기
                 notificationDao.deleteByOtherAndArticleidAndTypeAndReadn(email, no, "like",0); // 좋아요 알림도 안 읽었으면 지우기 -> 읽었어도 지워야하나?
                 result.data = "like 취소";
+
+                User user = userDao.getUserByEmail(articleDao.findByArticleid(no).getEmail());
+                user.setScore(user.getScore()-1);
+                userDao.save(user);
             } else { // 지우는 거 실패
                 result.data = "like 취소 실패";
             }
@@ -225,6 +238,10 @@ public class PinLikeFollowController {
                 Article article = articleDao.findByArticleid(Integer.parseInt(article_id)); 
                 if (!article.getEmail().equals(email)) {
                     result.object = saveNotification(article, email, "like"); // 알림 설정
+                        
+                    User user = userDao.getUserByEmail(articleDao.findByArticleid(no).getEmail());
+                    user.setScore(user.getScore()+1);
+                    userDao.save(user);
                 }
                 result.data = "like 설정";
             }
@@ -264,24 +281,5 @@ public class PinLikeFollowController {
             return object;
         } else
             return null;
-    }
-
-    @ApiOperation(value = "알림 리스트")
-    @GetMapping("/notification/{notificationid}")
-    public Object notification(@PathVariable final int notificationid){
-        final BasicResponse result = new BasicResponse();
-        result.data="fail";
-        result.status=false;
-
-        Notification notification = notificationDao.findNotificationByNotificationid(notificationid);
-        if(notification.getReady() == 0)
-        {
-            notification.setReady(1);
-            notificationDao.save(notification);
-            result.data="알림 - 읽음 처리";
-            result.status=true;
-        }
-        
-        return result;
     }
 }

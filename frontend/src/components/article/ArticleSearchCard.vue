@@ -2,14 +2,12 @@
   <div class="card-body">
     <div class="blog-card">
       <div class="inner-part">
-        <label for="imgTap" class="img" @click="
-                $router.push({
-                  name: 'ArticleDetail',
-                  params: { id: article.articleid },
-                })
-              " >
+        <label for="imgTap" class="img" @click=" $router.push({name: 'ArticleDetail', params: { id: article.articleid },})" >
           <img v-if="article.imgurl != null" class="img-1" :src="article.imgurl" />
-          <img v-else class="img-1" src="https://picsum.photos/300/200" />
+          <img v-else-if="article.articleid%4==0" class="img-1" src="@/assets/image/preview0.png"/>
+          <img v-else-if="article.articleid%4==1" class="img-1" src="@/assets/image/preview1.png"/>
+          <img v-else-if="article.articleid%4==2" class="img-1" src="@/assets/image/preview2.png"/>
+          <img v-else class="img-1" src="@/assets/image/preview3.png"/>
         </label>
         <p>
         </p>

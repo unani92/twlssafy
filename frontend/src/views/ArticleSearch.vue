@@ -2,13 +2,6 @@
   <div class="article-search">
     <div class="search">
       <div class="option">
-        <!-- <select v-model="category" name="category" id="category">
-          <option selected value>분류</option>
-          <option value="title">제목</option>
-          <option value="content">내용</option>
-          <option value="keyword">키워드</option>
-          <option value="nickname">닉네임</option>
-        </select> -->
         <input type="radio" name="category" value="keyword" v-model="category"> 키워드 
         <input type="radio" name="category" value="title" v-model="category"> 제목 
         <input type="radio" name="category" value="content" v-model="category">  내용 
