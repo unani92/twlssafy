@@ -15,7 +15,6 @@
           name="cp_item"
           value=1
           v-model="ispublic"
-          checked="checked"
         >
         <span>전체공개</span>
       </label>

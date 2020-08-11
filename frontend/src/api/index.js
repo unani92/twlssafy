@@ -117,7 +117,6 @@ function fetchPinArticles(params, token) {
 }
 
 function fetchHotArticles(params, token) {
-  console.log(params);
   return instance.get(`article/hot?page=${params.page}`, {
     headers: { id_token: token },
   });
@@ -127,10 +126,34 @@ function fetchHashTags() {
   return instance.get(`hashTag`);
 }
 
+function calender(targetDate,email,page) {
+  return instance.get(`/article/date/${targetDate}?email=${email}&page=${page}`)
+}
+
+function submitNotiRead(notificationId) {
+  return instance.get(`/notification/${notificationId}`)
+}
+
+function submitNotiDelete(notificationId) {
+  return instance.delete(`/notification/${notificationId}`)
+}
+
 function fetchRecommend(token) {
   return instance.get('article/recommend', {
     headers: { id_token: token }
   })
+}
+
+function submitChangePwd(email, password) {
+  return instance.post("/account/changePwd",{email: email , password: password})
+}
+
+function submitValidationMail(email) {
+  return instance.post("/account/findPwd",{email: email})
+}
+
+function getCreateDate(nickname) {
+  return instance.get(`/article/datelist/${nickname}`)
 }
 
 export {
@@ -159,5 +182,11 @@ export {
   fetchPinArticles,
   fetchHotArticles,
   fetchHashTags,
-  fetchRecommend
+  fetchRecommend,
+  calender,
+  submitNotiRead,
+  submitNotiDelete,
+  submitChangePwd,
+  submitValidationMail,
+  getCreateDate
 };

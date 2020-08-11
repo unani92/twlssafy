@@ -3,18 +3,13 @@
     <h1>관심사를 선택해주세요</h1>
     <div class="selectskills-main">
       <h2>Hot skills</h2>
-      <button v-if="nowSignUp"
-              @click="$router.push('/')"
-              style="margin: 5px; border-style: none; background-color: #0095f6; font-size: 1rem; padding: 5px; border-radius: 5px; color: white">
-        가입완료
-      </button>
+      <button
+        v-if="nowSignUp"
+        @click="$router.push('/')"
+        style="width:100%; margin: 5px; border-style: none; background-color: #0095f6; font-size: 1rem; padding: 5px; border-radius: 5px; color: white"
+      >가입완료</button>
       <div class="hotskills">
-        <div
-          v-for="skill in hotSkills"
-          :key="skill"
-          :id="skill.name"
-          class="skill-badge"
-        >
+        <div v-for="skill in hotSkills" :key="skill" :id="skill.name" class="skill-badge">
           <span>{{ skill.name }}</span>
           <i @click="addStack" style="cursor:pointer;" class="fas fa-plus"></i>
         </div>
@@ -28,26 +23,15 @@
           style="cursor: pointer"
           v-for="res in result"
           :key="res"
-        >
-          {{ res }}
-        </div>
+        >{{ res }}</div>
       </div>
     </div>
     <div v-if="userSkill.length" class="selectskills-selected">
       <h2>Selected</h2>
       <div class="hotskills">
-        <div
-          v-for="skill in userSkill"
-          :key="skill.name"
-          :id="skill.name"
-          class="totalSkills"
-        >
+        <div v-for="skill in userSkill" :key="skill.name" :id="skill.name" class="totalSkills">
           <span>{{ skill.name }}</span>
-          <i
-            @click="removeStack"
-            style="cursor:pointer;"
-            class="fas fa-times"
-          ></i>
+          <i @click="removeStack" style="cursor:pointer;" class="fas fa-times"></i>
         </div>
       </div>
     </div>
@@ -71,11 +55,11 @@ export default {
   },
   computed: {
     nowSignUp() {
-      return this.path === '/selectskills'
-    }
+      return this.path === "/selectskills";
+    },
   },
   mounted() {
-    console.log(this.nowSignUp)
+    console.log(this.nowSignUp);
   },
   methods: {
     //검색

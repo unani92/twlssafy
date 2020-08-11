@@ -101,7 +101,7 @@ public class AccountController {
         userInfo.put("img", userToken.get("img"));
         userInfo.put("pinList", pinDao.findAllByEmail(email));
         userInfo.put("likesList", likesDao.findAllByEmail(email));
-        userInfo.put("notificationCnt", notificationDao.countByEmailAndRead(email));
+        userInfo.put("notificationCnt", notificationDao.countByEmail(email));
         userInfo.put("articleCount", articleDao.countByEmail(email));
             
         // 내가 팔로우 하는 사람 목록            

@@ -16,6 +16,7 @@
         :keywords="keywords[index]"
         :pinCnt="pinCntList[index]"
         :likesCnt="likesCntList[index]"
+        :commentCnt="commentCntList[index]"
       />
       <div id="bottomSensor"></div>
     </div>
@@ -40,7 +41,6 @@ export default {
       keywords: [],
       likesCntList : [],
       pinCntList : [],
-      tmpList : [],
       commentCntList : [],
       isLoading: true,
       page: 0,
@@ -58,6 +58,7 @@ export default {
       this.articles = [...this.articles, ...data.object.article];
       this.likesCntList = [...this.likesCntList, ...data.object.likesCntList];
       this.pinCntList = [...this.pinCntList, ...data.object.pinCntList];
+      this.commentCntList = [...this.commentCntList, ...data.object.commentCntList];
     },
     addScrollWatcher() {
       const bottomSensor = document.querySelector("#bottomSensor");

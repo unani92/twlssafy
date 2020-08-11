@@ -3,7 +3,7 @@
     <div class="nav-bar">
       <div class="logo-searchbar">
         <div class="logo">
-          <Router-link class="logo-text" to="/latest">TWL</Router-link>
+          <Router-link class="logo-text" to="/">TWL</Router-link>
         </div>
         <div class="input-box">
           <i

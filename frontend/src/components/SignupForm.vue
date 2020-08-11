@@ -219,7 +219,6 @@ export default {
         nickname: this.nickname,
       };
       const res = await checkNickname(params);
-      console.log(res.data);
       if (res.data.status) {
         this.nicknameDoubleCheck = true;
       } else {

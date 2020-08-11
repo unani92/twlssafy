@@ -189,6 +189,7 @@ public class ArticleController {
         article.setImgurl(imgurl);
         article.setPreview(preview);
         article.setIspublic(ispublic);
+        article.setCreatedat(LocalDateTime.now().plusHours(9));
         
         if(articleDao.save(article)==null){
             result.data = "글쓰기 실패 - DB 저장 실패";
@@ -333,9 +334,13 @@ public class ArticleController {
         article.setContent((String)request.get("content"));
         article.setTitle((String)request.get("title"));
         article.setImgurl(getImgFromArticle((String)request.get("content")));
-        article.setUpdatedat(LocalDateTime.now());
+        article.setUpdatedat(LocalDateTime.now().plusHours(9));
         article.setPreview(subStrByte((String) request.get("preview"), 200));
-        article.setIspublic(Integer.parseInt((String)request.get("ispublic")));
+        try {
+            article.setIspublic((int)request.get("ispublic"));
+        } catch (Exception e) {
+            article.setIspublic(Integer.parseInt((String)request.get("ispublic")));
+        }
 
 
         final BasicResponse result = new BasicResponse();
@@ -416,6 +421,11 @@ public class ArticleController {
             commentArticleCountList.add(articleDao.countByEmail(c.getEmail()));
         }
         
+
+        article.setHits(article.getHits()+1);
+        articleDao.save(article);
+        
+
         result.status = true;
         result.data = "상세 조회 성공";
         
@@ -432,9 +442,11 @@ public class ArticleController {
         object.put("commentNickname",commentNickname);
         object.put("commentArticleCount", commentArticleCountList);
         object.put("ispublic", article.getIspublic());
+        object.put("hits", article.getHits());
 
         result.object = object;
         
+
 
         return new ResponseEntity<>(result, HttpStatus.OK);
         

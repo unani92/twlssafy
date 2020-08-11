@@ -46,9 +46,9 @@
 </template>
 
 <script>
-import http from "../api/http-common.js";
+import { submitValidationMail } from "../api";
 
-  export default {
+export default {
     name: "ChangePwd",
     data() {
     return {
@@ -65,18 +65,19 @@ import http from "../api/http-common.js";
 
    methods: {
     async emailDoubleCheck() {
-        const email = this.email
-        http.post("/account/findPwd",{email}).then(res =>{
-          if (res.data.status) {
-            this.logMessage.validationNumber =
-            "인증번호를 발송했습니다.";
-            
-          this.validationNumberFromBE = res.data.object.code;
-          console.log(this.validationNumberFromBE);
-        } else {
-          this.logMessage.validationNumber = "\n인증번호가 오지 않으면 입력하신 정보가 정확한지 확인하여 주세요.";
-        } 
-        });
+      const email = this.email
+      submitValidationMail(email)
+        .then(res =>{
+        if (res.data.status) {
+          this.logMessage.validationNumber =
+          "인증번호를 발송했습니다.";
+
+        this.validationNumberFromBE = res.data.object.code;
+        console.log(this.validationNumberFromBE);
+      } else {
+        this.logMessage.validationNumber = "\n인증번호가 오지 않으면 입력하신 정보가 정확한지 확인하여 주세요.";
+      }
+      });
     },
     checkValidationCode() {
       if (this.validationNumber === this.validationNumberFromBE) {
