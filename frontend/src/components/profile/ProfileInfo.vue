@@ -58,7 +58,7 @@
               {{ userInfo.userInfo.email }}
             </div>
           </li>
-          <li >
+          <li>
             <div class="info">
               <i class="fab fa-github"></i>
               {{ userInfo.userInfo.github }}
@@ -247,6 +247,73 @@ export default {
     },
   },
   methods: {
+    //DOM에 modal 부착하기
+    attachModal() {
+      if (this.$store.getters.isLoggedIn) {
+        const followBtns = [
+          ...document.querySelectorAll('.follower-email-container'),
+        ];
+        const len = followBtns.length;
+        for (let i = 0; i < len; i++) {
+          const followerOfLoginUser = this.$store.state.followList
+            .followNickname;
+          const numOfFollowerOFLoginUser = followerOfLoginUser.length;
+          for (let j = 0; j < numOfFollowerOFLoginUser; j++) {
+            // trim하지 않으면 선택자로 버튼값의 innerHTML값을 가져올 때 양쪽에 공백문자가 삽입되어 비교가 안된다.
+            if (
+              followBtns[i].childNodes[0].innerHTML.trim() ===
+              followerOfLoginUser[j].trim()
+            ) {
+              followBtns[i].childNodes[1].childNodes[0].innerHTML =
+                '팔로우 취소';
+            }
+          }
+        }
+      }
+      //스킬
+      const skillModal = document.getElementById('skillModal');
+      const btn = document.querySelector('.more');
+      const span = document.getElementsByClassName('close2')[0];
+      btn.onclick = function() {
+        skillModal.style.display = 'block';
+      };
+      span.onclick = function() {
+        skillModal.style.display = 'none';
+      };
+      // follower modal
+      const followerModal = document.getElementById('followersModal');
+      const followBtn = document.querySelector('.follower-modal');
+      const followSpan = document.getElementsByClassName('close')[0];
+      followBtn.onclick = function() {
+        followerModal.style.display = 'block';
+      };
+      followSpan.onclick = function() {
+        followerModal.style.display = 'none';
+      };
+
+      // following modal
+      const followingModal = document.getElementById('followingsModal');
+      const followingBtn = document.querySelector('.following-modal');
+      const followingSpan = document.getElementsByClassName('close')[1];
+      followingBtn.onclick = function() {
+        followingModal.style.display = 'block';
+      };
+      followingSpan.onclick = function() {
+        followingModal.style.display = 'none';
+      };
+
+      window.onclick = function(event) {
+        if (
+          event.target === skillModal ||
+          event.target === followerModal ||
+          event.target === followingModal
+        ) {
+          skillModal.style.display = 'none';
+          followerModal.style.display = 'none';
+          followingModal.style.display = 'none';
+        }
+      };
+    },
     // 유저 이미지 변경하기
     toggleDropZone() {
       if (this.userInfo.userInfo.email === this.$store.state.username)
@@ -329,71 +396,13 @@ export default {
     },
   },
   updated() {
-    if (this.$store.getters.isLoggedIn) {
-      const followBtns = [
-        ...document.querySelectorAll('.follower-email-container'),
-      ];
-      const len = followBtns.length;
-      for (let i = 0; i < len; i++) {
-        const followerOfLoginUser = this.$store.state.followList.followNickname;
-        const numOfFollowerOFLoginUser = followerOfLoginUser.length;
-        for (let j = 0; j < numOfFollowerOFLoginUser; j++) {
-          // trim하지 않으면 선택자로 버튼값의 innerHTML값을 가져올 때 양쪽에 공백문자가 삽입되어 비교가 안된다.
-          if (
-            followBtns[i].childNodes[0].innerHTML.trim() ===
-            followerOfLoginUser[j].trim()
-          ) {
-            followBtns[i].childNodes[1].childNodes[0].innerHTML = '팔로우 취소';
-          }
-        }
-      }
-    }
-    //스킬
-    const skillModal = document.getElementById('skillModal');
-    const btn = document.querySelector('.more');
-    const span = document.getElementsByClassName('close2')[0];
-    btn.onclick = function() {
-      skillModal.style.display = 'block';
-    };
-    span.onclick = function() {
-      skillModal.style.display = 'none';
-    };
-    // follower modal
-    const followerModal = document.getElementById('followersModal');
-    const followBtn = document.querySelector('.follower-modal');
-    const followSpan = document.getElementsByClassName('close')[0];
-    followBtn.onclick = function() {
-      followerModal.style.display = 'block';
-    };
-    followSpan.onclick = function() {
-      followerModal.style.display = 'none';
-    };
-
-    // following modal
-    const followingModal = document.getElementById('followingsModal');
-    const followingBtn = document.querySelector('.following-modal');
-    const followingSpan = document.getElementsByClassName('close')[1];
-    followingBtn.onclick = function() {
-      followingModal.style.display = 'block';
-    };
-    followingSpan.onclick = function() {
-      followingModal.style.display = 'none';
-    };
-    
-    window.onclick = function(event) {
-      if (
-        event.target === skillModal ||
-        event.target === followerModal ||
-        event.target === followingModal
-      ) {
-        skillModal.style.display = 'none';
-        followerModal.style.display = 'none';
-        followingModal.style.display = 'none';
-      }
-    };
+    this.attachModal();
   },
   beforeUpdate() {
     this.skills = this.$store.state.userSkills;
+  },
+  mounted() {
+    this.attachModal();
   },
 };
 </script>
