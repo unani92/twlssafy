@@ -32,11 +32,11 @@
       if (this.calGrade === 0) {
         return { left: 0, right:9, tier: 'new' }
       } else if (this.calGrade === 1) {
-        return  { left: 0, right:9, tier: 'bronze' }
+        return  { left: 0, right:9, tier: 'new' }
       } else if (this.calGrade === 2) {
-        return { left: 10, right: 49, tier: 'silver' }
+        return { left: 10, right: 49, tier: 'bronze' }
       } else if (this.calGrade === 3) {
-        return { left: 50, right: 149, tier: 'gold' }
+        return { left: 50, right: 149, tier: 'silver' }
       } else if (this.calGrade === 4) {
         return { left: 150, right: 299, tier: 'platinum' }
       } else {
