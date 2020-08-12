@@ -132,6 +132,7 @@ export default {
       a.download = `${this.$store.state.nickname}_${this.title}.md`
       a.click()
       a.remove()
+      window.URL.revokeObjectURL(url);
     },
     gotoWriterPage() {
       this.$router.push({
