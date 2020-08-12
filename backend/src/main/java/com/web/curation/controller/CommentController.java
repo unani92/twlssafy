@@ -113,8 +113,13 @@ public class CommentController {
                     noti.setReady(0);
                     noti.setType("comment");
                     
-                    if(notiDao.save(noti)==null){ // 저장 못 하면
-                        System.out.println("noti failed");
+                    while(true){
+                        try {
+                            if(notiDao.save(noti)!=null)
+                                break;
+                        } catch (Exception e) {
+                            noti.setContent(noti.getContent()+".");
+                        }
                     }
                 }
                 return new ResponseEntity<>(result,HttpStatus.OK);
