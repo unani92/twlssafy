@@ -1,7 +1,8 @@
 <template>
   <div>
     <div class="progressbar">
-      <div class="percent" :class="tier" :style="`width:${width}%;`">point: {{ score }}</div>
+      <div class="percent" :class="tier" :style="`width:${width}%;`"></div>
+      <div class="score" :style="`--scoreA:${width}%;`">{{ score }}</div>
     </div>
     <div class="numbers">
       <span>{{ left }}</span>
@@ -47,6 +48,9 @@
 </script>
 
 <style scoped>
+  :root {
+    --scoreA: 0;
+  }
   .progressbar {
     max-width: 570px;
     margin: 0 auto;
@@ -69,6 +73,10 @@
     display: flex;
     justify-content: space-between;
   }
+  .score {
+    margin-left: var(--scoreA);
+  }
+
   .new {
     background-color: dimgray;
   }
