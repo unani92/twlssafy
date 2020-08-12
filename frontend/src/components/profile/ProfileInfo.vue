@@ -30,20 +30,26 @@
         <div class="description follower-email-container" style="margin:0">
           <span class="follower-email">{{ userInfo.userInfo.nickname }}</span>
           <div
-            v-show="this.userInfo.userInfo.nickname !== this.$store.state.nickname"
+            v-show="
+              this.userInfo.userInfo.nickname !== this.$store.state.nickname
+            "
             @click="requestFollow(userInfo.userInfo.email, $event)"
           >
             <button class="followBtn">팔로우</button>
           </div>
         </div>
 
-
-        <div class="intro">{{ userInfo.userInfo.info }} 
-          <a v-if="isMypage" :disabled="!isMypage" class="intro-modal" data-toggle="modal">
+        <div class="intro">
+          {{ userInfo.userInfo.info }}
+          <a
+            v-if="isMypage"
+            :disabled="!isMypage"
+            class="intro-modal"
+            data-toggle="modal"
+          >
             <i style="color : gray; font-size : 12px" class="far fa-edit"></i>
           </a>
         </div>
-
 
         <ul>
           <li>
@@ -64,22 +70,27 @@
               {{ userInfo.userInfo.email }}
             </div>
           </li>
-          <li >
+          <li>
             <div class="info">
               <i class="fab fa-github"></i>
               {{ userInfo.userInfo.github }}
               <a v-if="isMypage" class="git-modal" data-toggle="modal">
-                <i style="color : gray; font-size : 12px" class="far fa-edit"></i>
+                <i
+                  style="color : gray; font-size : 12px"
+                  class="far fa-edit"
+                ></i>
               </a>
             </div>
-
-
           </li>
           <!-- <li style="dec" v-if="skills.length !== 0"></li> -->
         </ul>
         <li v-if="skills.length !== 0">
           <div class="skills">
-            <span v-for="skill in skills" :key="skill.name" style="cursor : pointer" @click="searchByStack(skill.name)"
+            <span
+              v-for="skill in skills"
+              :key="skill.name"
+              style="cursor : pointer"
+              @click="searchByStack(skill.name)"
               >#{{ skill.name }}</span
             >
             <button :disabled="!isMypage" class="more" data-toggle="modal">
@@ -192,38 +203,58 @@
       </div>
     </div>
 
-
-<!-- 한줄 소개 수정  -->
+    <!-- 한줄 소개 수정  -->
     <div id="introductionModal" class="modal">
       <div class="intro-modal-content">
         <div style="margin-bottom : 20px;">한줄 소개 수정</div>
-        <input class="editInput" style="padding-right : 20px;" v-model="intro"/>
+        <input
+          class="editInput"
+          style="padding-right : 20px;"
+          v-model="intro"
+        />
         <div style="margin-top : 20px;">
-          <button @click="modiIntro" class="close2 editBtn" style="text-align : center; cursor : pointer">
+          <button
+            @click="modiIntro"
+            class="close2 editBtn"
+            style="text-align : center; cursor : pointer"
+          >
             완료
           </button>
-          <button class="close2 cancelBtn" style="text-align : center; cursor : pointer">
+          <button
+            class="close2 cancelBtn"
+            style="text-align : center; cursor : pointer"
+          >
             취소
           </button>
         </div>
       </div>
     </div>
-<!-- github  수정  -->
+    <!-- github  수정  -->
     <div id="githubModal" style="text-align : center" class="modal">
       <div class="git-modal-content">
         <div style="margin-bottom : 20px;">Git Hub 수정</div>
-        <input class="editInput" style="padding-right : 20px;" v-model="github"/>
+        <input
+          class="editInput"
+          style="padding-right : 20px;"
+          v-model="github"
+        />
         <div style="margin-top : 20px;">
-          <button @click="modiGit" class="close2 editBtn" style="text-align : center; cursor : pointer">
+          <button
+            @click="modiGit"
+            class="close2 editBtn"
+            style="text-align : center; cursor : pointer"
+          >
             완료
           </button>
-          <button class="close2 cancelBtn" style="text-align : center; cursor : pointer">
+          <button
+            class="close2 cancelBtn"
+            style="text-align : center; cursor : pointer"
+          >
             취소
           </button>
         </div>
       </div>
     </div>
-
 
     <!--    드래그앤드랍      -->
     <div v-if="openDropZone">
@@ -239,7 +270,12 @@
 
 <script>
 import SelectSkills from '@/views/SelectSkills.vue';
-import { requestFollow, changeImg, modifyIntro,modifyGit } from '@/api/index.js';
+import {
+  requestFollow,
+  changeImg,
+  modifyIntro,
+  modifyGit,
+} from '@/api/index.js';
 import { mapState, mapGetters } from 'vuex';
 import Calendar from '../calendar/Calendar';
 import { getGrade } from '@/utils/calcGrade';
@@ -277,8 +313,8 @@ export default {
       },
       openDropZone: false,
       images: null,
-      intro : this.userInfo.userInfo.info,
-      github : this.userInfo.userInfo.github,
+      intro: this.userInfo.userInfo.info,
+      github: this.userInfo.userInfo.github,
     };
   },
   computed: {
@@ -294,33 +330,146 @@ export default {
     },
   },
   methods: {
+    //DOM에 modal 부착하기
+    attachModal() {
+      if (this.$store.getters.isLoggedIn) {
+        const followBtns = [
+          ...document.querySelectorAll('.follower-email-container'),
+        ];
+        const len = followBtns.length;
+        for (let i = 0; i < len; i++) {
+          const followerOfLoginUser = this.$store.state.followList
+            .followNickname;
+          const numOfFollowerOFLoginUser = followerOfLoginUser.length;
+          for (let j = 0; j < numOfFollowerOFLoginUser; j++) {
+            // trim하지 않으면 선택자로 버튼값의 innerHTML값을 가져올 때 양쪽에 공백문자가 삽입되어 비교가 안된다.
+            if (
+              followBtns[i].childNodes[0].innerHTML.trim() ===
+              followerOfLoginUser[j].trim()
+            ) {
+              followBtns[i].childNodes[1].childNodes[0].innerHTML =
+                '팔로우 취소';
+            }
+          }
+        }
+      }
+      //스킬
+      const skillModal = document.getElementById('skillModal');
+      const btn = document.querySelector('.more');
+      const span = document.getElementsByClassName('close2')[0];
+      btn.onclick = function() {
+        skillModal.style.display = 'block';
+      };
+      span.onclick = function() {
+        skillModal.style.display = 'none';
+      };
+      // follower modal
+      const followerModal = document.getElementById('followersModal');
+      const followBtn = document.querySelector('.follower-modal');
+      const followSpan = document.getElementsByClassName('close')[0];
+      followBtn.onclick = function() {
+        followerModal.style.display = 'block';
+      };
+      followSpan.onclick = function() {
+        followerModal.style.display = 'none';
+      };
+
+      // following modal
+      const followingModal = document.getElementById('followingsModal');
+      const followingBtn = document.querySelector('.following-modal');
+      const followingSpan = document.getElementsByClassName('close')[1];
+      followingBtn.onclick = function() {
+        followingModal.style.display = 'block';
+      };
+      followingSpan.onclick = function() {
+        followingModal.style.display = 'none';
+      };
+
+      window.onclick = function(event) {
+        if (
+          event.target === skillModal ||
+          event.target === followerModal ||
+          event.target === followingModal
+        ) {
+          skillModal.style.display = 'none';
+          followerModal.style.display = 'none';
+          followingModal.style.display = 'none';
+        }
+      };
+      const introModal = document.getElementById('introductionModal');
+      const introBtn = document.querySelector('.intro-modal');
+      const introSpan = document.getElementsByClassName('close2')[1];
+      const introSpan2 = document.getElementsByClassName('close2')[2];
+      introBtn.onclick = function() {
+        introModal.style.display = 'block';
+      };
+      introSpan.onclick = function() {
+        introModal.style.display = 'none';
+      };
+      introSpan2.onclick = function() {
+        introModal.style.display = 'none';
+      };
+      ///////////////////////////
+      ///////////////////////////
+      const gitModal = document.getElementById('githubModal');
+      const gitBtn = document.querySelector('.git-modal');
+      const gitSpan = document.getElementsByClassName('close2')[3];
+      const gitSpan2 = document.getElementsByClassName('close2')[4];
+      gitBtn.onclick = function() {
+        gitModal.style.display = 'block';
+      };
+      gitSpan.onclick = function() {
+        gitModal.style.display = 'none';
+      };
+      gitSpan2.onclick = function() {
+        gitModal.style.display = 'none';
+      };
+      ///////////////////////////
+
+      window.onclick = function(event) {
+        if (
+          event.target === skillModal ||
+          event.target === followerModal ||
+          event.target === followingModal ||
+          event.target === introModal
+        ) {
+          skillModal.style.display = 'none';
+          followerModal.style.display = 'none';
+          followingModal.style.display = 'none';
+          introModal.style.display = 'none';
+        }
+      };
+    },
     async searchByStack(skill) {
       const params = {
         q: skill,
-        category: "keyword",
+        category: 'keyword',
       };
-      this.$router.push({ name: "ArticleSearchByStack", query: params });
+      this.$router.push({ name: 'ArticleSearchByStack', query: params });
     },
-    modiGit(){
+    modiGit() {
       const params = {
-        github : this.github,
-      }
+        github: this.github,
+      };
       const token = this.id_token;
-      modifyGit(params,token).then(() => {
-        this.userInfo.userInfo.github = this.github;
-      })
-          .catch((err) => console.log(err));
+      modifyGit(params, token)
+        .then(() => {
+          this.userInfo.userInfo.github = this.github;
+        })
+        .catch((err) => console.log(err));
     },
-    modiIntro(){
-       const params = {
-        intro : this.intro,
-      }
+    modiIntro() {
+      const params = {
+        intro: this.intro,
+      };
       const token = this.id_token;
-      modifyIntro(params,token).then(() => {
-        this.userInfo.userInfo.info = this.intro;
-      })
-          .catch((err) => console.log(err));
+      modifyIntro(params, token)
+        .then(() => {
+          this.userInfo.userInfo.info = this.intro;
+        })
+        .catch((err) => console.log(err));
     },
+
     // 유저 이미지 변경하기
     toggleDropZone() {
       if (this.userInfo.userInfo.email === this.$store.state.username)
@@ -403,104 +552,13 @@ export default {
     },
   },
   updated() {
-    if (this.$store.getters.isLoggedIn) {
-      const followBtns = [
-        ...document.querySelectorAll('.follower-email-container'),
-      ];
-      const len = followBtns.length;
-      for (let i = 0; i < len; i++) {
-        const followerOfLoginUser = this.$store.state.followList.followNickname;
-        const numOfFollowerOFLoginUser = followerOfLoginUser.length;
-        for (let j = 0; j < numOfFollowerOFLoginUser; j++) {
-          // trim하지 않으면 선택자로 버튼값의 innerHTML값을 가져올 때 양쪽에 공백문자가 삽입되어 비교가 안된다.
-          if (
-            followBtns[i].childNodes[0].innerHTML.trim() ===
-            followerOfLoginUser[j].trim()
-          ) {
-            followBtns[i].childNodes[1].childNodes[0].innerHTML = '팔로우 취소';
-          }
-        }
-      }
-    }
-    //스킬
-    const skillModal = document.getElementById('skillModal');
-    const btn = document.querySelector('.more');
-    const span = document.getElementsByClassName('close2')[0];
-    btn.onclick = function() {
-      skillModal.style.display = 'block';
-    };
-    span.onclick = function() {
-      skillModal.style.display = 'none';
-    };
-    // follower modal
-    const followerModal = document.getElementById('followersModal');
-    const followBtn = document.querySelector('.follower-modal');
-    const followSpan = document.getElementsByClassName('close')[0];
-    followBtn.onclick = function() {
-      followerModal.style.display = 'block';
-    };
-    followSpan.onclick = function() {
-      followerModal.style.display = 'none';
-    };
-
-    // following modal
-    const followingModal = document.getElementById('followingsModal');
-    const followingBtn = document.querySelector('.following-modal');
-    const followingSpan = document.getElementsByClassName('close')[1];
-    followingBtn.onclick = function() {
-      followingModal.style.display = 'block';
-    };
-    followingSpan.onclick = function() {
-      followingModal.style.display = 'none';
-    };
-
-    ///////////////////////////
-    const introModal = document.getElementById('introductionModal');
-    const introBtn = document.querySelector('.intro-modal');
-    const introSpan = document.getElementsByClassName('close2')[1];
-    const introSpan2 = document.getElementsByClassName('close2')[2];
-    introBtn.onclick = function() {
-      introModal.style.display = 'block';
-    };
-    introSpan.onclick = function() {
-      introModal.style.display = 'none';
-    };
-    introSpan2.onclick = function() {
-      introModal.style.display = 'none';
-    };
-    ///////////////////////////
-    ///////////////////////////
-    const gitModal = document.getElementById('githubModal');
-    const gitBtn = document.querySelector('.git-modal');
-    const gitSpan = document.getElementsByClassName('close2')[3];
-    const gitSpan2 = document.getElementsByClassName('close2')[4];
-    gitBtn.onclick = function() {
-      gitModal.style.display = 'block';
-    };
-    gitSpan.onclick = function() {
-      gitModal.style.display = 'none';
-    };
-    gitSpan2.onclick = function() {
-      gitModal.style.display = 'none';
-    };
-    ///////////////////////////
-    
-    window.onclick = function(event) {
-      if (
-        event.target === skillModal ||
-        event.target === followerModal ||
-        event.target === followingModal ||
-        event.target === introModal
-      ) {
-        skillModal.style.display = 'none';
-        followerModal.style.display = 'none';
-        followingModal.style.display = 'none';
-        introModal.style.display = 'none';
-      }
-    };
+    this.attachModal();
   },
   beforeUpdate() {
     this.skills = this.$store.state.userSkills;
+  },
+  mounted() {
+    this.attachModal();
   },
 };
 </script>
@@ -615,14 +673,14 @@ li {
   padding: 20px 0;
   font-family: 'Noto Sans KR', sans-serif;
   letter-spacing: 1.5px;
-  width : 100%;
+  width: 100%;
 }
-.editInput{
+.editInput {
   padding: 20px 0 20px 10px;
   font-family: 'Noto Sans KR', sans-serif;
   letter-spacing: 1.5px;
   border-radius: 10px;
-  width : 100%;
+  width: 100%;
   outline: none;
 }
 .about-area > .text > ul {
@@ -806,7 +864,7 @@ li {
   margin-left: 1%;
 }
 
-.intro-modal-content{
+.intro-modal-content {
   background-color: #fefefe;
   margin: auto;
   margin-top: 10%;
@@ -827,7 +885,7 @@ li {
   color: white;
   width: 25%;
 }
-.cancelBtn{
+.cancelBtn {
   background-color: #cacaca;
   border: #cacaca;
   padding: 5px 5px;
@@ -835,7 +893,7 @@ li {
   color: white;
   width: 25%;
 }
-.git-modal-content{
+.git-modal-content {
   background-color: #fefefe;
   margin: auto;
   margin-top: 10%;
