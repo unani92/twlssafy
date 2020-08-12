@@ -112,9 +112,9 @@
         </li>
         <li v-else>
           등록된 관심사가 없습니다.
-          <span :disabled="!isMypage" class="more" data-toggle="modal">
+          <button :disabled="!isMypage" class="more" data-toggle="modal">
             <i class="far fa-plus-square"></i>
-          </span>
+          </button>
         </li>
         <div class="sns">
           <a style="background-color : white">
@@ -277,14 +277,11 @@ export default {
     ProgressBar,
   },
   data() {
+    const userSkills = this.$store.state.userSkills;
     return {
       skills: userSkills,
-      nickname: this.userInfo.userInfo.nickname,
-      follower: this.userInfo.follower,
       openDropZone: false,
       images: null,
-      intro: this.userInfo.userInfo.info,
-      github: this.userInfo.userInfo.github,
     };
   },
   computed: {
@@ -308,14 +305,17 @@ export default {
           `,
       };
     },
-    skills() {
-      return this.$store.state.userSkills;
-    },
     nickname() {
       return this.userInfo.userInfo.nickname;
     },
     follower() {
       return this.userInfo.follower;
+    },
+    intro() {
+      return this.userInfo.userInfo.info;
+    },
+    github() {
+      return this.userInfo.userInfo.github;
     },
   },
   methods: {
@@ -346,6 +346,9 @@ export default {
       const skillModal = document.getElementById("skillModal");
       const btn = document.querySelector(".more");
       const span = document.getElementsByClassName("close2")[0];
+      // btn.addEventListener("click", () => {
+      //   skillModal.style.display = "block";
+      // });
       btn.onclick = function () {
         skillModal.style.display = "block";
       };
