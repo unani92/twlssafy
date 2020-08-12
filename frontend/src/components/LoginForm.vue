@@ -4,10 +4,6 @@
 
     <form @submit.prevent="submitForm">
       <div class="form">
-        <div class="inputfield logo"></div>
-        <div style="text-align: center;">
-          회원가입을 하고 배운 지식을 친구들과 공유해보세요
-        </div>
         <p class="join-warning guide-text">{{ logMessage.email }}</p>
         <div class="inputfield">
           <input
@@ -34,7 +30,7 @@
 
         <!-- 버튼 활성화 OK -->
         <div class="inputfield">
-          <button type="submit" class="btn" :disabled="changeBtn">
+          <button type="submit" class="btn" :disabled="!changeBtn">
             Login
           </button>
         </div>
@@ -121,22 +117,24 @@ export default {
     },
 
     async submitForm() {
+      console.log('asdf');
       const params = {
         email: this.email,
         password: this.password,
       };
-      login(params)
-        .then((res) => {
-          this.getGoogleUserInfo(res.data.object.id_token);
-          if (this.$route.query.redirect) {
-            const redirect = this.$route.query.redirect;
-            this.$router.push({
-              name: 'ArticleDetail',
-              params: { id: Number(redirect) },
-            });
-          } else this.$router.push('/');
-        })
-        .catch(() => (this.logMessage.email = '아이디, 비밀번호를 확인하세요'));
+      try {
+        const res = await login(params);
+        this.getGoogleUserInfo(res.data.object.id_token);
+        if (this.$route.query.redirect) {
+          const redirect = this.$route.query.redirect;
+          this.$router.push({
+            name: 'ArticleDetail',
+            params: { id: Number(redirect) },
+          });
+        } else this.$router.push('/');
+      } catch (error) {
+        this.logMessage.email = '아이디, 비밀번호를 확인하세요';
+      }
     },
     initForm() {
       this.email = '';
@@ -216,38 +214,14 @@ export default {
   resize: none;
 }
 
-.wrapper .form .inputfield .custom_select {
-  position: relative;
-  width: 100%;
-  height: 37px;
-}
-
-.wrapper .form .inputfield .custom_select:before {
-  content: '';
-  position: absolute;
-  top: 12px;
-  right: 10px;
-  border: 8px solid;
-  border-color: #d5dbd9 transparent transparent transparent;
-  pointer-events: none;
-}
-
 .wrapper .form .inputfield .input:focus,
-.wrapper .form .inputfield .textarea:focus,
-.wrapper .form .inputfield .custom_select select:focus {
+.wrapper .form .inputfield .textarea:focus {
   border: 1px solid #e6837a;
 }
 
 .wrapper .form .inputfield p {
   font-size: 14px;
   color: #757575;
-}
-.wrapper .form .inputfield .check {
-  width: 15px;
-  height: 15px;
-  position: relative;
-  display: block;
-  cursor: pointer;
 }
 .wrapper .form .inputfield .check input[type='checkbox'] {
   position: absolute;
@@ -308,6 +282,7 @@ export default {
 }
 .join-warning {
   color: red;
+  text-align: left;
 }
 .guide-text {
   font-size: 0.75rem;
