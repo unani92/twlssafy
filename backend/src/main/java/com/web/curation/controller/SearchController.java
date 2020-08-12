@@ -95,7 +95,9 @@ public class SearchController {
                 List<Keywords> keyword = keywordsDao.findAllBySnoOrderByArticleidDesc(sno);
                 
                 for(int i=0; i<keyword.size(); i++) {
-                    aList.add(articleDao.findByArticleid(keyword.get(i).getArticleid()));
+                    Article a = articleDao.findByArticleid(keyword.get(i).getArticleid());
+                    if(a.getIspublic()==1)
+                        aList.add(a);
                 }  
 
                 // paging 구현

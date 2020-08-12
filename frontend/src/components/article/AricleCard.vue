@@ -25,8 +25,7 @@
                 $router.push({
                   name: 'ArticleDetail',
                   params: { id: article.articleid },
-                })
-              ">
+                })">
               {{ article.title }}
             </span>
           </div>
@@ -113,9 +112,7 @@ export default {
         }
         this.$store.commit("setLikeList", likeList);
       } else {
-        if (confirm("좋아요 하시려면 로그인 해야 합니다. 하시겠습니까")) {
-          this.$router.push("/login");
-        }
+        this.$router.push("/login");
       }
     },
     async pin() {
@@ -142,9 +139,7 @@ export default {
         this.$store.commit("setPinList", pinList);
         console.log("현재 상태는", this.$store.state.pinList);
       } else {
-        if (confirm("좋아요 하시려면 로그인 해야 합니다. 하시겠습니까")) {
-          this.$router.push("/login");
-        }
+        this.$router.push("/login");
       }
     },
   },

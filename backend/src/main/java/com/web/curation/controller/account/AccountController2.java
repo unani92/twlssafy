@@ -64,10 +64,9 @@ public class AccountController2 {
         result.status = false;
         result.data = "fail";
 
-        
         String id_token = headers.get("id_token").get(0);
         String email = JWTDecoding.decode(id_token);
-
+        
         User user = userDao.findUserByEmail(email).get();
 
         String modified = (String) body.get("intro");
@@ -86,42 +85,26 @@ public class AccountController2 {
     @ApiOperation(value = "회원 GitHub 수정")
     public Object modifyGit (@RequestHeader(required = true) final HttpHeaders headers, @RequestBody final Map<String, Object> body)
             throws Exception {
-        final BasicResponse result = new BasicResponse();
-        result.status = false;
-        result.data = "fail";
+                final BasicResponse result = new BasicResponse();
+                result.status = false;
+                result.data = "fail";
         
-        boolean save = save(headers, body);
+                
+                String id_token = headers.get("id_token").get(0);
+                String email = JWTDecoding.decode(id_token);
         
-        if(!save)
-        return new ResponseEntity<>(result, HttpStatus.ACCEPTED);
+                User user = userDao.findUserByEmail(email).get();
         
+                String modified = (String) body.get("github");
+                    user.setGithub(modified);
+                
+                if(userDao.save(user)==null) // 저장 실패
+                    return new ResponseEntity<>(result, HttpStatus.ACCEPTED);
+                
+                result.status = true;
+                result.data = "success";
         
-        result.status = true;
-        result.data = "success";
-    
-        return new ResponseEntity<>(result, HttpStatus.OK);
+                return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    public boolean save(HttpHeaders headers, Map<String, Object> body) throws Exception {
-
-        String id_token = headers.get("id_token").get(0);
-        String email = JWTDecoding.decode(id_token);
-
-        User user = userDao.findUserByEmail(email).get();
-
-        String modified = "";
-
-        try {
-        /////////////////////////////////////////try-catch or if?
-            modified = (String) body.get("github");
-            user.setGithub(modified);
-        } catch (Exception e) {
-            modified = (String) body.get("intro");
-            user.setInfo(modified);
-        }
-        
-        if(userDao.save(user)==null) // 저장 실패
-            return false;
-        else return true;
-    }
 }
