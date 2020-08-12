@@ -178,10 +178,10 @@ function delAccount(token) {
   return instance.delete('/account', { headers: { id_token: token } } )
 }
 function modifyIntro(params, token) {
-  return instance.put('/account/intro',params ,{ headers: { id_token: token } } )
+  return instance.put('/account/intro', params, { headers: { id_token: token } });
 }
 function modifyGit(params, token) {
-  return instance.put('/account/git',params ,{ headers: { id_token: token } } )
+  return instance.put('/account/git', params, { headers: { id_token: token } });
 }
 
 export {
