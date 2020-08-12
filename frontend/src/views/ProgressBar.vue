@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="progressbar">
-      <div class="percent" :style="`width:${40}%`"/>
+      <div class="percent" :class="tier" :style="`width:${width}%;`">point: {{ score }}</div>
     </div>
     <div class="numbers">
       <span>{{ left }}</span>
@@ -25,22 +25,22 @@
     },
     computed: {
       width() {
-        return Math.round(this.score/(this.right+1))
+        return Math.round((this.score/(this.right+1))*100)
       }
     },
     data() {
       if (this.calGrade === 0) {
-        return { left: 0, right:9 }
+        return { left: 0, right:9, tier: 'new' }
       } else if (this.calGrade === 1) {
-        return  { left: 0, right:9 }
+        return  { left: 0, right:9, tier: 'bronze' }
       } else if (this.calGrade === 2) {
-        return { left: 10, right: 49 }
+        return { left: 10, right: 49, tier: 'silver' }
       } else if (this.calGrade === 3) {
-        return { left: 50, right: 149 }
+        return { left: 50, right: 149, tier: 'gold' }
       } else if (this.calGrade === 4) {
-        return { left: 150, right: 299 }
+        return { left: 150, right: 299, tier: 'platinum' }
       } else {
-        return { left: 300, right: 599 }
+        return { left: 300, right: 599, tier: 'diamond' }
       }
     }
   }
@@ -51,20 +51,40 @@
     max-width: 570px;
     margin: 0 auto;
     width: 100%;
-    height: 20px;
-    background-color: #e0e0e0;
+    height: 30px;
+    background-color: #f0f0f0;
     border-radius: 3px;
   }
   .percent {
-    /*width: 70%;*/
-    height: 20px;
-    background-color: darkred;
+    height: 30px;
     border-radius: 3px;
+    color:white;
+    text-align:right;
+    padding: 4px;
+    font-weight: bolder;
   }
   .numbers {
     max-width: 570px;
     margin: 0 auto;
     display: flex;
     justify-content: space-between;
+  }
+  .new {
+    background-color: dimgray;
+  }
+  .bronze {
+    background-color: #C93000
+  }
+  .silver {
+    background-color: silver;
+  }
+  .gold {
+    background-color: gold;
+  }
+  .platinum {
+    background-color: #00CFB7;
+  }
+  .diamond {
+    background-color: #76BAFF;
   }
 </style>

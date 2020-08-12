@@ -1,17 +1,17 @@
 export function getGrade(score) {
   let grade = 0;
   if (score <= 0) {
-    grade = 1;
+    grade = 1; // new
   } else if (score <= 50) {
-    grade = 2;
+    grade = 2; // bronze
   } else if (score <= 150) {
-    grade = 3;
+    grade = 3; // silver
   } else if (score <= 300) {
-    grade = 4;
+    grade = 4; // gold
   } else if (score <= 600) {
-    grade = 5;
+    grade = 5; // platinum
   } else {
-    grade = 6;
+    grade = 6; // diamond
   }
   return grade;
 }
