@@ -189,7 +189,7 @@ public class ArticleController {
         article.setImgurl(imgurl);
         article.setPreview(preview);
         article.setIspublic(ispublic);
-        article.setCreatedat(LocalDateTime.now());
+        article.setCreatedat(LocalDateTime.now().plusHours(9));
         
         if(articleDao.save(article)==null){
             result.data = "글쓰기 실패 - DB 저장 실패";
@@ -345,7 +345,7 @@ public class ArticleController {
         article.setContent((String)request.get("content"));
         article.setTitle((String)request.get("title"));
         article.setImgurl(getImgFromArticle((String)request.get("content")));
-        article.setUpdatedat(LocalDateTime.now());
+        article.setUpdatedat(LocalDateTime.now().plusHours(9));
         article.setPreview(subStrByte((String) request.get("preview"), 200));
         try {
             article.setIspublic((int)request.get("ispublic"));

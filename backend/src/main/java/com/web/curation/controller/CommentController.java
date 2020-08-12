@@ -85,8 +85,8 @@ public class CommentController {
         comment.setNickname((String)userToken.get("nickname"));
         comment.setImg((String)userToken.get("img"));
         comment.setScore(user.getScore());
-        comment.setCreatedat(LocalDateTime.now());
-        comment.setUpdatedat(LocalDateTime.now());
+        comment.setCreatedat(LocalDateTime.now().plusHours(9));
+        comment.setUpdatedat(LocalDateTime.now().plusHours(9));
                 
         if(commentDao.save(comment) == null){
             return new ResponseEntity<>(result, HttpStatus.OK);
@@ -167,7 +167,7 @@ public class CommentController {
         
         Comment comment = commentDao.findByCommentid(commentId);
         comment.setContent((String) request.get("content"));
-        comment.setUpdatedat(LocalDateTime.now());
+        comment.setUpdatedat(LocalDateTime.now().plusHours(9));
         
         final BasicResponse result = new BasicResponse();
         result.data = "수정 실패";
