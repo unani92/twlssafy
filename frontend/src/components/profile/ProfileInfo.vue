@@ -319,26 +319,10 @@ export default {
     ProgressBar
   },
   data() {
-    const userSkills = this.$store.state.userSkills;
     return {
-      skills: userSkills,
-      nickname: this.userInfo.userInfo.nickname,
-      follower: this.userInfo.follower,
-      // grade: 0,
-      // dropzoneOptions: {
-      //   url: 'https://httpbin.org/post',
-      //   thumbnailWidth: 150,
-      //   thumbnailHeight: 150,
-      //   addRemoveLinks: false,
-      //   acceptedFiles: '.jpg, .jpeg, .png',
-      //   dictDefaultMessage: `<p class='text-default'><i class="far fa-plus-square dropzone-icon"></i></p>
-      //     <p class="form-text">프로필 이미지를 변경합니다</p>
-      //     `,
-      // },
-      openDropZone: false,
       images: null,
       intro: this.userInfo.userInfo.info,
-      github: this.userInfo.userInfo.github,
+      github: this.userInfo.userInfo.github
     };
   },
   computed: {
@@ -361,8 +345,16 @@ export default {
           <p class="form-text">프로필 이미지를 변경합니다</p>
           `,
       }
-    }
-
+    },
+    skills() {
+      return this.$store.state.userSkills;
+    },
+    nickname() {
+      return this.userInfo.userInfo.nickname
+    },
+    follower() {
+      return this.userInfo.follower
+    },
   },
   methods: {
     //DOM에 modal 부착하기

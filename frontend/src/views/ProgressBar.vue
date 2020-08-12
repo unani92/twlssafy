@@ -2,10 +2,10 @@
   <div>
     <div class="progressbar">
       <div class="percent" :class="tier" :style="`width:${width}%;`"></div>
-      <div class="score" :style="`margin-left:${width}%;`">{{ score }}</div>
+      <div class="score" :style="`margin-left:${width+5}%; margin-right: 5px`">{{ score }}</div>
     </div>
     <div class="numbers">
-      <span>{{ left }}</span>
+      <span style="margin-right: 1rem">{{ left }}</span>
       <span>{{ right+1 }}</span>
     </div>
   </div>
