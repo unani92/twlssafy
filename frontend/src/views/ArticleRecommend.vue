@@ -6,7 +6,6 @@
     <div v-else style="margin-top: 100px">
       <div id="intro">
         <h1>HOT & RECOMMEND</h1>
-        {{ carouselHeight }}
       </div>
       <carousel-3d
         :controls-visible="true"
@@ -90,7 +89,6 @@ export default {
       text.style.animateTimingFuntion = 'steps(' + len + '), steps(1)';
     },
     handleResize() {
-      console.log(this.window);
       this.window.width = window.innerWidth / 100;
       // this.window.height = window.innerHeight;
     },

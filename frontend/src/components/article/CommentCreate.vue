@@ -43,6 +43,11 @@ export default {
   components: {
     CommentDetail,
   },
+  computed: {
+    isLogin() {
+      return this.$store.state.username !== "";
+    },
+  },
   data() {
     return {
       content: null,
@@ -51,25 +56,33 @@ export default {
   },
   methods: {
     submitComment() {
-      const email = this.$store.state.username;
-      const content = this.content;
-      const articleid = String(this.article.articleid);
-      const params = {
-        email,
-        content,
-        articleid,
-      };
-      const id_token = this.$store.state.id_token;
-      createComment(params, id_token)
-        .then((res) => {
-          console.log(res.data.object);
-          const now = new Date();
-          const comment = { ...res.data.object, now };
-          this.commentList = [comment, ...this.commentList];
-          this.content = null;
-          console.log(this.content)
-        })
-        .catch((err) => console.log(err));
+      if (this.isLogin) {
+        const email = this.$store.state.username;
+        const content = this.content;
+        const articleid = String(this.article.articleid);
+        const params = {
+          email,
+          content,
+          articleid,
+        };
+        const id_token = this.$store.state.id_token;
+        createComment(params, id_token)
+          .then((res) => {
+            console.log(res.data.object);
+            const now = new Date();
+            const comment = { ...res.data.object, now };
+            this.commentList = [comment, ...this.commentList];
+            this.content = null;
+            console.log(this.content)
+          })
+          .catch((err) => console.log(err));
+    }
+    else {
+      this.$router.push({
+          name: "Login",
+          query: { redirect: `${this.article.articleid}` },
+        });
+    }
     },
     removeDelete(id) {
       this.commentList = this.commentList.filter((comment) => {
