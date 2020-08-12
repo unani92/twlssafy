@@ -85,6 +85,7 @@ public class CommentController {
         comment.setNickname((String)userToken.get("nickname"));
         comment.setImg((String)userToken.get("img"));
         comment.setScore(user.getScore());
+        comment.setCreatedat(LocalDateTime.now());
                 
         if(commentDao.save(comment) == null){
             return new ResponseEntity<>(result, HttpStatus.OK);
