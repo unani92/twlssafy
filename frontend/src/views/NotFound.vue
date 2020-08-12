@@ -22,8 +22,7 @@
     text-align: center;
     display: flex;
     flex-direction: column;
-    margin-top: 3rem;
-    padding-top: 60px;
+    padding-top: 130px;
   }
   i {
     font-size: 250px;
@@ -43,7 +42,7 @@
     background-color: #020024;
     border: none;
     width: 200px;
-    height: 50px;
+    height: 100px;
     color: rgb(255, 255, 255);
     padding: 10px 20px;
     text-align: center;

@@ -6,15 +6,16 @@
       :params="params"
       :onSuccess="onSuccess"
       :onFailure="onFailure"
-    >Google Login</GoogleLogin>
+      >Google Login</GoogleLogin
+    >
   </div>
   <!-- <GoogleLogin :params="params" :logoutButton=true>Logout</GoogleLogin> -->
 </template>
 
 <script>
-import GoogleLogin from "vue-google-login";
-import { socialLogin } from "../api";
-import { mapActions } from "vuex";
+import GoogleLogin from 'vue-google-login';
+import { socialLogin } from '../api';
+import { mapActions } from 'vuex';
 export default {
   // name: "GoogleLogin",
 
@@ -22,38 +23,45 @@ export default {
     return {
       params: {
         client_id:
-          "634062607964-elrm78as5396cdodbtf1p6mp6nd0dib4.apps.googleusercontent.com",
+          '634062607964-elrm78as5396cdodbtf1p6mp6nd0dib4.apps.googleusercontent.com',
       },
       renderParams: {
         width: 250,
         height: 50,
         longtitle: true,
       },
-      googleAccessToken: "",
+      googleAccessToken: '',
     };
   },
 
   methods: {
-    ...mapActions(["getGoogleUserInfo"]),
+    ...mapActions(['getGoogleUserInfo']),
     onSuccess(googleUser) {
       let id_token = googleUser.wc.id_token;
       socialLogin(id_token)
         .then((res) => {
           const { email } = res.data.object;
-          if (res.data.data === "failed") {
+          if (res.data.data === 'failed') {
             this.$router.push({
-              name: "SocialSignup",
+              name: 'SocialSignup',
               params: { email, id_token },
             });
           } else {
             id_token = res.data.object.id_token;
             this.getGoogleUserInfo(id_token);
+            if (this.$route.query.redirect) {
+              const redirect = this.$route.query.redirect;
+              this.$router.push({
+                name: 'ArticleDetail',
+                params: { id: Number(redirect) },
+              });
+            } else this.$router.push('/');
           }
         })
-        .catch((err) => alert("Error : ", err));
+        .catch((err) => alert('Error : ', err));
     },
     onFailure(err) {
-      console.log("fail -> " + err);
+      console.log('fail -> ' + err);
     },
   },
   components: {
