@@ -25,8 +25,7 @@
                 $router.push({
                   name: 'ArticleDetail',
                   params: { id: article.articleid },
-                })
-              ">
+                })">
               {{ article.title }}
             </span>
           </div>
