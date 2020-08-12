@@ -40,8 +40,12 @@
               </Router-link>
               <i
                 class="fas fa-trash-alt"
-                style="cursor: pointer; color : gray"
+                style="cursor: pointer; margin-right: 4px; color : gray"
                 @click="removeArticle"
+              ></i>
+              <i
+                class="fas fa-file-download"
+                style="cursor: pointer; color : gray"
               ></i>
             </span>
           </div>
@@ -94,11 +98,6 @@ export default {
     ArticleDetailProfile,
     CommentCreate,
   },
-  // computed: {
-  //   followList() {
-  //     return this.$store.state.followList;
-  //   },
-  // },
   data() {
     return {
       id: this.$route.params.id,

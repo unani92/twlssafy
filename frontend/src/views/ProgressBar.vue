@@ -6,7 +6,7 @@
     </div>
     <div class="numbers">
       <span>{{ left }}</span>
-      <span>{{ right }}</span>
+      <span>{{ right+1 }}</span>
     </div>
   </div>
 </template>

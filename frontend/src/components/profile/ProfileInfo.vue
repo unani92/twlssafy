@@ -345,9 +345,7 @@ export default {
     ...mapGetters(['isLoggedIn']),
     ...mapState(['id_token', 'userSkills']),
     isMypage() {
-      if (this.userInfo.userInfo.email == this.$store.state.username)
-        return true;
-      else return false;
+      return this.userInfo.userInfo.email === this.$store.state.username;
     },
     calGrade() {
       return getGrade(this.userInfo.userInfo.score);
