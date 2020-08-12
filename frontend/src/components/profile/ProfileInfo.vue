@@ -7,42 +7,45 @@
         <div >
           <div v-if="this.userInfo.userInfo.email === this.$store.state.username">
             <i
-              v-if="!this.openDropZone"
+
               @click="toggleDropZone"
               class="far fa-plus-square dropzone-icon"
             ></i>
-            <i
-              v-else
-              @click="toggleDropZone"
-              class="far fa-minus-square dropzone-icon"
-            ></i>
+<!--            <i-->
+<!--              v-else-->
+<!--              @click="toggleDropZone"-->
+<!--              class="far fa-minus-square dropzone-icon"-->
+<!--            ></i>-->
           </div>
         </div>
       </div>
       <div class="text">
-<!--        <div style="display: flex; justify-content: space-between">-->
-<!--          <div-->
-<!--                  :style="{-->
-<!--            backgroundImage:-->
-<!--              'url(' +-->
-<!--              require('@/assets/image/medal-' + calGrade + '.png') +-->
-<!--              ')',-->
-<!--          }"-->
-<!--                  class="grade"-->
-<!--          />-->
-<!--          <div-->
-<!--                  :style="{-->
-<!--            backgroundImage:-->
-<!--              'url(' +-->
-<!--              require('@/assets/image/medal-' + (calGrade+1) + '.png') +-->
-<!--              ')',-->
-<!--          }"-->
-<!--                  class="grade"-->
-<!--          />-->
-<!--        </div>-->
-<!--        <div>-->
-<!--          <ProgressBar/>-->
-<!--        </div>-->
+        <div style="display: flex; justify-content: space-between">
+          <div
+                  :style="{
+            backgroundImage:
+              'url(' +
+              require('@/assets/image/medal-' + calGrade + '.png') +
+              ')',
+          }"
+                  class="grade"
+          />
+          <div
+                  :style="{
+            backgroundImage:
+              'url(' +
+              require('@/assets/image/medal-' + (calGrade+1) + '.png') +
+              ')',
+          }"
+                  class="grade"
+          />
+        </div>
+        <div v-if="userInfo">
+          <ProgressBar
+            v-if="userInfo"
+            :calGrade="calGrade"
+            :score="userInfo.userInfo.score"/>
+        </div>
         <div class="description follower-email-container" style="margin:0">
 
           <span class="follower-email">{{ userInfo.userInfo.nickname }}</span>
@@ -243,7 +246,7 @@
 
 
     <!--    드래그앤드랍      -->
-    <div class="dropZone dropZoneDisabled">
+    <div v-if="dropzoneOptions" class="dropZone dropZoneDisabled">
       <vue2-dropzone
         ref="imgDropZone"
         id="customdropzone"
@@ -266,7 +269,7 @@ import vue2Dropzone from 'vue2-dropzone';
 import 'vue2-dropzone/dist/vue2Dropzone.min.css';
 
 // progressbar
-// import ProgressBar from "../../views/ProgressBar";
+import ProgressBar from "../../views/ProgressBar";
 let uuid = require('uuid');
 
 export default {
@@ -277,25 +280,14 @@ export default {
     SelectSkills,
     Calendar,
     vue2Dropzone,
-    // ProgressBar
+    ProgressBar
   },
   data() {
-    const userSkills = this.$store.state.userSkills;
     return {
-      skills: userSkills,
+      skills: this.userSkills,
       nickname: this.userInfo.userInfo.nickname,
       follower: this.userInfo.follower,
       // grade: 0,
-      dropzoneOptions: {
-        url: 'https://httpbin.org/post',
-        thumbnailWidth: 150,
-        thumbnailHeight: 150,
-        addRemoveLinks: false,
-        acceptedFiles: '.jpg, .jpeg, .png',
-        dictDefaultMessage: `<p class='text-default'><i class="far fa-plus-square dropzone-icon"></i></p>
-          <p class="form-text">프로필 이미지를 변경합니다</p>
-          `,
-      },
       openDropZone: false,
       images: null,
       intro : this.userInfo.userInfo.info,
@@ -311,6 +303,19 @@ export default {
     calGrade() {
       return getGrade(this.userInfo.userInfo.score);
     },
+    dropzoneOptions() {
+      return {
+        url: 'https://httpbin.org/post',
+        thumbnailWidth: 150,
+        thumbnailHeight: 150,
+        addRemoveLinks: false,
+        acceptedFiles: '.jpg, .jpeg, .png',
+        dictDefaultMessage: `<p class='text-default'><i class="far fa-plus-square dropzone-icon"></i></p>
+          <p class="form-text">프로필 이미지를 변경합니다</p>
+          `,
+      }
+    }
+
   },
   methods: {
     async searchByStack(skill) {
