@@ -39,12 +39,10 @@
 import ProfileInfo from "@/components/profile/ProfileInfo.vue";
 import ArticleCard from "@/components/article/AricleCard.vue";
 import LoadingSpinner from "@/components/common/LoadingSpinner.vue";
-// import { fetchMyArticles } from "@/api/index";
 import { mapState, mapActions } from "vuex";
 // import scrollMonitor from "scrollmonitor";
-
-export default {
-  components: {
+  export default {
+    components: {
     ProfileInfo,
     ArticleCard,
     LoadingSpinner,
@@ -67,12 +65,9 @@ export default {
     ...mapState(["id_token"]),
   },
   methods: {
+
     ...mapActions(["getGoogleUserInfo"]),
     async fetchData() {
-      // const params = {
-      //   page: this.page++,
-      //   nickname: this.$route.params.nickname,
-      // };
       const res = this.data.data;
 
       this.isLoading = false;
@@ -89,26 +84,14 @@ export default {
       this.pinCntList = [...this.pinCntList, ...res.data.object.pinCntList];
 
       this.userInfo = this.data.userInfo;
-      // console.log(this.data)
 
       if (!res.data.status) this.isNotNull = false;
     },
-    // addScrollWatcher() {
-    //   const bottomSensor = document.querySelector("#bottomSensor");
-    //   const watcher = scrollMonitor.create(bottomSensor);
-    //   watcher.enterViewport(() => {
-    //     this.fetchData();
-    //   });
-    // },
   },
   mounted() {
-    // setTimeout(() => this.addScrollWatcher(), 1000);
   },
   created() {
     this.fetchData();
-    // if (this.id_token) {
-    //   this.getGoogleUserInfo(this.id_token);
-    // }
   },
   props: {
     data: {
@@ -121,7 +104,7 @@ export default {
 
 <style>
 .calendar-list-container {
-  margin-top: 60px;
+  padding-top: 60px;
 }
 .news-index {
   max-width: 850px;

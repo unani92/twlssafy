@@ -92,7 +92,7 @@ export default {
 img {
   border-radius: 50%;
   width: 45px;
-  height: 45ax;
+  height: 45px;
 }
 .writer-page {
   cursor: pointer;

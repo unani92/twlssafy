@@ -58,7 +58,7 @@
               {{ userInfo.userInfo.email }}
             </div>
           </li>
-          <li v-if="userInfo.userInfo.github != null">
+          <li >
             <div class="info">
               <i class="fab fa-github"></i>
               {{ userInfo.userInfo.github }}
@@ -115,7 +115,7 @@
       <!-- Modal content -->
       <div class="modal-content">
         <SelectSkills
-          v-if="this.$store.state.nickname === this.$route.params.nickname"
+          v-if="this.$store.state.nickname === this.userInfo.userInfo.nickname"
         ></SelectSkills>
         <div class="close2" style="text-align : center; cursor : pointer">
           완료
@@ -217,7 +217,7 @@ export default {
     const userSkills = this.$store.state.userSkills;
     return {
       skills: userSkills,
-      nickname: this.$route.params.nickname,
+      nickname: this.userInfo.userInfo.nickname,
       follower: this.userInfo.follower,
       // grade: 0,
       dropzoneOptions: {
@@ -283,7 +283,6 @@ export default {
 
     async requestFollow(followWantingTo, e) {
       if (!this.isLoggedIn) {
-        console.log('login required');
         if (confirm('팔로우 하시려면 로그인을 해야 합니다')) {
           this.$router.push('/login');
         }
@@ -292,10 +291,9 @@ export default {
           follow: followWantingTo,
         };
         const { data } = await requestFollow(params, this.id_token);
-        console.log(data);
         // 프런트에서 처리
         const followList = this.$store.state.followList.followNickname;
-        const nicknameOfThisBlog = this.$route.params.nickname;
+        const nicknameOfThisBlog = this.userInfo.userInfo.nickname;
         if (data.data === 'follow') {
           followList.push(nicknameOfThisBlog);
           e.target.innerHTML = '팔로우 취소';
@@ -353,21 +351,12 @@ export default {
     //스킬
     const skillModal = document.getElementById('skillModal');
     const btn = document.querySelector('.more');
-    const span = document.getElementsByClassName('close')[0];
+    const span = document.getElementsByClassName('close2')[0];
     btn.onclick = function() {
       skillModal.style.display = 'block';
     };
     span.onclick = function() {
       skillModal.style.display = 'none';
-    };
-    const skillModal2 = document.getElementById('skillModal');
-    const btn2 = document.querySelector('.more');
-    const span2 = document.getElementsByClassName('close2')[0];
-    btn2.onclick = function() {
-      skillModal2.style.display = 'block';
-    };
-    span2.onclick = function() {
-      skillModal2.style.display = 'none';
     };
     // follower modal
     const followerModal = document.getElementById('followersModal');
@@ -390,6 +379,7 @@ export default {
     followingSpan.onclick = function() {
       followingModal.style.display = 'none';
     };
+    
     window.onclick = function(event) {
       if (
         event.target === skillModal ||

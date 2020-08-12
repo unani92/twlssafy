@@ -24,9 +24,6 @@ export default {
       this.userinfo = userInfo;
     },
   },
-  destroyed() {
-    this.$store.commit("setUserSkills", []);
-  },
 };
 </script>
 <style>
