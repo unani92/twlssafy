@@ -1,36 +1,21 @@
 <template>
-  <div style="padding-top: 150px">
+  <div>
     <div class="progressbar">
-      <div class="percent" :style="`width:${score/right}%`"/>
+      <div class="percent" :style="`width:${70}%`"/>
     </div>
     <div class="numbers">
-      <span>{{ left }}</span>
-      <span>{{ right }}</span>
+      <span>0</span>
+      <span>100</span>
     </div>
   </div>
 </template>
 
 <script>
-  import { getGrade } from '@/utils/calcGrade';
-  import { mapState } from 'vuex'
   export default {
     name: "ProgressBar",
     computed: {
-      ...mapState(["score"]),
-      grade() {
-        return getGrade(this.score)
-      },
-    },
-    data() {
-      if (this.grade === 0) {
-        return { left: 0, right: 0 }
-      } else if (this.grade === 1) {
-        return { left: 10, right: 50 }
-      } else if (this.grade === 2) {
-        return { left: 51, right: 150 }
-      }
 
-    }
+    },
   }
 </script>
 
