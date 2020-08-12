@@ -26,7 +26,7 @@
     },
     computed: {
       width() {
-        return Math.round(((this.score-this.left)/(this.right+1))*100)
+        return Math.round(((this.score-this.left)/(this.right+1-this.left))*100)
       }
     },
     data() {
