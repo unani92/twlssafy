@@ -99,7 +99,7 @@ export default {
   },
   computed: {
     calcGrade() {
-      return getGrade(this.$store.state.articleCount);
+      return getGrade(this.$store.state.score);
     },
   },
   name: 'NavBar',
@@ -246,7 +246,7 @@ i:hover {
   .search-bar {
     width: 150px;
   }
-  .article {
+  .article, .grade {
     display: none;
   }
 }
