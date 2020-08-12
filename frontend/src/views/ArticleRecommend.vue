@@ -89,7 +89,6 @@ export default {
       text.style.animateTimingFuntion = 'steps(' + len + '), steps(1)';
     },
     handleResize() {
-      console.log(this.window);
       this.window.width = window.innerWidth / 100;
       // this.window.height = window.innerHeight;
     },
