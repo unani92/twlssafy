@@ -10,12 +10,12 @@
           placeholder="Select Date"
           name="date"
         ></flat-pickr>
-        <button class="btn" type="button" title="Toggle" data-toggle>
+        <button class="btn" type="button" title="날짜선택" data-toggle>
           <i class="fa fa-calendar">
             <span aria-hidden="true" class="sr-only"></span>
           </i>
         </button>
-        <button class="btn" type="button" title="Clear" @click="myPage">
+        <button class="btn" type="button" title="전체보기" @click="myPage">
           <i class="fa fa-times">
             <span aria-hidden="true" class="sr-only">Clear</span>
           </i>

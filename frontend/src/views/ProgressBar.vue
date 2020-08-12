@@ -1,11 +1,12 @@
 <template>
   <div>
     <div class="progressbar">
-      <div class="percent" :class="tier" :style="`width:${width}%;`">point: {{ score }}</div>
+      <div class="percent" :class="tier" :style="`width:${width}%;`"></div>
+      <div class="score" :style="`margin-left:${width+5}%; margin-right: 5px`">{{ score }}</div>
     </div>
     <div class="numbers">
-      <span>{{ left }}</span>
-      <span>{{ right }}</span>
+      <span style="margin-right: 1rem">{{ left }}</span>
+      <span>{{ right+1 }}</span>
     </div>
   </div>
 </template>
@@ -25,18 +26,18 @@
     },
     computed: {
       width() {
-        return Math.round((this.score/(this.right+1))*100)
+        return Math.round(((this.score-this.left)/(this.right+1-this.left))*100)
       }
     },
     data() {
       if (this.calGrade === 0) {
         return { left: 0, right:9, tier: 'new' }
       } else if (this.calGrade === 1) {
-        return  { left: 0, right:9, tier: 'bronze' }
+        return  { left: 0, right:9, tier: 'new' }
       } else if (this.calGrade === 2) {
-        return { left: 10, right: 49, tier: 'silver' }
+        return { left: 10, right: 49, tier: 'bronze' }
       } else if (this.calGrade === 3) {
-        return { left: 50, right: 149, tier: 'gold' }
+        return { left: 50, right: 149, tier: 'silver' }
       } else if (this.calGrade === 4) {
         return { left: 150, right: 299, tier: 'platinum' }
       } else {

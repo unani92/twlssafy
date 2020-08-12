@@ -277,7 +277,6 @@ export default {
     ProgressBar,
   },
   data() {
-    const userSkills = this.$store.state.userSkills;
     return {
       skills: userSkills,
       nickname: this.userInfo.userInfo.nickname,
@@ -292,9 +291,7 @@ export default {
     ...mapGetters(["isLoggedIn"]),
     ...mapState(["id_token", "userSkills"]),
     isMypage() {
-      if (this.userInfo.userInfo.email == this.$store.state.username)
-        return true;
-      else return false;
+      return this.userInfo.userInfo.email === this.$store.state.username;
     },
     calGrade() {
       return getGrade(this.userInfo.userInfo.score);
@@ -310,6 +307,15 @@ export default {
           <p class="form-text">프로필 이미지를 변경합니다</p>
           `,
       };
+    },
+    skills() {
+      return this.$store.state.userSkills;
+    },
+    nickname() {
+      return this.userInfo.userInfo.nickname;
+    },
+    follower() {
+      return this.userInfo.follower;
     },
   },
   methods: {

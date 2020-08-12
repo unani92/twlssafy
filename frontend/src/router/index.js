@@ -21,7 +21,6 @@ import ArticleRecommend from '../views/ArticleRecommend';
 import CalendarCardList from '../components/calendar/CalendarCardList.vue';
 import store from '@/store/index';
 import NotFound from '../views/NotFound';
-import ProgressBar from "../views/ProgressBar";
 
 Vue.use(VueRouter);
 
@@ -54,11 +53,6 @@ const routes = [
     path: '/',
     name: 'ArticleRecommend',
     component: ArticleRecommend,
-  },
-  {
-    path: '/progress',
-    name: 'ProgressBar',
-    component: ProgressBar
   },
   {
     path: '/login',
@@ -158,14 +152,6 @@ const router = new VueRouter({
   base: process.env.BASE_URL,
   routes,
 });
-
-// router.beforeEach((to, from, next) => {
-//   const publicPages = ['Home', 'Login', 'Signup', 'ArticleDetail']
-//   const authPages = ['Login', 'Signup']
-//   const authRequired = !publicPages.includes(to.name)
-//   const unauthRequired = authPages.includes(to.name)
-//
-// })
 
 function alreadyLogin(to, from, next) {
   store.getters['isLoggedIn'] ? next('/') : next();
