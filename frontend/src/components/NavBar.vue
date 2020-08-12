@@ -204,13 +204,17 @@ export default {
 }
 .notification {
   position: fixed;
-  border-radius: 3px;
+  border-radius: 10px;
   background-color: #d5dbd9;
   top: 70px;
+  margin-right: 4px;
   right: 0;
   overflow: auto;
   height: 268px;
   z-index: 10;
+}
+::-webkit-scrollbar {
+    width: 5px; 
 }
 i {
   margin-left: 1rem;
