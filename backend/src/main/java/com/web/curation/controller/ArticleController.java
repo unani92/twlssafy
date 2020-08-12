@@ -189,6 +189,7 @@ public class ArticleController {
         article.setImgurl(imgurl);
         article.setPreview(preview);
         article.setIspublic(ispublic);
+        article.setCreatedat(LocalDateTime.now());
         
         if(articleDao.save(article)==null){
             result.data = "글쓰기 실패 - DB 저장 실패";
