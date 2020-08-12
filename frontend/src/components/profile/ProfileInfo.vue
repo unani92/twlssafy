@@ -4,40 +4,72 @@
       <div class="picture">
         <img v-if="userInfo.userInfo.img" :src="userInfo.userInfo.img" />
         <img v-else src="https://i.pravatar.cc/400?u=정윤환" />
-        <div v-if="this.userInfo.userInfo.email === this.$store.state.username">
-          <i
-            v-if="!openDropZone && userInfo"
-            @click="toggleDropZone"
-            class="far fa-plus-square dropzone-icon"
-          ></i>
-          <i
-            v-else
-            @click="toggleDropZone"
-            class="far fa-minus-square dropzone-icon"
-          ></i>
+        <div >
+          <div v-if="this.userInfo.userInfo.email === this.$store.state.username">
+            <i
+
+              @click="toggleDropZone"
+              class="far fa-plus-square dropzone-icon"
+            ></i>
+<!--            <i-->
+<!--              v-else-->
+<!--              @click="toggleDropZone"-->
+<!--              class="far fa-minus-square dropzone-icon"-->
+<!--            ></i>-->
+          </div>
         </div>
       </div>
       <div class="text">
-        <div
-          :style="{
+        <div style="display: flex; justify-content: space-between">
+          <div
+                  :style="{
             backgroundImage:
               'url(' +
               require('@/assets/image/medal-' + calGrade + '.png') +
               ')',
           }"
-          class="grade"
-        ></div>
+                  class="grade"
+          />
+          <div
+                  :style="{
+            backgroundImage:
+              'url(' +
+              require('@/assets/image/medal-' + (calGrade+1) + '.png') +
+              ')',
+          }"
+                  class="grade"
+          />
+        </div>
+        <div v-if="userInfo">
+          <ProgressBar
+            v-if="userInfo"
+            :calGrade="calGrade"
+            :score="userInfo.userInfo.score"/>
+        </div>
         <div class="description follower-email-container" style="margin:0">
+
           <span class="follower-email">{{ userInfo.userInfo.nickname }}</span>
           <div
-            v-show="nickname !== this.$store.state.nickname"
+            v-show="
+              this.userInfo.userInfo.nickname !== this.$store.state.nickname
+            "
             @click="requestFollow(userInfo.userInfo.email, $event)"
           >
             <button class="followBtn">팔로우</button>
           </div>
         </div>
 
-        <div class="intro">{{ userInfo.userInfo.info }}</div>
+        <div class="intro">
+          {{ userInfo.userInfo.info }}
+          <a
+            v-if="isMypage"
+            :disabled="!isMypage"
+            class="intro-modal"
+            data-toggle="modal"
+          >
+            <i style="color : gray; font-size : 12px" class="far fa-edit"></i>
+          </a>
+        </div>
 
         <ul>
           <li>
@@ -58,17 +90,27 @@
               {{ userInfo.userInfo.email }}
             </div>
           </li>
-          <li v-if="userInfo.userInfo.github != null">
+          <li>
             <div class="info">
               <i class="fab fa-github"></i>
               {{ userInfo.userInfo.github }}
+              <a v-if="isMypage" class="git-modal" data-toggle="modal">
+                <i
+                  style="color : gray; font-size : 12px"
+                  class="far fa-edit"
+                ></i>
+              </a>
             </div>
           </li>
           <!-- <li style="dec" v-if="skills.length !== 0"></li> -->
         </ul>
         <li v-if="skills.length !== 0">
           <div class="skills">
-            <span v-for="skill in skills" :key="skill.name"
+            <span
+              v-for="skill in skills"
+              :key="skill.name"
+              style="cursor : pointer"
+              @click="searchByStack(skill.name)"
               >#{{ skill.name }}</span
             >
             <button :disabled="!isMypage" class="more" data-toggle="modal">
@@ -115,7 +157,7 @@
       <!-- Modal content -->
       <div class="modal-content">
         <SelectSkills
-          v-if="this.$store.state.nickname === this.$route.params.nickname"
+          v-if="this.$store.state.nickname === this.userInfo.userInfo.nickname"
         ></SelectSkills>
         <div class="close2" style="text-align : center; cursor : pointer">
           완료
@@ -180,8 +222,62 @@
         </div>
       </div>
     </div>
+
+    <!-- 한줄 소개 수정  -->
+    <div id="introductionModal" class="modal">
+      <div class="intro-modal-content">
+        <div style="margin-bottom : 20px;">한줄 소개 수정</div>
+        <input
+          class="editInput"
+          style="padding-right : 20px;"
+          v-model="intro"
+        />
+        <div style="margin-top : 20px;">
+          <button
+            @click="modiIntro"
+            class="close2 editBtn"
+            style="text-align : center; cursor : pointer"
+          >
+            완료
+          </button>
+          <button
+            class="close2 cancelBtn"
+            style="text-align : center; cursor : pointer"
+          >
+            취소
+          </button>
+        </div>
+      </div>
+    </div>
+    <!-- github  수정  -->
+    <div id="githubModal" style="text-align : center" class="modal">
+      <div class="git-modal-content">
+        <div style="margin-bottom : 20px;">Git Hub 수정</div>
+        <input
+          class="editInput"
+          style="padding-right : 20px;"
+          v-model="github"
+        />
+        <div style="margin-top : 20px;">
+          <button
+            @click="modiGit"
+            class="close2 editBtn"
+            style="text-align : center; cursor : pointer"
+          >
+            완료
+          </button>
+          <button
+            class="close2 cancelBtn"
+            style="text-align : center; cursor : pointer"
+          >
+            취소
+          </button>
+        </div>
+      </div>
+    </div>
+
     <!--    드래그앤드랍      -->
-    <div v-if="openDropZone">
+    <div v-if="dropzoneOptions" class="dropZone dropZoneDisabled">
       <vue2-dropzone
         ref="imgDropZone"
         id="customdropzone"
@@ -194,7 +290,12 @@
 
 <script>
 import SelectSkills from '@/views/SelectSkills.vue';
-import { requestFollow, changeImg } from '@/api/index.js';
+import {
+  requestFollow,
+  changeImg,
+  modifyIntro,
+  modifyGit,
+} from '@/api/index.js';
 import { mapState, mapGetters } from 'vuex';
 import Calendar from '../calendar/Calendar';
 import { getGrade } from '@/utils/calcGrade';
@@ -202,6 +303,9 @@ import { getGrade } from '@/utils/calcGrade';
 import firebase from 'firebase';
 import vue2Dropzone from 'vue2-dropzone';
 import 'vue2-dropzone/dist/vue2Dropzone.min.css';
+
+// progressbar
+import ProgressBar from "../../views/ProgressBar";
 let uuid = require('uuid');
 
 export default {
@@ -212,26 +316,29 @@ export default {
     SelectSkills,
     Calendar,
     vue2Dropzone,
+    ProgressBar
   },
   data() {
     const userSkills = this.$store.state.userSkills;
     return {
       skills: userSkills,
-      nickname: this.$route.params.nickname,
+      nickname: this.userInfo.userInfo.nickname,
       follower: this.userInfo.follower,
       // grade: 0,
-      dropzoneOptions: {
-        url: 'https://httpbin.org/post',
-        thumbnailWidth: 150,
-        thumbnailHeight: 150,
-        addRemoveLinks: false,
-        acceptedFiles: '.jpg, .jpeg, .png',
-        dictDefaultMessage: `<p class='text-default'><i class="far fa-plus-square dropzone-icon"></i></p>
-          <p class="form-text">프로필 이미지를 변경합니다</p>
-          `,
-      },
+      // dropzoneOptions: {
+      //   url: 'https://httpbin.org/post',
+      //   thumbnailWidth: 150,
+      //   thumbnailHeight: 150,
+      //   addRemoveLinks: false,
+      //   acceptedFiles: '.jpg, .jpeg, .png',
+      //   dictDefaultMessage: `<p class='text-default'><i class="far fa-plus-square dropzone-icon"></i></p>
+      //     <p class="form-text">프로필 이미지를 변경합니다</p>
+      //     `,
+      // },
       openDropZone: false,
       images: null,
+      intro: this.userInfo.userInfo.info,
+      github: this.userInfo.userInfo.github,
     };
   },
   computed: {
@@ -245,12 +352,169 @@ export default {
     calGrade() {
       return getGrade(this.userInfo.userInfo.score);
     },
+    dropzoneOptions() {
+      return {
+        url: 'https://httpbin.org/post',
+        thumbnailWidth: 150,
+        thumbnailHeight: 150,
+        addRemoveLinks: false,
+        acceptedFiles: '.jpg, .jpeg, .png',
+        dictDefaultMessage: `<p class='text-default'><i class="far fa-plus-square dropzone-icon"></i></p>
+          <p class="form-text">프로필 이미지를 변경합니다</p>
+          `,
+      }
+    }
+
   },
   methods: {
+    //DOM에 modal 부착하기
+    attachModal() {
+      if (this.$store.getters.isLoggedIn) {
+        const followBtns = [
+          ...document.querySelectorAll('.follower-email-container'),
+        ];
+        const len = followBtns.length;
+        for (let i = 0; i < len; i++) {
+          const followerOfLoginUser = this.$store.state.followList
+            .followNickname;
+          const numOfFollowerOFLoginUser = followerOfLoginUser.length;
+          for (let j = 0; j < numOfFollowerOFLoginUser; j++) {
+            // trim하지 않으면 선택자로 버튼값의 innerHTML값을 가져올 때 양쪽에 공백문자가 삽입되어 비교가 안된다.
+            if (
+              followBtns[i].childNodes[0].innerHTML.trim() ===
+              followerOfLoginUser[j].trim()
+            ) {
+              followBtns[i].childNodes[1].childNodes[0].innerHTML =
+                '팔로우 취소';
+            }
+          }
+        }
+      }
+      //스킬
+      const skillModal = document.getElementById('skillModal');
+      const btn = document.querySelector('.more');
+      const span = document.getElementsByClassName('close2')[0];
+      btn.onclick = function() {
+        skillModal.style.display = 'block';
+      };
+      span.onclick = function() {
+        skillModal.style.display = 'none';
+      };
+      // follower modal
+      const followerModal = document.getElementById('followersModal');
+      const followBtn = document.querySelector('.follower-modal');
+      const followSpan = document.getElementsByClassName('close')[0];
+      followBtn.onclick = function() {
+        followerModal.style.display = 'block';
+      };
+      followSpan.onclick = function() {
+        followerModal.style.display = 'none';
+      };
+
+      // following modal
+      const followingModal = document.getElementById('followingsModal');
+      const followingBtn = document.querySelector('.following-modal');
+      const followingSpan = document.getElementsByClassName('close')[1];
+      followingBtn.onclick = function() {
+        followingModal.style.display = 'block';
+      };
+      followingSpan.onclick = function() {
+        followingModal.style.display = 'none';
+      };
+
+      window.onclick = function(event) {
+        if (
+          event.target === skillModal ||
+          event.target === followerModal ||
+          event.target === followingModal
+        ) {
+          skillModal.style.display = 'none';
+          followerModal.style.display = 'none';
+          followingModal.style.display = 'none';
+        }
+      };
+      const introModal = document.getElementById('introductionModal');
+      const introBtn = document.querySelector('.intro-modal');
+      const introSpan = document.getElementsByClassName('close2')[1];
+      const introSpan2 = document.getElementsByClassName('close2')[2];
+      introBtn.onclick = function() {
+        introModal.style.display = 'block';
+      };
+      introSpan.onclick = function() {
+        introModal.style.display = 'none';
+      };
+      introSpan2.onclick = function() {
+        introModal.style.display = 'none';
+      };
+      ///////////////////////////
+      ///////////////////////////
+      const gitModal = document.getElementById('githubModal');
+      const gitBtn = document.querySelector('.git-modal');
+      const gitSpan = document.getElementsByClassName('close2')[3];
+      const gitSpan2 = document.getElementsByClassName('close2')[4];
+      gitBtn.onclick = function() {
+        gitModal.style.display = 'block';
+      };
+      gitSpan.onclick = function() {
+        gitModal.style.display = 'none';
+      };
+      gitSpan2.onclick = function() {
+        gitModal.style.display = 'none';
+      };
+      ///////////////////////////
+
+      window.onclick = function(event) {
+        if (
+          event.target === skillModal ||
+          event.target === followerModal ||
+          event.target === followingModal ||
+          event.target === introModal
+        ) {
+          skillModal.style.display = 'none';
+          followerModal.style.display = 'none';
+          followingModal.style.display = 'none';
+          introModal.style.display = 'none';
+        }
+      };
+    },
+    async searchByStack(skill) {
+      const params = {
+        q: skill,
+        category: 'keyword',
+      };
+      this.$router.push({ name: 'ArticleSearchByStack', query: params });
+    },
+    modiGit() {
+      const params = {
+        github: this.github,
+      };
+      const token = this.id_token;
+      modifyGit(params, token)
+        .then(() => {
+          this.userInfo.userInfo.github = this.github;
+        })
+        .catch((err) => console.log(err));
+    },
+    modiIntro() {
+      const params = {
+        intro: this.intro,
+      };
+      const token = this.id_token;
+      modifyIntro(params, token)
+        .then(() => {
+          this.userInfo.userInfo.info = this.intro;
+        })
+        .catch((err) => console.log(err));
+    },
+
     // 유저 이미지 변경하기
     toggleDropZone() {
-      if (this.userInfo.userInfo.email === this.$store.state.username)
-        this.openDropZone = !this.openDropZone;
+      if (this.userInfo.userInfo.email === this.$store.state.username) {
+        const dropZone = document.querySelector(".dropZone")
+        dropZone.classList.toggle("dropZoneDisabled")
+        this.openDropZone = !this.openDropZone
+      }
+      else console.log(false)
     },
     async afterComplete(upload) {
       let imageName = uuid.v1();
@@ -283,7 +547,6 @@ export default {
 
     async requestFollow(followWantingTo, e) {
       if (!this.isLoggedIn) {
-        console.log('login required');
         if (confirm('팔로우 하시려면 로그인을 해야 합니다')) {
           this.$router.push('/login');
         }
@@ -292,10 +555,9 @@ export default {
           follow: followWantingTo,
         };
         const { data } = await requestFollow(params, this.id_token);
-        console.log(data);
         // 프런트에서 처리
         const followList = this.$store.state.followList.followNickname;
-        const nicknameOfThisBlog = this.$route.params.nickname;
+        const nicknameOfThisBlog = this.userInfo.userInfo.nickname;
         if (data.data === 'follow') {
           followList.push(nicknameOfThisBlog);
           e.target.innerHTML = '팔로우 취소';
@@ -331,79 +593,13 @@ export default {
     },
   },
   updated() {
-    if (this.$store.getters.isLoggedIn) {
-      const followBtns = [
-        ...document.querySelectorAll('.follower-email-container'),
-      ];
-      const len = followBtns.length;
-      for (let i = 0; i < len; i++) {
-        const followerOfLoginUser = this.$store.state.followList.followNickname;
-        const numOfFollowerOFLoginUser = followerOfLoginUser.length;
-        for (let j = 0; j < numOfFollowerOFLoginUser; j++) {
-          // trim하지 않으면 선택자로 버튼값의 innerHTML값을 가져올 때 양쪽에 공백문자가 삽입되어 비교가 안된다.
-          if (
-            followBtns[i].childNodes[0].innerHTML.trim() ===
-            followerOfLoginUser[j].trim()
-          ) {
-            followBtns[i].childNodes[1].childNodes[0].innerHTML = '팔로우 취소';
-          }
-        }
-      }
-    }
-    //스킬
-    const skillModal = document.getElementById('skillModal');
-    const btn = document.querySelector('.more');
-    const span = document.getElementsByClassName('close')[0];
-    btn.onclick = function() {
-      skillModal.style.display = 'block';
-    };
-    span.onclick = function() {
-      skillModal.style.display = 'none';
-    };
-    const skillModal2 = document.getElementById('skillModal');
-    const btn2 = document.querySelector('.more');
-    const span2 = document.getElementsByClassName('close2')[0];
-    btn2.onclick = function() {
-      skillModal2.style.display = 'block';
-    };
-    span2.onclick = function() {
-      skillModal2.style.display = 'none';
-    };
-    // follower modal
-    const followerModal = document.getElementById('followersModal');
-    const followBtn = document.querySelector('.follower-modal');
-    const followSpan = document.getElementsByClassName('close')[0];
-    followBtn.onclick = function() {
-      followerModal.style.display = 'block';
-    };
-    followSpan.onclick = function() {
-      followerModal.style.display = 'none';
-    };
-
-    // following modal
-    const followingModal = document.getElementById('followingsModal');
-    const followingBtn = document.querySelector('.following-modal');
-    const followingSpan = document.getElementsByClassName('close')[1];
-    followingBtn.onclick = function() {
-      followingModal.style.display = 'block';
-    };
-    followingSpan.onclick = function() {
-      followingModal.style.display = 'none';
-    };
-    window.onclick = function(event) {
-      if (
-        event.target === skillModal ||
-        event.target === followerModal ||
-        event.target === followingModal
-      ) {
-        skillModal.style.display = 'none';
-        followerModal.style.display = 'none';
-        followingModal.style.display = 'none';
-      }
-    };
+    this.attachModal();
   },
   beforeUpdate() {
     this.skills = this.$store.state.userSkills;
+  },
+  mounted() {
+    this.attachModal();
   },
 };
 </script>
@@ -514,12 +710,20 @@ li {
   font-size: 16px;
 }
 
-.about-area > .text > .intro {
+.intro {
   padding: 20px 0;
   font-family: 'Noto Sans KR', sans-serif;
   letter-spacing: 1.5px;
+  width: 100%;
 }
-
+.editInput {
+  padding: 20px 0 20px 10px;
+  font-family: 'Noto Sans KR', sans-serif;
+  letter-spacing: 1.5px;
+  border-radius: 10px;
+  width: 100%;
+  outline: none;
+}
 .about-area > .text > ul {
   padding: 20px 0;
 }
@@ -699,5 +903,48 @@ li {
 }
 #calendar {
   margin-left: 1%;
+}
+
+.intro-modal-content {
+  background-color: #fefefe;
+  margin: auto;
+  margin-top: 10%;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 60%;
+  border-radius: 10px;
+}
+.intro-modal-content {
+  text-align: center;
+}
+.editBtn {
+  background-color: #0095f6;
+  border: #0095f6;
+  padding: 5px 5px;
+  margin-right: 3%;
+  font-size: 14px;
+  color: white;
+  width: 25%;
+}
+.cancelBtn {
+  background-color: #cacaca;
+  border: #cacaca;
+  padding: 5px 5px;
+  font-size: 14px;
+  color: white;
+  width: 25%;
+}
+.git-modal-content {
+  background-color: #fefefe;
+  margin: auto;
+  margin-top: 10%;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 60%;
+  border-radius: 10px;
+}
+
+.dropZoneDisabled {
+  display: none;
 }
 </style>

@@ -21,6 +21,7 @@ import ArticleRecommend from '../views/ArticleRecommend';
 import CalendarCardList from '../components/calendar/CalendarCardList.vue';
 import store from '@/store/index';
 import NotFound from '../views/NotFound';
+import ProgressBar from "../views/ProgressBar";
 
 Vue.use(VueRouter);
 
@@ -53,6 +54,11 @@ const routes = [
     path: '/',
     name: 'ArticleRecommend',
     component: ArticleRecommend,
+  },
+  {
+    path: '/progress',
+    name: 'ProgressBar',
+    component: ProgressBar
   },
   {
     path: '/login',

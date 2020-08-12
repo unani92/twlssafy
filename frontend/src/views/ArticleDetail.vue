@@ -107,7 +107,7 @@ export default {
       title: null,
       article: null,
       content: null,
-      updatedAt: null,
+      updatedAt: '',
       userinfo: null,
       userImg: null,
       ispublic: '',
@@ -162,6 +162,7 @@ export default {
         this.nickname = article.nickname;
         this.title = article.title;
         this.content = article.content;
+        
         this.updatedAt = this.$moment(article.updatedat).fromNow();
         this.sideMenu.commentList = commentList;
         this.sideMenu.cntLikes = cntLikes;
@@ -173,6 +174,10 @@ export default {
         this.ispublic = ispublic;
         this.hits = hits;
         this.score = score;
+
+        // for(let i =0;i<10;i++){
+        //   this.updatedAt +=article.updatedat[i]
+        // }
 
         const loginUser = this.$store.state.nickname;
         if (this.article.nickname === loginUser) {

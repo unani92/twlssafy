@@ -10,7 +10,9 @@
           2. 메일 인증 요청 및 인증 코드 입력
         -->
         <div class="inputfield logo" style></div>
-        <div style="text-align: center;">회원가입을 하고 배운 지식을 친구들과 공유해보세요</div>
+        <div style="text-align: center;">
+          회원가입을 하고 배운 지식을 친구들과 공유해보세요
+        </div>
         <div class="inputfield">
           <GoogleLogin />
         </div>
@@ -84,12 +86,24 @@
         </div>
 
         <div class="inputfield">
-          <input class="input" id="info" type="text" placeholder="한 줄 소개 부탁해요" v-model="info" />
+          <input
+            class="input"
+            id="info"
+            type="text"
+            placeholder="한 줄 소개 부탁해요"
+            v-model="info"
+          />
         </div>
         <p class="join-warning guide-text">{{ logMessage.info }}</p>
 
         <div class="inputfield">
-          <input class="input" id="info" type="text" placeholder="깃허브 주소를 입력해주세요" v-model="github" />
+          <input
+            class="input"
+            id="github"
+            type="text"
+            placeholder="깃허브 주소를 입력해주세요"
+            v-model="github"
+          />
         </div>
         <!-- 버튼 활성화 OK -->
         <div class="inputfield">
@@ -104,7 +118,9 @@
                 isPasswordValid
               )
             "
-          >회원 가입</button>
+          >
+            회원 가입
+          </button>
         </div>
       </div>
     </form>
@@ -113,29 +129,29 @@
 </template>
 
 <script>
-import GoogleLogin from "../components/GoogleLogin";
-import { validateEmail, validatePassword } from "@/utils/validation";
-import { checkEmail, checkNickname, registerUser } from "@/api/index";
+import GoogleLogin from '../components/GoogleLogin';
+import { validateEmail, validatePassword } from '@/utils/validation';
+import { checkEmail, checkNickname, registerUser } from '@/api/index';
 // import SelectSkills from "../views/SelectSkills.vue";
 
 export default {
   data() {
     return {
-      email: "",
-      validationNumber: "",
-      validationNumberFromBE: "",
-      nickname: "",
-      password: "",
-      passwordConfirm: "",
-      info: "",
-      github: "",
+      email: '',
+      validationNumber: '',
+      validationNumberFromBE: '',
+      nickname: '',
+      password: '',
+      passwordConfirm: '',
+      info: '',
+      github: '',
       logMessage: {
-        email: "",
-        nickname: "",
-        validationNumber: "",
-        password: "",
-        passwordConfirm: "",
-        info: "",
+        email: '',
+        nickname: '',
+        validationNumber: '',
+        password: '',
+        passwordConfirm: '',
+        info: '',
       },
       confirmedEmail: false,
       nicknameDoubleCheck: false,
@@ -166,50 +182,50 @@ export default {
   methods: {
     async emailDoubleCheck() {
       if (this.isemailValid) {
-        this.logMessage.email = "인증을 완료해주세요";
+        this.logMessage.email = '인증을 완료해주세요';
         const params = {
           email: this.email,
         };
         const res = await checkEmail(params);
         if (res.data.status) {
           this.logMessage.validationNumber =
-            "인증번호를 발송했습니다. \n인증번호가 오지 않으면 입력하신 정보가 정확한지 확인하여 주세요. \n이미 가입된 메일은 가상전화번호는 인증번호를 받을 수 없습니다.";
+            '인증번호를 발송했습니다. \n인증번호가 오지 않으면 입력하신 정보가 정확한지 확인하여 주세요. \n이미 가입된 메일은 가상전화번호는 인증번호를 받을 수 없습니다.';
           this.validationNumberFromBE = res.data.object.code;
           this.confirmedEmail = true;
           console.log(this.validationNumberFromBE);
         } else {
-          this.logMessage.email = "이미 가입된 메일입니다.";
+          this.logMessage.email = '이미 가입된 메일입니다.';
         }
       } else {
-        this.logMessage.email = "유효한 이메일을 입력해주세요";
+        this.logMessage.email = '유효한 이메일을 입력해주세요';
       }
     },
 
     checkValidationCode() {
       if (this.validationNumber === this.validationNumberFromBE) {
-        this.logMessage.validationNumber = "인증 성공";
-        this.logMessage.email = "";
+        this.logMessage.validationNumber = '인증 성공';
+        this.logMessage.email = '';
       }
     },
     checkPasswordForm() {
       if (!this.isPasswordValid) {
         this.logMessage.password =
-          "영문자 대문자, 소문자, 특수문자, 숫자를 하나이상 포함한 8자";
+          '영문자 대문자, 소문자, 특수문자, 숫자를 하나이상 포함한 8자';
       } else {
-        this.logMessage.password = "";
+        this.logMessage.password = '';
       }
     },
     checkPasswordConfirm() {
       if (!this.isSamePassword) {
-        this.logMessage.passwordConfirm = "일치하지 않습니다";
+        this.logMessage.passwordConfirm = '일치하지 않습니다';
       } else {
-        this.logMessage.passwordConfirm = "";
+        this.logMessage.passwordConfirm = '';
       }
     },
 
     async nicknameCheck() {
-      if (this.nickname === "") {
-        this.logMessage.nickname = "닉네임을 입력해주세요";
+      if (this.nickname === '') {
+        this.logMessage.nickname = '닉네임을 입력해주세요';
         return;
       }
       const params = {
@@ -236,21 +252,21 @@ export default {
       const { data } = await registerUser(userData);
       // 토큰 보내주세요.... 셀렉스킬에 넘겨줄예정
       console.log(data.data);
-      this.$store.commit("setUsername", userData.email);
-      this.$store.commit("setNickname", userData.nickname);
-      this.$store.commit("setToken", data.data);
-      this.$router.push("/selectskills");
+      this.$store.commit('setUsername', userData.email);
+      this.$store.commit('setNickname', userData.nickname);
+      this.$store.commit('setToken', data.data);
+      this.$router.push('/selectskills');
     },
     initForm() {
-      this.email = "";
-      this.password = "";
-      this.nickname = "";
+      this.email = '';
+      this.password = '';
+      this.nickname = '';
     },
   },
   directives: {
     focus: {
       // directive definition
-      inserted: function (el) {
+      inserted: function(el) {
         el.focus();
       },
     },
@@ -259,13 +275,13 @@ export default {
 </script>
 
 <style scoped>
-@import url("https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap");
+@import url('https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap');
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: "Montserrat", sans-serif;
+  font-family: 'Montserrat', sans-serif;
 }
 body {
   background: #e6837a;
@@ -329,7 +345,7 @@ body {
 }
 
 .wrapper .form .inputfield .custom_select:before {
-  content: "";
+  content: '';
   position: absolute;
   top: 12px;
   right: 10px;
@@ -369,7 +385,7 @@ body {
   display: block;
   cursor: pointer;
 }
-.wrapper .form .inputfield .check input[type="checkbox"] {
+.wrapper .form .inputfield .check input[type='checkbox'] {
   position: absolute;
   top: 0;
   left: 0;
@@ -383,7 +399,7 @@ body {
   position: relative;
 }
 .wrapper .form .inputfield .check .checkmark:before {
-  content: "";
+  content: '';
   position: absolute;
   top: 1px;
   left: 2px;
@@ -394,7 +410,7 @@ body {
   transform: rotate(-45deg);
   display: none;
 }
-.wrapper .form .inputfield .check input[type="checkbox"]:checked ~ .checkmark {
+.wrapper .form .inputfield .check input[type='checkbox']:checked ~ .checkmark {
   background: #e6837a;
 }
 
@@ -402,7 +418,7 @@ body {
   .form
   .inputfield
   .check
-  input[type="checkbox"]:checked
+  input[type='checkbox']:checked
   ~ .checkmark:before {
   display: block;
 }

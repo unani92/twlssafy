@@ -1,3 +1,4 @@
+
 <template>
   <div class="profile">
     <ProfileInfo :userInfo="userinfo"></ProfileInfo>
@@ -23,9 +24,6 @@ export default {
     setUserInfo(userInfo) {
       this.userinfo = userInfo;
     },
-  },
-  destroyed() {
-    this.$store.commit("setUserSkills", []);
   },
 };
 </script>
