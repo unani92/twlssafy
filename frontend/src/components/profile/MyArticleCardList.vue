@@ -58,27 +58,30 @@ export default {
         page: this.page++,
         nickname: this.$route.params.nickname,
       };
-      // console.log(params.nickname)
       const { data } = await fetchMyArticles(params);
-      this.isLoading = false;
-      this.keywords = [...this.keywords, ...data.object.keyword];
-      this.articles = [...this.articles, ...data.object.article.content];
-      this.likesCntList = [...this.likesCntList, ...data.object.likesCntList]
-      this.commentCntList = [...this.commentCntList, ...data.object.commentCntList];
-      this.pinCntList = [...this.pinCntList, ...data.object.pinCntList];
-      this.userInfo = data.object.user;
+      if (this.$route.path === `/account/${this.$route.params.nickname}`) {
+        // MyArticleCardList 컴포넌트가 화면에서 없어져도 스크롤 모니터가 남아서 현재 요청을 보내려고 함
+        // 임시로 요청을 막고 있지만 현재 컴포넌트가 완전히 없어지지 않아 다른 이슈나 에러가 발생할 가능성이 있음
+        console.log(this.$route.path);
+        this.isLoading = false;
+        this.keywords = [...this.keywords, ...data.object.keyword];
+        this.articles = [...this.articles, ...data.object.article.content];
+        this.likesCntList = [...this.likesCntList, ...data.object.likesCntList];
+        this.commentCntList = [
+          ...this.commentCntList,
+          ...data.object.commentCntList,
+        ];
+        this.pinCntList = [...this.pinCntList, ...data.object.pinCntList];
+        this.userInfo = data.object.user;
 
-
-      // console.log(data);
-      // console.log(data.object.interestList);
-      this.$emit("setUserInfo", {
-        userInfo: this.userInfo,
-        // skills: data.object.interestList,
-        following: data.object.followList,
-        follower: data.object.followerList,
-        totalArticleCount: data.object.totalArticleCount,
-      });
-      this.$store.commit("setUserSkills", data.object.interestList);
+        this.$emit("setUserInfo", {
+          userInfo: this.userInfo,
+          following: data.object.followList,
+          follower: data.object.followerList,
+          totalArticleCount: data.object.totalArticleCount,
+        });
+        this.$store.commit("setUserSkills", data.object.interestList);
+      }
     },
     addScrollWatcher() {
       const bottomSensor = document.querySelector("#bottomSensor");

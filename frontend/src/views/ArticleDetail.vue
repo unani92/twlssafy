@@ -1,5 +1,8 @@
 <template>
-  <div class="article-detail">
+  <div class="article-detail" v-if="article">
+    <vue-headful
+      :title="title"
+    />
     <div class="left-sidemenu" v-if="article">
       <ArticleDetailSideMenu :article="article" :sideMenu="sideMenu" />
     </div>
