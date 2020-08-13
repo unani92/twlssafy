@@ -84,6 +84,8 @@
 <script>
 import { likeArticle, pinArticle } from "@/api/index.js";
 import { mapState } from 'vuex'
+import Swal from 'sweetalert2/dist/sweetalert2.js'
+
 export default {
   name: "ArticleCard",
   methods: {
@@ -118,7 +120,16 @@ export default {
         }
         this.$store.commit("setLikeList", likeList);
       } else {
-        this.$router.push("/login");
+        Swal.fire({
+          text:"로그인이 필요한 서비스입니다.",
+          icon:"error",
+          closeOnClickOutside:true,
+          confirmButtonText:"<span style='text-align:center; margin-left:-12px; position:relative; top:-8px;'>OK</span>",
+          confirmButtonColor:"#e6837a",
+          onClose: () => {
+            this.$router.push("/login");
+          }
+          });
       }
     },
     async pin() {
@@ -145,7 +156,15 @@ export default {
         this.$store.commit("setPinList", pinList);
         console.log("현재 상태는", this.$store.state.pinList);
       } else {
-        this.$router.push("/login");
+        Swal.fire({
+          text:"로그인이 필요한 서비스입니다.",
+          icon:"error",
+          closeOnClickOutside:true,
+          confirmButtonText:"<span style='text-align:center; margin-left:-12px; position:relative; top:-8px;'>OK</span>",
+          confirmButtonColor:"#e6837a",
+          }).then(() => {
+            this.$router.push("/login");
+          });
       }
     },
   },

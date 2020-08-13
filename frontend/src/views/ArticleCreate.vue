@@ -136,8 +136,8 @@ export default {
           text:"제목을 입력해주세요.",
           icon:"error",
           closeOnClickOutside:true,
-          confirmButtonText:"<span style='text-align:center; margin-left:-12px; color:#e6837a'>OK</span>",
-          confirmButtonColor:"#ffffff",
+          confirmButtonText:"<span style='text-align:center; margin-left:-12px; position:relative; top:-8px;'>OK</span>",
+          confirmButtonColor:"#e6837a",
           });
         document.getElementById('title').focus();
         return;
@@ -147,8 +147,8 @@ export default {
           text:"내용을 입력해주세요.",
           icon:"error",
           closeOnClickOutside:true,
-          confirmButtonText:"<span style='text-align:center; margin-left:-12px; color:#e6837a'>OK</span>",
-          confirmButtonColor:"#ffffff",
+          confirmButtonText:"<span style='text-align:center; margin-left:-12px; position:relative; top:-8px;'>OK</span>",
+          confirmButtonColor:"#e6837a",
           });
         return;
       }
@@ -158,8 +158,8 @@ export default {
           text:"기술을 선택해주세요.",
           icon:"error",
           closeOnClickOutside:true,
-          confirmButtonText:"<span style='text-align:center; margin-left:-12px; color:#e6837a'>OK</span>",
-          confirmButtonColor:"#ffffff",
+          confirmButtonText:"<span style='text-align:center; margin-left:-12px; position:relative; top:-8px;'>OK</span>",
+          confirmButtonColor:"#e6837a",
           });
         document.getElementById('skills').focus();
         return;
