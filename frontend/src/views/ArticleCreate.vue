@@ -126,6 +126,22 @@ export default {
         preview: preview,
         ispublic: this.content.ispublic
       };
+      
+      if (!this.content.title || !this.content.title.trim()){
+        alert("제목을 입력해주세요.");
+        document.getElementById('title').focus();
+        return;
+      }
+      if (!this.content.content || !this.content.content.trim()){
+        alert("내용을 입력해주세요.");
+        return;
+      }
+      if (!this.content.keyword){
+        alert("스킬을 선택해주세요.");
+        document.getElementById('skills').focus();
+        return;
+      }
+
       const id_token = this.$store.state.id_token;
       createArticle(params, id_token)
         .then((res) => {
