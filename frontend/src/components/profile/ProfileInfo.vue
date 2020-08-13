@@ -1,5 +1,8 @@
 <template>
   <div class="profile-info">
+    <vue-headful
+      :title="`@${userInfo.userInfo.nickname} 님의 페이지`"
+    />
     <section class="about-area" id="about">
       <div class="picture">
         <img v-if="userInfo.userInfo.img" :src="userInfo.userInfo.img" />
@@ -262,6 +265,9 @@ import firebase from "firebase";
 import vue2Dropzone from "vue2-dropzone";
 import "vue2-dropzone/dist/vue2Dropzone.min.css";
 
+import Swal from 'sweetalert2/dist/sweetalert2.js'
+import 'sweetalert2/src/sweetalert2.scss'
+
 // progressbar
 import ProgressBar from "../../views/ProgressBar";
 let uuid = require("uuid");
@@ -501,9 +507,16 @@ export default {
 
     async requestFollow(followWantingTo, e) {
       if (!this.isLoggedIn) {
-        if (confirm("팔로우 하시려면 로그인을 해야 합니다")) {
-          this.$router.push("/login");
-        }
+        Swal.fire({
+          text:"로그인이 필요한 서비스입니다.",
+          icon:"error",
+          closeOnClickOutside:true,
+          confirmButtonText:"<span style='text-align:center; margin-left:-12px; position:relative; top:-8px;'>OK</span>",
+          confirmButtonColor:"#e6837a",
+          onClose: () => {
+            this.$router.push("/login");
+          }
+          });
       } else {
         const params = {
           follow: followWantingTo,
@@ -547,13 +560,21 @@ export default {
     },
   },
   updated() {
-    this.attachModal();
+    try {
+     this.attachModal();
+    } catch (e) {
+      return
+    }
   },
   beforeUpdate() {
     this.skills = this.$store.state.userSkills;
   },
   mounted() {
-    this.attachModal();
+    try {
+     this.attachModal();
+    } catch (e) {
+      return
+    }
   },
 };
 </script>
