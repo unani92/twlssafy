@@ -560,13 +560,21 @@ export default {
     },
   },
   updated() {
-    this.attachModal();
+    try {
+     this.attachModal();
+    } catch (e) {
+      return
+    }
   },
   beforeUpdate() {
     this.skills = this.$store.state.userSkills;
   },
   mounted() {
-    this.attachModal();
+    try {
+     this.attachModal();
+    } catch (e) {
+      return
+    }
   },
 };
 </script>
