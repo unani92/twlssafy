@@ -1,5 +1,8 @@
 <template>
   <div class="profile-info">
+    <vue-headful
+      :title="`@${userInfo.userInfo.nickname} 님의 페이지`"
+    />
     <section class="about-area" id="about">
       <div class="picture">
         <img v-if="userInfo.userInfo.img" :src="userInfo.userInfo.img" />

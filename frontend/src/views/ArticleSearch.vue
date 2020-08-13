@@ -1,5 +1,8 @@
 <template>
   <div class="article-search">
+    <vue-headful
+      title="@Search"
+    />
     <div class="search">
       <div class="option">
         <input type="radio" name="category" value="keyword" v-model="category" /> 키워드
