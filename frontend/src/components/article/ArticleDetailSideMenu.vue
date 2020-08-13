@@ -26,6 +26,9 @@
 <script>
 import { likeArticle, pinArticle, requestFollow } from "../../api";
 import { mapState, mapActions } from "vuex";
+import Swal from 'sweetalert2/dist/sweetalert2.js'
+import 'sweetalert2/src/sweetalert2.scss'
+
 export default {
   name: "ArticleDetailSideMenu",
   computed: {
@@ -48,10 +51,20 @@ export default {
       const article_id = this.article.articleid;
       const email = this.$store.state.username;
       if (!email) {
-        this.$router.push({
-          name: "Login",
-          query: { redirect: `${article_id}` },
-        });
+        Swal.fire({
+          text:"로그인이 필요한 서비스입니다.",
+          icon:"error",
+          closeOnClickOutside:true,
+          confirmButtonText:"<span style='text-align:center; margin-left:-12px; position:relative; top:-8px;'>OK</span>",
+          confirmButtonColor:"#e6837a",
+          onClose: () => {
+            this.$router.push({
+            name: "Login",
+            query: { redirect: `${article_id}` },
+            });
+          }
+          });
+        
       } else {
         const params = {
           article_id,
@@ -83,10 +96,19 @@ export default {
       const article_id = this.article.articleid;
       const email = this.$store.state.username;
       if (!email) {
-        this.$router.push({
-          name: "Login",
-          query: { redirect: `${article_id}` },
-        });
+        Swal.fire({
+          text:"로그인이 필요한 서비스입니다.",
+          icon:"error",
+          closeOnClickOutside:true,
+          confirmButtonText:"<span style='text-align:center; margin-left:-12px; position:relative; top:-8px;'>OK</span>",
+          confirmButtonColor:"#e6837a",
+          onClose: () => {
+            this.$router.push({
+            name: "Login",
+            query: { redirect: `${article_id}` },
+            });
+          }
+          });
       } else {
         const params = {
           article_id,
@@ -117,10 +139,19 @@ export default {
       const email = this.$store.state.username;
       const follow = this.article.email;
       if (!email) {
-        this.$router.push({
-          name: "Login",
-          query: { redirect: `${article_id}` },
-        });
+        Swal.fire({
+          text:"로그인이 필요한 서비스입니다.",
+          icon:"error",
+          closeOnClickOutside:true,
+          confirmButtonText:"<span style='text-align:center; margin-left:-12px; position:relative; top:-8px;'>OK</span>",
+          confirmButtonColor:"#e6837a",
+          onClose: () => {
+            this.$router.push({
+            name: "Login",
+            query: { redirect: `${article_id}` },
+            });
+          }
+          });
       } else {
         const params = {
           follow,

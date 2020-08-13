@@ -3,7 +3,13 @@
     <div class="nav-bar">
       <div class="logo-searchbar">
         <div class="logo">
-          <Router-link class="logo-text" to="/">TWL</Router-link>
+          <div
+            :style="{
+              backgroundImage: 'url(' + require('../assets/logo.gif') + ')',
+            }"
+            class="logo-gif"
+            @click="gotoMain"
+          ></div>
         </div>
         <div class="input-box">
           <i
@@ -118,6 +124,9 @@ export default {
         notiDropdown.classList.toggle('disabled');
       }
     },
+    gotoMain() {
+      this.$router.push('/');
+    },
     goToEmailLogin() {
       const aside = document.querySelector('.aside');
       this.$router.push({ name: 'Login' });
@@ -173,6 +182,7 @@ export default {
 .logo {
   background-color: black;
   width: 80px;
+  height: 60px;
   color: white;
   font-family: 'Rowdies', cursive;
   font-size: 28px;
@@ -180,6 +190,17 @@ export default {
   border-radius: 3px;
   margin-left: 1rem;
   text-decoration: none;
+}
+.logo:hover {
+  cursor: pointer;
+}
+.logo-gif {
+  width: 100%;
+  height: 100%;
+  background-size: 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  /* background-color: white; */
 }
 .input-box {
   margin-left: 2rem;
@@ -214,7 +235,7 @@ export default {
   z-index: 10;
 }
 ::-webkit-scrollbar {
-    width: 5px; 
+  width: 5px;
 }
 i {
   margin-left: 1rem;
@@ -246,7 +267,8 @@ i:hover {
   .search-bar {
     width: 150px;
   }
-  .article, .grade {
+  .article,
+  .grade {
     display: none;
   }
 }
