@@ -73,6 +73,9 @@
 
 <script>
 import { likeArticle, pinArticle } from "@/api/index.js";
+import Swal from 'sweetalert2/dist/sweetalert2.js'
+import 'sweetalert2/src/sweetalert2.scss'
+
 export default {
   methods: {
     search(k){
@@ -108,9 +111,16 @@ export default {
         this.$store.commit("setLikeList", likeList);
         console.log("현재 상태는", this.$store.state.likeList);
       } else {
-        if (confirm("좋아요 하시려면 로그인 해야 합니다. 하시겠습니까")) {
-          this.$router.push("/login");
-        }
+        Swal.fire({
+          text:"로그인이 필요한 서비스입니다.",
+          icon:"error",
+          closeOnClickOutside:true,
+          confirmButtonText:"<span style='text-align:center; margin-left:-12px; position:relative; top:-8px;'>OK</span>",
+          confirmButtonColor:"#e6837a",
+          onClose: () => {
+            this.$router.push('/login');
+          }
+          });
       }
     },
     async pin() {
@@ -139,9 +149,16 @@ export default {
         this.$store.commit("setPinList", pinList);
         console.log("현재 상태는", this.$store.state.pinList);
       } else {
-        if (confirm("좋아요 하시려면 로그인 해야 합니다. 하시겠습니까")) {
-          this.$router.push("/login");
-        }
+        Swal.fire({
+          text:"로그인이 필요한 서비스입니다.",
+          icon:"error",
+          closeOnClickOutside:true,
+          confirmButtonText:"<span style='text-align:center; margin-left:-12px; position:relative; top:-8px;'>OK</span>",
+          confirmButtonColor:"#e6837a",
+          onClose: () => {
+            this.$router.push('/login');
+          }
+          });
       }
     },
   },
