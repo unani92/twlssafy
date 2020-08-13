@@ -8,9 +8,12 @@ import moment from "moment";
 import VueMomentJS from "vue-momentjs";
 import firebase from "firebase";
 
+import vueHeadful from 'vue-headful';
+
 moment.locale("ko")
 Vue.use(VueMomentJS, moment);
 Vue.use(VueCookies)
+Vue.component('vue-headful', vueHeadful);
 
 firebase.initializeApp({
   apiKey: process.env.VUE_APP_FIREBASE_API_KEY,
