@@ -4,7 +4,9 @@
       <div class="logo-searchbar">
         <div class="logo">
           <div
-            :style="{backgroundImage:'url(' +require('../assets/logo.gif') +')'}"
+            :style="{
+              backgroundImage: 'url(' + require('../assets/logo.gif') + ')',
+            }"
             class="logo-gif"
             @click="gotoMain"
           ></div>
@@ -53,7 +55,9 @@
         </div>
         <div class="icon" style="display: flex">
           <div style="display: flex">
-            <div v-if="$store.getters.isLoggedIn" class="circle">{{ $store.state.notificationCnt }}</div>
+            <div v-if="$store.getters.isLoggedIn" class="circle">
+              {{ $store.state.notificationCnt }}
+            </div>
             <i
               v-if="$store.getters.isLoggedIn"
               @click="notificationIconToggle"
@@ -86,9 +90,9 @@
 </template>
 
 <script>
-import GoogleLogin from "./GoogleLogin";
-import Notification from "./Notification";
-import { getGrade } from "@/utils/calcGrade";
+import GoogleLogin from './GoogleLogin';
+import Notification from './Notification';
+import { getGrade } from '@/utils/calcGrade';
 export default {
   data() {
     return {
@@ -104,57 +108,57 @@ export default {
       return getGrade(this.$store.state.score);
     },
   },
-  name: "NavBar",
+  name: 'NavBar',
   components: {
     GoogleLogin,
     Notification,
   },
   methods: {
     asideBarToggle() {
-      const aside = document.querySelector(".aside");
-      aside.classList.toggle("disabled");
+      const aside = document.querySelector('.aside');
+      aside.classList.toggle('disabled');
     },
     notificationIconToggle() {
       if (this.$store.state.notification.length) {
-        const notiDropdown = document.querySelector(".notification");
-        notiDropdown.classList.toggle("disabled");
+        const notiDropdown = document.querySelector('.notification');
+        notiDropdown.classList.toggle('disabled');
       }
     },
     gotoMain() {
-      this.$router.push("/");
+      this.$router.push('/');
     },
     goToEmailLogin() {
-      const aside = document.querySelector(".aside");
-      this.$router.push({ name: "Login" });
-      aside.classList.toggle("disabled");
+      const aside = document.querySelector('.aside');
+      this.$router.push({ name: 'Login' });
+      aside.classList.toggle('disabled');
     },
     goToSignup() {
-      const aside = document.querySelector(".aside");
-      this.$router.push({ name: "Signup" });
-      aside.classList.toggle("disabled");
+      const aside = document.querySelector('.aside');
+      this.$router.push({ name: 'Signup' });
+      aside.classList.toggle('disabled');
     },
     goToMyPage() {
       this.$router.push({
-        name: "Dummy",
+        name: 'Dummy',
         params: { following: this.$store.state.nickname },
       });
     },
     logout() {
-      this.$router.push({ name: "Logout" });
+      this.$router.push({ name: 'Logout' });
     },
     scrollEvent() {
-      const navBar = document.querySelector(".notification");
+      const navBar = document.querySelector('.notification');
       if (navBar) {
         const nowScrollY = window.scrollY;
         if (nowScrollY > this.scroll.prev) {
-          navBar.classList.add("disabled");
+          navBar.classList.add('disabled');
           this.scroll.prev = nowScrollY;
         }
       }
     },
   },
   mounted() {
-    document.addEventListener("scroll", this.scrollEvent);
+    document.addEventListener('scroll', this.scrollEvent);
   },
 };
 </script>
@@ -180,12 +184,15 @@ export default {
   width: 80px;
   height: 60px;
   color: white;
-  font-family: "Rowdies", cursive;
+  font-family: 'Rowdies', cursive;
   font-size: 28px;
   text-align: center;
   border-radius: 3px;
   margin-left: 1rem;
   text-decoration: none;
+}
+.logo:hover {
+  cursor: pointer;
 }
 .logo-gif {
   width: 100%;
