@@ -7,12 +7,7 @@
       <div id="intro">
         <h1>HOT & RECOMMEND</h1>
       </div>
-      <carousel-3d
-        :controls-visible="true"
-        :width="800"
-        :height="carouselHeight"
-        :display="5"
-      >
+      <carousel-3d :controls-visible="true" :width="800" :height="carouselHeight" :display="5">
         <Slide v-for="(article, index) in articles" :index="index" :key="index">
           <ArticleCard
             style="margin : 0px"
@@ -36,15 +31,15 @@
 </template>
 
 <script>
-import { Carousel3d, Slide } from 'vue-carousel-3d';
-import { fetchRecommend } from '../api';
-import { mapState, mapActions } from 'vuex';
-import LoadingSpinner from '@/components/common/LoadingSpinner.vue';
-import ArticleCard from '@/components/article/AricleCard.vue';
-import Footer from '../components/Footer';
+import { Carousel3d, Slide } from "vue-carousel-3d";
+import { fetchRecommend } from "../api";
+import { mapState, mapActions } from "vuex";
+import LoadingSpinner from "@/components/common/LoadingSpinner.vue";
+import ArticleCard from "@/components/article/AricleCard.vue";
+import Footer from "../components/Footer";
 
 export default {
-  name: 'ArticleRecommend',
+  name: "ArticleRecommend",
   data() {
     return {
       articles: [],
@@ -55,25 +50,24 @@ export default {
       isLoading: true,
       window: {
         width: 0,
-        // height: 0,
       },
     };
   },
   computed: {
-    ...mapState(['id_token']),
+    ...mapState(["id_token"]),
     carouselHeight() {
       return this.window.width < 6 ? 1000 : 380;
     },
   },
   components: {
-    'carousel-3d': Carousel3d,
+    "carousel-3d": Carousel3d,
     Slide,
     LoadingSpinner,
     ArticleCard,
     Footer,
   },
   methods: {
-    ...mapActions(['getGoogleUserInfo']),
+    ...mapActions(["getGoogleUserInfo"]),
     async fetchData() {
       const { data } = await fetchRecommend(this.id_token);
       this.isLoading = false;
@@ -83,11 +77,11 @@ export default {
       this.pinCntList = data.object.pinCntList;
       this.commentCntList = data.object.commentCntList;
     },
-    flashText(text) {
-      const len = text.textContent.length;
-      text.style.width = len + 'ch';
-      text.style.animateTimingFuntion = 'steps(' + len + '), steps(1)';
-    },
+    // flashText(text) {
+    //   const len = text.textContent.length;
+    //   text.style.width = len + "ch";
+    //   text.style.animateTimingFuntion = "steps(" + len + "), steps(1)";
+    // },
     handleResize() {
       this.window.width = window.innerWidth / 100;
       // this.window.height = window.innerHeight;
@@ -98,15 +92,13 @@ export default {
       this.getGoogleUserInfo(this.id_token);
     }
     this.fetchData();
-    const h2El = document.querySelector('h2');
-    this.flashText(h2El);
   },
   created() {
-    window.addEventListener('resize', this.handleResize);
+    window.addEventListener("resize", this.handleResize);
     this.handleResize();
   },
   destroyed() {
-    window.removeEventListener('resize', this.handleResize);
+    window.removeEventListener("resize", this.handleResize);
   },
 };
 </script>
@@ -133,14 +125,14 @@ export default {
   padding: 0 1rem;
 }
 #intro {
-  font-family: 'Noto Serif KR', serif;
+  font-family: "Noto Serif KR", serif;
   font-weight: lighter;
   text-align: center;
   font-size: 13px;
   margin-bottom: 40px;
 }
 #outro {
-  font-family: 'Noto Serif KR', serif;
+  font-family: "Noto Serif KR", serif;
   text-align: center;
   font-size: 12px;
   margin: 3% 0 7% 0;
@@ -149,7 +141,7 @@ export default {
   display: inline-block;
   margin: 0 auto;
   width: 59ch;
-  font-family: 'Montserrat', sans-serif, monospace;
+  font-family: "Montserrat", sans-serif, monospace;
   font-size: 1.5rem;
   font-weight: 500;
   overflow: hidden;

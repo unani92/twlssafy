@@ -46,7 +46,13 @@
             {{ this.$moment(article.createdat).fromNow() }}
           </div>
           <div class="nicknamePinLikes">
-            <div style="float : left; ">{{ article.nickname }}</div>
+            <div style="float : left; cursor: pointer;"  
+              @click="
+                $router.push({
+                  name: 'Profile',
+                  params: { nickname: article.nickname },
+                })
+              ">{{ article.nickname }}</div>
             <div class="btns">
               <button @click="pin" class="firstBtn" style="background-color:white; width:4%; margin : 3%;">
                 <i v-if="isPinned" class="fas fa-bookmark" style="color : hotpink"> {{pinCnt}}</i>
