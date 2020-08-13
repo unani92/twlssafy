@@ -65,6 +65,11 @@ export default {
           content,
           articleid,
         };
+
+        if(!content || !content.trim()) {
+          alert("내용을 입력해주세요.");
+          return;
+        }
         const id_token = this.$store.state.id_token;
         createComment(params, id_token)
           .then((res) => {
