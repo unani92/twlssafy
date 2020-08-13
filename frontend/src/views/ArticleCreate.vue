@@ -66,11 +66,14 @@
   </div>
 </template>
 
+
 <script>
 import Editor from "@/components/Editor.vue";
 import skills from "../skills";
 import { createArticle } from "../api";
 import { validateMarkdown } from "@/utils/validation";
+import Swal from 'sweetalert2/dist/sweetalert2.js'
+import 'sweetalert2/src/sweetalert2.scss'
 
 export default {
   name: "ArticleCreate",
@@ -126,6 +129,42 @@ export default {
         preview: preview,
         ispublic: this.content.ispublic
       };
+
+      
+      if (!this.content.title || !this.content.title.trim()){
+        Swal.fire({
+          text:"제목을 입력해주세요.",
+          icon:"error",
+          closeOnClickOutside:true,
+          confirmButtonText:"<span style='text-align:center; margin-left:-12px; position:relative; top:-8px;'>OK</span>",
+          confirmButtonColor:"#e6837a",
+          });
+        document.getElementById('title').focus();
+        return;
+      }
+      if (!this.content.content || !this.content.content.trim()){
+        Swal.fire({
+          text:"내용을 입력해주세요.",
+          icon:"error",
+          closeOnClickOutside:true,
+          confirmButtonText:"<span style='text-align:center; margin-left:-12px; position:relative; top:-8px;'>OK</span>",
+          confirmButtonColor:"#e6837a",
+          });
+        return;
+      }
+      
+      if (this.content.keywords.length==0){
+        Swal.fire({
+          text:"기술을 선택해주세요.",
+          icon:"error",
+          closeOnClickOutside:true,
+          confirmButtonText:"<span style='text-align:center; margin-left:-12px; position:relative; top:-8px;'>OK</span>",
+          confirmButtonColor:"#e6837a",
+          });
+        document.getElementById('skills').focus();
+        return;
+      }
+
       const id_token = this.$store.state.id_token;
       createArticle(params, id_token)
         .then((res) => {
@@ -141,6 +180,9 @@ export default {
 </script>
 
 <style scoped>
+.swalBtn{
+  display: flex;
+}
 .article-create {
   padding: 140px 2rem 0 2rem;
 }
@@ -238,4 +280,5 @@ export default {
 div {
   border-radius: 10px;
 }
+
 </style>

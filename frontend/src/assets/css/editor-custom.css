@@ -1,0 +1,94 @@
+@import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic+Coding:wght@400;700&family=Nanum+Gothic:wght@400;700&family=Noto+Sans+KR:wght@300;400;500&display=swap');
+/* markdown viewer custom css */
+blockquote {
+  border-left-width: 4px !important;
+  border-left-style: solid !important;
+  border-left-color: #e6837a !important;
+  background-color: #eeeeee;
+}
+blockquote > p {
+  color: #0d0925 !important;
+  padding: 10px;
+}
+.tui-editor-contents p {
+  font-size: 1rem !important;
+  font-family: 'Nanum Gothic Coding', monospace !important;
+  line-height: 200% !important;
+  word-break: break-all !important;
+  /*font-family: 'Nanum Gothic', sans-serif;*/
+}
+/*.tui-editor-contents > p {*/
+/*  font-size: 1rem !important;*/
+/*  word-break: break-all !important;*/
+/*}*/
+.tui-editor-contents strong, .tui-editor-contents em {
+  font-family: 'Nanum Gothic Coding', monospace !important;
+}
+.tui-editor-contents pre {
+  margin: 1rem 0 !important;
+  padding: 18px;
+  background-color: #f5f7f8;
+  font-size: 1rem;
+  word-break: break-all !important;
+}
+.tui-editor-contents > h1 {
+  font-size: 48px !important;
+  padding: 2rem 0 2rem 0 !important;
+  margin: 1rem 0 1rem 0 !important;
+  font-family: 'Nanum Gothic', sans-serif;
+  line-height: 160% !important;
+}
+.tui-editor-contents > h2 {
+  font-size: 40px !important;
+  padding: 2rem 0 2rem 0 !important;
+  margin: 1rem 0 1rem 0 !important;
+  font-family: 'Nanum Gothic', sans-serif;
+  line-height: 160% !important;
+}
+.tui-editor-contents > h3 {
+  font-size: 32px !important;
+  padding: 1rem 0 1rem 0 !important;
+  font-family: 'Nanum Gothic', sans-serif;
+  line-height: 160% !important;
+}
+.tui-editor-contents > h4 {
+  font-size: 28px !important;
+  padding: 1rem 0 1rem 0 !important;
+  font-family: 'Nanum Gothic', sans-serif;
+  line-height: 160% !important;
+}
+.tui-editor-contents > h5 {
+  font-size: 16px !important;
+  padding: 1rem 0 1rem 0 !important;
+  font-family: 'Nanum Gothic', sans-serif;
+  line-height: 160% !important;
+}
+blockquote {
+  font-size: 1rem;
+}
+pre > code > span {
+  font-size: 1rem !important;
+  font-family: 'Nanum Gothic Coding', monospace !important;
+}
+@media (max-width: 414px) {
+  .tui-editor-contents > h1 {
+    font-size: 28px !important;
+    padding: 24px 0 !important;
+    margin: 10px 0 !important;
+  }
+  .tui-editor-contents > h2 {
+    font-size: 24px !important;
+    padding: 1rem 0 !important;
+    margin: 10px 0 !important;
+  }
+  .tui-editor-contents > h3 {
+    font-size: 20px !important;
+    padding: 1rem 0 !important;
+    margin: 10px 0 !important;
+  }
+  .tui-editor-contents > h4 {
+    font-size: 1rem !important;
+    padding: 1rem 0 !important;
+    margin: 10px 0 !important;
+  }
+}

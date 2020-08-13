@@ -1,5 +1,8 @@
 <template>
   <div>
+    <vue-headful
+      title="TWL: Today We Learned"
+    />
     <div v-if="isLoading">
       <LoadingSpinner />
     </div>
