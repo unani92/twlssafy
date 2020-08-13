@@ -150,7 +150,7 @@ public class ArticleController {
     @ResponseBody
     @PostMapping("/article")
     public Object writeArticle(@RequestHeader(required = true) final HttpHeaders header,
-            @RequestBody(required = true) final Map<String, Object> request) {
+            @RequestBody(required = true) final Map<String, Object> request) throws Exception {
 
         /*
          * { "email" : "asdf@asdf.com", "nickname" : "asdf", "title" : "제목제목",
@@ -165,12 +165,10 @@ public class ArticleController {
         Map<String, Object> userToken = null;
         String email = "";
 
-        try {
-            userToken = JWTDecoding.getInfo(header.get("id_token").get(0));
-            email = JWTDecoding.decode(header.get("id_token").get(0));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+   
+        userToken = JWTDecoding.getInfo(header.get("id_token").get(0));
+        email = JWTDecoding.decode(header.get("id_token").get(0));
+     
         
 
         
@@ -191,6 +189,7 @@ public class ArticleController {
         article.setImgurl(imgurl);
         article.setPreview(preview);
         article.setIspublic(ispublic);
+        article.setCreatedat(LocalDateTime.now());
         
         if(articleDao.save(article)==null){
             result.data = "글쓰기 실패 - DB 저장 실패";
