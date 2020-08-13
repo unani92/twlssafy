@@ -317,11 +317,19 @@ export default {
     follower() {
       return this.userInfo.follower;
     },
-    intro() {
-      return this.userInfo.userInfo.info;
+    intro : {
+      get: function () 
+      { return this.userInfo.userInfo.info;}, 
+      
+      set: function (newIntro)
+      { this.userInfo.userInfo.info = newIntro;}
     },
-    github() {
-      return this.userInfo.userInfo.github;
+    github : {
+      get: function () 
+      { return this.userInfo.userInfo.github;}, 
+      
+      set: function (newGit)
+      { this.userInfo.userInfo.github = newGit;}
     },
   },
   methods: {
@@ -428,13 +436,11 @@ export default {
         if (
           event.target === skillModal ||
           event.target === followerModal ||
-          event.target === followingModal ||
-          event.target === introModal
+          event.target === followingModal
         ) {
           skillModal.style.display = "none";
           followerModal.style.display = "none";
           followingModal.style.display = "none";
-          introModal.style.display = "none";
         }
       };
     },
