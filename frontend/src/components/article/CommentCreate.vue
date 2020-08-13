@@ -32,6 +32,9 @@
 <script>
 import { createComment } from '../../api';
 import CommentDetail from './CommentDetail';
+import Swal from 'sweetalert2/dist/sweetalert2.js'
+import 'sweetalert2/src/sweetalert2.scss'
+
 export default {
   name: 'CommentCreate',
   props: {
@@ -83,10 +86,19 @@ export default {
           .catch((err) => console.log(err));
     }
     else {
-      this.$router.push({
-          name: "Login",
-          query: { redirect: `${this.article.articleid}` },
-        });
+        Swal.fire({
+          text:"로그인이 필요한 서비스입니다.",
+          icon:"error",
+          closeOnClickOutside:true,
+          confirmButtonText:"<span style='text-align:center; margin-left:-12px; position:relative; top:-8px;'>OK</span>",
+          confirmButtonColor:"#e6837a",
+          onClose: () => {
+            this.$router.push({
+                name: "Login",
+                query: { redirect: `${this.article.articleid}` },
+              });
+          }
+          });
     }
     },
     removeDelete(id) {
