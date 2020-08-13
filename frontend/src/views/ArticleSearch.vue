@@ -110,7 +110,7 @@ export default {
       } else {
         this.q = this.input;
         this.page = 0;
-        this.searchArticles = [];
+        this.init();
         const params = {
           page: this.page++,
           q: this.q,
@@ -141,9 +141,9 @@ export default {
     },
 
     async searchSkillAdd(event) {
+      this.init();
       const skill = event.target.innerText;
       try {
-        this.searchArticles = [];
         const params = {
           page: 0,
           q: skill,
@@ -183,6 +183,15 @@ export default {
       watcher.enterViewport(() => {
         this.fetchSearchData();
       });
+    },
+    init() {
+      this.searchArticles = [];
+      this.keywords = [];
+      this.commentCntList = [];
+      this.pinCntList = [];
+      this.likesCntList = [];
+      this.page = 0;
+      this.searchResult = "";
     },
   },
   mounted() {
