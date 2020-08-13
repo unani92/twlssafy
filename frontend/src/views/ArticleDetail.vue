@@ -40,8 +40,13 @@
               </Router-link>
               <i
                 class="fas fa-trash-alt"
-                style="cursor: pointer; color : gray"
+                style="cursor: pointer; margin-right: 4px; color : gray"
                 @click="removeArticle"
+              ></i>
+              <i
+                class="fas fa-file-download"
+                style="cursor: pointer; color : gray"
+                @click="downloadFile"
               ></i>
             </span>
           </div>
@@ -94,11 +99,6 @@ export default {
     ArticleDetailProfile,
     CommentCreate,
   },
-  // computed: {
-  //   followList() {
-  //     return this.$store.state.followList;
-  //   },
-  // },
   data() {
     return {
       id: this.$route.params.id,
@@ -124,6 +124,16 @@ export default {
     };
   },
   methods: {
+    downloadFile() {
+      const blob = new Blob([this.content], {type: 'text/plain'})
+      const url = window.URL.createObjectURL(blob)
+      const a = document.createElement("a")
+      a.href = url
+      a.download = `${this.$store.state.nickname}_${this.title}.md`
+      a.click()
+      a.remove()
+      window.URL.revokeObjectURL(url);
+    },
     gotoWriterPage() {
       this.$router.push({
         name: 'Profile',
