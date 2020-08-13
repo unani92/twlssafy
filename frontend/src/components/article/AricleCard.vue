@@ -9,7 +9,10 @@
                 })
               " >
           <img v-if="article.imgurl != null" class="img-1" :src="article.imgurl" />
-          <img v-else class="img-1" src="https://picsum.photos/300/200" />
+          <img v-else-if="article.articleid%4==0" class="img-1" src="@/assets/image/preview0.png"/>
+          <img v-else-if="article.articleid%4==1" class="img-1" src="@/assets/image/preview1.png"/>
+          <img v-else-if="article.articleid%4==2" class="img-1" src="@/assets/image/preview2.png"/>
+          <img v-else class="img-1" src="@/assets/image/preview3.png"/>
         </label>
         <p>
         </p>
@@ -22,8 +25,7 @@
                 $router.push({
                   name: 'ArticleDetail',
                   params: { id: article.articleid },
-                })
-              ">
+                })">
               {{ article.title }}
             </span>
           </div>
@@ -44,18 +46,24 @@
             {{ this.$moment(article.createdat).fromNow() }}
           </div>
           <div class="nicknamePinLikes">
-            <div style="float : left; ">{{ article.nickname }}</div>
+            <div style="float : left; cursor: pointer;"  
+              @click="
+                $router.push({
+                  name: 'Profile',
+                  params: { nickname: article.nickname },
+                })
+              ">{{ article.nickname }}</div>
             <div class="btns">
-              <button @click="pin" class="firstBtn" style="background-color:white; font-size:16px; width:4%; margin : 3%;">
+              <button @click="pin" class="firstBtn" style="background-color:white; width:4%; margin : 3%;">
                 <i v-if="isPinned" class="fas fa-bookmark" style="color : hotpink"> {{pinCnt}}</i>
                 <i v-else class="far fa-bookmark" style="color : hotpink"> {{pinCnt}}</i>
               </button>
-              <button @click="like" style="background-color:white; font-size:16px; width: 4%;margin : 3%;">
+              <button @click="like" class="firstBtn" style="background-color:white; width: 4%;margin : 3%;">
                 <i v-if="isliked" class="fas fa-heart" style="color : hotpink;"> {{likesCnt}}</i>
                 <i v-else class="far fa-heart" style="color : hotpink;"> {{likesCnt}}</i>
                 
               </button>
-              <button style="background-color:white;font-size:16px; width:4%; margin : 3%;"
+              <button class="firstBtn" style="background-color:white; width:4%; margin : 3%;"
               @click="
                 $router.push({
                   name: 'ArticleDetail',
@@ -92,12 +100,10 @@ export default {
           article_id: this.article.articleid,
         };
         const { data } = await likeArticle(params, this.id_token);
-        console.log(data);
         //프런트에서 스토어 값 갱신
         const likeList = this.$store.state.likeList;
         if (data.data === "like 설정") {
           likeList.push(this.article);
-          console.log(likeList);
           this.likesCnt++;
         } else {
           //좋아요 목록에서 삭제 로직
@@ -111,11 +117,8 @@ export default {
           this.likesCnt--;
         }
         this.$store.commit("setLikeList", likeList);
-        console.log("현재 상태는", this.$store.state.likeList);
       } else {
-        if (confirm("좋아요 하시려면 로그인 해야 합니다. 하시겠습니까")) {
-          this.$router.push("/login");
-        }
+        this.$router.push("/login");
       }
     },
     async pin() {
@@ -124,7 +127,6 @@ export default {
           article_id: this.article.articleid,
         };
         const { data } = await pinArticle(params, this.id_token);
-        console.log(data);
         //프런트에서 스토어 값 갱신
         const pinList = this.$store.state.pinList;
         if (data.data === "pin 설정") {
@@ -143,9 +145,7 @@ export default {
         this.$store.commit("setPinList", pinList);
         console.log("현재 상태는", this.$store.state.pinList);
       } else {
-        if (confirm("좋아요 하시려면 로그인 해야 합니다. 하시겠습니까")) {
-          this.$router.push("/login");
-        }
+        this.$router.push("/login");
       }
     },
   },
@@ -267,7 +267,8 @@ export default {
   overflow: hidden;
   word-break:break-all;
 }
-button {
+.firstBtn {
+  font-size:16px;
   border: none;
   align-items: center;
   justify-content: center;
@@ -275,7 +276,6 @@ button {
   letter-spacing: 1px;
   border-radius: 50px;
   display: inline-flex;
-  font-size: 10px;
   text-transform: uppercase;
   color: white;
   margin: 1px;
@@ -325,8 +325,9 @@ button {
     margin-top: 0px;
   }
 
-  button {
-    margin : 5%;
+  .firstBtn {
+    /* margin : 3%; */
+    font-size: 13px;
   }
 }
 </style>

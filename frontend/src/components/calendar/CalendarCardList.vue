@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="calendar-list-container">
     <ProfileInfo :userInfo="userInfo"></ProfileInfo>
     <div v-if="isLoading">
       <LoadingSpinner />
@@ -11,7 +11,7 @@
       <br />
 
       <div v-if="this.isNotNull">
-        <ArticleCard 
+        <ArticleCard
           v-for="(article, index) in articles"
           :key="article._id"
           :article="article"
@@ -20,8 +20,15 @@
           :likesCnt="likesCntList[index]"
           :pinCnt="pinCntList[index]"
         />
-    </div>
-    <div v-else style="text-align : center; font-weight : bold"><br><br>검색 결과가 없습니다!<br><br><br><br></div>
+      </div>
+      <div v-else style="text-align : center; font-weight : bold">
+        <br />
+        <br />검색 결과가 없습니다!
+        <br />
+        <br />
+        <br />
+        <br />
+      </div>
 
       <div id="bottomSensor"></div>
     </div>
@@ -32,12 +39,10 @@
 import ProfileInfo from "@/components/profile/ProfileInfo.vue";
 import ArticleCard from "@/components/article/AricleCard.vue";
 import LoadingSpinner from "@/components/common/LoadingSpinner.vue";
-// import { fetchMyArticles } from "@/api/index";
 import { mapState, mapActions } from "vuex";
 // import scrollMonitor from "scrollmonitor";
-
-export default {
-  components: {
+  export default {
+    components: {
     ProfileInfo,
     ArticleCard,
     LoadingSpinner,
@@ -53,64 +58,54 @@ export default {
       isLoading: true,
       page: 0,
       userInfo: {},
-      isNotNull : true,
+      isNotNull: true,
     };
   },
   computed: {
     ...mapState(["id_token"]),
   },
   methods: {
+
     ...mapActions(["getGoogleUserInfo"]),
     async fetchData() {
+      const res = this.data.data;
 
-      // const params = {
-      //   page: this.page++,
-      //   nickname: this.$route.params.nickname,
-      // };
-      const res = this.data.data
-      console.log(res.data)
-      
       this.isLoading = false;
       this.keywords = [...this.keywords, ...res.data.object.keyword];
       this.articles = [...this.articles, ...res.data.object.article];
-      this.likesCntList = [...this.likesCntList, ...res.data.object.likesCntList]
-      this.commentCntList = [...this.commentCntList, ...res.data.object.commentCntList];
+      this.likesCntList = [
+        ...this.likesCntList,
+        ...res.data.object.likesCntList,
+      ];
+      this.commentCntList = [
+        ...this.commentCntList,
+        ...res.data.object.commentCntList,
+      ];
       this.pinCntList = [...this.pinCntList, ...res.data.object.pinCntList];
 
       this.userInfo = this.data.userInfo;
-      // console.log(this.data)
 
-      if(!res.data.status)
-        this.isNotNull = false;
-
+      if (!res.data.status) this.isNotNull = false;
     },
-    // addScrollWatcher() {
-    //   const bottomSensor = document.querySelector("#bottomSensor");
-    //   const watcher = scrollMonitor.create(bottomSensor);
-    //   watcher.enterViewport(() => {
-    //     this.fetchData();
-    //   });
-    // },
   },
   mounted() {
-    // setTimeout(() => this.addScrollWatcher(), 1000);
   },
   created() {
     this.fetchData();
-    // if (this.id_token) {
-    //   this.getGoogleUserInfo(this.id_token);
-    // }
   },
   props: {
-      data: {
-        type: Object,
-        required: true,
-      },
+    data: {
+      type: Object,
+      required: true,
     },
+  },
 };
 </script>
 
 <style>
+.calendar-list-container {
+  padding-top: 60px;
+}
 .news-index {
   max-width: 850px;
   width: 96%;

@@ -3,18 +3,9 @@
     <h1>관심사를 선택해주세요</h1>
     <div class="selectskills-main">
       <h2>Hot skills</h2>
-      <button v-if="nowSignUp"
-              @click="$router.push('/')"
-              style="margin: 5px; border-style: none; background-color: #0095f6; font-size: 1rem; padding: 5px; border-radius: 5px; color: white">
-        가입완료
-      </button>
+      <button v-if="nowSignUp" @click="$router.push('/')" class="complete-signup">가입완료</button>
       <div class="hotskills">
-        <div
-          v-for="skill in hotSkills"
-          :key="skill"
-          :id="skill.name"
-          class="skill-badge"
-        >
+        <div v-for="skill in hotSkills" :key="skill" :id="skill.name" class="skill-badge">
           <span>{{ skill.name }}</span>
           <i @click="addStack" style="cursor:pointer;" class="fas fa-plus"></i>
         </div>
@@ -28,26 +19,15 @@
           style="cursor: pointer"
           v-for="res in result"
           :key="res"
-        >
-          {{ res }}
-        </div>
+        >{{ res }}</div>
       </div>
     </div>
     <div v-if="userSkill.length" class="selectskills-selected">
       <h2>Selected</h2>
       <div class="hotskills">
-        <div
-          v-for="skill in userSkill"
-          :key="skill.name"
-          :id="skill.name"
-          class="totalSkills"
-        >
+        <div v-for="skill in userSkill" :key="skill.name" :id="skill.name" class="totalSkills">
           <span>{{ skill.name }}</span>
-          <i
-            @click="removeStack"
-            style="cursor:pointer;"
-            class="fas fa-times"
-          ></i>
+          <i @click="removeStack" style="cursor:pointer;" class="fas fa-times"></i>
         </div>
       </div>
     </div>
@@ -71,11 +51,11 @@ export default {
   },
   computed: {
     nowSignUp() {
-      return this.path === '/selectskills'
-    }
+      return this.path === "/selectskills";
+    },
   },
   mounted() {
-    console.log(this.nowSignUp)
+    console.log(this.nowSignUp);
   },
   methods: {
     //검색
@@ -159,7 +139,7 @@ export default {
 
 <style scoped>
 .selectskills {
-  padding-top: 50px;
+  padding-top: 60px;
 }
 h1 {
   font-size: 40px;
@@ -215,34 +195,6 @@ input {
   align-items: center;
   flex-flow: row wrap;
 }
-.btn {
-  max-width: 530px;
-  margin-top: 1rem;
-  margin-bottom: 1rem;
-  margin-left: auto;
-  margin-right: auto;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.signup-btn {
-  background-color: rgb(204, 93, 65);
-  border-radius: 3px;
-  color: white;
-  font-weight: bolder;
-  font-size: 1rem;
-  border-style: none;
-  outline: none;
-  height: 50px;
-  cursor: pointer;
-  margin: 1rem 10px 1rem 0;
-  width: 530px;
-}
-@media (max-width: 414px) {
-  .signup-btn {
-    width: 250px;
-  }
-}
 .disabled {
   display: none;
 }
@@ -255,5 +207,21 @@ input {
   font-weight: 600;
   margin: 0.5rem 0.25rem;
   text-align: center;
+}
+.complete-signup {
+  width: 50%;
+  margin: 5px;
+  border-style: none;
+  background-color: #0095f6;
+  font-size: 1rem;
+  padding: 5px;
+  border-radius: 5px;
+  color: white;
+}
+.complete-signup:hover {
+  box-shadow: 0px 1px 5px #0095f6;
+  color: #fff;
+  /* transform: translateY(-7px); */
+  animation-duration: 1s ease-in;
 }
 </style>

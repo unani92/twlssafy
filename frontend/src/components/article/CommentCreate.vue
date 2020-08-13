@@ -1,10 +1,16 @@
 <template>
   <div class="comment-create">
     <div class="comment">
-      <span style="font-size: 15px; font-weight: bold">{{ commentList.length }} 개의 댓글</span>
+      <span style="font-size: 15px; font-weight: bold"
+        >{{ commentList.length }} 개의 댓글</span
+      >
     </div>
     <div>
-      <textarea v-model="content" placeholder="댓글을 작성해 주세요" class="create" />
+      <textarea
+        v-model="content"
+        placeholder="댓글을 작성해 주세요"
+        class="create"
+      />
       <div>
         <button class="createBtn" @click="submitComment">
           <i class="fas fa-pencil-alt">댓글 달기</i>
@@ -14,11 +20,9 @@
 
     <div v-if="commentList.length && toggle">
       <CommentDetail
-        v-for="(comment,i) in commentList"
+        v-for="(comment, i) in commentList"
         :comment="comment"
-        :key="comment.commentid"
-        :nickname="commentNickname[i]"
-        :commentArticleCount="commentArticleCount[i]"
+        :key="i"
         @commentDelete="removeDelete"
       />
     </div>
@@ -26,18 +30,23 @@
 </template>
 
 <script>
-import { createComment } from "../../api";
-import CommentDetail from "./CommentDetail";
+import { createComment } from '../../api';
+import CommentDetail from './CommentDetail';
 export default {
-  name: "CommentCreate",
+  name: 'CommentCreate',
   props: {
     commentList: Array,
     article: Object,
     commentNickname: Array,
-    commentArticleCount: Array,
+    commentImg: Array,
   },
   components: {
     CommentDetail,
+  },
+  computed: {
+    isLogin() {
+      return this.$store.state.username !== "";
+    },
   },
   data() {
     return {
@@ -47,25 +56,38 @@ export default {
   },
   methods: {
     submitComment() {
-      const email = this.$store.state.username;
-      const content = this.content;
-      const nickname = this.$store.state.nickname;
-      const articleid = String(this.article.articleid);
-      const params = {
-        email,
-        content,
-        articleid,
-      };
-      const id_token = this.$store.state.id_token;
-      createComment(params, id_token)
-        .then((res) => {
-          const now = new Date();
-          const comment = { ...res.data.object, now };
-          this.commentList = [comment, ...this.commentList];
-          this.content = null;
-          this.commentNickname = [nickname, ...this.commentNickname];
-        })
-        .catch((err) => console.log(err));
+      if (this.isLogin) {
+        const email = this.$store.state.username;
+        const content = this.content;
+        const articleid = String(this.article.articleid);
+        const params = {
+          email,
+          content,
+          articleid,
+        };
+
+        if(!content || !content.trim()) {
+          alert("내용을 입력해주세요.");
+          return;
+        }
+        const id_token = this.$store.state.id_token;
+        createComment(params, id_token)
+          .then((res) => {
+            console.log(res.data.object);
+            const now = new Date();
+            const comment = { ...res.data.object, now };
+            this.commentList = [comment, ...this.commentList];
+            this.content = null;
+            console.log(this.content)
+          })
+          .catch((err) => console.log(err));
+    }
+    else {
+      this.$router.push({
+          name: "Login",
+          query: { redirect: `${this.article.articleid}` },
+        });
+    }
     },
     removeDelete(id) {
       this.commentList = this.commentList.filter((comment) => {

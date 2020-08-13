@@ -18,6 +18,7 @@ import com.web.curation.model.pinlikesfollow.Follow;
 import com.web.curation.model.pinlikesfollow.Likes;
 import com.web.curation.model.pinlikesfollow.Notification;
 import com.web.curation.model.pinlikesfollow.Pin;
+import com.web.curation.model.user.User;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
@@ -102,13 +103,15 @@ public class PinLikeFollowController {
                 Notification notification = new Notification();
 
                 notification.setEmail(follow);
+                notification.setNickname(userDao.findUserByEmail(follow).get().getNickname());
                 notification.setOther(other);
+                notification.setOthernickname(userDao.findUserByEmail(other).get().getNickname());
                 notification.setType(type);
                 notification.setReadn(0);
                 notification.setArticleid(1);
                 notification.setContent("");
                 
-                Notification noti = notificationDao.findNotification(follow,email,type,0,"",0);
+                Notification noti = notificationDao.findNotification(follow,email,type,1,"",0);
                 // "select * from notification where email = ?1 and other = ?2 and type = ?3 and articleid = ?4 and content = ?5"
                 if(noti !=null){ 
                     if(noti.getReady() != 1) // 이미 이 사람이 날 팔로우한다는 알림이 있고, 내가 그걸 안 읽었으면 이전 알림은 지우고 다시 보내줌
@@ -117,7 +120,7 @@ public class PinLikeFollowController {
 
                 if (notificationDao.save(notification) != null) {
                     // 알림 저장 하면
-                    int cnt = (int) notificationDao.countByEmailAndRead(follow);
+                    int cnt = (int) notificationDao.countByEmail(follow);
                     Map<String, Object> object = new HashMap<>();
                     object.put("notification", notification);
                     object.put("notificationCnt", cnt);
@@ -133,12 +136,12 @@ public class PinLikeFollowController {
                 return new ResponseEntity<>(result, HttpStatus.OK);
             }
 
-                Notification noti = notificationDao.findNotification(follow,email,"follow",0,"",0);
+                Notification noti = notificationDao.findNotification(follow,email,"follow",1,"",0);
                 // "select * from notification where email = ?1 and other = ?2 and type = ?3 and articleid = ?4 and content = ?5"
                 if( noti !=null){ 
                     if(noti.getReady() != 1)
                     // 예전에 저 사람이 날 팔로우 했다는 알람을 안 읽었으면 지움
-                    notificationDao.delete(notificationDao.findNotification(follow,email,"follow",0,"",0));
+                    notificationDao.delete(notificationDao.findNotification(follow,email,"follow",1,"",0));
                 }
 
 
@@ -172,6 +175,10 @@ public class PinLikeFollowController {
             if (pinDao.deleteByEmailAndArticleid(email, no) > 0) { // 핀 지우기
                 notificationDao.deleteByOtherAndArticleidAndTypeAndReadn(email, no, "pin",0); // 알림 안 읽었으면 지우기
                 result.data = "pin 취소";
+
+                User user = userDao.getUserByEmail(articleDao.findByArticleid(no).getEmail());
+                user.setScore(user.getScore()-1);
+                userDao.save(user);
             } else { // 지우는 거 실패
                 result.data = "pin 취소 실패";
             }
@@ -182,6 +189,10 @@ public class PinLikeFollowController {
                 Article article = articleDao.findByArticleid(Integer.parseInt(article_id));
                 if (!article.getEmail().equals(email)) {
                     result.object = saveNotification(article, email, "pin"); // 알림 설정
+
+                    User user = userDao.getUserByEmail(articleDao.findByArticleid(no).getEmail());
+                    user.setScore(user.getScore()+1);
+                    userDao.save(user);
                 }
                 result.data = "pin 설정";
             }
@@ -213,6 +224,10 @@ public class PinLikeFollowController {
             if (likesDao.deleteByEmailAndArticleid(email, no) > 0) { // 좋아요 지우기
                 notificationDao.deleteByOtherAndArticleidAndTypeAndReadn(email, no, "like",0); // 좋아요 알림도 안 읽었으면 지우기 -> 읽었어도 지워야하나?
                 result.data = "like 취소";
+
+                User user = userDao.getUserByEmail(articleDao.findByArticleid(no).getEmail());
+                user.setScore(user.getScore()-1);
+                userDao.save(user);
             } else { // 지우는 거 실패
                 result.data = "like 취소 실패";
             }
@@ -223,6 +238,10 @@ public class PinLikeFollowController {
                 Article article = articleDao.findByArticleid(Integer.parseInt(article_id)); 
                 if (!article.getEmail().equals(email)) {
                     result.object = saveNotification(article, email, "like"); // 알림 설정
+                        
+                    User user = userDao.getUserByEmail(articleDao.findByArticleid(no).getEmail());
+                    user.setScore(user.getScore()+1);
+                    userDao.save(user);
                 }
                 result.data = "like 설정";
             }
@@ -246,14 +265,15 @@ public class PinLikeFollowController {
         Notification notification = new Notification();
         notification.setContent(content);
         notification.setEmail(article.getEmail());
-        notification.setNickname(userDao.findUserByEmail(other).get().getNickname());
+        notification.setNickname(userDao.findUserByEmail(article.getEmail()).get().getNickname());
         notification.setOther(other);
+        notification.setOthernickname(userDao.findUserByEmail(other).get().getNickname());
         notification.setType(type);
         notification.setReadn(0);
         notification.setArticleid(article.getArticleid());
 
         if (notificationDao.save(notification) != null) {
-            int cnt = (int) notificationDao.countByEmailAndRead(article.getEmail());
+            int cnt = (int) notificationDao.countByEmail(article.getEmail());
             Map<String, Object> object = new HashMap<>();
             object.put("notification", notification);
             object.put("cnt", cnt);
@@ -261,24 +281,5 @@ public class PinLikeFollowController {
             return object;
         } else
             return null;
-    }
-
-    @ApiOperation(value = "알림 리스트")
-    @GetMapping("/notification/{notificationid}")
-    public Object notification(@PathVariable final int notificationid){
-        final BasicResponse result = new BasicResponse();
-        result.data="fail";
-        result.status=false;
-
-        Notification notification = notificationDao.findNotificationByNotificationid(notificationid);
-        if(notification.getReady() == 0)
-        {
-            notification.setReady(1);
-            notificationDao.save(notification);
-            result.data="알림 - 읽음 처리";
-            result.status=true;
-        }
-        
-        return result;
     }
 }

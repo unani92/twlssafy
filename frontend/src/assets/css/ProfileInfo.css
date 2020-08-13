@@ -1,0 +1,342 @@
+.dropzone-icon {
+  font-size: 2rem;
+  /*margin: 2rem;*/
+  cursor: pointer;
+}
+.image-div {
+  display: flex;
+  margin: 25px;
+}
+.image {
+  max-width: 250px;
+  margin: 15px;
+}
+ul {
+  list-style-type: none;
+}
+.profile-info {
+  max-width: 850px;
+  margin: auto;
+  padding-top: 70px;
+}
+.grade {
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 100%;
+  margin-right: 0.5em;
+}
+/* SECTION CONTAINER */
+.section-container {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+/* SECTION */
+section {
+  padding: 10px 0;
+}
+.no-article {
+  text-align: center;
+}
+
+/* ABOUT AREA */
+.about-area > .picture {
+  display: block;
+  text-align: center;
+  padding: 10px;
+
+  /*display: flex !important;*/
+  /*justify-content: space-between;*/
+  /*flex-direction: column;*/
+  /*align-items: center;*/
+  /*height: 400px;*/
+}
+
+li {
+  list-style-type: none;
+}
+
+@media (min-width: 992px) {
+  .about-area > .picture {
+    width: 40%;
+    display: inline-block;
+  }
+}
+
+.about-area > .picture > img {
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+}
+.name {
+  font-size: 25px;
+  /* text-align: center; */
+  padding: 15px 0;
+}
+
+.description {
+  font-size: 14px;
+  font-family: 'Noto Sans KR', sans-serif;
+}
+
+.about-area > .text {
+  display: block;
+  width: 96%;
+  padding: 30px;
+  background-color: white;
+  word-break: break-all;
+  margin: auto;
+  border-radius: 25px;
+}
+
+@media (min-width: 992px) {
+  .about-area > .text {
+    display: inline-block;
+    width: 60%;
+  }
+}
+
+.about-area > .text * {
+  font-size: 16px;
+}
+
+.intro {
+  padding: 20px 0;
+  font-family: 'Noto Sans KR', sans-serif;
+  letter-spacing: 1.5px;
+  width: 100%;
+}
+.editInput {
+  padding: 20px 0 20px 10px;
+  font-family: 'Noto Sans KR', sans-serif;
+  letter-spacing: 1.5px;
+  border-radius: 10px;
+  width: 100%;
+  outline: none;
+}
+.about-area > .text > ul {
+  padding: 20px 0;
+}
+
+.about-area > .text > ul > li {
+  height: 40px;
+}
+
+.about-area > .text > ul > li > .info {
+  color: #777;
+}
+
+.about-area > .text > ul > li > .info > i {
+  color: royalblue;
+}
+
+.about-area > .text > .sns {
+  text-align: right;
+  display: flex;
+  /* justify-content: space-between; */
+}
+.more {
+  color: black;
+  background: transparent;
+}
+.more:hover {
+  cursor: pointer;
+}
+.more:disabled {
+  opacity: 0;
+}
+@media (max-width: 414px) {
+  .about-area > .text > .sns > a {
+    /* text-align: center; */
+    margin: 0 auto;
+  }
+  .about-area > .text > .sns > a > span {
+    font-size: 12px;
+  }
+}
+
+@media (min-width: 992px) {
+  .about-area > .text > .sns {
+    text-align: left;
+  }
+}
+
+.about-area > .text > .sns > a {
+  padding: 1rem;
+  text-align: center;
+  border-radius: 5px;
+}
+
+.about-area > .text > .sns > a:hover {
+  background-color: #f0f0f0;
+  cursor: pointer;
+}
+
+.totalSkills {
+  display: inline-block;
+  border: 1px solid #9fa3af;
+  padding: 6px 15px;
+  border-radius: 25px;
+  min-width: 65px;
+  font-weight: 600;
+  margin: 0.5rem 0.25rem;
+  text-align: center;
+}
+
+.skills span {
+  display: inline-block;
+  min-width: 30px;
+  font-weight: 600;
+  margin: 4px 4px;
+  text-align: center;
+}
+/* The Modal (background) */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0, 0, 0); /* Fallback color */
+  background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+  background-color: #fefefe;
+  margin: 10%;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+}
+
+/* The Close Button */
+.close {
+  color: #aaaaaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.follow-modal-content {
+  background-color: #fefefe;
+  margin: auto;
+  margin-top: 10%;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 40%;
+}
+@media (max-width: 992px) {
+  .follow-modal-content {
+    width: 80%;
+  }
+  .skills span {
+    margin: 0.5% 1% 0.5% 0.5%;
+  }
+}
+.follower-email-container {
+  margin: 1rem 1rem;
+  display: flex;
+  justify-content: space-between;
+  line-height: 30px;
+}
+.follower-email-container > button {
+  background-color: #0095f6;
+  border: #0095f6;
+  border-radius: 4px;
+  padding: 5px 9px;
+  font-size: 14px;
+  color: white;
+}
+.follower-email-container > button:hover {
+  cursor: pointer;
+}
+.follower-email-container {
+  margin: 1rem 1rem;
+  display: flex;
+  justify-content: space-between;
+  line-height: 30px;
+}
+.follower-email-container > button {
+  background-color: #0095f6;
+  border: #0095f6;
+  border-radius: 4px;
+  padding: 5px 9px;
+  font-size: 14px;
+  color: white;
+}
+.follower-email-container > button:hover {
+  cursor: pointer;
+}
+.followBtn {
+  background-color: #0095f6;
+  border: #0095f6;
+  border-radius: 4px;
+  padding: 5px 9px;
+  font-size: 14px;
+  color: white;
+  width: 100%;
+}
+.followBtn:hover {
+  cursor: pointer;
+}
+#calendar {
+  margin-left: 1%;
+}
+
+.intro-modal-content {
+  background-color: #fefefe;
+  margin: auto;
+  margin-top: 10%;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 60%;
+  border-radius: 10px;
+}
+.intro-modal-content {
+  text-align: center;
+}
+.editBtn {
+  background-color: #0095f6;
+  border: #0095f6;
+  padding: 5px 5px;
+  margin-right: 3%;
+  font-size: 14px;
+  color: white;
+  width: 25%;
+}
+.cancelBtn {
+  background-color: #cacaca;
+  border: #cacaca;
+  padding: 5px 5px;
+  font-size: 14px;
+  color: white;
+  width: 25%;
+}
+.git-modal-content {
+  background-color: #fefefe;
+  margin: auto;
+  margin-top: 10%;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 60%;
+  border-radius: 10px;
+}
+
+.dropZoneDisabled {
+  display: none;
+}

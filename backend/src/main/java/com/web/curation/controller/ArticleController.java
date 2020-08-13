@@ -63,7 +63,7 @@ public class ArticleController {
 
     @Autowired
     KeywordsDao keywordsDao;
-    
+
     @Autowired
     LikesDao likesDao;
 
@@ -75,7 +75,7 @@ public class ArticleController {
 
     @Autowired
     UserDao userDao;
-    
+
     @ApiOperation(value = "리스트 조회")
     @GetMapping("/article")
     public Object getArticleList(@RequestParam(value = "page") final int page, @RequestHeader final HttpHeaders header)
@@ -86,22 +86,23 @@ public class ArticleController {
 
         String email = "";
         try {
-            String id_token  = header.get("id_token").get(0);
+            String id_token = header.get("id_token").get(0);
             email = JWTDecoding.decode(id_token);
         } catch (Exception e) {
-            
+
         }
-        
-        Page<Article> articles ;
-        if(email == null){
-            articles = articleDao.findByIspublic(PageRequest.of(page, 10, Sort.Direction.DESC,"articleid"),1);
+
+        Page<Article> articles;
+        if (email == null) {
+            articles = articleDao.findByIspublic(PageRequest.of(page, 10, Sort.Direction.DESC, "articleid"), 1);
         } else {
 
-            articles = articleDao.findByIspublicOrEmail(PageRequest.of(page, 10, Sort.Direction.DESC,"articleid"),1,email);
+            articles = articleDao.findByIspublicOrEmail(PageRequest.of(page, 10, Sort.Direction.DESC, "articleid"), 1,
+                    email);
         }
 
-        //  keywords list - "keyword": [ ["Swift","Swagger"], ["C"], ["STS", "SQL"], ...]
-        if(articles==null){
+        // keywords list - "keyword": [ ["Swift","Swagger"], ["C"], ["STS", "SQL"], ...]
+        if (articles == null) {
             return new ResponseEntity<>(result, HttpStatus.OK);
         }
 
@@ -111,28 +112,28 @@ public class ArticleController {
         List<Integer> articleCount = new ArrayList<>();
         List<Integer> commentCntList = new ArrayList<>();
 
-        for(Article a : articles){
+        for (Article a : articles) {
             // 게시글 번호를 이용해 이 글의 키워드 리스트를 받아옴 (ex. 1번글의 키워드 c, c++)
             List<Keywords> tmpKeyword = keywordsDao.findAllByArticleid(a.getArticleid());
-            if(tmpKeyword!=null){ // 임시리스트 만들어서 키워드들 넣고, 최종 리스트에 담음
+            if (tmpKeyword != null) { // 임시리스트 만들어서 키워드들 넣고, 최종 리스트에 담음
                 List<String> tmplist = new ArrayList<>();
-                for(Keywords k : tmpKeyword){
+                for (Keywords k : tmpKeyword) {
                     tmplist.add(skillsDao.findSkillBySno(k.getSno()).getName());
                 }
                 keywordsList.add(tmplist);
                 result.status = true;
                 result.data = "글 조회 성공";
-            }
-            else return new ResponseEntity<>(result, HttpStatus.OK); // 글에 keyword 없으면 false return
+            } else
+                return new ResponseEntity<>(result, HttpStatus.OK); // 글에 keyword 없으면 false return
 
-           likesList.add(likesDao.countByArticleid(a.getArticleid()));
-           pinList.add(pinDao.countByArticleid(a.getArticleid()));
-           articleCount.add(articleDao.countByEmail(a.getEmail()));
-           commentCntList.add(commentDao.countByArticleid(a.getArticleid()));
+            likesList.add(likesDao.countByArticleid(a.getArticleid()));
+            pinList.add(pinDao.countByArticleid(a.getArticleid()));
+            articleCount.add(articleDao.countByEmail(a.getEmail()));
+            commentCntList.add(commentDao.countByArticleid(a.getArticleid()));
 
         }
 
-        Map<String,Object> object = new HashMap<>();
+        Map<String, Object> object = new HashMap<>();
         object.put("article", articles);
         object.put("keyword", keywordsList);
         object.put("likesCntList", likesList);
@@ -141,35 +142,34 @@ public class ArticleController {
         object.put("commentCntList", commentCntList);
 
         result.object = object;
-        
+
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
-    
 
     @ApiOperation(value = "글쓰기")
     @ResponseBody
     @PostMapping("/article")
-    public Object writeArticle (@RequestHeader (required = true) final HttpHeaders header , @RequestBody(required = true) final Map<String,Object> request)
-            throws Exception {
-        
+    public Object writeArticle(@RequestHeader(required = true) final HttpHeaders header,
+            @RequestBody(required = true) final Map<String, Object> request) throws Exception {
+
         /*
-        {
-            "email" : "asdf@asdf.com",
-            "nickname" : "asdf",
-            "title" : "제목제목",
-            "content":"내용내용",
-            "imgUrl":"/media/picture.jpg",
-            "keyword" : ["C","Nexus","DB2"]
-        }
-        
-        */
+         * { "email" : "asdf@asdf.com", "nickname" : "asdf", "title" : "제목제목",
+         * "content":"내용내용", "imgUrl":"/media/picture.jpg", "keyword" :
+         * ["C","Nexus","DB2"] }
+         * 
+         */
         final BasicResponse result = new BasicResponse();
         result.status = false;
         result.data = "글쓰기 실패";
 
-        Map<String,Object> userToken = JWTDecoding.getInfo(header.get("id_token").get(0));
+        Map<String, Object> userToken = null;
+        String email = "";
+
+   
+        userToken = JWTDecoding.getInfo(header.get("id_token").get(0));
+        email = JWTDecoding.decode(header.get("id_token").get(0));
+     
         
-        String email = JWTDecoding.decode(header.get("id_token").get(0));
 
         
         String nickname = (String) userToken.get("nickname");
@@ -189,6 +189,7 @@ public class ArticleController {
         article.setImgurl(imgurl);
         article.setPreview(preview);
         article.setIspublic(ispublic);
+        article.setCreatedat(LocalDateTime.now());
         
         if(articleDao.save(article)==null){
             result.data = "글쓰기 실패 - DB 저장 실패";
@@ -216,12 +217,18 @@ public class ArticleController {
 
         }
 
+        // 게이미피케이션 점수 반영 + 10점
+        User user = userDao.getUserByEmail(email);
+        user.setScore(user.getScore()+10);
+        userDao.save(user);
+
         // 글쓴이 총 글 개수 프런트에 전달
         int articleCount = articleDao.countByEmail(email);
 
         Map<String, Integer> object = new HashMap<>();
         object.put("articleId", articleId);
         object.put("articleCount", articleCount);
+        object.put("score", user.getScore());
 
         result.status = true;
         result.data = "글쓰기 성공";
@@ -297,6 +304,11 @@ public class ArticleController {
         String email = JWTDecoding.decode(header.get("id_token").get(0));
 
         if(articleDao.deleteByArticleid(no) > 0){
+            // 게이미피케이션 점수 반영 - 10점
+            User user = userDao.getUserByEmail(email);
+            user.setScore(user.getScore()-10);
+            userDao.save(user);
+    
             int articleCount = articleDao.countByEmail(email);
             result.status = true;
             result.data = "삭제 성공";
@@ -335,7 +347,11 @@ public class ArticleController {
         article.setImgurl(getImgFromArticle((String)request.get("content")));
         article.setUpdatedat(LocalDateTime.now());
         article.setPreview(subStrByte((String) request.get("preview"), 200));
-        article.setIspublic(Integer.parseInt((String)request.get("ispublic")));
+        try {
+            article.setIspublic((int)request.get("ispublic"));
+        } catch (Exception e) {
+            article.setIspublic(Integer.parseInt((String)request.get("ispublic")));
+        }
 
 
         final BasicResponse result = new BasicResponse();
@@ -411,11 +427,21 @@ public class ArticleController {
         
         List<Integer> commentArticleCountList = new ArrayList<>();
         List<String> commentNickname = new ArrayList<>();
+        List<String> commentImg = new ArrayList<>();
+        List<Integer> commentScore = new ArrayList<>();
+
         for(Comment c : commentList){
             commentNickname.add(userDao.findUserByEmail(c.getEmail()).get().getNickname());
             commentArticleCountList.add(articleDao.countByEmail(c.getEmail()));
+            commentImg.add(userDao.findUserByEmail(c.getEmail()).get().getImg());
+            commentScore.add(userDao.findUserByEmail(c.getEmail()).get().getScore());
         }
         
+
+        article.setHits(article.getHits()+1);
+        articleDao.save(article);
+        
+
         result.status = true;
         result.data = "상세 조회 성공";
         
@@ -432,9 +458,15 @@ public class ArticleController {
         object.put("commentNickname",commentNickname);
         object.put("commentArticleCount", commentArticleCountList);
         object.put("ispublic", article.getIspublic());
+        object.put("hits", article.getHits());
+        object.put("score", user.getScore());
+        object.put("userImg", user.getImg());
+        object.put("commentImg", commentImg);
+        object.put("commentScore", commentScore);
 
         result.object = object;
         
+
 
         return new ResponseEntity<>(result, HttpStatus.OK);
         

@@ -15,7 +15,6 @@
           name="cp_item"
           value=1
           v-model="ispublic"
-          checked="checked"
         >
         <span>전체공개</span>
       </label>
@@ -80,6 +79,7 @@
   import codeSyntaxHightlight from "@toast-ui/editor-plugin-code-syntax-highlight";
   import hljs from "highlight.js";
   import { validateMarkdown } from "@/utils/validation";
+  import firebase from 'firebase'
 
   export default {
     name: "ArticleUpdate",
@@ -109,7 +109,10 @@
           keywords: this.keywords,
           content: this.article,
           ispublic: this.ispublic,
-        }
+        },
+        imageData: null,
+        picture: null,
+        uploadValue: 0
       }
     },
     methods: {
@@ -166,7 +169,22 @@
         previewStyle: "vertical",
         height: "500px",
         plugins: [[codeSyntaxHightlight, { hljs }]],
-
+        hooks: {
+          addImageBlobHook: (blob, callback) => {
+            this.imageData = blob
+            const storageRef = firebase.storage().ref(`${this.imageData.name}`).put(this.imageData);
+            storageRef.on(`state_changed`, snapshot => {
+              this.uploadValue = (snapshot.bytesTransferred/snapshot.totalBytes)*100;
+            },
+              error => {console.log(error.message)},
+              () => {
+                this.uploadValue = 100
+                storageRef.snapshot.ref.getDownloadURL()
+                  .then(url => callback(url, this.imageData.name))
+              }
+            )
+          }
+        }
       })
       const btn = document.querySelector('#submitUpdate')
       btn.addEventListener('click', () => {

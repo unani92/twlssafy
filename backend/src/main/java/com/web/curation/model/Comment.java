@@ -30,11 +30,12 @@ public class Comment {
     private String email;
     private int articleid;
     private String content;
+    private String img;
+    private String nickname;
+    private int score;
 
-    @Column(insertable = false)
     private LocalDateTime updatedat;
 
-    @Column(insertable = false, updatable = false)
     private LocalDateTime createdat;
 
 }
