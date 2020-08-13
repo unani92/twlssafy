@@ -1,8 +1,8 @@
 <template>
   <div>
+    <div class="score" :style="`margin-left:${width-3}%`">{{ score }}</div>
     <div class="progressbar">
       <div class="percent" :class="tier" :style="`width:${width}%;`"></div>
-      <div class="score" :style="`margin-left:${width+5}%; margin-right: 5px`">{{ score }}</div>
     </div>
     <div class="numbers">
       <span style="margin-right: 1rem">{{ left }}</span>
@@ -50,7 +50,7 @@
 <style scoped>
   .progressbar {
     max-width: 570px;
-    margin: 0 auto;
+    margin: 4px auto;
     width: 100%;
     height: 30px;
     background-color: #f0f0f0;
