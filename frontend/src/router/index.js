@@ -20,8 +20,8 @@ import FindPwd from '../views/FindPwd.vue';
 import Dummy from '../components/Dummy';
 import ArticleRecommend from '../views/ArticleRecommend';
 import CalendarCardList from '../components/calendar/CalendarCardList.vue';
-import store from '@/store/index';
 import NotFound from '../views/NotFound';
+import store from '@/store/index';
 
 Vue.use(VueRouter);
 
@@ -82,7 +82,7 @@ const routes = [
     path: '/changePwdLogin',
     name: 'ChangePwdLogin',
     component: ChangePwdLogin,
-    beforeEnter: requireLogin,
+    beforeEnter: isGoogleUser,
   },
   {
     path: '/selectskills',
@@ -165,6 +165,9 @@ function alreadyLogin(to, from, next) {
 }
 function requireLogin(to, from, next) {
   store.getters['isLoggedIn'] ? next() : next('/login');
+}
+function isGoogleUser(to, from, next) {
+  store.state.isGoogleUser ? next() : next('/login');
 }
 
 export default router;
