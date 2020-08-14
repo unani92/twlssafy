@@ -4,6 +4,7 @@ import Home from '../views/Home.vue';
 import Login from '../views/Login';
 import Signup from '../views/Signup';
 import ChangePwd from '../views/ChangePwd';
+import ChangePwdLogin from '../views/ChangePwdLogin';
 import SelectSkills from '../views/SelectSkills';
 import ArticleCreate from '../views/ArticleCreate';
 import ArticleDetail from '../views/ArticleDetail';
@@ -67,15 +68,21 @@ const routes = [
     beforeEnter: alreadyLogin,
   },
   {
+    path: '/findpwd',
+    name: 'FindPwd',
+    component: FindPwd,
+  },
+  {
     path: '/changepwd',
     name: 'ChangePwd',
     component: ChangePwd,
     props: true,
   },
   {
-    path: '/findpwd',
-    name: 'FindPwd',
-    component: FindPwd,
+    path: '/changePwdLogin',
+    name: 'ChangePwdLogin',
+    component: ChangePwdLogin,
+    beforeEnter: requireLogin,
   },
   {
     path: '/selectskills',
