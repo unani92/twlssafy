@@ -1,5 +1,8 @@
 <template>
   <div>
+    <div class="upload-progress">
+      <div class="upload-percent" :style="`width:${uploadValue}%;`"></div>
+    </div>
     <div id="editor"/>
     <button id="submit">submit</button>
   </div>
@@ -41,8 +44,9 @@ export default {
           }, err => {
               console.log(err.message)
             },
-            () => {this.uploadValue = 100;
-              storageRef.snapshot.ref.getDownloadURL().then(url => {
+            () => {
+                this.uploadValue = 0;
+                storageRef.snapshot.ref.getDownloadURL().then(url => {
                 callback(url, `${this.imageData.name}_${date.getTime()}`);
               })
           })
@@ -67,5 +71,14 @@ export default {
     cursor: pointer;
     background-color: #e6837a;
     color: white;
+  }
+  .upload-progress {
+    width: 100%;
+    height: 20px;
+  }
+  .upload-percent {
+    background-color: #e6837a;
+    height: 20px;
+    border-radius: 10px;
   }
 </style>

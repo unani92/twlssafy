@@ -63,8 +63,10 @@
         <i @click="removeStack" style="cursor:pointer; margin-left : 5px;" class="fas fa-times"></i>
       </div>
     </div>
-
     <div class="editor">
+      <div class="upload-progress">
+        <div class="upload-percent" :style="`width:${uploadValue}%;`"></div>
+      </div>
       <div id="editor"/>
     </div>
     <button id="submitUpdate">Update</button>
@@ -179,7 +181,7 @@
             },
               error => {console.log(error.message)},
               () => {
-                this.uploadValue = 100
+                this.uploadValue = 0
                 storageRef.snapshot.ref.getDownloadURL()
                   .then(url => callback(url, `${this.imageData.name}_${date.getTime()}`))
 
@@ -291,6 +293,14 @@
   width : 95%;
   margin-left: 2.5%;
   clear: both;
+}
+.upload-progress {
+  width: 100%;
+  height: 20px;
+  }
+.upload-percent {
+  background-color: #e6837a;
+  height: 20px;
 }
 div {
   border-radius: 10px;
