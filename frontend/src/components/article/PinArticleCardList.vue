@@ -137,7 +137,7 @@ export default {
 }
 @media (min-width: 0) and (max-width : 469px){
   .ment {
-    font-size: 12px;
+    font-size: 15px;
   }
    .muji {
     height : 90px;
