@@ -279,7 +279,7 @@ i:hover {
 
 .aside {
   position: fixed;
-  top: 50px;
+  top: 55px;
   right: 0;
   z-index: 10;
 }
@@ -357,14 +357,15 @@ i:hover {
 }
 .userMenu {
   position: fixed;
-  top: 50px;
+  top: 55px;
   right: 0rem;
   z-index: 10;
 }
 .userMenu-menu {
-  width: 150px;
+  width: 200px;
   border: 1px solid black;
   background-color: white;
+  border-radius: 10px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -372,6 +373,7 @@ i:hover {
   margin-right: 1rem;
 }
 .userMenu-menu > div {
+  height:40px;
   background-color: white;
   display: flex;
   flex-direction: column;

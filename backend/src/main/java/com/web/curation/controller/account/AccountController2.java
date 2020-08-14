@@ -108,28 +108,5 @@ public class AccountController2 {
                 return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @PostMapping("/account/changePwdLogin")
-    @ApiOperation(value = "로그인 후 비밀번호 변경")
-    public Object changePwdLogin (@RequestHeader(required = true) final HttpHeaders header, @RequestBody(required = true) final Map<String,Object> request)
-            throws Exception {
-        final BasicResponse result = new BasicResponse();
-        result.status = false;
-        result.data = "비밀번호 변경 실패";
-
-        String id_token = header.get("id_token").get(0);
-        String email = JWTDecoding.decode(id_token);
-        
-        
-        User user = userDao.findUserByEmail(email).get();
-        user.setPassword(((String)request.get("password")));
-        userDao.save(user);
-        
-        
-        result.status = true;
-        result.data = "비밀번호 변경 성공";
-        
-        return new ResponseEntity<>(result, HttpStatus.OK);
-
-    }
 
 }
