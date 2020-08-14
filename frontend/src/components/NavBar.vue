@@ -20,13 +20,9 @@
         </div>
       </div>
       <div class="article-icon">
-        
-
         <div class="icon" style="display: flex">
           <div style="display: flex">
-            <div v-if="$store.getters.isLoggedIn" class="circle">
-              {{ $store.state.notificationCnt }}
-            </div>
+            <div v-if="$store.getters.isLoggedIn" class="circle">{{ $store.state.notificationCnt }}</div>
             <i
               v-if="$store.getters.isLoggedIn"
               @click="notificationIconToggle"
@@ -47,7 +43,7 @@
             class="grade"
           ></div>
         </div>
-        
+
         <div v-if="this.$store.getters.isLoggedIn" class="mypage">
           <figure
             v-if="$store.state.img"
@@ -97,9 +93,9 @@
 </template>
 
 <script>
-import GoogleLogin from './GoogleLogin';
-import Notification from './Notification';
-import { getGrade } from '@/utils/calcGrade';
+import GoogleLogin from "./GoogleLogin";
+import Notification from "./Notification";
+import { getGrade } from "@/utils/calcGrade";
 export default {
   data() {
     return {
@@ -115,66 +111,66 @@ export default {
       return getGrade(this.$store.state.score);
     },
   },
-  name: 'NavBar',
+  name: "NavBar",
   components: {
     GoogleLogin,
     Notification,
   },
   methods: {
     asideBarToggle() {
-      const aside = document.querySelector('.aside');
-      aside.classList.toggle('disabled');
+      const aside = document.querySelector(".aside");
+      aside.classList.toggle("disabled");
     },
     notificationIconToggle() {
-      console.log(event.srcElement)
+      console.log(event.srcElement);
       if (this.$store.state.notification.length) {
-        const notiDropdown = document.querySelector('.notification');
-        notiDropdown.classList.toggle('disabled');
+        const notiDropdown = document.querySelector(".notification");
+        notiDropdown.classList.toggle("disabled");
       }
     },
     userToggle() {
       console.log(event.srcElement);
-      const userMenu = document.querySelector('.userMenu');
-      userMenu.classList.toggle('disabled');
+      const userMenu = document.querySelector(".userMenu");
+      userMenu.classList.toggle("disabled");
     },
     gotoMain() {
-      this.$router.push('/latest');
+      this.$router.push("/latest");
     },
     goToEmailLogin() {
-      const aside = document.querySelector('.aside');
-      this.$router.push({ name: 'Login' });
-      aside.classList.toggle('disabled');
+      const aside = document.querySelector(".aside");
+      this.$router.push({ name: "Login" });
+      aside.classList.toggle("disabled");
     },
     goToSignup() {
-      const aside = document.querySelector('.aside');
-      this.$router.push({ name: 'Signup' });
-      aside.classList.toggle('disabled');
+      const aside = document.querySelector(".aside");
+      this.$router.push({ name: "Signup" });
+      aside.classList.toggle("disabled");
     },
     goToMyPage() {
       this.$router.push({
-        name: 'Dummy',
+        name: "Dummy",
         params: { following: this.$store.state.nickname },
       });
     },
     goToPwChange() {
-      this.$router.push('/ChangePwdLogin');
+      this.$router.push("/ChangePwdLogin");
     },
     logout() {
-      this.$router.push({ name: 'Logout' });
+      this.$router.push({ name: "Logout" });
     },
     scrollEvent() {
-      const navBar = document.querySelector('.notification');
+      const navBar = document.querySelector(".notification");
       if (navBar) {
         const nowScrollY = window.scrollY;
         if (nowScrollY > this.scroll.prev) {
-          navBar.classList.add('disabled');
+          navBar.classList.add("disabled");
           this.scroll.prev = nowScrollY;
         }
       }
     },
   },
   mounted() {
-    document.addEventListener('scroll', this.scrollEvent);
+    document.addEventListener("scroll", this.scrollEvent);
   },
 };
 </script>
@@ -199,8 +195,7 @@ export default {
   background-color: black;
   width: 80px;
   height: 60px;
-  color: white;
-  font-family: 'Rowdies', cursive;
+  font-family: "Rowdies", cursive;
   font-size: 28px;
   text-align: center;
   border-radius: 3px;
@@ -211,12 +206,11 @@ export default {
   cursor: pointer;
 }
 .logo-gif {
-  width: 120%;
   height: 100%;
-  background-size: 100%;
+  background-size: 80px 60px;
   background-position: center;
   background-repeat: no-repeat;
-  /* background-color: white; */
+  background-color: white;
 }
 .input-box {
   margin-left: 3rem;
@@ -373,7 +367,7 @@ i:hover {
   margin-right: 1rem;
 }
 .userMenu-menu > div {
-  height:40px;
+  height: 40px;
   background-color: white;
   display: flex;
   flex-direction: column;
@@ -387,7 +381,7 @@ i:hover {
   display: flex;
   align-items: center;
   justify-content: center;
-} 
+}
 .userMenu-menu > div:nth-child(2) {
   border-radius: 3px;
   color: rgb(96, 196, 121);
