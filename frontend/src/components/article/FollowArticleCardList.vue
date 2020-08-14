@@ -10,9 +10,15 @@
       <div class="news-index" v-if="articles.length">
         <p>⚡ News ⚡</p>
       </div>
-      <div class="news-index" v-else>
-        <h1>현재 팔로우 중인 사람이 없습니다.... 마음에 드는 사람을 팔로우해 보세Yo</h1>
-        <img src="https://user-images.githubusercontent.com/53211781/90217074-42994880-de3b-11ea-8d3b-21594cb5ad6e.png" alt="">
+
+      <div class="no-follower" v-else>
+        <div class="news-index">
+          <h1>현재 팔로우 중인 사람이 없습니다.... 마음에 드는 사람을 팔로우해 보세Yo</h1>
+          <img src="https://user-images.githubusercontent.com/53211781/90217074-42994880-de3b-11ea-8d3b-21594cb5ad6e.png" alt="">
+        </div>
+        <div>
+          <img style="width: 100%; height: auto" src="https://user-images.githubusercontent.com/53211781/90219005-1df39f80-de40-11ea-85a6-80981f3a75b5.png" alt="">
+        </div>
       </div>
       <br/>
 
@@ -92,7 +98,12 @@ export default {
   width: 96%;
   display: flex;
   justify-content: left;
+  align-items: center;
   margin: auto;
+}
+.no-follower {
+  max-width: 850px;
+  width: 100%;
 }
 #bottomSensor {
   height: 10px;
