@@ -20,6 +20,21 @@
         </div>
       </div>
       <div class="article-icon">
+        
+
+        <div class="icon" style="display: flex">
+          <div style="display: flex">
+            <div v-if="$store.getters.isLoggedIn" class="circle">
+              {{ $store.state.notificationCnt }}
+            </div>
+            <i
+              v-if="$store.getters.isLoggedIn"
+              @click="notificationIconToggle"
+              class="far fa-bell"
+            />
+          </div>
+          <i v-if="!this.$store.getters.isLoggedIn" @click="asideBarToggle" class="fas fa-bars"></i>
+        </div>
         <div v-if="this.$store.getters.isLoggedIn">
           <div
             style="width : 35px;"
@@ -53,20 +68,6 @@
             }"
             @click="userToggle"
           ></figure>
-        </div>
-
-        <div class="icon" style="display: flex">
-          <div style="display: flex">
-            <div v-if="$store.getters.isLoggedIn" class="circle">
-              {{ $store.state.notificationCnt }}
-            </div>
-            <i
-              v-if="$store.getters.isLoggedIn"
-              @click="notificationIconToggle"
-              class="far fa-bell"
-            />
-          </div>
-          <i v-if="!this.$store.getters.isLoggedIn" @click="asideBarToggle" class="fas fa-bars"></i>
         </div>
       </div>
     </div>
@@ -203,14 +204,14 @@ export default {
   font-size: 28px;
   text-align: center;
   border-radius: 3px;
-  margin-left: 1rem;
+  margin-left: 0;
   text-decoration: none;
 }
 .logo:hover {
   cursor: pointer;
 }
 .logo-gif {
-  width: 100%;
+  width: 120%;
   height: 100%;
   background-size: 100%;
   background-position: center;
@@ -218,7 +219,7 @@ export default {
   /* background-color: white; */
 }
 .input-box {
-  margin-left: 2rem;
+  margin-left: 3rem;
 }
 .logo-text {
   text-decoration: none;
@@ -258,10 +259,8 @@ i {
   cursor: pointer;
 }
 .circle {
-  position: absolute;
-  top: 15px;
-  right: 2.4rem;
   border-radius: 75%;
+  margin-right: -20px;
   width: 20px;
   height: 20px;
   background-color: crimson;
@@ -277,42 +276,10 @@ i:hover {
 .mypage:hover {
   cursor: pointer;
 }
-@media (max-width: 414px) {
-  .search-bar {
-    width: 150px;
-  }
-  .article,
-  .grade {
-    display: none;
-  }
-}
-@media (max-width: 376px) {
-  .search-bar {
-    width: 155px;
-  }
-  i {
-    font-size: 20px;
-  }
-}
-@media (max-width: 320px) {
-  .logo {
-    width: 56px;
-    font-size: 20px;
-  }
-  .search-bar {
-    width: 130px;
-    height: 22px;
-  }
-  .nav-bar {
-    height: 40px;
-  }
-  i {
-    font-size: 1rem;
-  }
-}
+
 .aside {
   position: fixed;
-  top: 50px;
+  top: 55px;
   right: 0;
   z-index: 10;
 }
@@ -390,14 +357,15 @@ i:hover {
 }
 .userMenu {
   position: fixed;
-  top: 50px;
+  top: 55px;
   right: 0rem;
   z-index: 10;
 }
 .userMenu-menu {
-  width: 150px;
+  width: 200px;
   border: 1px solid black;
   background-color: white;
+  border-radius: 10px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -405,6 +373,7 @@ i:hover {
   margin-right: 1rem;
 }
 .userMenu-menu > div {
+  height:40px;
   background-color: white;
   display: flex;
   flex-direction: column;
@@ -432,5 +401,39 @@ i:hover {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+@media (max-width: 414px) {
+  .search-bar {
+    width: 150px;
+  }
+  .article,
+  .grade {
+    display: none;
+  }
+}
+@media (max-width: 376px) {
+  .search-bar {
+    width: 155px;
+  }
+  i {
+    font-size: 20px;
+  }
+}
+@media (max-width: 320px) {
+  .logo {
+    width: 56px;
+    font-size: 20px;
+  }
+  .search-bar {
+    width: 130px;
+    height: 22px;
+  }
+  .nav-bar {
+    height: 40px;
+  }
+  i {
+    font-size: 1rem;
+  }
 }
 </style>

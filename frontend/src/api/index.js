@@ -162,6 +162,15 @@ function submitChangePwd(email, password) {
     password: password,
   });
 }
+function submitChangePwdLogin(password, token) {
+  return instance.post(
+    '/account/changePwdLogin',
+    {
+      password: password,
+    },
+    { headers: { id_token: token } }
+  );
+}
 
 function submitValidationMail(email) {
   return instance.post('/account/findPwd', { email: email });
@@ -172,13 +181,19 @@ function getCreateDate(nickname) {
 }
 
 function changeImg(imgUrl, token) {
-  return instance.put('/account/changeprofileImage', {imgUrl: imgUrl},{ headers: { id_token: token } } )
+  return instance.put(
+    '/account/changeprofileImage',
+    { imgUrl: imgUrl },
+    { headers: { id_token: token } }
+  );
 }
 function delAccount(token) {
-  return instance.delete('/account', { headers: { id_token: token } } )
+  return instance.delete('/account', { headers: { id_token: token } });
 }
 function modifyIntro(params, token) {
-  return instance.put('/account/intro', params, { headers: { id_token: token } });
+  return instance.put('/account/intro', params, {
+    headers: { id_token: token },
+  });
 }
 function modifyGit(params, token) {
   return instance.put('/account/git', params, { headers: { id_token: token } });
@@ -215,11 +230,12 @@ export {
   calender,
   submitNotiRead,
   submitNotiDelete,
+  submitChangePwdLogin,
   submitChangePwd,
   submitValidationMail,
   getCreateDate,
   changeImg,
   delAccount,
   modifyGit,
-  modifyIntro
+  modifyIntro,
 };
