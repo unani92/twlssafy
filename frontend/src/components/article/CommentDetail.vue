@@ -15,7 +15,12 @@
               @click="goProfilePage"
             >{{ comment.nickname }}</span>
           </div>
-          <span style="color: gainsboro">{{ this.$moment(this.comment.updatedat).fromNow() }}</span>
+          <span v-if="comment.updatedat == null" style="color: gainsboro">
+            {{comment.createdat.replace("T"," ")}}
+          </span>
+          <span v-else style="color: gainsboro">
+            {{comment.updatedat.replace("T"," ")}}
+          </span>
         </div>
       </div>
       <div v-if="canEdit" class="user-icons">
