@@ -12,7 +12,7 @@
       </div>
       <div class="no-pin" v-else>
         <div class="news-index">
-          <h1 class="ment">현재 북마크한 게시글이 없습니다 ! <br> 마음에 드는 게시글을 찜해 보세Yo</h1>
+          <h1 class="ment">현재 북마크한 게시글이 없습니다 ! <br> 마음에 드는 게시글을 찜 해보세Yo</h1>
           <img class ="muji" src="https://user-images.githubusercontent.com/53211781/90217074-42994880-de3b-11ea-8d3b-21594cb5ad6e.png" alt="">
         </div>
         <br>

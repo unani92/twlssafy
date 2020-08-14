@@ -13,7 +13,7 @@
 
       <div class="no-follower" v-else>
         <div class="news-index">
-          <h1 class="ment">현재 팔로우 중인 사람이 없습니다 !<br>마음에 드는 사람을 팔로우해 보세Yo</h1>
+          <h1 class="ment">현재 팔로우 중인 사람이 없습니다 !<br>마음에 드는 사람을 팔로우 해보세Yo</h1>
           <img class = "muji" src="https://user-images.githubusercontent.com/53211781/90217074-42994880-de3b-11ea-8d3b-21594cb5ad6e.png" alt="">
         </div>
         <br>
@@ -131,6 +131,10 @@ export default {
   border: 1px solid #eee;
   height: 100px;
   border-radius: 5px;
+}
+.muji {
+  height : 175px;
+  width : 175px;
 }
 @media (min-width: 0) and (max-width : 469px){
   .ment {
