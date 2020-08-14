@@ -46,6 +46,8 @@
 <script>
 import { validatePassword } from "@/utils/validation";
 import { submitChangePwd } from "../api";
+import Swal from 'sweetalert2/dist/sweetalert2.js'
+import 'sweetalert2/src/sweetalert2.scss'
 
 export default {
     name: "ChangePwd",
@@ -78,7 +80,13 @@ export default {
     async changePwd(){
       submitChangePwd(this.email, this.pwd1)
         .then(()=>{
-          alert("비밀번호 변경완료 ! 로그인 해주세요")
+          Swal.fire({
+            text:"비밀번호 변경완료 ! 로그인 해주세요",
+            icon:"error",
+            closeOnClickOutside:true,
+            confirmButtonText:"<span style='text-align:center; margin-left:-12px; position:relative; top:-8px;'>OK</span>",
+            confirmButtonColor:"#e6837a",
+          });
           this.$router.push("/")
         })
         .catch(err =>

@@ -55,16 +55,21 @@ export default {
           text:"로그인이 필요한 서비스입니다.",
           icon:"error",
           closeOnClickOutside:true,
+          showCancelButton:true,
           confirmButtonText:"<span style='text-align:center; margin-left:-12px; position:relative; top:-8px;'>OK</span>",
           confirmButtonColor:"#e6837a",
-          onClose: () => {
-            this.$router.push({
-            name: "Login",
-            query: { redirect: `${article_id}` },
+          cancelButtonText:"<span style='text-align:center; margin-left:-12px; position:relative; top:-8px;'>NO</span>",
+          cancelButtonColor:"#e6837a",
+          }).then((result) => {
+            if(result.value){
+              this.$router.push({
+              name: "Login",
+              query: { redirect: `${article_id}` },
             });
-          }
+            } else {
+              Swal.close();
+            }
           });
-        
       } else {
         const params = {
           article_id,
@@ -100,14 +105,20 @@ export default {
           text:"로그인이 필요한 서비스입니다.",
           icon:"error",
           closeOnClickOutside:true,
+          showCancelButton:true,
           confirmButtonText:"<span style='text-align:center; margin-left:-12px; position:relative; top:-8px;'>OK</span>",
           confirmButtonColor:"#e6837a",
-          onClose: () => {
-            this.$router.push({
-            name: "Login",
-            query: { redirect: `${article_id}` },
+          cancelButtonText:"<span style='text-align:center; margin-left:-12px; position:relative; top:-8px;'>NO</span>",
+          cancelButtonColor:"#e6837a",
+          }).then((result) => {
+            if(result.value){
+              this.$router.push({
+              name: "Login",
+              query: { redirect: `${article_id}` },
             });
-          }
+            } else {
+              Swal.close();
+            }
           });
       } else {
         const params = {
@@ -143,14 +154,20 @@ export default {
           text:"로그인이 필요한 서비스입니다.",
           icon:"error",
           closeOnClickOutside:true,
+          showCancelButton:true,
           confirmButtonText:"<span style='text-align:center; margin-left:-12px; position:relative; top:-8px;'>OK</span>",
           confirmButtonColor:"#e6837a",
-          onClose: () => {
-            this.$router.push({
-            name: "Login",
-            query: { redirect: `${article_id}` },
+          cancelButtonText:"<span style='text-align:center; margin-left:-12px; position:relative; top:-8px;'>NO</span>",
+          cancelButtonColor:"#e6837a",
+          }).then((result) => {
+            if(result.value){
+              this.$router.push({
+              name: "Login",
+              query: { redirect: `${article_id}` },
             });
-          }
+            } else {
+              Swal.close();
+            }
           });
       } else {
         const params = {
@@ -186,7 +203,13 @@ export default {
       obShareUrl.select(); // 해당 값이 선택되도록 select() 합니다
       document.execCommand("copy"); // 클립보드에 복사합니다.
       obShareUrl.blur(); // 선택된 것을 다시 선택안된것으로 바꿈니다.
-      alert("URL이 클립보드에 복사되었습니다");
+      Swal.fire({
+        text:"URL이 클립보드에 복사되었습니다.",
+        icon:"success",
+        closeOnClickOutside:true,
+        confirmButtonText:"<span style='text-align:center; margin-left:-12px; position:relative; top:-8px;'>OK</span>",
+        confirmButtonColor:"#e6837a",
+      });
       obShareUrl.select();
       document.execCommand("copy");
       obShareUrl.setSelectionRange(0, 9999999);
