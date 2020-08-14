@@ -62,7 +62,7 @@ export default {
     },
     scrollEvent() {
       const homeBar = document.querySelector(".home-nav")
-      if(window.innerWidth < 400) {
+      if(window.innerWidth < 500) {
         return;
       }
       if (homeBar) {
