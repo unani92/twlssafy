@@ -153,7 +153,6 @@ export default {
       try {
         const token = this.$store.state.id_token;
         const articleInfo = await fetchArticle(this.id, token);
-        console.log(articleInfo)
         const {
           article,
           keyword,
@@ -174,7 +173,7 @@ export default {
         this.nickname = article.nickname;
         this.title = article.title;
         this.content = article.content;
-        
+
         this.sideMenu.commentList = commentList;
         this.sideMenu.cntLikes = cntLikes;
         this.sideMenu.cntPin = cntPin;
@@ -193,7 +192,7 @@ export default {
         if(article.updatedat != null){
           this.updatedAt = ' (' + this.$moment(article.updatedat).fromNow() + ' 수정)';
         }
-        
+
 
         const loginUser = this.$store.state.nickname;
         if (this.article.nickname === loginUser) {
@@ -201,7 +200,6 @@ export default {
         }
         return article.content;
       } catch (e) {
-        console.log(e)
         this.$router.push({ name: 'NotFound' });
       }
     },
