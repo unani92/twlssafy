@@ -22,7 +22,7 @@
       <div class="article-icon">
         <div v-if="this.$store.getters.isLoggedIn">
           <div
-            style="width : 28px;"
+            style="width : 35px;"
             :style="{
               backgroundImage:
                 'url(' +
@@ -32,6 +32,7 @@
             class="grade"
           ></div>
         </div>
+        
         <div v-if="this.$store.getters.isLoggedIn" class="mypage">
           <figure
             v-if="$store.state.img"
@@ -39,7 +40,7 @@
             :style="{
               'background-image': 'url(' + this.$store.state.img + ')',
             }"
-            @click="goToMyPage"
+            @click="userToggle"
           ></figure>
           <figure
             v-else
@@ -50,9 +51,10 @@
                 `https://api.adorable.io/avatars/100/${this.$store.state.username}.png` +
                 ')',
             }"
-            @click="goToMyPage"
+            @click="userToggle"
           ></figure>
         </div>
+
         <div class="icon" style="display: flex">
           <div style="display: flex">
             <div v-if="$store.getters.isLoggedIn" class="circle">
@@ -64,7 +66,7 @@
               class="far fa-bell"
             />
           </div>
-          <i @click="asideBarToggle" class="fas fa-bars"></i>
+          <i v-if="!this.$store.getters.isLoggedIn" @click="asideBarToggle" class="fas fa-bars"></i>
         </div>
       </div>
     </div>
@@ -75,15 +77,19 @@
         :key="noti.notificationid"
       />
     </div>
-    <div class="aside disabled">
-      <div class="aside-menu" v-if="!this.$store.getters.isLoggedIn">
+    <!-- 로그인 안한 경우 사이드 바 -->
+    <div v-if="!this.$store.getters.isLoggedIn" class="aside disabled">
+      <div class="aside-menu">
         <GoogleLogin />
         <div @click="goToEmailLogin" class="emailogin-text">Email Login</div>
         <div @click="goToSignup" class="signup-text">Signup</div>
       </div>
-      <div v-else class="aside-menu-loggedIn">
+    </div>
+    <div class="userMenu disabled">
+      <div class="userMenu-menu">
         <div @click="goToMyPage" class="mypage-text">MyPage</div>
-        <div @click="logout" class="emailogin-text">Log Out</div>
+        <div @click="goToPwChange" class="mypage-text">비밀번호 변경</div>
+        <div @click="logout" class="mypage-text">Log Out</div>
       </div>
     </div>
   </div>
@@ -119,13 +125,19 @@ export default {
       aside.classList.toggle('disabled');
     },
     notificationIconToggle() {
+      console.log(event.srcElement)
       if (this.$store.state.notification.length) {
         const notiDropdown = document.querySelector('.notification');
         notiDropdown.classList.toggle('disabled');
       }
     },
+    userToggle() {
+      console.log(event.srcElement);
+      const userMenu = document.querySelector('.userMenu');
+      userMenu.classList.toggle('disabled');
+    },
     gotoMain() {
-      this.$router.push('/');
+      this.$router.push('/latest');
     },
     goToEmailLogin() {
       const aside = document.querySelector('.aside');
@@ -142,6 +154,9 @@ export default {
         name: 'Dummy',
         params: { following: this.$store.state.nickname },
       });
+    },
+    goToPwChange() {
+      this.$router.push('/ChangePwdLogin');
     },
     logout() {
       this.$router.push({ name: 'Logout' });
@@ -215,21 +230,20 @@ export default {
   align-items: center;
 }
 .grade {
-  width: 40px;
-  height: 40px;
+  height: 60px;
   flex-shrink: 0;
   background-repeat: no-repeat;
   background-position: center;
   background-size: 100%;
-  margin-right: 0.5em;
+  /* margin-right: 0.5em; */
 }
 .notification {
   position: fixed;
   border-radius: 10px;
   background-color: #d5dbd9;
-  top: 70px;
-  margin-right: 4px;
-  right: 0;
+  top: 50px;
+  margin-right: 1rem;
+  right: 7px;
   overflow: auto;
   height: 268px;
   z-index: 10;
@@ -246,7 +260,7 @@ i {
 .circle {
   position: absolute;
   top: 15px;
-  right: 60px;
+  right: 2.4rem;
   border-radius: 75%;
   width: 20px;
   height: 20px;
@@ -298,7 +312,7 @@ i:hover {
 }
 .aside {
   position: fixed;
-  top: 70px;
+  top: 50px;
   right: 0;
   z-index: 10;
 }
@@ -312,39 +326,21 @@ i:hover {
   align-items: center;
   margin-right: 1rem;
 }
-.aside-menu-loggedIn {
-  width: 300px;
-  border: 1px solid black;
-  background-color: white;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  margin-right: 1rem;
-}
 .aside-menu > div,
-.aside-menu-loggedIn > div {
+.userMenu-menu > div {
   margin: 10px;
 }
-.aside-menu-loggedIn > div:nth-child(1) {
+.aside-menu > div:nth-child(1) {
   width: 250px;
   height: 50px;
   border-radius: 3px;
   background-color: rgb(143, 182, 204);
+  color: white;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 .aside-menu > div:nth-child(2) {
-  width: 250px;
-  height: 50px;
-  border-radius: 3px;
-  background-color: rgb(204, 93, 65);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.aside-menu-loggedIn > div:nth-child(2) {
   width: 250px;
   height: 50px;
   border-radius: 3px;
@@ -380,7 +376,7 @@ i:hover {
   width: 40px;
   height: 40px;
   flex-shrink: 0;
-  border: 2px solid #333;
+  border: 1.5px solid #333;
   border-radius: 50%;
   background-color: rgb(144, 153, 240);
   background-repeat: no-repeat;
@@ -390,7 +386,51 @@ i:hover {
 }
 .mypage-text {
   cursor: pointer;
-  color: white;
   font-weight: bolder;
+}
+.userMenu {
+  position: fixed;
+  top: 50px;
+  right: 0rem;
+  z-index: 10;
+}
+.userMenu-menu {
+  width: 150px;
+  border: 1px solid black;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-right: 1rem;
+}
+.userMenu-menu > div {
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-right: 1rem;
+}
+.userMenu-menu > div:nth-child(1) {
+  border-radius: 3px;
+  color: rgb(143, 182, 204);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+} 
+.userMenu-menu > div:nth-child(2) {
+  border-radius: 3px;
+  color: rgb(96, 196, 121);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.userMenu-menu > div:nth-child(3) {
+  border-radius: 3px;
+  color: rgb(204, 93, 65);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 </style>

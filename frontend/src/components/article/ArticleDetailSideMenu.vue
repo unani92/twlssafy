@@ -19,7 +19,7 @@
     <!-- <div class="icon">
       <i class="fab fa-creative-commons-share"></i>
     </div>-->
-    <div class="icon share" @click="CopyUrlToClipboard">🔗</div>
+    <div class="icon share" @click="CopyUrlToClipboard"><i class="far fa-share-square"/></div>
   </div>
 </template>
 
