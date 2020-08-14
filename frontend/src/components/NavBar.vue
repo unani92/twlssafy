@@ -203,14 +203,14 @@ export default {
   font-size: 28px;
   text-align: center;
   border-radius: 3px;
-  margin-left: 1rem;
+  margin-left: 0;
   text-decoration: none;
 }
 .logo:hover {
   cursor: pointer;
 }
 .logo-gif {
-  width: 100%;
+  width: 120%;
   height: 100%;
   background-size: 100%;
   background-position: center;
@@ -218,7 +218,7 @@ export default {
   /* background-color: white; */
 }
 .input-box {
-  margin-left: 2rem;
+  margin-left: 3rem;
 }
 .logo-text {
   text-decoration: none;
@@ -277,39 +277,7 @@ i:hover {
 .mypage:hover {
   cursor: pointer;
 }
-@media (max-width: 414px) {
-  .search-bar {
-    width: 150px;
-  }
-  .article,
-  .grade {
-    display: none;
-  }
-}
-@media (max-width: 376px) {
-  .search-bar {
-    width: 155px;
-  }
-  i {
-    font-size: 20px;
-  }
-}
-@media (max-width: 320px) {
-  .logo {
-    width: 56px;
-    font-size: 20px;
-  }
-  .search-bar {
-    width: 130px;
-    height: 22px;
-  }
-  .nav-bar {
-    height: 40px;
-  }
-  i {
-    font-size: 1rem;
-  }
-}
+
 .aside {
   position: fixed;
   top: 50px;
@@ -432,5 +400,39 @@ i:hover {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+@media (max-width: 414px) {
+  .search-bar {
+    width: 150px;
+  }
+  .article,
+  .grade {
+    display: none;
+  }
+}
+@media (max-width: 376px) {
+  .search-bar {
+    width: 155px;
+  }
+  i {
+    font-size: 20px;
+  }
+}
+@media (max-width: 320px) {
+  .logo {
+    width: 56px;
+    font-size: 20px;
+  }
+  .search-bar {
+    width: 130px;
+    height: 22px;
+  }
+  .nav-bar {
+    height: 40px;
+  }
+  i {
+    font-size: 1rem;
+  }
 }
 </style>
