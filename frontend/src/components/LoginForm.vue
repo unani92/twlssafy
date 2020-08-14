@@ -117,7 +117,6 @@ export default {
     },
 
     async submitForm() {
-      console.log('asdf');
       const params = {
         email: this.email,
         password: this.password,
