@@ -70,7 +70,13 @@ export default {
         };
 
         if(!content || !content.trim()) {
-          alert("내용을 입력해주세요.");
+          Swal.fire({
+            text:"내용을 입력해주세요.",
+            icon:"error",
+            closeOnClickOutside:true,
+            confirmButtonText:"<span style='text-align:center; margin-left:-12px; position:relative; top:-8px;'>OK</span>",
+            confirmButtonColor:"#e6837a",
+          });
           return;
         }
         const id_token = this.$store.state.id_token;
@@ -86,19 +92,25 @@ export default {
           .catch((err) => console.log(err));
     }
     else {
-        Swal.fire({
-          text:"로그인이 필요한 서비스입니다.",
-          icon:"error",
-          closeOnClickOutside:true,
-          confirmButtonText:"<span style='text-align:center; margin-left:-12px; position:relative; top:-8px;'>OK</span>",
-          confirmButtonColor:"#e6837a",
-          onClose: () => {
+      Swal.fire({
+        text:"로그인이 필요한 서비스입니다.",
+        icon:"error",
+        closeOnClickOutside:true,
+        showCancelButton:true,
+        confirmButtonText:"<span style='text-align:center; margin-left:-12px; position:relative; top:-8px;'>OK</span>",
+        confirmButtonColor:"#e6837a",
+        cancelButtonText:"<span style='text-align:center; margin-left:-12px; position:relative; top:-8px;'>NO</span>",
+        cancelButtonColor:"#e6837a",
+        }).then((result) => {
+          if(result.value){
             this.$router.push({
-                name: "Login",
-                query: { redirect: `${this.article.articleid}` },
-              });
-          }
+            name: "Login",
+            query: { redirect: `${this.article.articleid}` },
           });
+          } else {
+            Swal.close();
+          }
+        });
     }
     },
     removeDelete(id) {

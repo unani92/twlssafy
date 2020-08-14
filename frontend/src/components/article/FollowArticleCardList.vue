@@ -7,10 +7,25 @@
       <LoadingSpinner />
     </div>
     <div v-else>
-      <div class="news-index">
+      <div class="news-index" v-if="articles.length">
         <p>⚡ News ⚡</p>
       </div>
-      <br />
+
+      <div class="no-follower" v-else>
+        <div class="news-index">
+          <h1 class="ment">현재 팔로우 중인 사람이 없습니다 !<br>마음에 드는 사람을 팔로우 해보세Yo</h1>
+          <img class = "muji" src="https://user-images.githubusercontent.com/53211781/90217074-42994880-de3b-11ea-8d3b-21594cb5ad6e.png" alt="">
+        </div>
+        <br>
+        <br>
+        <hr>
+        <br>
+        <br>
+        <div>
+          <img style="width: 100%; height: auto" src="https://user-images.githubusercontent.com/53211781/90219005-1df39f80-de40-11ea-85a6-80981f3a75b5.png" alt="">
+        </div>
+      </div>
+      <br/>
 
       <ArticleCard
         v-for="(article, index) in articles"
@@ -88,7 +103,12 @@ export default {
   width: 96%;
   display: flex;
   justify-content: left;
+  align-items: center;
   margin: auto;
+}
+.no-follower {
+  max-width: 850px;
+  width: 100%;
 }
 #bottomSensor {
   height: 10px;
@@ -111,5 +131,29 @@ export default {
   border: 1px solid #eee;
   height: 100px;
   border-radius: 5px;
+}
+.muji {
+  height : 175px;
+  width : 175px;
+}
+@media (min-width: 0) and (max-width : 469px){
+  .ment {
+    font-size: 15px;
+  }
+   .muji {
+    height : 90px;
+    width : 90px;
+    position: absolute;
+    left : 70%;
+  }
+}
+@media (min-width: 468px) and (max-width : 615px){
+  .ment {
+    font-size: 24px;
+  }
+  .muji {
+    height : 150px;
+    width : 150px;
+  }
 }
 </style>
