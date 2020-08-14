@@ -110,12 +110,13 @@ li {
   width: 100%;
 }
 .editInput {
-  padding: 20px 0 20px 10px;
+  padding: 20px 0 10px 10px;
   font-family: 'Noto Sans KR', sans-serif;
   letter-spacing: 1.5px;
-  border-radius: 10px;
-  width: 100%;
+  width: 90%;
+  border: none;
   outline: none;
+  border-bottom: black 1px solid;
 }
 .about-area > .text > ul {
   padding: 20px 0;
@@ -317,7 +318,7 @@ li {
   margin-right: 3%;
   font-size: 14px;
   color: white;
-  width: 25%;
+  width: 50px;
 }
 .cancelBtn {
   background-color: #cacaca;
@@ -325,7 +326,7 @@ li {
   padding: 5px 5px;
   font-size: 14px;
   color: white;
-  width: 25%;
+  width: 50px;
 }
 .git-modal-content {
   background-color: #fefefe;

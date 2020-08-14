@@ -7,8 +7,25 @@
       <LoadingSpinner />
     </div>
     <div v-else>
-      <div class="news-index">
+      <div class="news-index" v-if="articles.length">
         <p>⚡ News ⚡</p>
+      </div>
+      <div class="no-pin" v-else>
+        <div class="news-index">
+          <h1 class="ment">현재 북마크한 게시글이 없습니다 ! <br> 마음에 드는 게시글을 찜 해보세Yo</h1>
+          <img class ="muji" src="https://user-images.githubusercontent.com/53211781/90217074-42994880-de3b-11ea-8d3b-21594cb5ad6e.png" alt="">
+        </div>
+        <br>
+        <br>
+        <hr>
+        <br>
+        <br>
+        <div>
+          <img style="width: 100%; height: auto" src="https://user-images.githubusercontent.com/53211781/90220314-ed613500-de42-11ea-89b6-e7c522702b3c.png" alt="">
+        </div>
+        <div>
+          <img style="width: 100%; height: auto" src="https://user-images.githubusercontent.com/53211781/90220878-07e7de00-de44-11ea-9bef-bf4a6e34c028.png" alt="">
+        </div>
       </div>
       <br />
 
@@ -86,7 +103,12 @@ export default {
   width: 96%;
   display: flex;
   justify-content: left;
+  align-items: center;
   margin: auto;
+}
+.no-pin {
+  max-width: 850px;
+  width: 100%;
 }
 #bottomSensor {
   height: 10px;
@@ -109,5 +131,26 @@ export default {
   border: 1px solid #eee;
   height: 100px;
   border-radius: 5px;
+}
+.ment {
+  font-size: 30px;
+}
+@media (min-width: 0) and (max-width : 469px){
+  .ment {
+    font-size: 15px;
+  }
+   .muji {
+    height : 90px;
+    width : 90px;
+  }
+}
+@media (min-width: 468px) and (max-width : 615px){
+  .ment {
+    font-size: 24px;
+  }
+  .muji {
+    height : 150px;
+    width : 150px;
+  }
 }
 </style>

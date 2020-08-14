@@ -2,16 +2,16 @@
   <div class="home-nav">
     <div class="post-nav">
       <span>
-        <router-link to="/" exact>Home</router-link>
+        <router-link to="/" exact class="bar-text">Home</router-link>
       </span>
       <span>
-        <Router-link to="/latest" >Latest</Router-link>
+        <Router-link to="/latest" class="bar-text">Latest</Router-link>
       </span>
       <span>
-        <router-link v-if="isLoggedIn" to="/follow">Follow</router-link>
+        <router-link v-if="isLoggedIn" to="/follow" class="bar-text">Follow</router-link>
       </span>
       <span>
-        <router-link v-if="isLoggedIn" to="/pin">Bookmark</router-link>
+        <router-link v-if="isLoggedIn" to="/pin" class="bar-text">Bookmark</router-link>
       </span>
     </div>
     <div v-if="$store.getters.isLoggedIn">
@@ -102,6 +102,9 @@ export default {
   margin: 1rem;
   cursor: pointer;
 }
+.bar-text{
+  color: lightslategrey;
+}
 .post-nav > span:hover {
   color: blueviolet;
 }
@@ -113,6 +116,7 @@ export default {
 }
 .router-link-active {
   color: blueviolet;
+  font-size: 23px;
 }
 .interest {
   position: absolute;
@@ -156,10 +160,13 @@ export default {
     margin: 0;
     font-size: 13px;
   }
+  .router-link-active {
+    font-size: 15px;
+  }
   .writeBtn {
-  
-  width: 25px;
-  height: 25px;
+  font-size : 14px;
+  width: 24px;
+  height: 24px;
 
   }
 }

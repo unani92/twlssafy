@@ -104,7 +104,7 @@ public class AccountController {
         userInfo.put("notificationCnt", notificationDao.countByEmail(email));
         userInfo.put("articleCount", articleDao.countByEmail(email));
         userInfo.put("score", userDao.getUserByEmail(email).getScore());
-            
+        userInfo.put("isGoogle", userDao.getUserByEmail(email).getType());
         // 내가 팔로우 하는 사람 목록            
         List<Follow> follow = followDao.findAllByEmail(email);
         List<String> followNickname = new ArrayList<>();
@@ -442,13 +442,37 @@ public class AccountController {
         final BasicResponse result = new BasicResponse();
         
         result.status = true;
-        result.data = "비밀번호 변경 성공! 다시 로그인 해주세요";
+        result.data = "success";
         
         User user = userOpt.get();
         user.setPassword(((String)request.get("password")));
 
         userDao.save(user);
 
+        return new ResponseEntity<>(result, HttpStatus.OK);
+
+    }
+
+    @PostMapping("/account/changePwdLogin")
+    @ApiOperation(value = "로그인 후 비밀번호 변경")
+    public Object changePwdLogin (@RequestHeader(required = true) final HttpHeaders header, @RequestBody(required = true) final Map<String,Object> request)
+            throws Exception {
+        final BasicResponse result = new BasicResponse();
+        result.status = false;
+        result.data = "비밀번호 변경 실패";
+
+        String id_token = header.get("id_token").get(0);
+        String email = JWTDecoding.decode(id_token);
+        
+        
+        User user = userDao.findUserByEmail(email).get();
+        user.setPassword(((String)request.get("password")));
+        userDao.save(user);
+        
+        
+        result.status = true;
+        result.data = "비밀번호 변경 성공";
+        
         return new ResponseEntity<>(result, HttpStatus.OK);
 
     }

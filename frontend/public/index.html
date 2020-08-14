@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-    <link rel="shortcut icon" type="image/png" href="https://user-images.githubusercontent.com/53211781/90097266-7ce9e380-dd70-11ea-8aa0-3d201f70092c.png"/>
+    <link rel="shortcut icon" type="image/png" href="https://user-images.githubusercontent.com/53211781/90222060-44b4d480-de46-11ea-8d3e-7067ceb3b2cb.png"/>
     <link
       rel="stylesheet"
       href="https://use.fontawesome.com/releases/v5.14.0/css/all.css"
@@ -21,7 +21,7 @@
     />
     <title>Welcome to TWL</title>
   </head>
-  <body onclick="closeAside(), closeNotification()">
+  <body onclick="closeMenu()">
     <noscript>
       <strong
         >We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work
@@ -34,24 +34,53 @@
   </body>
   <script>
     // 화면 클릭 시 열려있는 버거 바 닫힘
-    function closeAside() {
-      if (event.srcElement && event.srcElement.className == 'fas fa-bars')
-        return;
-      const aside = document.querySelector('.aside');
-
-      if (aside.getAttribute('class') != 'aside disabled') {
-        aside.setAttribute('class', 'aside disabled');
+    function closeMenu() {
+      if(!event.srcElement) return;
+      if (event.srcElement.className == 'fas fa-bars') {
+        const bell = document.querySelector('.notification');
+        if (bell && bell.getAttribute('class') != 'notification disabled') {
+          bell.setAttribute('class', 'notification disabled');
+        }
+        const menu = document.querySelector('.userMenu');
+        if (menu && menu.getAttribute('class') != 'userMenu disabled') {
+          menu.setAttribute('class', 'userMenu disabled');
+        }
       }
-    }
-    // 화면 클릭 시 열려있는 알림 닫힘
-    function closeNotification() {
-      if (event.srcElement && event.srcElement.className == 'far fa-bell')
-        return;
-      const bell = document.querySelector('.notification');
-
-      if (bell && bell.getAttribute('class') != 'notification disabled') {
-        bell.setAttribute('class', 'notification disabled');
+      else if (event.srcElement.className == 'far fa-bell') {
+        const aside = document.querySelector('.aside');
+        if (aside && aside.getAttribute('class') != 'aside disabled') {
+          aside.setAttribute('class', 'aside disabled');
+        }
+        const menu = document.querySelector('.userMenu');
+        if (menu && menu.getAttribute('class') != 'userMenu disabled') {
+          menu.setAttribute('class', 'userMenu disabled');
+        }
       }
+      else if (event.srcElement.className == 'user-photo') {
+        const aside = document.querySelector('.aside');
+        if (aside && aside.getAttribute('class') != 'aside disabled') {
+          aside.setAttribute('class', 'aside disabled');
+        }
+        const bell = document.querySelector('.notification');
+        if (bell && bell.getAttribute('class') != 'notification disabled') {
+          bell.setAttribute('class', 'notification disabled');
+        }
+      }
+      else {
+        const aside = document.querySelector('.aside');
+        if (aside && aside.getAttribute('class') != 'aside disabled') {
+          aside.setAttribute('class', 'aside disabled');
+        }
+        const bell = document.querySelector('.notification');
+        if (bell && bell.getAttribute('class') != 'notification disabled') {
+          bell.setAttribute('class', 'notification disabled');
+        }
+        const menu = document.querySelector('.userMenu');
+        if (menu && menu.getAttribute('class') != 'userMenu disabled') {
+          menu.setAttribute('class', 'userMenu disabled');
+        }
+      }
+      
     }
   </script>
 </html>
