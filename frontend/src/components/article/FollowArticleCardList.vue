@@ -7,10 +7,14 @@
       <LoadingSpinner />
     </div>
     <div v-else>
-      <div class="news-index">
+      <div class="news-index" v-if="articles.length">
         <p>⚡ News ⚡</p>
       </div>
-      <br />
+      <div class="news-index" v-else>
+        <h1>현재 팔로우 중인 사람이 없습니다.... 마음에 드는 사람을 팔로우해 보세Yo</h1>
+        <img src="https://user-images.githubusercontent.com/53211781/90217074-42994880-de3b-11ea-8d3b-21594cb5ad6e.png" alt="">
+      </div>
+      <br/>
 
       <ArticleCard
         v-for="(article, index) in articles"
