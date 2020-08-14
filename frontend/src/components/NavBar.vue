@@ -85,11 +85,7 @@
     <div class="userMenu disabled">
       <div class="userMenu-menu">
         <div @click="goToMyPage" class="mypage-text">MyPage</div>
-        <div
-          v-if="!this.$store.state.isGoogleUser"
-          @click="goToPwChange"
-          class="mypage-text"
-        >비밀번호 변경</div>
+        <div v-if="isGoogleUser" @click="goToPwChange" class="mypage-text">비밀번호 변경</div>
         <div @click="logout" class="mypage-text">Log Out</div>
       </div>
     </div>
@@ -113,6 +109,9 @@ export default {
   computed: {
     calcGrade() {
       return getGrade(this.$store.state.score);
+    },
+    isGoogleUser() {
+      return this.$store.state.isGoogleUser;
     },
   },
   name: "NavBar",
