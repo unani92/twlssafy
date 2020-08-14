@@ -104,7 +104,7 @@ public class AccountController {
         userInfo.put("notificationCnt", notificationDao.countByEmail(email));
         userInfo.put("articleCount", articleDao.countByEmail(email));
         userInfo.put("score", userDao.getUserByEmail(email).getScore());
-            
+        userInfo.put("isGit", userDao.getUserByEmail(email).getGithub());
         // 내가 팔로우 하는 사람 목록            
         List<Follow> follow = followDao.findAllByEmail(email);
         List<String> followNickname = new ArrayList<>();
