@@ -4,8 +4,12 @@
   >
     <hr />
     <div style="margin : 15px;">
-      Copyright by Today We Learned, SSAFY 3기 7조. All rights reserved.
-      <br />문의사항 : twlssafy@gmail.com
+      Copyright by Today We Learned.
+      <br>SSAFY 3기 서울 4반 7조, 정윤환 신영찬 배유진 전혜인
+      <br />
+      <a style="cursor : pointer" @click="goPrivacyPolicy">개인정보처리방침 </a>
+      <a style="cursor : pointer" @click="goTermsOfUse">이용약관 </a>
+      문의사항 : twlssafy@gmail.com
       <span
         v-if="isLoggedIn"
         style="margin:10px; cursor:pointer"
@@ -27,6 +31,12 @@ export default {
     ...mapGetters(['isLoggedIn']),
   },
   methods: {
+    goPrivacyPolicy(){
+      this.$router.push({ name: "PrivacyPolicy"})
+    },
+    goTermsOfUse(){
+      this.$router.push({ name: "TermsOfUse"})
+    },
     delAcc() {
       Swal.fire({
         text:"탈퇴 하시겠습니까?",
