@@ -20,6 +20,21 @@
         </div>
       </div>
       <div class="article-icon">
+        
+
+        <div class="icon" style="display: flex">
+          <div style="display: flex">
+            <div v-if="$store.getters.isLoggedIn" class="circle">
+              {{ $store.state.notificationCnt }}
+            </div>
+            <i
+              v-if="$store.getters.isLoggedIn"
+              @click="notificationIconToggle"
+              class="far fa-bell"
+            />
+          </div>
+          <i v-if="!this.$store.getters.isLoggedIn" @click="asideBarToggle" class="fas fa-bars"></i>
+        </div>
         <div v-if="this.$store.getters.isLoggedIn">
           <div
             style="width : 35px;"
@@ -53,20 +68,6 @@
             }"
             @click="userToggle"
           ></figure>
-        </div>
-
-        <div class="icon" style="display: flex">
-          <div style="display: flex">
-            <div v-if="$store.getters.isLoggedIn" class="circle">
-              {{ $store.state.notificationCnt }}
-            </div>
-            <i
-              v-if="$store.getters.isLoggedIn"
-              @click="notificationIconToggle"
-              class="far fa-bell"
-            />
-          </div>
-          <i v-if="!this.$store.getters.isLoggedIn" @click="asideBarToggle" class="fas fa-bars"></i>
         </div>
       </div>
     </div>
@@ -258,10 +259,8 @@ i {
   cursor: pointer;
 }
 .circle {
-  position: absolute;
-  top: 15px;
-  right: 2.4rem;
   border-radius: 75%;
+  margin-right: -20px;
   width: 20px;
   height: 20px;
   background-color: crimson;
