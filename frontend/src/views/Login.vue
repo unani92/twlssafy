@@ -1,15 +1,19 @@
 <template>
   <div class="login">
     <LoginForm></LoginForm>
+    <br>
+    <Footer/>
   </div>
 </template>
 
 <script>
 import LoginForm from '@/components/LoginForm';
+import Footer from '@/components/Footer';
 
 export default {
   components: {
     LoginForm,
+    Footer
   },
 };
 </script>
