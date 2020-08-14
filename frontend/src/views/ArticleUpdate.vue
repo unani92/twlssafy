@@ -171,8 +171,9 @@
         plugins: [[codeSyntaxHightlight, { hljs }]],
         hooks: {
           addImageBlobHook: (blob, callback) => {
+            const date = new Date()
             this.imageData = blob
-            const storageRef = firebase.storage().ref(`${this.imageData.name}`).put(this.imageData);
+            const storageRef = firebase.storage().ref(`${this.imageData.name}_${date.getTime()}`).put(this.imageData);
             storageRef.on(`state_changed`, snapshot => {
               this.uploadValue = (snapshot.bytesTransferred/snapshot.totalBytes)*100;
             },
@@ -180,7 +181,8 @@
               () => {
                 this.uploadValue = 100
                 storageRef.snapshot.ref.getDownloadURL()
-                  .then(url => callback(url, this.imageData.name))
+                  .then(url => callback(url, `${this.imageData.name}_${date.getTime()}`))
+
               }
             )
           }
