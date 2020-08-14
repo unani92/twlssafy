@@ -25,7 +25,7 @@ export default new Vuex.Store({
     notificationCnt: '',
     articleCount: 0,
     score: 0,
-    isGoogleUSer: false,
+    isGoogleUser: false,
   },
   getters: {
     isLoggedIn: (state) => !!state.id_token,
@@ -79,7 +79,7 @@ export default new Vuex.Store({
       state.score = score;
     },
     setIsGoogleUser(state, flag) {
-      state.isGoogleUSer = flag;
+      state.isGoogleUser = flag;
     },
     clearUser(state) {
       state.username = '';
@@ -93,7 +93,7 @@ export default new Vuex.Store({
       state.notification = [];
       state.articleCount = 0;
       state.score = 0;
-      state.isGoogleUSer = false;
+      state.isGoogleUser = false;
     },
     setNotificationCnt(state, notificationCnt) {
       state.notificationCnt = notificationCnt;
@@ -130,7 +130,7 @@ export default new Vuex.Store({
           commit('setNotificationCnt', notificationCnt);
           commit('setArticleCount', articleCount);
           commit('setScore', score);
-          commit('setsetIsGoogleUser', !!isGoogle);
+          commit('setIsGoogleUser', !!isGoogle);
         })
         .catch((err) => console.log(err));
     },
