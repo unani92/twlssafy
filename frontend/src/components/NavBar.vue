@@ -135,7 +135,11 @@ export default {
       userMenu.classList.toggle("disabled");
     },
     gotoMain() {
-      this.$router.push("/latest");
+      console.log(document.location.href)
+      if(document.location.href==="http://localhost:4000/latest") {
+        window.scrollTo(0,0);
+      }
+      else this.$router.push("/latest");
     },
     goToEmailLogin() {
       const aside = document.querySelector(".aside");
