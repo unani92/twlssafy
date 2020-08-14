@@ -36,7 +36,6 @@
     // 화면 클릭 시 열려있는 버거 바 닫힘
     function closeMenu() {
       if(!event.srcElement) return;
-      console.log(event.srcElement.className)
       if (event.srcElement.className == 'fas fa-bars') {
         const bell = document.querySelector('.notification');
         if (bell && bell.getAttribute('class') != 'notification disabled') {
