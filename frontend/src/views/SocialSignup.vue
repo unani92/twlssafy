@@ -54,6 +54,8 @@
 
 import { checkNickname, googleSignup  } from "@/api/index";
 import { mapActions } from 'vuex'
+import Swal from 'sweetalert2/dist/sweetalert2.js'
+import 'sweetalert2/src/sweetalert2.scss'
 
 export default {
   data() {
@@ -86,7 +88,13 @@ export default {
       if (res.data.status) {
         this.nicknameDoubleCheck = true;
       } else {
-        alert("이미 있는 닉네임")
+        Swal.fire({
+          text:"이미 존재하는 닉네임입니다.",
+          icon:"error",
+          closeOnClickOutside:true,
+          confirmButtonText:"<span style='text-align:center; margin-left:-12px; position:relative; top:-8px;'>OK</span>",
+          confirmButtonColor:"#e6837a",
+        });
       }
       this.logMessage.nickname = res.data.data;
     },

@@ -30,7 +30,7 @@
             </span>
           </div>
           <div style="height : 20px; overflow : hidden; margin-bottom : 10px">
-            <span class="keywords" v-for="k in keywords" :key="k" >
+            <span class="keywords" v-for="(k,index) in keywords" :key="index" >
               <span id="keyword" @click="search(k)">#{{ k }} </span>
             </span>
           </div>
@@ -124,11 +124,17 @@ export default {
           text:"로그인이 필요한 서비스입니다.",
           icon:"error",
           closeOnClickOutside:true,
+          showCancelButton:true,
           confirmButtonText:"<span style='text-align:center; margin-left:-12px; position:relative; top:-8px;'>OK</span>",
           confirmButtonColor:"#e6837a",
-          onClose: () => {
-            this.$router.push("/login");
-          }
+          cancelButtonText:"<span style='text-align:center; margin-left:-12px; position:relative; top:-8px;'>NO</span>",
+          cancelButtonColor:"#e6837a",
+          }).then((result) => {
+            if(result.value){
+              this.$router.push("/login");
+            } else {
+              Swal.close();
+            }
           });
       }
     },
@@ -156,14 +162,21 @@ export default {
         this.$store.commit("setPinList", pinList);
         console.log("현재 상태는", this.$store.state.pinList);
       } else {
-        Swal.fire({
-          text:"로그인이 필요한 서비스입니다.",
-          icon:"error",
-          closeOnClickOutside:true,
-          confirmButtonText:"<span style='text-align:center; margin-left:-12px; position:relative; top:-8px;'>OK</span>",
-          confirmButtonColor:"#e6837a",
-          }).then(() => {
-            this.$router.push("/login");
+          Swal.fire({
+            text:"로그인이 필요한 서비스입니다.",
+            icon:"error",
+            closeOnClickOutside:true,
+            showCancelButton:true,
+            confirmButtonText:"<span style='text-align:center; margin-left:-12px; position:relative; top:-8px;'>OK</span>",
+            confirmButtonColor:"#e6837a",
+            cancelButtonText:"<span style='text-align:center; margin-left:-12px; position:relative; top:-8px;'>NO</span>",
+            cancelButtonColor:"#e6837a",
+            }).then((result) => {
+              if(result.value){
+                this.$router.push("/login");
+              } else {
+                Swal.close();
+              }
           });
       }
     },

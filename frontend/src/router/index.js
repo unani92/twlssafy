@@ -4,6 +4,7 @@ import Home from '../views/Home.vue';
 import Login from '../views/Login';
 import Signup from '../views/Signup';
 import ChangePwd from '../views/ChangePwd';
+import ChangePwdLogin from '../views/ChangePwdLogin';
 import SelectSkills from '../views/SelectSkills';
 import ArticleCreate from '../views/ArticleCreate';
 import ArticleDetail from '../views/ArticleDetail';
@@ -19,8 +20,8 @@ import FindPwd from '../views/FindPwd.vue';
 import Dummy from '../components/Dummy';
 import ArticleRecommend from '../views/ArticleRecommend';
 import CalendarCardList from '../components/calendar/CalendarCardList.vue';
-import store from '@/store/index';
 import NotFound from '../views/NotFound';
+import store from '@/store/index';
 
 Vue.use(VueRouter);
 
@@ -67,15 +68,21 @@ const routes = [
     beforeEnter: alreadyLogin,
   },
   {
+    path: '/findpwd',
+    name: 'FindPwd',
+    component: FindPwd,
+  },
+  {
     path: '/changepwd',
     name: 'ChangePwd',
     component: ChangePwd,
     props: true,
   },
   {
-    path: '/findpwd',
-    name: 'FindPwd',
-    component: FindPwd,
+    path: '/changePwdLogin',
+    name: 'ChangePwdLogin',
+    component: ChangePwdLogin,
+    beforeEnter: isGoogleUser,
   },
   {
     path: '/selectskills',
@@ -158,6 +165,9 @@ function alreadyLogin(to, from, next) {
 }
 function requireLogin(to, from, next) {
   store.getters['isLoggedIn'] ? next() : next('/login');
+}
+function isGoogleUser(to, from, next) {
+  store.state.isGoogleUser ? next() : next('/login');
 }
 
 export default router;

@@ -1,5 +1,8 @@
 <template>
   <div>
+    <div class="upload-progress">
+      <div class="upload-percent" :style="`width:${uploadValue}%;`"></div>
+    </div>
     <div id="editor"/>
     <button id="submit">submit</button>
   </div>
@@ -12,7 +15,6 @@ import 'highlight.js/styles/github.css'; // code block highlight 스타일
 import codeSyntaxHightlight from '@toast-ui/editor-plugin-code-syntax-highlight';
 import hljs from 'highlight.js';
 import firebase from 'firebase'
-
 export default {
   data() {
     return {
@@ -34,17 +36,18 @@ export default {
       plugins: [[codeSyntaxHightlight, { hljs }]],
       hooks: {
         addImageBlobHook: (blob, callback) => {
+          const date = new Date()
           this.imageData = blob
-          const storageRef = firebase.storage().ref(`${this.imageData.name}`).put(this.imageData);
+          const storageRef = firebase.storage().ref(`${this.imageData.name}_${date.getTime()}`).put(this.imageData);
           storageRef.on(`state_changed`, snapshot => {
             this.uploadValue = (snapshot.bytesTransferred/snapshot.totalBytes)*100;
           }, err => {
               console.log(err.message)
             },
-            () => {this.uploadValue = 100;
-              storageRef.snapshot.ref.getDownloadURL().then(url => {
-                // this.picture = url
-                callback(url, this.imageData.name);
+            () => {
+                this.uploadValue = 0;
+                storageRef.snapshot.ref.getDownloadURL().then(url => {
+                callback(url, `${this.imageData.name}_${date.getTime()}`);
               })
           })
         }
@@ -68,5 +71,14 @@ export default {
     cursor: pointer;
     background-color: #e6837a;
     color: white;
+  }
+  .upload-progress {
+    width: 100%;
+    height: 20px;
+  }
+  .upload-percent {
+    background-color: #e6837a;
+    height: 20px;
+    border-radius: 10px;
   }
 </style>

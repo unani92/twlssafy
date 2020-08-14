@@ -317,11 +317,19 @@ export default {
     follower() {
       return this.userInfo.follower;
     },
-    intro() {
-      return this.userInfo.userInfo.info;
+    intro : {
+      get: function () 
+      { return this.userInfo.userInfo.info;}, 
+      
+      set: function (newIntro)
+      { this.userInfo.userInfo.info = newIntro;}
     },
-    github() {
-      return this.userInfo.userInfo.github;
+    github : {
+      get: function () 
+      { return this.userInfo.userInfo.github;}, 
+      
+      set: function (newGit)
+      { this.userInfo.userInfo.github = newGit;}
     },
   },
   methods: {
@@ -428,13 +436,11 @@ export default {
         if (
           event.target === skillModal ||
           event.target === followerModal ||
-          event.target === followingModal ||
-          event.target === introModal
+          event.target === followingModal
         ) {
           skillModal.style.display = "none";
           followerModal.style.display = "none";
           followingModal.style.display = "none";
-          introModal.style.display = "none";
         }
       };
     },
@@ -511,11 +517,17 @@ export default {
           text:"로그인이 필요한 서비스입니다.",
           icon:"error",
           closeOnClickOutside:true,
+          showCancelButton:true,
           confirmButtonText:"<span style='text-align:center; margin-left:-12px; position:relative; top:-8px;'>OK</span>",
           confirmButtonColor:"#e6837a",
-          onClose: () => {
-            this.$router.push("/login");
-          }
+          cancelButtonText:"<span style='text-align:center; margin-left:-12px; position:relative; top:-8px;'>NO</span>",
+          cancelButtonColor:"#e6837a",
+          }).then((result) => {
+            if(result.value){
+              this.$router.push("/login");
+            } else {
+              Swal.close();
+            }
           });
       } else {
         const params = {
