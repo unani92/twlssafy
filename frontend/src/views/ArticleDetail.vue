@@ -191,7 +191,7 @@ export default {
           this.createdat +=article.createdat[i]
         }
         if(article.updatedat != null){
-          this.updatedAt = ' (최종수정 ' + this.$moment(article.updatedat).fromNow() + ')';
+          this.updatedAt = ' (' + this.$moment(article.updatedat).fromNow() + ' 수정)';
         }
         
 
