@@ -85,13 +85,12 @@ export default {
     },
     async fetchSearchData() {
       if (this.q === this.input) {
-        const params = {
+        try {
+          const params = {
           page: this.page++,
           q: this.q || this.$route.query.q,
           category: this.category || this.$route.query.category,
         };
-        const res = await searchArticle(params);
-        console.log(res);
         const {
           data: {
             object: {
@@ -103,13 +102,14 @@ export default {
             },
           },
         } = await searchArticle(params);
-        console.log(article);
-        console.log(keyword);
         this.keywords = [...this.keywords, ...keyword];
         this.searchArticles = [...this.searchArticles, ...article];
         this.likesCntList = [...this.likesCntList, ...likesCntList];
         this.commentCntList = [...this.commentCntList, ...commentCntList];
         this.pinCntList = [...this.pinCntList, ...pinCntList];
+        } catch (e) {
+          return 
+        }
       } else {
         this.q = this.input;
         this.page = 0;
@@ -119,8 +119,6 @@ export default {
           q: this.q,
           category: this.category,
         };
-        const res = await searchArticle(params);
-        console.log(`else: ${res}`);
         const {
           data: {
             object: {
@@ -132,14 +130,15 @@ export default {
             },
           },
         } = await searchArticle(params);
-        console.log(article);
-        console.log(keyword);
-        this.keywords = [...this.keywords, ...keyword];
-        this.searchArticles = [...this.searchArticles, ...article];
-        this.likesCntList = [...this.likesCntList, ...likesCntList];
-        this.commentCntList = [...this.commentCntList, ...commentCntList];
-        this.pinCntList = [...this.pinCntList, ...pinCntList];
-        console.log(this.pinCntList);
+        try {
+          this.keywords = [...this.keywords, ...keyword];
+          this.searchArticles = [...this.searchArticles, ...article];
+          this.likesCntList = [...this.likesCntList, ...likesCntList];
+          this.commentCntList = [...this.commentCntList, ...commentCntList];
+          this.pinCntList = [...this.pinCntList, ...pinCntList];
+        } catch (e) {
+          return
+        }
       }
     },
 
@@ -152,8 +151,6 @@ export default {
           q: skill,
           category: "keyword",
         };
-        const res = await searchArticle(params);
-        console.log(res);
         const {
           data: {
             object: {
@@ -184,7 +181,11 @@ export default {
       const bottomSensor = document.querySelector("#bottomSensor");
       const watcher = scrollMonitor.create(bottomSensor);
       watcher.enterViewport(() => {
-        this.fetchSearchData();
+        try {
+          this.fetchSearchData();
+        } catch (e) {
+          return
+        }
       });
     },
     init() {
@@ -198,7 +199,11 @@ export default {
     },
   },
   mounted() {
-    setTimeout(() => this.addScrollWatcher(), 1000);
+    try {
+      setTimeout(() => this.addScrollWatcher(), 1000);
+    } catch (e) {
+      return
+    }
   },
   updated() {
     //autocomplete가 켜져 있을 때 esc 누르면 닫힘
