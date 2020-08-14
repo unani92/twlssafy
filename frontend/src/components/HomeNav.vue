@@ -161,12 +161,12 @@ export default {
     font-size: 13px;
   }
   .router-link-active {
-    font-size: 18px;
+    font-size: 15px;
   }
   .writeBtn {
-  
-  width: 25px;
-  height: 25px;
+  font-size : 14px;
+  width: 24px;
+  height: 24px;
 
   }
 }
