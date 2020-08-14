@@ -19,7 +19,7 @@
         />
         <i class="fas fa-search" @click="fetchSearchData"></i>
       </div>
-      <div class="autocomplete disabled">
+      <div v-if="category==='keyword'" class="autocomplete disabled">
         <div
           @click="searchSkillAdd"
           class="autocomplete-cursor"
