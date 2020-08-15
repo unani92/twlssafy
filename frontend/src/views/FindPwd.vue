@@ -15,7 +15,7 @@
         v-model="email"
         type="email"
         id="emailInput"
-        placeholder="비밀번호 찾기"
+        placeholder="가입 시 입력한 이메일을 입력해주세요"
       />
 
       <div class="validation">
@@ -26,7 +26,7 @@
               type="text"
               v-focus
               ref="validationCode"
-              placeholder="인증코드"
+              placeholder="인증코드를 입력해주세요"
               @focusout="checkValidationCode"
               v-model="validationNumber"
             />

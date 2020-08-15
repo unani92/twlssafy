@@ -13,7 +13,7 @@
         </p>
         <div class="content">
           <div style="margin-bottom : 10px;">
-            <span
+            <div
               class="title"
               style="cursor:pointer;"
               @click="
@@ -23,7 +23,7 @@
                 })
               ">
               {{ article.title }}
-            </span>
+            </div>
           </div>
           <div style="height : 20px; overflow : hidden; margin-bottom : 10px">
             <span class="keywords" v-for="k in keywords" :key="k" >
@@ -278,7 +278,7 @@ export default {
   font-weight: 700;
   color: #0d0925;
   margin-top: 10px;
-  height: 60px;
+  height: 62px;
   overflow: hidden;
 }
 .content .text {
@@ -339,14 +339,18 @@ button {
   .content {
     margin: 0%;
     width: 100%;
+    font-size: 16px;
+    height: 70px;
   }
   .content .text {
     font-size: 16px;
+    height : 50px;
   }
   .title {
-    font-size: 22px;
+    font-size: 20px;
     margin-bottom: 10px;
     margin-top: 0px;
+    height : 50px;
   }
 
   button {

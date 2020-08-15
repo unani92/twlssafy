@@ -85,7 +85,7 @@ export default {
         .then(() => {
           Swal.fire({
             text: "비밀번호 변경완료 !",
-            icon: "error",
+            icon: "success",
             closeOnClickOutside: true,
             confirmButtonText:
               "<span style='text-align:center; margin-left:-12px; position:relative; top:-8px;'>OK</span>",
