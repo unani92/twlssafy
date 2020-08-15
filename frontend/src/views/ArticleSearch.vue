@@ -16,6 +16,7 @@
           type="text"
           v-model="input"
           @input="submitAutoComplete"
+          class="search_input"
         />
         <i class="fas fa-search" @click="fetchSearchData"></i>
       </div>
@@ -29,7 +30,7 @@
       </div>
     </div>
     <p class="search-result-guide">{{searchResult}}</p>
-    <div v-if="searchArticles" style="margin-top:1rem">
+    <div v-if="searchArticles.length" style="margin-top:1rem">
       <ArticleSearchCard
         v-for="(article,index) in searchArticles"
         :key="article.articleid"
@@ -40,6 +41,14 @@
         :pinCnt="pinCntList[index]"
       />
       <div id="bottomSensor"></div>
+    </div>
+    <div v-else-if="q">
+      <center style="margin-top:30px;">
+        <img class = "muji" src="https://user-images.githubusercontent.com/53211781/90217074-42994880-de3b-11ea-8d3b-21594cb5ad6e.png" alt="">
+        <h1 class="ment">검색 결과가 없습니다 !<br>철자와 띄어쓰기를 다시 확인 해 주세Yo</h1>
+      </center>
+      <br>
+      <br>
     </div>
     <scroll />
   </div>
