@@ -255,7 +255,8 @@ export default {
   margin-bottom: 2rem;
 }
 .detailTitle {
-  font-size: 30px;
+  margin-bottom: 2%;
+  font-size: 27px;
   /* margin-bottom: 1rem; */
 }
 .username-date {
@@ -309,7 +310,7 @@ export default {
     width: 100%;
   }
   .detailTitle {
-    font-size: 25px;
+    font-size: 20px;
   }
 }
 .backBtn {
