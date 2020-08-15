@@ -276,6 +276,7 @@ export default {
   color: white;
   background-color: #94adff;
   font-size: 14px;
+  cursor: pointer;
 }
 .dropdown {
   padding: 3px;
