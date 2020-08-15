@@ -1,5 +1,5 @@
 <template>
-  <div class="profile-info">
+  <div class="profile-info" v-if="userInfo.userInfo">
     <vue-headful
       :title="`@${userInfo.userInfo.nickname} 님의 페이지`"
     />
@@ -88,7 +88,12 @@
           <li>
             <div class="info">
               <i class="fab fa-github"></i>
-              {{ userInfo.userInfo.github }}
+              <a
+                :href="userInfo.userInfo.github"
+                target="_blank"
+                rel="noopener noreferrer"
+                style="text-decoration: none; color: #777; margin: 0 5px"
+              >{{ userInfo.userInfo.github }}</a>
               <a
                 v-if="isMypage"
                 class="git-modal"

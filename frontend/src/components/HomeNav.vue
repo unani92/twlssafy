@@ -62,12 +62,21 @@ export default {
     },
     scrollEvent() {
       const homeBar = document.querySelector(".home-nav")
+      if(window.innerWidth < 500) {
+        return;
+      }
       if (homeBar) {
         const nowScrollY = window.scrollY
-        if (nowScrollY > this.scroll.prev) {
-            homeBar.classList.add("disabled")
-            this.scroll.prev = nowScrollY
+        if(window.innerWidth > 400) {
+          if (nowScrollY > this.scroll.prev) {
+              homeBar.classList.add("disabled")
+              this.scroll.prev = nowScrollY
+            } else {
+              homeBar.classList.remove("disabled")
+              this.scroll.prev = nowScrollY
+            }
           } else {
+            console.log('d');
             homeBar.classList.remove("disabled")
             this.scroll.prev = nowScrollY
           }
@@ -75,7 +84,11 @@ export default {
       },
   },
   mounted() {
-    document.addEventListener("scroll", this.scrollEvent)
+    if(window.innerWidth>400){
+      document.addEventListener("scroll", this.scrollEvent)
+    } else {
+      console.log('dd')
+    }
   },
   created() {
     this.fetchData();
