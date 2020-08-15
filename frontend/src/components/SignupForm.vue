@@ -105,6 +105,18 @@
             v-model="github"
           />
         </div>
+        <div class = "policyCheck">
+          <input type="checkbox" id="checkbox" v-model="checked">
+          
+          <a class="terms-modal atag" id ="tou" data-toggle="modal">
+            이용약관
+          </a>        
+          및  
+          <a class="privacy-modal atag" data-toggle="modal">
+            개인정보처리방침
+          </a>
+          에 동의합니다.
+        </div>
         <!-- 버튼 활성화 OK -->
         <div class="inputfield">
           <button
@@ -115,7 +127,8 @@
                 checkValidationCode &&
                 isSamePassword &&
                 nicknameDoubleCheck &&
-                isPasswordValid
+                isPasswordValid &&
+                checked
               )
             "
           >
@@ -125,6 +138,23 @@
       </div>
     </form>
     <p class="log"></p>
+
+
+    <div id="privacyModal" class="modal">
+      <!-- Modal content -->
+      <div class="modal-content">
+        <div class="close" style="text-align : right; cursor : pointer">X</div>
+        <privacy-policy/>
+      </div>
+    </div>
+    <div id="termsModal" class="modal">
+      <!-- Modal content -->
+      <div class="modal-content">
+        <div class="close" style="text-align : right; cursor : pointer">X</div>
+        <terms-of-use/>
+      </div>
+    </div>
+
   </div>
 </template>
 
@@ -132,6 +162,9 @@
 import GoogleLogin from '../components/GoogleLogin';
 import { validateEmail, validatePassword } from '@/utils/validation';
 import { checkEmail, checkNickname, registerUser } from '@/api/index';
+import PrivacyPolicy from '@/components/policies/PrivacyPolicy.vue';
+import TermsOfUse from '@/components/policies/TermsOfUse.vue';
+
 // import SelectSkills from "../views/SelectSkills.vue";
 
 export default {
@@ -155,11 +188,14 @@ export default {
       },
       confirmedEmail: false,
       nicknameDoubleCheck: false,
+      checked : false,
     };
   },
 
   components: {
     GoogleLogin,
+    PrivacyPolicy,
+    TermsOfUse
   },
   computed: {
     isemailValid() {
@@ -180,6 +216,43 @@ export default {
     },
   },
   methods: {
+    attachModal() {
+      const privacyModal = document.getElementById("privacyModal");
+      const btn = document.querySelector(".privacy-modal");
+      const span = document.getElementsByClassName("close")[0];
+      btn.onclick = function () {
+        privacyModal.style.display = "block";
+      };
+      span.onclick = function () {
+        privacyModal.style.display = "none";
+      };
+
+
+      const termsModal = document.getElementById("termsModal");
+      const tbtn = document.querySelector(".terms-modal");
+      const tspan = document.getElementsByClassName("close")[1];
+      tbtn.onclick = function () {
+        termsModal.style.display = "block";
+      };
+      tspan.onclick = function () {
+        termsModal.style.display = "none";
+      };
+
+       window.onclick = function (event) {
+        if (
+          event.target === privacyModal ||
+          event.target === termsModal
+        ) {
+          privacyModal.style.display = "none";
+          termsModal.style.display = "none";
+          // followingModal.style.display = "none";
+        }
+      };
+    },
+
+
+
+
     async emailDoubleCheck() {
       if (this.isemailValid) {
         this.logMessage.email = '인증을 완료해주세요';
@@ -271,12 +344,22 @@ export default {
       },
     },
   },
+  mounted() {
+    try {
+     this.attachModal();
+    } catch (e) {
+      return
+    }
+  },
 };
 </script>
 
 <style scoped>
 @import url('https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap');
-
+.atag {
+  text-decoration: underline;
+  color : skyblue;
+}
 * {
   margin: 0;
   padding: 0;
@@ -448,7 +531,50 @@ body {
 .guide-text {
   font-size: 0.75rem;
 }
-@media (max-width: 420px) {
+
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  padding-top: 30px; /* Location of the box */
+  left: 0;
+  top: 0;
+  width: 110%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+  font-size: 12px;
+}
+/* Modal Content */
+.modal-content {
+  background-color: #fefefe;
+  margin: 10%;
+  padding: 20px;
+  border: 1px solid #888;
+  border-radius: 15px;
+  width: 70%;
+}
+
+/* The Close Button */
+.close {
+  font-size: 18px;
+  font-weight: bold;
+  color: rgb(114, 114, 114);
+
+}
+
+.close:hover,
+.close:focus {
+  color: #000;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.policyCheck{
+  font-size: 13px;
+  margin : 10px 0 15px 0;
+}
+
+@media (max-width: 500px) {
   .wrapper .form .inputfield {
     flex-direction: column;
     align-items: flex-start;
@@ -458,6 +584,14 @@ body {
   }
   .wrapper .form .inputfield.terms {
     flex-direction: row;
+  }
+  .modal {
+  padding-top: 100px; /* Location of the box */
+  }
+}
+@media (min-width: 501px) and (max-width: 768px) {
+ .modal {
+  padding-top: 70px; /* Location of the box */
   }
 }
 </style>

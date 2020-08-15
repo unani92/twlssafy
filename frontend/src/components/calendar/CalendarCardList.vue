@@ -37,7 +37,7 @@
 
 <script>
 import ProfileInfo from "@/components/profile/ProfileInfo.vue";
-import ArticleCard from "@/components/article/AricleCard.vue";
+import ArticleCard from "@/components/article/ArticleCard.vue";
 import LoadingSpinner from "@/components/common/LoadingSpinner.vue";
 import { mapState, mapActions } from "vuex";
 // import scrollMonitor from "scrollmonitor";

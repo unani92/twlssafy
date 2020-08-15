@@ -22,6 +22,8 @@ import ArticleRecommend from '../views/ArticleRecommend';
 import CalendarCardList from '../components/calendar/CalendarCardList.vue';
 import NotFound from '../views/NotFound';
 import store from '@/store/index';
+import PrivacyPolicy from '../views/policies/PrivacyPolicy.vue';
+import TermsOfUse from '../views/policies/TermsOfUse.vue';
 
 Vue.use(VueRouter);
 
@@ -82,7 +84,7 @@ const routes = [
     path: '/changePwdLogin',
     name: 'ChangePwdLogin',
     component: ChangePwdLogin,
-    beforeEnter: isGoogleUser,
+    beforeEnter: !isGoogleUser,
   },
   {
     path: '/selectskills',
@@ -151,6 +153,16 @@ const routes = [
     alias: '*',
     name: 'NotFound',
     component: NotFound,
+  },
+  {
+    path: '/PrivacyPolicy',
+    name: 'PrivacyPolicy',
+    component: PrivacyPolicy,
+  },
+  {
+    path: '/TermsOfUse',
+    name: 'TermsOfUse',
+    component: TermsOfUse,
   },
 ];
 

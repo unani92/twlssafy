@@ -271,7 +271,7 @@ i {
   z-index: 5;
   padding-left: 20px;
   border: none;
-  border-radius: 1%;
+  border-radius: 14px;
   outline: none;
   box-shadow: 0 1px 6px 0 rgba(32, 33, 36, 0.28);
 }

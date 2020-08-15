@@ -17,7 +17,16 @@
             <!--            ></i>-->
           </div>
         </div>
+        <div v-if="dropzoneOptions" class="dropZone dropZoneDisabled">
+          <vue2-dropzone
+            ref="imgDropZone"
+            id="customdropzone"
+            :options="dropzoneOptions"
+            @vdropzone-complete="afterComplete"
+          />
+        </div>
       </div>
+      
       <div class="text">
         <div style="display: flex; justify-content: space-between">
           <div
@@ -243,14 +252,7 @@
     </div>
 
     <!--    드래그앤드랍      -->
-    <div v-if="dropzoneOptions" class="dropZone dropZoneDisabled">
-      <vue2-dropzone
-        ref="imgDropZone"
-        id="customdropzone"
-        :options="dropzoneOptions"
-        @vdropzone-complete="afterComplete"
-      />
-    </div>
+    
   </div>
 </template>
 

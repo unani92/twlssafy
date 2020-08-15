@@ -18,8 +18,8 @@
         </p>
         <div class="content">
           <div style="margin-bottom : 10px;">
-            <span
-              class="title"
+            <div
+              class="cardTitle"
               style="cursor:pointer;"
               @click="
                 $router.push({
@@ -27,21 +27,22 @@
                   params: { id: article.articleid },
                 })">
               {{ article.title }}
-            </span>
+            </div>
           </div>
           <div style="height : 20px; overflow : hidden; margin-bottom : 10px">
             <span class="keywords" v-for="(k,index) in keywords" :key="index" >
               <span id="keyword" @click="search(k)">#{{ k }} </span>
             </span>
           </div>
-          <div class="text"
+          <div class="cardText"
           @click="
                 $router.push({
                   name: 'ArticleDetail',
                   params: { id: article.articleid },
                 })
               "
-          >{{ article.preview }}</div>
+          >{{ article.preview }}
+          </div>
           <div class="createdat-text">
             {{ this.$moment(article.createdat).fromNow() }}
           </div>
@@ -278,18 +279,19 @@ export default {
 .content {
   padding: 0 20px 0 0;
   width: 530px;
+  /* height : 10px; */
   margin-left: 30px;
   transition: 0.6s;
 }
-.title {
+.cardTitle {
   font-size: 25px;
   font-weight: 700;
   color: #0d0925;
   margin-top: 10px;
-  height: 60px;
+  height: 63px;
   overflow: hidden;
 }
-.content .text {
+.cardText {
   color: #4e4a67;
   font-size: 16px;
   margin-bottom: 10px;
@@ -348,13 +350,15 @@ export default {
     margin: 0%;
     width: 100%;
   }
-  .content .text {
+  .cardText {
     font-size: 16px;
+    height : 70px
   }
-  .title {
-    font-size: 22px;
+  .cardTitle {
+    font-size: 20px;
     margin-bottom: 10px;
     margin-top: 0px;
+    height: 50px;
   }
 
   .firstBtn {

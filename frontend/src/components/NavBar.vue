@@ -401,6 +401,11 @@ i:hover {
   justify-content: center;
 }
 
+@media (max-width: 600px) {
+  .input-box {
+    margin-left: 0;
+   }
+}
 @media (max-width: 414px) {
   .search-bar {
     width: 150px;
@@ -409,6 +414,9 @@ i:hover {
   .grade {
     display: none;
   }
+   .input-box {
+    margin-left: 0;
+   }
 }
 @media (max-width: 376px) {
   .search-bar {
@@ -417,6 +425,9 @@ i:hover {
   i {
     font-size: 20px;
   }
+  .input-box {
+  margin-left: 0;
+}
 }
 @media (max-width: 320px) {
   .logo {
@@ -433,5 +444,8 @@ i:hover {
   i {
     font-size: 1rem;
   }
+  .input-box {
+  margin-left: 0;
+}
 }
 </style>

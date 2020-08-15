@@ -8,7 +8,7 @@
     </div>
     <div class="article">
       <div class="nickname-keyword">
-        <h1 class="title">{{ title }}</h1>
+        <h1 class="detailTitle">{{ title }}</h1>
         <div class="keywords" style="margin-bottom : 1rem;">
           <div
             v-for="keyword in keywords"
@@ -254,8 +254,9 @@ export default {
   display: block;
   margin-bottom: 2rem;
 }
-.title {
-  font-size: 30px;
+.detailTitle {
+  margin-bottom: 2%;
+  font-size: 27px;
   /* margin-bottom: 1rem; */
 }
 .username-date {
@@ -308,8 +309,8 @@ export default {
   .article {
     width: 100%;
   }
-  .title {
-    font-size: 25px;
+  .detailTitle {
+    font-size: 20px;
   }
 }
 .backBtn {
