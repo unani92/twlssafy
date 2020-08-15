@@ -1,6 +1,6 @@
 export function getGrade(score) {
   let grade = 0;
-  if (score <= 0) {
+  if (0 <= score <= 10) {
     grade = 1; // new
   } else if (score < 50) {
     grade = 2; // bronze
