@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import ArticleCard from "@/components/article/AricleCard.vue";
+import ArticleCard from "@/components/article/ArticleCard.vue";
 import LoadingSpinner from "@/components/common/LoadingSpinner.vue";
 import { fetchMyArticles } from "@/api/index";
 import { mapState, mapActions } from "vuex";
