@@ -1,5 +1,5 @@
 <template>
-  <div id="example" style="padding-top: 60px">
+  <div id="example" style="padding-top: 40px">
     <vue-headful
       title="TWL: Today We Learned"
     />
@@ -8,7 +8,9 @@
     </div>
     <div v-else style="margin-top: 100px">
       <div id="intro">
-        <h1>HOT & RECOMMEND</h1>
+        <h1 style="font-size : 25px">HOT & RECOMMEND</h1>
+        <p v-if="isLoggedIn" style="font-size : 14px;"><br>TWL에서 가장 트렌딩한 게시글과 회원님의 관심분야 인기글을 모아봤어요 </p>
+        <p v-else style="font-size : 14px;"><br>TWL에서 가장 트렌딩한 게시글을 모아봤어요 </p>
       </div>
       <carousel-3d :controls-visible="true" :width="800" :height="carouselHeight" :display="5">
         <Slide v-for="(article, index) in articles" :index="index" :key="index">
@@ -36,7 +38,7 @@
 <script>
 import { Carousel3d, Slide } from "vue-carousel-3d";
 import { fetchRecommend } from "../api";
-import { mapState, mapActions } from "vuex";
+import { mapGetters, mapState, mapActions } from "vuex";
 import LoadingSpinner from "@/components/common/LoadingSpinner.vue";
 import ArticleCard from "@/components/article/AricleCard.vue";
 import Footer from "../components/Footer";
@@ -60,7 +62,9 @@ export default {
     ...mapState(["id_token"]),
     carouselHeight() {
       return this.window.width < 6 ? 1000 : 380;
+      
     },
+    ...mapGetters(['isLoggedIn']),
   },
   components: {
     "carousel-3d": Carousel3d,
@@ -137,20 +141,20 @@ export default {
 #outro {
   font-family: "Noto Serif KR", serif;
   text-align: center;
+  margin: 2% 0 4% 0;
   font-size: 12px;
-  margin: 3% 0 7% 0;
 }
 .outro-text {
   display: inline-block;
   margin: 0 auto;
   width: 59ch;
   font-family: "Montserrat", sans-serif, monospace;
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   font-weight: 500;
   overflow: hidden;
   white-space: nowrap;
   border-right: 0.05em solid;
-  animation: typing 6s steps(60), caret 1s steps(1) infinite;
+  animation: typing 5.5s steps(60), caret 1s steps(1) infinite;
 }
 @media (max-width: 562px) {
   .outro-text {
