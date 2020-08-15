@@ -40,7 +40,7 @@
         :likesCnt="likesCntList[index]"
         :pinCnt="pinCntList[index]"
       />
-      <div id="bottomSensor"></div>
+
     </div>
     <div v-else-if="q">
       <center style="margin-top:30px;">
@@ -50,7 +50,7 @@
       <br>
       <br>
     </div>
-    <scroll />
+    <div id="searchBottomSensor"></div>
   </div>
 </template>
 
@@ -78,27 +78,61 @@ export default {
       q: null,
       category: "keyword",
       searchResult: "",
+      result: null,
     };
   },
   methods: {
     submitAutoComplete() {
-      const autocomplete = document.querySelector(".autocomplete");
-      if (this.input) {
-        autocomplete.classList.remove("disabled");
-        this.result = skills.filter((skill) => {
-          return skill.match(new RegExp("^" + this.input, "i"));
-        });
-      } else {
-        autocomplete.classList.add("disabled");
+      if (this.category === "keyword") {
+       const autocomplete = document.querySelector(".autocomplete");
+        if (this.input) {
+          autocomplete.classList.remove("disabled");
+          this.result = skills.filter((skill) => {
+            return skill.match(new RegExp("^" + this.input, "i"));
+          });
+        } else {
+          autocomplete.classList.add("disabled");
+        }
       }
     },
     async fetchSearchData() {
       if (this.q === this.input) {
+        const params = {
+        page: this.page++,
+        q: this.q || this.$route.query.q,
+        category: this.category || this.$route.query.category,
+      };
         try {
-          const params = {
+          if (params.q !== undefined) {
+            const {
+              data: {
+                object: {
+                  article,
+                  keyword,
+                  likesCntList,
+                  commentCntList,
+                  pinCntList,
+                },
+              },
+            } = await searchArticle(params);
+            this.keywords = [...this.keywords, ...keyword];
+            this.searchArticles = [...this.searchArticles, ...article];
+            this.likesCntList = [...this.likesCntList, ...likesCntList];
+            this.commentCntList = [...this.commentCntList, ...commentCntList];
+            this.pinCntList = [...this.pinCntList, ...pinCntList];
+          }
+
+        } catch (e) {
+          return
+        }
+      } else {
+        this.q = this.input;
+        this.page = 0;
+        this.init();
+        const params = {
           page: this.page++,
-          q: this.q || this.$route.query.q,
-          category: this.category || this.$route.query.category,
+          q: this.q,
+          category: this.category
         };
         const {
           data: {
@@ -116,38 +150,6 @@ export default {
         this.likesCntList = [...this.likesCntList, ...likesCntList];
         this.commentCntList = [...this.commentCntList, ...commentCntList];
         this.pinCntList = [...this.pinCntList, ...pinCntList];
-        } catch (e) {
-          return 
-        }
-      } else {
-        this.q = this.input;
-        this.page = 0;
-        this.init();
-        const params = {
-          page: this.page++,
-          q: this.q,
-          category: this.category,
-        };
-        const {
-          data: {
-            object: {
-              article,
-              keyword,
-              likesCntList,
-              commentCntList,
-              pinCntList,
-            },
-          },
-        } = await searchArticle(params);
-        try {
-          this.keywords = [...this.keywords, ...keyword];
-          this.searchArticles = [...this.searchArticles, ...article];
-          this.likesCntList = [...this.likesCntList, ...likesCntList];
-          this.commentCntList = [...this.commentCntList, ...commentCntList];
-          this.pinCntList = [...this.pinCntList, ...pinCntList];
-        } catch (e) {
-          return
-        }
       }
     },
 
@@ -187,13 +189,13 @@ export default {
       }
     },
     addScrollWatcher() {
-      const bottomSensor = document.querySelector("#bottomSensor");
+      const bottomSensor = document.querySelector("#searchBottomSensor");
       const watcher = scrollMonitor.create(bottomSensor);
       watcher.enterViewport(() => {
         try {
           this.fetchSearchData();
         } catch (e) {
-          return
+          console.log('error')
         }
       });
     },
@@ -208,11 +210,7 @@ export default {
     },
   },
   mounted() {
-    try {
-      setTimeout(() => this.addScrollWatcher(), 1000);
-    } catch (e) {
-      return
-    }
+    setTimeout(() => this.addScrollWatcher(), 500);
   },
   updated() {
     //autocomplete가 켜져 있을 때 esc 누르면 닫힘
