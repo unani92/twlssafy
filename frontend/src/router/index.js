@@ -84,7 +84,7 @@ const routes = [
     path: '/changePwdLogin',
     name: 'ChangePwdLogin',
     component: ChangePwdLogin,
-    beforeEnter: isGoogleUser,
+    beforeEnter: !isGoogleUser,
   },
   {
     path: '/selectskills',

@@ -130,7 +130,7 @@ export default new Vuex.Store({
           commit('setNotificationCnt', notificationCnt);
           commit('setArticleCount', articleCount);
           commit('setScore', score);
-          commit('setIsGoogleUser', !!isGoogle);
+          commit('setIsGoogleUser', isGoogle);
         })
         .catch((err) => console.log(err));
     },
