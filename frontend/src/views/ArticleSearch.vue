@@ -16,6 +16,7 @@
           type="text"
           v-model="input"
           @input="submitAutoComplete"
+          class="search_input"
         />
         <i class="fas fa-search" @click="fetchSearchData"></i>
       </div>
@@ -29,7 +30,7 @@
       </div>
     </div>
     <p class="search-result-guide">{{searchResult}}</p>
-    <div v-if="searchArticles" style="margin-top:1rem">
+    <div v-if="searchArticles.length" style="margin-top:1rem">
       <ArticleSearchCard
         v-for="(article,index) in searchArticles"
         :key="article.articleid"
@@ -39,9 +40,17 @@
         :likesCnt="likesCntList[index]"
         :pinCnt="pinCntList[index]"
       />
-      <div id="bottomSensor"></div>
+
     </div>
-    <scroll />
+    <div v-else-if="q">
+      <center style="margin-top:30px;">
+        <img class = "muji" src="https://user-images.githubusercontent.com/53211781/90217074-42994880-de3b-11ea-8d3b-21594cb5ad6e.png" alt="">
+        <h1 class="ment">검색 결과가 없습니다 !<br>철자와 띄어쓰기를 다시 확인 해 주세Yo</h1>
+      </center>
+      <br>
+      <br>
+    </div>
+    <div id="searchBottomSensor"></div>
   </div>
 </template>
 
@@ -69,27 +78,61 @@ export default {
       q: null,
       category: "keyword",
       searchResult: "",
+      result: null,
     };
   },
   methods: {
     submitAutoComplete() {
-      const autocomplete = document.querySelector(".autocomplete");
-      if (this.input) {
-        autocomplete.classList.remove("disabled");
-        this.result = skills.filter((skill) => {
-          return skill.match(new RegExp("^" + this.input, "i"));
-        });
-      } else {
-        autocomplete.classList.add("disabled");
+      if (this.category === "keyword") {
+       const autocomplete = document.querySelector(".autocomplete");
+        if (this.input) {
+          autocomplete.classList.remove("disabled");
+          this.result = skills.filter((skill) => {
+            return skill.match(new RegExp("^" + this.input, "i"));
+          });
+        } else {
+          autocomplete.classList.add("disabled");
+        }
       }
     },
     async fetchSearchData() {
       if (this.q === this.input) {
+        const params = {
+        page: this.page++,
+        q: this.q || this.$route.query.q,
+        category: this.category || this.$route.query.category,
+      };
         try {
-          const params = {
+          if (params.q !== undefined) {
+            const {
+              data: {
+                object: {
+                  article,
+                  keyword,
+                  likesCntList,
+                  commentCntList,
+                  pinCntList,
+                },
+              },
+            } = await searchArticle(params);
+            this.keywords = [...this.keywords, ...keyword];
+            this.searchArticles = [...this.searchArticles, ...article];
+            this.likesCntList = [...this.likesCntList, ...likesCntList];
+            this.commentCntList = [...this.commentCntList, ...commentCntList];
+            this.pinCntList = [...this.pinCntList, ...pinCntList];
+          }
+
+        } catch (e) {
+          return
+        }
+      } else {
+        this.q = this.input;
+        this.page = 0;
+        this.init();
+        const params = {
           page: this.page++,
-          q: this.q || this.$route.query.q,
-          category: this.category || this.$route.query.category,
+          q: this.q,
+          category: this.category
         };
         const {
           data: {
@@ -107,38 +150,6 @@ export default {
         this.likesCntList = [...this.likesCntList, ...likesCntList];
         this.commentCntList = [...this.commentCntList, ...commentCntList];
         this.pinCntList = [...this.pinCntList, ...pinCntList];
-        } catch (e) {
-          return 
-        }
-      } else {
-        this.q = this.input;
-        this.page = 0;
-        this.init();
-        const params = {
-          page: this.page++,
-          q: this.q,
-          category: this.category,
-        };
-        const {
-          data: {
-            object: {
-              article,
-              keyword,
-              likesCntList,
-              commentCntList,
-              pinCntList,
-            },
-          },
-        } = await searchArticle(params);
-        try {
-          this.keywords = [...this.keywords, ...keyword];
-          this.searchArticles = [...this.searchArticles, ...article];
-          this.likesCntList = [...this.likesCntList, ...likesCntList];
-          this.commentCntList = [...this.commentCntList, ...commentCntList];
-          this.pinCntList = [...this.pinCntList, ...pinCntList];
-        } catch (e) {
-          return
-        }
       }
     },
 
@@ -178,13 +189,13 @@ export default {
       }
     },
     addScrollWatcher() {
-      const bottomSensor = document.querySelector("#bottomSensor");
+      const bottomSensor = document.querySelector("#searchBottomSensor");
       const watcher = scrollMonitor.create(bottomSensor);
       watcher.enterViewport(() => {
         try {
           this.fetchSearchData();
         } catch (e) {
-          return
+          console.log('error')
         }
       });
     },
@@ -199,11 +210,7 @@ export default {
     },
   },
   mounted() {
-    try {
-      setTimeout(() => this.addScrollWatcher(), 1000);
-    } catch (e) {
-      return
-    }
+    setTimeout(() => this.addScrollWatcher(), 500);
   },
   updated() {
     //autocomplete가 켜져 있을 때 esc 누르면 닫힘
