@@ -55,7 +55,7 @@
           </div>
           <span
             ><i class="fas fa-pen-nib" style="margin-right: 15px;">
-              {{ updatedAt }}
+              {{createdat}}{{ updatedAt }}
             </i>
             <i class="fas fa-eye"> {{ hits }}hits</i>
           </span>
@@ -118,7 +118,6 @@ export default {
       score: 0,
       sideMenu: {
         commentList: null,
-        // isFollowed: null,
         cntLikes: null,
         cntPin: null,
         isWriter: false,
@@ -154,7 +153,6 @@ export default {
       try {
         const token = this.$store.state.id_token;
         const articleInfo = await fetchArticle(this.id, token);
-        console.log(articleInfo)
         const {
           article,
           keyword,
@@ -175,8 +173,7 @@ export default {
         this.nickname = article.nickname;
         this.title = article.title;
         this.content = article.content;
-        
-        this.updatedAt = this.$moment(article.updatedat).fromNow();
+
         this.sideMenu.commentList = commentList;
         this.sideMenu.cntLikes = cntLikes;
         this.sideMenu.cntPin = cntPin;
@@ -188,9 +185,14 @@ export default {
         this.hits = hits;
         this.score = score;
 
-        // for(let i =0;i<10;i++){
-        //   this.updatedAt +=article.updatedat[i]
-        // }
+        this.createdat = '';
+        for(let i =0;i<10;i++){
+          this.createdat +=article.createdat[i]
+        }
+        if(article.updatedat != null){
+          this.updatedAt = ' (' + this.$moment(article.updatedat).fromNow() + ' 수정)';
+        }
+
 
         const loginUser = this.$store.state.nickname;
         if (this.article.nickname === loginUser) {
@@ -198,7 +200,6 @@ export default {
         }
         return article.content;
       } catch (e) {
-        console.log(e)
         this.$router.push({ name: 'NotFound' });
       }
     },
@@ -215,7 +216,7 @@ export default {
       const id_token = this.$store.state.id_token;
 
       deleteArticle(this.id, id_token)
-        .then(() => this.$router.push('/'))
+        .then(() => this.$router.push('/latest'))
         .catch((err) => console.log(err));
     },
     goback() {

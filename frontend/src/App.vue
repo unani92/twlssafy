@@ -25,6 +25,7 @@
       scrollEvent() {
         const navBar = document.querySelector(".nav-bar")
         const homeNav = document.querySelector(".home-nav")
+        if(window.innerWidth<500) return;
         const nowScrollY = window.scrollY
         if (nowScrollY > this.scroll.prev) {
           navBar.classList.add("disabled")

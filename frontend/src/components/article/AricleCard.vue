@@ -30,7 +30,7 @@
             </span>
           </div>
           <div style="height : 20px; overflow : hidden; margin-bottom : 10px">
-            <span class="keywords" v-for="k in keywords" :key="k" >
+            <span class="keywords" v-for="(k,index) in keywords" :key="index" >
               <span id="keyword" @click="search(k)">#{{ k }} </span>
             </span>
           </div>

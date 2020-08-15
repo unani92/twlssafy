@@ -1,5 +1,4 @@
 <template>
-  <!-- 로그인 하지 않은 사용자가 패스워드를 바꾸는 페이지 -->
   <div class="form">
     <div>
       <h1 id="title">
@@ -15,10 +14,11 @@
         type="password"
         placeholder="비밀번호를 입력해주세요"
         v-model="pwd1"
+        v-focus
         @focusout="checkPasswordForm"
       />
 
-      <p class="guide-text" id="validpwd">{{ validPwd }}</p>
+      <p class="guide-text" id="validpwd">{{msg1}}</p>
 
       <p id="p2">비밀번호 확인</p>
       <input
@@ -29,15 +29,15 @@
         placeholder="위와 동일한 비밀번호를 입력해주세요"
         @focusout="checkPwd"
       />
-      <p class="guide-text" id="msg">{{ msg }}</p>
+      <p class="guide-text" id="msg">{{ msg2 }}</p>
 
       <div class="btns">
-        <button class="btn" @click="goback" style="left : 35%; background-color:#b3b3b3;">취소</button>
+        <button class="btn cancel" @click="goback">취소</button>
         <button
-          class="btn"
+          class="btn submit"
           @click="changePwd"
-          style="background-color: royalblue; left : 50%"
-          :disabled="btnEnabled==false"
+          @keydown.enter="changePwd"
+          :disabled="!btnEnabled"
         >다음</button>
       </div>
     </div>
@@ -45,44 +45,46 @@
 </template>
 
 <script>
-import { validatePassword } from "@/utils/validation";
-import { submitChangePwd } from "../api";
 import Swal from "sweetalert2/dist/sweetalert2.js";
 import "sweetalert2/src/sweetalert2.scss";
+import { mapActions } from "vuex";
+import { submitChangePwdLogin } from "../api";
+import { validatePassword } from "@/utils/validation";
 
 export default {
-  name: "ChangePwd",
+  name: "ChangePwdLogin",
   data() {
     return {
       pwd1: "",
       pwd2: "",
-      msg: " ",
-      validPwd: "",
-      passwordConfirm: false,
-      btnEnabled: false,
+      msg2: " ",
+      msg1: "",
     };
   },
-  props: {
-    email: String,
-  },
   methods: {
-    async checkPwd() {
-      if (this.pwd1 !== this.pwd2) {
-        this.msg = "비밀번호 불일치";
-      } else this.msg = "";
-
-      if (this.msg === "" && this.isPasswordValid) {
-        this.btnEnabled = true;
+    ...mapActions(["getGoogleUserInfo"]),
+    checkPasswordForm() {
+      if (!this.isPasswordValid) {
+        this.msg1 =
+          "비밀번호는 영문자 대문자, 소문자, 특수문자, 숫자를 포함한 8자 이상으로 설정해주세요";
+      } else {
+        this.msg1 = "";
       }
+    },
+    checkPwd() {
+      if (!this.isSamePassword) {
+        this.msg2 = "비밀번호 불일치";
+      } else this.msg2 = "";
     },
     goback() {
       this.$router.go(-1);
     },
     async changePwd() {
-      submitChangePwd(this.email, this.pwd1)
+      const id_token = this.$store.state.id_token;
+      submitChangePwdLogin(this.pwd1, id_token)
         .then(() => {
           Swal.fire({
-            text: "비밀번호 변경완료 ! 로그인 해주세요",
+            text: "비밀번호 변경완료 !",
             icon: "error",
             closeOnClickOutside: true,
             confirmButtonText:
@@ -93,14 +95,6 @@ export default {
         })
         .catch((err) => alert("Error : ", err));
     },
-    checkPasswordForm() {
-      if (!this.isPasswordValid) {
-        this.validPwd =
-          "비밀번호는 영문자 대문자, 소문자, 특수문자, 숫자를 포함한 8자 이상으로 설정해주세요";
-      } else {
-        this.validPwd = "";
-      }
-    },
   },
   computed: {
     isPasswordValid() {
@@ -110,8 +104,16 @@ export default {
       return validatePassword(this.pwd1);
     },
     isSamePassword() {
-      return this.pwd1 && this.pwd2 === this.passwordConfirm;
+      return this.pwd1 === this.pwd2;
     },
+    btnEnabled() {
+      return this.pwd1 && this.isPasswordValid && this.isSamePassword;
+    },
+  },
+  created() {
+    if (this.id_token) {
+      this.getGoogleUserInfo(this.id_token);
+    }
   },
   directives: {
     focus: {
@@ -168,6 +170,18 @@ export default {
   border-radius: 3px;
   color: white;
 }
+.cancel {
+  left: 35%;
+  background-color: #b3b3b3;
+}
+.submit {
+  background-color: royalblue;
+  left: 50%;
+}
+.btn:disabled {
+  background-color: gray;
+  cursor: not-allowed;
+}
 p {
   position: fixed;
   text-align: center;
@@ -197,6 +211,9 @@ p {
   top: 63%;
   font-size: 13px;
   color: red;
+}
+.guide-text:disabled {
+  display: none;
 }
 @media (max-width: 768px) {
   #title {

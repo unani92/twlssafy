@@ -16,10 +16,11 @@
           type="text"
           v-model="input"
           @input="submitAutoComplete"
+          class="search_input"
         />
         <i class="fas fa-search" @click="fetchSearchData"></i>
       </div>
-      <div class="autocomplete disabled">
+      <div v-if="category==='keyword'" class="autocomplete disabled">
         <div
           @click="searchSkillAdd"
           class="autocomplete-cursor"
@@ -29,7 +30,7 @@
       </div>
     </div>
     <p class="search-result-guide">{{searchResult}}</p>
-    <div v-if="searchArticles" style="margin-top:1rem">
+    <div v-if="searchArticles.length" style="margin-top:1rem">
       <ArticleSearchCard
         v-for="(article,index) in searchArticles"
         :key="article.articleid"
@@ -39,9 +40,17 @@
         :likesCnt="likesCntList[index]"
         :pinCnt="pinCntList[index]"
       />
-      <div id="bottomSensor"></div>
+
     </div>
-    <scroll />
+    <div v-else-if="q">
+      <center style="margin-top:30px;">
+        <img class = "muji" src="https://user-images.githubusercontent.com/53211781/90217074-42994880-de3b-11ea-8d3b-21594cb5ad6e.png" alt="">
+        <h1 class="ment">검색 결과가 없습니다 !<br>철자와 띄어쓰기를 다시 확인 해 주세Yo</h1>
+      </center>
+      <br>
+      <br>
+    </div>
+    <div id="searchBottomSensor"></div>
   </div>
 </template>
 
@@ -69,47 +78,53 @@ export default {
       q: null,
       category: "keyword",
       searchResult: "",
+      result: null,
     };
   },
   methods: {
     submitAutoComplete() {
-      const autocomplete = document.querySelector(".autocomplete");
-      if (this.input) {
-        autocomplete.classList.remove("disabled");
-        this.result = skills.filter((skill) => {
-          return skill.match(new RegExp("^" + this.input, "i"));
-        });
-      } else {
-        autocomplete.classList.add("disabled");
+      if (this.category === "keyword") {
+       const autocomplete = document.querySelector(".autocomplete");
+        if (this.input) {
+          autocomplete.classList.remove("disabled");
+          this.result = skills.filter((skill) => {
+            return skill.match(new RegExp("^" + this.input, "i"));
+          });
+        } else {
+          autocomplete.classList.add("disabled");
+        }
       }
     },
     async fetchSearchData() {
       if (this.q === this.input) {
         const params = {
-          page: this.page++,
-          q: this.q || this.$route.query.q,
-          category: this.category || this.$route.query.category,
-        };
-        const res = await searchArticle(params);
-        console.log(res);
-        const {
-          data: {
-            object: {
-              article,
-              keyword,
-              likesCntList,
-              commentCntList,
-              pinCntList,
-            },
-          },
-        } = await searchArticle(params);
-        console.log(article);
-        console.log(keyword);
-        this.keywords = [...this.keywords, ...keyword];
-        this.searchArticles = [...this.searchArticles, ...article];
-        this.likesCntList = [...this.likesCntList, ...likesCntList];
-        this.commentCntList = [...this.commentCntList, ...commentCntList];
-        this.pinCntList = [...this.pinCntList, ...pinCntList];
+        page: this.page++,
+        q: this.q || this.$route.query.q,
+        category: this.category || this.$route.query.category,
+      };
+        try {
+          if (params.q !== undefined) {
+            const {
+              data: {
+                object: {
+                  article,
+                  keyword,
+                  likesCntList,
+                  commentCntList,
+                  pinCntList,
+                },
+              },
+            } = await searchArticle(params);
+            this.keywords = [...this.keywords, ...keyword];
+            this.searchArticles = [...this.searchArticles, ...article];
+            this.likesCntList = [...this.likesCntList, ...likesCntList];
+            this.commentCntList = [...this.commentCntList, ...commentCntList];
+            this.pinCntList = [...this.pinCntList, ...pinCntList];
+          }
+
+        } catch (e) {
+          return
+        }
       } else {
         this.q = this.input;
         this.page = 0;
@@ -117,10 +132,8 @@ export default {
         const params = {
           page: this.page++,
           q: this.q,
-          category: this.category,
+          category: this.category
         };
-        const res = await searchArticle(params);
-        console.log(`else: ${res}`);
         const {
           data: {
             object: {
@@ -132,14 +145,11 @@ export default {
             },
           },
         } = await searchArticle(params);
-        console.log(article);
-        console.log(keyword);
         this.keywords = [...this.keywords, ...keyword];
         this.searchArticles = [...this.searchArticles, ...article];
         this.likesCntList = [...this.likesCntList, ...likesCntList];
         this.commentCntList = [...this.commentCntList, ...commentCntList];
         this.pinCntList = [...this.pinCntList, ...pinCntList];
-        console.log(this.pinCntList);
       }
     },
 
@@ -152,8 +162,6 @@ export default {
           q: skill,
           category: "keyword",
         };
-        const res = await searchArticle(params);
-        console.log(res);
         const {
           data: {
             object: {
@@ -181,10 +189,14 @@ export default {
       }
     },
     addScrollWatcher() {
-      const bottomSensor = document.querySelector("#bottomSensor");
+      const bottomSensor = document.querySelector("#searchBottomSensor");
       const watcher = scrollMonitor.create(bottomSensor);
       watcher.enterViewport(() => {
-        this.fetchSearchData();
+        try {
+          this.fetchSearchData();
+        } catch (e) {
+          console.log('error')
+        }
       });
     },
     init() {
@@ -198,7 +210,7 @@ export default {
     },
   },
   mounted() {
-    setTimeout(() => this.addScrollWatcher(), 1000);
+    setTimeout(() => this.addScrollWatcher(), 500);
   },
   updated() {
     //autocomplete가 켜져 있을 때 esc 누르면 닫힘

@@ -20,9 +20,20 @@
         </div>
       </div>
       <div class="article-icon">
+        <div class="icon" style="display: flex">
+          <div style="display: flex">
+            <div v-if="$store.getters.isLoggedIn" class="circle">{{ $store.state.notificationCnt }}</div>
+            <i
+              v-if="$store.getters.isLoggedIn"
+              @click="notificationIconToggle"
+              class="far fa-bell"
+            />
+          </div>
+          <i v-if="!this.$store.getters.isLoggedIn" @click="asideBarToggle" class="fas fa-bars"></i>
+        </div>
         <div v-if="this.$store.getters.isLoggedIn">
           <div
-            style="width : 28px;"
+            style="width : 35px;"
             :style="{
               backgroundImage:
                 'url(' +
@@ -32,6 +43,7 @@
             class="grade"
           ></div>
         </div>
+
         <div v-if="this.$store.getters.isLoggedIn" class="mypage">
           <figure
             v-if="$store.state.img"
@@ -39,7 +51,7 @@
             :style="{
               'background-image': 'url(' + this.$store.state.img + ')',
             }"
-            @click="goToMyPage"
+            @click="userToggle"
           ></figure>
           <figure
             v-else
@@ -50,21 +62,8 @@
                 `https://api.adorable.io/avatars/100/${this.$store.state.username}.png` +
                 ')',
             }"
-            @click="goToMyPage"
+            @click="userToggle"
           ></figure>
-        </div>
-        <div class="icon" style="display: flex">
-          <div style="display: flex">
-            <div v-if="$store.getters.isLoggedIn" class="circle">
-              {{ $store.state.notificationCnt }}
-            </div>
-            <i
-              v-if="$store.getters.isLoggedIn"
-              @click="notificationIconToggle"
-              class="far fa-bell"
-            />
-          </div>
-          <i @click="asideBarToggle" class="fas fa-bars"></i>
         </div>
       </div>
     </div>
@@ -75,24 +74,28 @@
         :key="noti.notificationid"
       />
     </div>
-    <div class="aside disabled">
-      <div class="aside-menu" v-if="!this.$store.getters.isLoggedIn">
+    <!-- 로그인 안한 경우 사이드 바 -->
+    <div v-if="!this.$store.getters.isLoggedIn" class="aside disabled">
+      <div class="aside-menu">
         <GoogleLogin />
         <div @click="goToEmailLogin" class="emailogin-text">Email Login</div>
         <div @click="goToSignup" class="signup-text">Signup</div>
       </div>
-      <div v-else class="aside-menu-loggedIn">
+    </div>
+    <div class="userMenu disabled">
+      <div class="userMenu-menu">
         <div @click="goToMyPage" class="mypage-text">MyPage</div>
-        <div @click="logout" class="emailogin-text">Log Out</div>
+        <div v-if="!isGoogleUser" @click="goToPwChange" class="mypage-text">비밀번호 변경</div>
+        <div @click="logout" class="mypage-text">Log Out</div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import GoogleLogin from './GoogleLogin';
-import Notification from './Notification';
-import { getGrade } from '@/utils/calcGrade';
+import GoogleLogin from "./GoogleLogin";
+import Notification from "./Notification";
+import { getGrade } from "@/utils/calcGrade";
 export default {
   data() {
     return {
@@ -107,58 +110,71 @@ export default {
     calcGrade() {
       return getGrade(this.$store.state.score);
     },
+    isGoogleUser() {
+      return this.$store.state.isGoogleUser;
+    },
   },
-  name: 'NavBar',
+  name: "NavBar",
   components: {
     GoogleLogin,
     Notification,
   },
   methods: {
     asideBarToggle() {
-      const aside = document.querySelector('.aside');
-      aside.classList.toggle('disabled');
+      const aside = document.querySelector(".aside");
+      aside.classList.toggle("disabled");
     },
     notificationIconToggle() {
       if (this.$store.state.notification.length) {
-        const notiDropdown = document.querySelector('.notification');
-        notiDropdown.classList.toggle('disabled');
+        const notiDropdown = document.querySelector(".notification");
+        notiDropdown.classList.toggle("disabled");
       }
     },
+    userToggle() {
+      const userMenu = document.querySelector(".userMenu");
+      userMenu.classList.toggle("disabled");
+    },
     gotoMain() {
-      this.$router.push('/');
+      if(document.location.href==="http://localhost:4000/latest") {
+        window.scrollTo(0,0);
+      }
+      else this.$router.push("/latest");
     },
     goToEmailLogin() {
-      const aside = document.querySelector('.aside');
-      this.$router.push({ name: 'Login' });
-      aside.classList.toggle('disabled');
+      const aside = document.querySelector(".aside");
+      this.$router.push({ name: "Login" });
+      aside.classList.toggle("disabled");
     },
     goToSignup() {
-      const aside = document.querySelector('.aside');
-      this.$router.push({ name: 'Signup' });
-      aside.classList.toggle('disabled');
+      const aside = document.querySelector(".aside");
+      this.$router.push({ name: "Signup" });
+      aside.classList.toggle("disabled");
     },
     goToMyPage() {
       this.$router.push({
-        name: 'Dummy',
+        name: "Dummy",
         params: { following: this.$store.state.nickname },
       });
     },
+    goToPwChange() {
+      this.$router.push("/ChangePwdLogin");
+    },
     logout() {
-      this.$router.push({ name: 'Logout' });
+      this.$router.push({ name: "Logout" });
     },
     scrollEvent() {
-      const navBar = document.querySelector('.notification');
+      const navBar = document.querySelector(".notification");
       if (navBar) {
         const nowScrollY = window.scrollY;
         if (nowScrollY > this.scroll.prev) {
-          navBar.classList.add('disabled');
+          navBar.classList.add("disabled");
           this.scroll.prev = nowScrollY;
         }
       }
     },
   },
   mounted() {
-    document.addEventListener('scroll', this.scrollEvent);
+    document.addEventListener("scroll", this.scrollEvent);
   },
 };
 </script>
@@ -183,27 +199,25 @@ export default {
   background-color: black;
   width: 80px;
   height: 60px;
-  color: white;
-  font-family: 'Rowdies', cursive;
+  font-family: "Rowdies", cursive;
   font-size: 28px;
   text-align: center;
   border-radius: 3px;
-  margin-left: 1rem;
+  margin-left: 0;
   text-decoration: none;
 }
 .logo:hover {
   cursor: pointer;
 }
 .logo-gif {
-  width: 100%;
   height: 100%;
-  background-size: 100%;
+  background-size: 80px 60px;
   background-position: center;
   background-repeat: no-repeat;
-  /* background-color: white; */
+  background-color: white;
 }
 .input-box {
-  margin-left: 2rem;
+  margin-left: 3rem;
 }
 .logo-text {
   text-decoration: none;
@@ -215,21 +229,20 @@ export default {
   align-items: center;
 }
 .grade {
-  width: 40px;
-  height: 40px;
+  height: 60px;
   flex-shrink: 0;
   background-repeat: no-repeat;
   background-position: center;
   background-size: 100%;
-  margin-right: 0.5em;
+  /* margin-right: 0.5em; */
 }
 .notification {
   position: fixed;
   border-radius: 10px;
   background-color: #d5dbd9;
-  top: 70px;
-  margin-right: 4px;
-  right: 0;
+  top: 50px;
+  margin-right: 1rem;
+  right: 7px;
   overflow: auto;
   height: 268px;
   z-index: 10;
@@ -244,10 +257,8 @@ i {
   cursor: pointer;
 }
 .circle {
-  position: absolute;
-  top: 15px;
-  right: 60px;
   border-radius: 75%;
+  margin-right: -20px;
   width: 20px;
   height: 20px;
   background-color: crimson;
@@ -263,42 +274,10 @@ i:hover {
 .mypage:hover {
   cursor: pointer;
 }
-@media (max-width: 414px) {
-  .search-bar {
-    width: 150px;
-  }
-  .article,
-  .grade {
-    display: none;
-  }
-}
-@media (max-width: 376px) {
-  .search-bar {
-    width: 155px;
-  }
-  i {
-    font-size: 20px;
-  }
-}
-@media (max-width: 320px) {
-  .logo {
-    width: 56px;
-    font-size: 20px;
-  }
-  .search-bar {
-    width: 130px;
-    height: 22px;
-  }
-  .nav-bar {
-    height: 40px;
-  }
-  i {
-    font-size: 1rem;
-  }
-}
+
 .aside {
   position: fixed;
-  top: 70px;
+  top: 55px;
   right: 0;
   z-index: 10;
 }
@@ -312,39 +291,21 @@ i:hover {
   align-items: center;
   margin-right: 1rem;
 }
-.aside-menu-loggedIn {
-  width: 300px;
-  border: 1px solid black;
-  background-color: white;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  margin-right: 1rem;
-}
 .aside-menu > div,
-.aside-menu-loggedIn > div {
+.userMenu-menu > div {
   margin: 10px;
 }
-.aside-menu-loggedIn > div:nth-child(1) {
+.aside-menu > div:nth-child(1) {
   width: 250px;
   height: 50px;
   border-radius: 3px;
   background-color: rgb(143, 182, 204);
+  color: white;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 .aside-menu > div:nth-child(2) {
-  width: 250px;
-  height: 50px;
-  border-radius: 3px;
-  background-color: rgb(204, 93, 65);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.aside-menu-loggedIn > div:nth-child(2) {
   width: 250px;
   height: 50px;
   border-radius: 3px;
@@ -380,7 +341,7 @@ i:hover {
   width: 40px;
   height: 40px;
   flex-shrink: 0;
-  border: 2px solid #333;
+  border: 1.5px solid #333;
   border-radius: 50%;
   background-color: rgb(144, 153, 240);
   background-repeat: no-repeat;
@@ -390,7 +351,87 @@ i:hover {
 }
 .mypage-text {
   cursor: pointer;
-  color: white;
   font-weight: bolder;
+}
+.userMenu {
+  position: fixed;
+  top: 55px;
+  right: 0rem;
+  z-index: 10;
+}
+.userMenu-menu {
+  width: 200px;
+  border: 1px solid black;
+  background-color: white;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-right: 1rem;
+}
+.userMenu-menu > div {
+  height: 40px;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-right: 1rem;
+}
+.userMenu-menu > div:nth-child(1) {
+  border-radius: 3px;
+  color: rgb(143, 182, 204);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.userMenu-menu > div:nth-child(2) {
+  border-radius: 3px;
+  color: rgb(96, 196, 121);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.userMenu-menu > div:nth-child(3) {
+  border-radius: 3px;
+  color: rgb(204, 93, 65);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (max-width: 414px) {
+  .search-bar {
+    width: 150px;
+  }
+  .article,
+  .grade {
+    display: none;
+  }
+}
+@media (max-width: 376px) {
+  .search-bar {
+    width: 155px;
+  }
+  i {
+    font-size: 20px;
+  }
+}
+@media (max-width: 320px) {
+  .logo {
+    width: 56px;
+    font-size: 20px;
+  }
+  .search-bar {
+    width: 130px;
+    height: 22px;
+  }
+  .nav-bar {
+    height: 40px;
+  }
+  i {
+    font-size: 1rem;
+  }
 }
 </style>

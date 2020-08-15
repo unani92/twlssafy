@@ -49,7 +49,6 @@ export default {
   },
   computed: {
     calcGrade() {
-      console.log(getGrade(this.score));
       return getGrade(this.score);
     },
     // photo() {
