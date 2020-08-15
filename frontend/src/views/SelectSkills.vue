@@ -1,18 +1,19 @@
 <template>
   <div class="selectskills">
-    <h1>관심사를 선택해주세요</h1>
-    <div class="selectskills-main">
-      <h2>Hot skills</h2>
-      <button v-if="nowSignUp" @click="$router.push('/')" class="complete-signup">가입완료</button>
+    <!-- <div class="selectskills-main">
       <div class="hotskills">
-        <div v-for="(skill,i) in hotSkills" :key="i" :id="skill.name" class="skill-badge">
-          <span>{{ skill.name }}</span>
+        <div v-for="skill in hotSkills" :key="skill" :id="skill" class="skill-badge">
+          <span>{{ skill }}</span>
           <i @click="addStack" style="cursor:pointer;" class="fas fa-plus"></i>
         </div>
       </div>
-    </div>
+    </div> -->
     <div class="selectskills-search">
-      <input v-model="skillInput" @input="submitAutoComplete" type="text" />
+      <h2 style="margin : 20px;">관심 있는 기술을 검색하여 등록해보세요 !</h2>
+      <!-- <h4 style="margin-top : 30px;">기술 검색</h4> -->
+      <i class="fas fa-search">
+        <input v-model="skillInput" @input="submitAutoComplete" type="text" style="margin-bottom : 15px;" />
+      </i>
       <div class="autocomplete disabled">
         <div
           @click="searchSkillAdd"
@@ -30,6 +31,7 @@
           <i @click="removeStack" style="cursor:pointer;" class="fas fa-times"></i>
         </div>
       </div>
+      <button v-if="nowSignUp" @click="$router.push('/')" class="complete-signup">가입완료</button>
     </div>
   </div>
 </template>
@@ -43,7 +45,7 @@ export default {
   data() {
     return {
       path: this.$route.path,
-      hotSkills: [],
+      hotSkills: ['C','Java','AI','Vue.js','Python'],
       skillInput: null,
       result: null,
       userSkill: this.$store.state.userSkills,
@@ -133,12 +135,12 @@ export default {
 
 <style scoped>
 .selectskills {
-  padding-top: 60px;
+  padding-top: 135px;
 }
-h1 {
+/* h1 {
   font-size: 40px;
   text-align: center;
-}
+} */
 input {
   margin-top: 2rem;
   text-align: center;
@@ -157,7 +159,7 @@ input {
   margin-left: auto;
   margin-right: auto;
   padding-bottom: 1rem;
-  border-radius: 3px;
+  border-radius: 10px;
   background-color: white;
   text-align: left;
   display: flex;
@@ -174,7 +176,7 @@ input {
 .skill-badge {
   color: white;
   font-weight: bold;
-  background-color: black;
+  background-color: rgba(77, 127, 219, 0.815);
   width: 100px;
   height: 40px;
   border-radius: 6px;
