@@ -32,7 +32,9 @@ export default new Vuex.Store({
     config: (state) => ({
       headers: { id_token: state.id_token },
     }),
-    // notificationCnt: state => state.notification.length
+    notificationCnt: state => state.notification.filter(
+      noti => noti.ready === 0
+    ).length
   },
   mutations: {
     setToken(state, token) {
