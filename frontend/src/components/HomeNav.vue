@@ -2,8 +2,8 @@
   <div class="home-nav">
     <div class="post-nav">
       <span>
-        <span v-if="($store.state.prev=='/')" class="bar-text now" v-on:click="goToHome()">핫 & 추천</span>
-        <span v-else class="bar-text" v-on:click="goToHome()">핫 & 추천</span>
+        <span v-if="($store.state.prev=='/')" class="bar-text now" v-on:click="goToHome()">홈</span>
+        <span v-else class="bar-text" v-on:click="goToHome()">홈</span>
       </span>
       <span>
         <span v-if="($store.state.prev=='/latest')" class="bar-text now" v-on:click="goToLatest()">최신글</span>

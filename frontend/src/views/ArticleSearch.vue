@@ -43,10 +43,10 @@
 
     </div>
     <div v-else-if="q">
-      <center style="margin-top:30px;">
-        <img class = "muji" src="https://user-images.githubusercontent.com/53211781/90217074-42994880-de3b-11ea-8d3b-21594cb5ad6e.png" alt="">
-        <h1 class="ment">검색 결과가 없습니다 !<br>철자와 띄어쓰기를 다시 확인 해 주세Yo</h1>
-      </center>
+      <div style="margin-top:30px;">
+        <center><img class = "muji2" src="https://user-images.githubusercontent.com/53211781/90217074-42994880-de3b-11ea-8d3b-21594cb5ad6e.png" alt=""></center>
+        <center><h1 class="ment2">검색 결과가 없습니다 !<br>철자와 띄어쓰기를 다시 확인 해 주세Yo</h1></center>
+      </div>
       <br>
       <br>
     </div>
@@ -324,5 +324,24 @@ i {
   font-weight: 600;
   margin: 0.5rem 0.25rem;
   text-align: center;
+}
+@media (min-width: 0) and (max-width : 469px){
+  .ment2 {
+    font-size: 15px;
+  }
+   .muji2 {
+    height : 90px;
+    width : 90px;
+
+  }
+}
+@media (min-width: 468px) and (max-width : 615px){
+  .ment2 {
+    font-size: 24px;
+  }
+  .muji2 {
+    height : 150px;
+    width : 150px;
+  }
 }
 </style>
