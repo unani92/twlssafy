@@ -11,6 +11,7 @@
         <p>⚡ News ⚡</p>
       </div>
       <br />
+      <button @click="goToTop" class="top-btn"><i class="fas fa-angle-double-up"> TOP</i></button>
       <ArticleCard
         v-for="(article, index) in articles"
         :key="article._id"
@@ -70,6 +71,10 @@ export default {
         this.fetchData();
       });
     },
+    goToTop() {
+      const nowScroll = window.scrollY
+      scrollBy({top: -nowScroll, behavior:'smooth'})
+    }
   },
   created() {
     this.fetchData();
@@ -91,7 +96,28 @@ export default {
 #bottomSensor {
   height: 10px;
 }
+.top-btn {
+  position: fixed;
+  left: 1rem;
+  top: 650px;
+  width: 60px;
+  color: white;
+  font-weight: bolder;
+  background-color: rgb(144, 153, 240);
+  font-size: 1rem;
+}
 
+@media (max-width: 414px) {
+  .top-btn {
+    top: 670px
+  }
+}
+
+@media (max-width: 375px) {
+  .top-btn {
+    top: 580px
+  }
+}
 ::-webkit-scrollbar {
   -webkit-appearance: none;
 }
