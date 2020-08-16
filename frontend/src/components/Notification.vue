@@ -46,7 +46,6 @@
       goToPage(event) {
         if (this.isLoggedIn) {
           const notificationId = event.target.parentNode.id
-          console.log(notificationId)
           submitNotiRead(notificationId)
             .then(res => {
               this.noti.ready = 1
