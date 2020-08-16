@@ -134,22 +134,27 @@ export default {
           q: this.q,
           category: this.category
         };
-        const {
-          data: {
-            object: {
-              article,
-              keyword,
-              likesCntList,
-              commentCntList,
-              pinCntList,
+
+        try {
+          const {
+            data: {
+              object: {
+                article,
+                keyword,
+                likesCntList,
+                commentCntList,
+                pinCntList,
+              },
             },
-          },
-        } = await searchArticle(params);
-        this.keywords = [...this.keywords, ...keyword];
-        this.searchArticles = [...this.searchArticles, ...article];
-        this.likesCntList = [...this.likesCntList, ...likesCntList];
-        this.commentCntList = [...this.commentCntList, ...commentCntList];
-        this.pinCntList = [...this.pinCntList, ...pinCntList];
+          } = await searchArticle(params);
+          this.keywords = [...this.keywords, ...keyword];
+          this.searchArticles = [...this.searchArticles, ...article];
+          this.likesCntList = [...this.likesCntList, ...likesCntList];
+          this.commentCntList = [...this.commentCntList, ...commentCntList];
+          this.pinCntList = [...this.pinCntList, ...pinCntList];
+        } catch (e) {
+          return
+        }
       }
     },
 
@@ -181,7 +186,6 @@ export default {
         this.searchResult = "";
       } catch (error) {
         this.searchResult = `"${skill}"의 검색 결과가 없습니다.`;
-        console.error(error);
       } finally {
         this.input = skill;
         const autocomplete = document.querySelector(".autocomplete");

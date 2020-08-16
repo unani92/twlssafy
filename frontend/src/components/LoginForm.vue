@@ -122,16 +122,14 @@ export default {
         password: this.password,
       };
       try {
+        const redirect = this.$route.query.redirect
+        // googleUserInfo 타기 전에 스피너로 보내고 로그인이 이뤄지면 탈출
+        this.$router.push({ name: 'LoginLoading', params: {redirect: redirect} })
         const res = await login(params);
         this.getGoogleUserInfo(res.data.object.id_token);
-        if (this.$route.query.redirect) {
-          const redirect = this.$route.query.redirect;
-          this.$router.push({
-            name: 'ArticleDetail',
-            params: { id: Number(redirect) },
-          });
-        } else this.$router.push('/');
       } catch (error) {
+        // 로그인 실패 시 다시 로그인 화면으로 돌아가기
+        this.$router.push({ name: 'Login', params: {error: true} })
         this.logMessage.email = '아이디, 비밀번호를 확인하세요';
       }
     },
@@ -142,6 +140,10 @@ export default {
     goToSignup() {
       this.$router.push('/signup');
     },
+  },
+  mounted() {
+    // 로그인 실패 후 로그인 컴포넌트로 돌아왔을 경우 에러메시지 출력
+    if (this.$route.params.error) this.logMessage.email = '아이디, 비밀번호를 확인하세요';
   },
   directives: {
     focus: {

@@ -46,16 +46,15 @@
       goToPage(event) {
         if (this.isLoggedIn) {
           const notificationId = event.target.parentNode.id
-          console.log(notificationId)
           submitNotiRead(notificationId)
-            .then(res => {
+            .then(() => {
               this.noti.ready = 1
               if (this.noti.type === "follow") {
                 this.$router.push({name: "Dummy", params: {nickname: this.noti.othernickname}})
               } else {
                 this.$router.push({name: "Dummy", params: {id: this.noti.articleid}})
               }
-              if(res.data.status) this.$store.state.notificationCnt--;
+              // if(res.data.status) this.$store.state.notificationCnt--;
             }
           )
           .catch(err => {
@@ -71,6 +70,8 @@
             .then(() => {
               this.$store.state.notification = this.$store.state.notification.filter(
                 noti => Number(noti.notificationid) !== Number(notificationId))
+              const navBar = document.querySelector(".notification");
+              navBar.classList.remove("disabled")
             })
             .catch(err => console.log(err))
         }
