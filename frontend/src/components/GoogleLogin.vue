@@ -38,7 +38,7 @@ export default {
     ...mapActions(['getGoogleUserInfo']),
     onSuccess(googleUser) {
       let id_token = googleUser.wc.id_token;
-      const redirect = this.$route.query.redirect
+      const redirect = this.$route.query.redirect || this.$route.params.id
       this.$router.push({ name: 'LoginLoading', params: {redirect: redirect} })
       socialLogin(id_token)
         .then((res) => {
