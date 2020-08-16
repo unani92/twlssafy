@@ -135,6 +135,7 @@ export default {
       userMenu.classList.toggle("disabled");
     },
     gotoMain() {
+      this.$store.commit('setPrev','/latest');
       if(document.location.href==="http://localhost:4000/latest") {
         window.scrollTo(0,0);
       }

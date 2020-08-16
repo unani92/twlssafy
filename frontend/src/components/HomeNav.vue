@@ -2,16 +2,20 @@
   <div class="home-nav">
     <div class="post-nav">
       <span>
-        <router-link to="/" exact class="bar-text">Home</router-link>
+        <span v-if="($store.state.prev=='/')" class="bar-text now" v-on:click="goToHome()">홈</span>
+        <span v-else class="bar-text" v-on:click="goToHome()">홈</span>
       </span>
       <span>
-        <Router-link to="/latest" class="bar-text">Latest</Router-link>
+        <span v-if="($store.state.prev=='/latest')" class="bar-text now" v-on:click="goToLatest()">최신</span>
+        <span v-else class="bar-text" v-on:click="goToLatest()">최신</span>
       </span>
       <span>
-        <router-link v-if="isLoggedIn" to="/follow" class="bar-text">Follow</router-link>
+        <span v-if="($store.state.prev=='/follow')" class="bar-text now" v-on:click="goToFollow()">팔로우</span>
+        <span v-else class="bar-text" v-on:click="goToFollow()">팔로우</span>
       </span>
       <span>
-        <router-link v-if="isLoggedIn" to="/pin" class="bar-text">Bookmark</router-link>
+        <span v-if="($store.state.prev=='/pin')" class="bar-text now" v-on:click="goToPin()">북마크</span>
+        <span v-else class="bar-text" v-on:click="goToPin()">북마크</span>
       </span>
     </div>
     <div v-if="$store.getters.isLoggedIn">
@@ -48,7 +52,9 @@ export default {
       scroll: {
         prev: 0,
         upDown: null
-      }
+      },
+      path: null,
+      prevTab: this.$store.state.prev,
     };
   },
   methods: {
@@ -59,6 +65,7 @@ export default {
     async fetchData() {
       const { data } = await fetchHashTags();
       this.hashTag = data.object;
+      
     },
     scrollEvent() {
       const homeBar = document.querySelector(".home-nav")
@@ -76,19 +83,33 @@ export default {
               this.scroll.prev = nowScrollY
             }
           } else {
-            console.log('d');
             homeBar.classList.remove("disabled")
             this.scroll.prev = nowScrollY
           }
         }
       },
+      goToHome() {
+        this.$store.commit('setPrev','/');
+        this.$router.push('/')
+      },
+      goToLatest() {
+        this.$store.commit('setPrev','/latest');
+        this.$router.push('/latest')
+      },
+      goToFollow() {
+        this.$store.commit('setPrev','/follow');
+        this.$router.push('/follow')
+      },
+      goToPin() {
+        this.$store.commit('setPrev','/pin');
+        this.$router.push('/pin')
+      }
   },
   mounted() {
+    this.path = this.$router.currentRoute.path;
     if(window.innerWidth>400){
       document.addEventListener("scroll", this.scrollEvent)
-    } else {
-      console.log('dd')
-    }
+    } 
   },
   created() {
     this.fetchData();
@@ -127,7 +148,7 @@ export default {
 .post-nav > span > a:hover {
   color: blueviolet;
 }
-.router-link-active {
+.router-link-active, .now {
   color: blueviolet;
   font-size: 23px;
 }
