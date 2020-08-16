@@ -2,12 +2,12 @@
   <div class="home-nav">
     <div class="post-nav">
       <span>
-        <span v-if="($store.state.prev=='/')" class="bar-text now" v-on:click="goToHome()">홈</span>
-        <span v-else class="bar-text" v-on:click="goToHome()">홈</span>
+        <span v-if="($store.state.prev=='/')" class="bar-text now" v-on:click="goToHome()">핫 & 추천</span>
+        <span v-else class="bar-text" v-on:click="goToHome()">핫 & 추천</span>
       </span>
       <span>
-        <span v-if="($store.state.prev=='/latest')" class="bar-text now" v-on:click="goToLatest()">최신</span>
-        <span v-else class="bar-text" v-on:click="goToLatest()">최신</span>
+        <span v-if="($store.state.prev=='/latest')" class="bar-text now" v-on:click="goToLatest()">최신글</span>
+        <span v-else class="bar-text" v-on:click="goToLatest()">최신글</span>
       </span>
       <span>
         <span v-if="($store.state.prev=='/follow')" class="bar-text now" v-on:click="goToFollow()">팔로우</span>
@@ -136,6 +136,9 @@ export default {
   margin: 1rem;
   cursor: pointer;
 }
+.post-nav {
+  margin: 0 1rem;
+}
 .bar-text{
   color: lightslategrey;
 }
@@ -150,7 +153,7 @@ export default {
 }
 .router-link-active, .now {
   color: blueviolet;
-  font-size: 23px;
+  /*font-size: 23px;*/
 }
 .interest {
   position: absolute;
