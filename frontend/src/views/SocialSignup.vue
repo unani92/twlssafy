@@ -14,33 +14,33 @@
         <p class="join-warning guide-text">{{ logMessage.nickname }}</p>
         <div class="inputfield">
           <input
-                  class="input"
-                  id="nickname"
-                  type="text"
-                  v-model="nickname"
-                  @focusout="nicknameCheck"
-                  placeholder="nickname"
+            class="input"
+            id="nickname"
+            type="text"
+            v-model="nickname"
+            @focusout="nicknameCheck"
+            placeholder="nickname"
           />
         </div>
 
         <div class="inputfield">
-          <input class="input" id="info" type="text" placeholder="한 줄 소개 부탁해요" v-model="info" />
+          <input class="input" type="text" placeholder="한 줄 소개 부탁해요" v-model="info" />
         </div>
         <p class="join-warning guide-text">{{ logMessage.info }}</p>
 
         <div class="inputfield">
-          <input class="input" id="info" type="text" placeholder="깃허브 주소를 입력해주세요" v-model="github" />
+          <input class="input" type="text" placeholder="깃허브 주소를 입력해주세요" v-model="github" />
         </div>
         <!-- 버튼 활성화 OK -->
         <div class="inputfield">
           <button
-                  @click="submitForm"
-                  type="submit"
-                  class="btn"
-                  :disabled="
-              !(
-                nicknameDoubleCheck
-              )
+            @click="submitForm"
+            type="submit"
+            class="btn"
+            :disabled="
+            !(
+              nicknameDoubleCheck
+            )
             "
           >회원 가입</button>
         </div>

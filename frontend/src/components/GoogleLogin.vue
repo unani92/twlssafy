@@ -38,6 +38,8 @@ export default {
     ...mapActions(['getGoogleUserInfo']),
     onSuccess(googleUser) {
       let id_token = googleUser.wc.id_token;
+      const redirect = this.$route.query.redirect || this.$route.params.id
+      this.$router.push({ name: 'LoginLoading', params: {redirect: redirect} })
       socialLogin(id_token)
         .then((res) => {
           const { email } = res.data.object;
@@ -49,13 +51,13 @@ export default {
           } else {
             id_token = res.data.object.id_token;
             this.getGoogleUserInfo(id_token);
-            if (this.$route.query.redirect) {
-              const redirect = this.$route.query.redirect;
-              this.$router.push({
-                name: 'ArticleDetail',
-                params: { id: Number(redirect) },
-              });
-            } else this.$router.push('/');
+            // if (this.$route.query.redirect) {
+            //   const redirect = this.$route.query.redirect;
+            //   this.$router.push({
+            //     name: 'ArticleDetail',
+            //     params: { id: Number(redirect) },
+            //   });
+            // } else this.$router.push('/');
           }
         })
         .catch((err) => alert('Error : ', err));
