@@ -26,13 +26,16 @@ export default new Vuex.Store({
     articleCount: 0,
     score: 0,
     isGoogleUser: false,
+    prev: '',
   },
   getters: {
     isLoggedIn: (state) => !!state.id_token,
     config: (state) => ({
       headers: { id_token: state.id_token },
     }),
-    // notificationCnt: state => state.notification.length
+    notificationCnt: state => state.notification.filter(
+      noti => noti.ready === 0
+    ).length
   },
   mutations: {
     setToken(state, token) {
@@ -98,6 +101,9 @@ export default new Vuex.Store({
     setNotificationCnt(state, notificationCnt) {
       state.notificationCnt = notificationCnt;
     },
+    setPrev(state, prev) {
+      state.prev = prev;
+    }
   },
   actions: {
     getGoogleUserInfo({ commit }, id_token) {

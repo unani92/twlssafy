@@ -11,6 +11,7 @@
         <p>⚡ News ⚡</p>
       </div>
       <br />
+      <button @click="goToTop" class="top-btn"><i class="fas fa-angle-double-up"> TOP</i></button>
       <ArticleCard
         v-for="(article, index) in articles"
         :key="article._id"
@@ -70,6 +71,10 @@ export default {
         this.fetchData();
       });
     },
+    goToTop() {
+      const nowScroll = window.scrollY
+      scrollBy({top: -nowScroll, behavior:'smooth'})
+    }
   },
   created() {
     this.fetchData();
@@ -91,7 +96,6 @@ export default {
 #bottomSensor {
   height: 10px;
 }
-
 ::-webkit-scrollbar {
   -webkit-appearance: none;
 }

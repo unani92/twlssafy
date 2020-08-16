@@ -43,10 +43,10 @@
 
     </div>
     <div v-else-if="q">
-      <center style="margin-top:30px;">
-        <img class = "muji" src="https://user-images.githubusercontent.com/53211781/90217074-42994880-de3b-11ea-8d3b-21594cb5ad6e.png" alt="">
-        <h1 class="ment">검색 결과가 없습니다 !<br>철자와 띄어쓰기를 다시 확인 해 주세Yo</h1>
-      </center>
+      <div style="margin-top:30px;">
+        <center><img class = "muji2" src="https://user-images.githubusercontent.com/53211781/90217074-42994880-de3b-11ea-8d3b-21594cb5ad6e.png" alt=""></center>
+        <center><h1 class="ment2">검색 결과가 없습니다 !<br>철자와 띄어쓰기를 다시 확인 해 주세Yo</h1></center>
+      </div>
       <br>
       <br>
     </div>
@@ -134,22 +134,27 @@ export default {
           q: this.q,
           category: this.category
         };
-        const {
-          data: {
-            object: {
-              article,
-              keyword,
-              likesCntList,
-              commentCntList,
-              pinCntList,
+
+        try {
+          const {
+            data: {
+              object: {
+                article,
+                keyword,
+                likesCntList,
+                commentCntList,
+                pinCntList,
+              },
             },
-          },
-        } = await searchArticle(params);
-        this.keywords = [...this.keywords, ...keyword];
-        this.searchArticles = [...this.searchArticles, ...article];
-        this.likesCntList = [...this.likesCntList, ...likesCntList];
-        this.commentCntList = [...this.commentCntList, ...commentCntList];
-        this.pinCntList = [...this.pinCntList, ...pinCntList];
+          } = await searchArticle(params);
+          this.keywords = [...this.keywords, ...keyword];
+          this.searchArticles = [...this.searchArticles, ...article];
+          this.likesCntList = [...this.likesCntList, ...likesCntList];
+          this.commentCntList = [...this.commentCntList, ...commentCntList];
+          this.pinCntList = [...this.pinCntList, ...pinCntList];
+        } catch (e) {
+          return
+        }
       }
     },
 
@@ -181,7 +186,6 @@ export default {
         this.searchResult = "";
       } catch (error) {
         this.searchResult = `"${skill}"의 검색 결과가 없습니다.`;
-        console.error(error);
       } finally {
         this.input = skill;
         const autocomplete = document.querySelector(".autocomplete");
@@ -320,5 +324,24 @@ i {
   font-weight: 600;
   margin: 0.5rem 0.25rem;
   text-align: center;
+}
+@media (min-width: 0) and (max-width : 469px){
+  .ment2 {
+    font-size: 15px;
+  }
+   .muji2 {
+    height : 90px;
+    width : 90px;
+
+  }
+}
+@media (min-width: 468px) and (max-width : 615px){
+  .ment2 {
+    font-size: 24px;
+  }
+  .muji2 {
+    height : 150px;
+    width : 150px;
+  }
 }
 </style>

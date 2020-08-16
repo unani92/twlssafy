@@ -24,6 +24,7 @@ import NotFound from '../views/NotFound';
 import store from '@/store/index';
 import PrivacyPolicy from '../views/policies/PrivacyPolicy.vue';
 import TermsOfUse from '../views/policies/TermsOfUse.vue';
+import LoginLoading from "../views/LoginLoading";
 
 Vue.use(VueRouter);
 
@@ -61,6 +62,7 @@ const routes = [
     path: '/login',
     name: 'Login',
     component: Login,
+    props: true,
     beforeEnter: alreadyLogin,
   },
   {
@@ -96,6 +98,12 @@ const routes = [
     name: 'ArticleCreate',
     component: ArticleCreate,
     beforeEnter: requireLogin,
+  },
+  {
+    path: '/nowloading',
+    name: "LoginLoading",
+    component: LoginLoading,
+    props: true
   },
   {
     path: '/:id',

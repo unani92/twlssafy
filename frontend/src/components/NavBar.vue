@@ -22,7 +22,7 @@
       <div class="article-icon">
         <div class="icon" style="display: flex">
           <div style="display: flex">
-            <div v-if="$store.getters.isLoggedIn" class="circle">{{ $store.state.notificationCnt }}</div>
+            <div v-if="$store.getters.isLoggedIn" class="circle">{{ $store.getters.notificationCnt }}</div>
             <i
               v-if="$store.getters.isLoggedIn"
               @click="notificationIconToggle"
@@ -135,6 +135,7 @@ export default {
       userMenu.classList.toggle("disabled");
     },
     gotoMain() {
+      this.$store.commit('setPrev','/latest');
       if(document.location.href==="http://localhost:4000/latest") {
         window.scrollTo(0,0);
       }
