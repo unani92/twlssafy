@@ -389,6 +389,19 @@ public class ArticleController2 {
         List<Integer> r4 = articleDao.rec4(email);
         for(int r : r3) set.add(r);
         for(int r : r4) set.add(r);
+
+        if(set.size()<5) {
+            if(email != null) {
+                List<Integer> r1 = articleDao.rec1_before(email);
+                List<Integer> r2 = articleDao.rec2_before(email);  
+                for(int r : r1) set.add(r);
+                for(int r : r2) set.add(r);
+            }
+            r3 = articleDao.rec3_before(email);
+            r4 = articleDao.rec4_before(email);
+            for(int r : r3) set.add(r);
+            for(int r : r4) set.add(r);
+        }
         System.out.println("SIZE : "+set.size());
 
         List<Article> articles = new ArrayList<>();

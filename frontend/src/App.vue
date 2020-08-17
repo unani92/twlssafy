@@ -81,4 +81,9 @@
       top: 580px
     }
   }
+  @media (min-width: 1024px) {
+    .top-btn {
+      top: 800px
+    }
+  }
 </style>

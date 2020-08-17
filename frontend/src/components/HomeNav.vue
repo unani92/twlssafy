@@ -9,11 +9,11 @@
         <span v-if="($store.state.prev=='/latest')" class="bar-text now" v-on:click="goToLatest()">최신글</span>
         <span v-else class="bar-text" v-on:click="goToLatest()">최신글</span>
       </span>
-      <span>
+      <span v-if="$store.getters.isLoggedIn">
         <span v-if="($store.state.prev=='/follow')" class="bar-text now" v-on:click="goToFollow()">팔로우</span>
         <span v-else class="bar-text" v-on:click="goToFollow()">팔로우</span>
       </span>
-      <span>
+      <span v-if="$store.getters.isLoggedIn">
         <span v-if="($store.state.prev=='/pin')" class="bar-text now" v-on:click="goToPin()">북마크</span>
         <span v-else class="bar-text" v-on:click="goToPin()">북마크</span>
       </span>
