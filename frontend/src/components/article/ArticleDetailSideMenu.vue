@@ -3,31 +3,33 @@
     <div style="position:relative">
       <input type="text" name="ShareUrl" id="ShareUrl" />
     </div>
-    <div class="icon">
-      <i @click="clickFollow" class="far fa-user" :class="{pressed : isFollowed}"></i>
+    <div @click="clickFollow" class="icon">
+      <i class="far fa-user" :class="{pressed : isFollowed}"></i>
       <span class="sideCnt" v-if="isFollowed">-</span>
       <span class="sideCnt" v-else>+</span>
     </div>
-    <div class="icon">
-      <i @click="clickLike" class="far fa-heart" :class="{pressed : isLiked}"></i>
+    <div @click="clickLike" class="icon">
+      <i class="far fa-heart" :class="{pressed : isLiked}"></i>
       <span class="sideCnt">{{ sideMenu.cntLikes }}</span>
     </div>
-    <div class="icon">
-      <i @click="clickPin" class="far fa-bookmark" :class="{pressed : isPinned}"></i>
+    <div @click="clickPin" class="icon">
+      <i class="far fa-bookmark" :class="{pressed : isPinned}"></i>
       <span class="sideCnt">{{ sideMenu.cntPin }}</span>
     </div>
     <!-- <div class="icon">
       <i class="fab fa-creative-commons-share"></i>
     </div>-->
-    <div class="icon share" @click="CopyUrlToClipboard"><i class="far fa-share-square"/></div>
+    <div class="icon share" @click="CopyUrlToClipboard">
+      <i class="far fa-share-square" />
+    </div>
   </div>
 </template>
 
 <script>
 import { likeArticle, pinArticle, requestFollow } from "../../api";
 import { mapState, mapActions } from "vuex";
-import Swal from 'sweetalert2/dist/sweetalert2.js'
-import 'sweetalert2/src/sweetalert2.scss'
+import Swal from "sweetalert2/dist/sweetalert2.js";
+import "sweetalert2/src/sweetalert2.scss";
 
 export default {
   name: "ArticleDetailSideMenu",
@@ -52,24 +54,26 @@ export default {
       const email = this.$store.state.username;
       if (!email) {
         Swal.fire({
-          text:"로그인이 필요한 서비스입니다.",
-          icon:"error",
-          closeOnClickOutside:true,
-          showCancelButton:true,
-          confirmButtonText:"<span style='text-align:center; margin-left:-12px; position:relative; top:-8px;'>OK</span>",
-          confirmButtonColor:"#e6837a",
-          cancelButtonText:"<span style='text-align:center; margin-left:-12px; position:relative; top:-8px;'>NO</span>",
-          cancelButtonColor:"#e6837a",
-          }).then((result) => {
-            if(result.value){
-              this.$router.push({
+          text: "로그인이 필요한 서비스입니다.",
+          icon: "error",
+          closeOnClickOutside: true,
+          showCancelButton: true,
+          confirmButtonText:
+            "<span style='text-align:center; margin-left:-12px; position:relative; top:-8px;'>OK</span>",
+          confirmButtonColor: "#e6837a",
+          cancelButtonText:
+            "<span style='text-align:center; margin-left:-12px; position:relative; top:-8px;'>NO</span>",
+          cancelButtonColor: "#e6837a",
+        }).then((result) => {
+          if (result.value) {
+            this.$router.push({
               name: "Login",
               query: { redirect: `${article_id}` },
             });
-            } else {
-              Swal.close();
-            }
-          });
+          } else {
+            Swal.close();
+          }
+        });
       } else {
         const params = {
           article_id,
@@ -102,24 +106,26 @@ export default {
       const email = this.$store.state.username;
       if (!email) {
         Swal.fire({
-          text:"로그인이 필요한 서비스입니다.",
-          icon:"error",
-          closeOnClickOutside:true,
-          showCancelButton:true,
-          confirmButtonText:"<span style='text-align:center; margin-left:-12px; position:relative; top:-8px;'>OK</span>",
-          confirmButtonColor:"#e6837a",
-          cancelButtonText:"<span style='text-align:center; margin-left:-12px; position:relative; top:-8px;'>NO</span>",
-          cancelButtonColor:"#e6837a",
-          }).then((result) => {
-            if(result.value){
-              this.$router.push({
+          text: "로그인이 필요한 서비스입니다.",
+          icon: "error",
+          closeOnClickOutside: true,
+          showCancelButton: true,
+          confirmButtonText:
+            "<span style='text-align:center; margin-left:-12px; position:relative; top:-8px;'>OK</span>",
+          confirmButtonColor: "#e6837a",
+          cancelButtonText:
+            "<span style='text-align:center; margin-left:-12px; position:relative; top:-8px;'>NO</span>",
+          cancelButtonColor: "#e6837a",
+        }).then((result) => {
+          if (result.value) {
+            this.$router.push({
               name: "Login",
               query: { redirect: `${article_id}` },
             });
-            } else {
-              Swal.close();
-            }
-          });
+          } else {
+            Swal.close();
+          }
+        });
       } else {
         const params = {
           article_id,
@@ -151,24 +157,26 @@ export default {
       const follow = this.article.email;
       if (!email) {
         Swal.fire({
-          text:"로그인이 필요한 서비스입니다.",
-          icon:"error",
-          closeOnClickOutside:true,
-          showCancelButton:true,
-          confirmButtonText:"<span style='text-align:center; margin-left:-12px; position:relative; top:-8px;'>OK</span>",
-          confirmButtonColor:"#e6837a",
-          cancelButtonText:"<span style='text-align:center; margin-left:-12px; position:relative; top:-8px;'>NO</span>",
-          cancelButtonColor:"#e6837a",
-          }).then((result) => {
-            if(result.value){
-              this.$router.push({
+          text: "로그인이 필요한 서비스입니다.",
+          icon: "error",
+          closeOnClickOutside: true,
+          showCancelButton: true,
+          confirmButtonText:
+            "<span style='text-align:center; margin-left:-12px; position:relative; top:-8px;'>OK</span>",
+          confirmButtonColor: "#e6837a",
+          cancelButtonText:
+            "<span style='text-align:center; margin-left:-12px; position:relative; top:-8px;'>NO</span>",
+          cancelButtonColor: "#e6837a",
+        }).then((result) => {
+          if (result.value) {
+            this.$router.push({
               name: "Login",
               query: { redirect: `${article_id}` },
             });
-            } else {
-              Swal.close();
-            }
-          });
+          } else {
+            Swal.close();
+          }
+        });
       } else {
         const params = {
           follow,
@@ -204,11 +212,12 @@ export default {
       document.execCommand("copy"); // 클립보드에 복사합니다.
       obShareUrl.blur(); // 선택된 것을 다시 선택안된것으로 바꿈니다.
       Swal.fire({
-        text:"URL이 클립보드에 복사되었습니다.",
-        icon:"success",
-        closeOnClickOutside:true,
-        confirmButtonText:"<span style='text-align:center; margin-left:-12px; position:relative; top:-8px;'>OK</span>",
-        confirmButtonColor:"#e6837a",
+        text: "URL이 클립보드에 복사되었습니다.",
+        icon: "success",
+        closeOnClickOutside: true,
+        confirmButtonText:
+          "<span style='text-align:center; margin-left:-12px; position:relative; top:-8px;'>OK</span>",
+        confirmButtonColor: "#e6837a",
       });
       obShareUrl.select();
       document.execCommand("copy");

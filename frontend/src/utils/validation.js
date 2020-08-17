@@ -37,6 +37,8 @@ export function validateMarkdown(value) {
 	value = value.replace(re14,'');
 	const re15 = /[-]{3,}/gi;
 	value = value.replace(re15,'');
+	const re16 = /`/gi;
+	value = value.replace(re16,'');
 
 	return value;
 }
