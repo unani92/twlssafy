@@ -107,6 +107,68 @@ public interface ArticleDao extends JpaRepository<Article, String> {
         , nativeQuery = true)
     List<Integer> rec4(String email);
 
+    @Query(value = 
+    "select k.articleid from  " +
+    "(select i.sno, s.name, i.email from interest as i, skills as s " +
+    "where i.sno = s.sno and email = ?1) as a, " +
+    "keyword as k, " +
+    "(select l.articleid, count(*) as cnt, t.createdat as createdat from  " +
+    "article as t, likes as l " +
+    "where t.articleid = l.articleid and t.email!=?1 " +
+    "and t.ispublic = 1 " +
+    "group by l.articleid " +
+    "order by cnt desc) as t " +
+    "where a.sno = k.sno " +
+    "and t.articleid=k.articleid " +
+    "and date(createdat) > date(subdate(now(), INTERVAL 7 DAY)) " +
+    "order by cnt desc " +
+    "limit 5 "
+    , nativeQuery = true)
+    List<Integer> rec1_before(String email);
+    
+    @Query(value = 
+    "select k.articleid from  " +
+    "(select i.sno, s.name, i.email from interest as i, skills as s " +
+    "where i.sno = s.sno and email = ?1) as a, " +
+    "keyword as k, " +
+    "(select l.articleid, count(*) as cnt, t.createdat as createdat from  " +
+    "article as t, pin as l " +
+    "where t.articleid = l.articleid and t.email!=?1 " +
+    "and t.ispublic = 1 " +
+    "group by l.articleid " +
+    "order by cnt desc) as t " +
+    "where a.sno = k.sno " +
+    "and t.articleid=k.articleid " +
+    "and date(createdat) > date(subdate(now(), INTERVAL 7 DAY)) " +
+    "order by cnt desc " +
+    "limit 5 "
+    , nativeQuery = true)
+    List<Integer> rec2_before(String email);
+    
+    @Query(value = 
+        "select l.articleid from  " +
+        "article as t, likes as l " +
+        "where t.articleid = l.articleid and t.email!=?1 " +
+        "and t.ispublic = 1 " +
+        "and date(t.createdat) > date(subdate(now(), INTERVAL 7 DAY)) " +
+        "group by l.articleid " +
+        "order by count(*) desc " +
+        "limit 5 "
+        , nativeQuery = true)
+    List<Integer> rec3_before(String email);
+
+    @Query(value = 
+        "select l.articleid from  " +
+        "article as t, pin as l " +
+        "where t.articleid = l.articleid and t.email!=?1 " +
+        "and t.ispublic = 1 " +
+        "and date(t.createdat) > date(subdate(now(), INTERVAL 7 DAY)) " +
+        "group by l.articleid " +
+        "order by count(*) desc " +
+        "limit 5 "
+        , nativeQuery = true)
+    List<Integer> rec4_before(String email);
+
 
     Page<Article> findByIspublicOrEmail(Pageable pageable, int ispublic, String email);
     Page<Article> findByIspublic(Pageable pageable, int ispublic);
