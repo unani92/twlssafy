@@ -38,55 +38,15 @@ http://i3a407.p.ssafy.io/
 
 ### 0. :key: 사용자 인증
 
-<br/>
+:key: 로그인 / 회원가입
 
-:key: 로그인
-
-<br/><br/>
-
-<center>
-![mainlogin](../Discussion/mainLogin.png)
-![login](../Discussion/login.png)
-</center>
-<br/>
-<br/>
-<br/>
-
---- 
-
-<br/>
-<br/>
-
-
-:page\_with\_curl: 회원가입
-
-<br/>
-<br/>
-
-
-<center>
-![singup](../Discussion/signup.png)
-![socialSignup](../Discussion/socialSignup.png)
-</center>
-
+<img src="https://user-images.githubusercontent.com/53211781/90470896-9f587400-e157-11ea-948d-d668c46de574.png" alt="mainLogin" style="zoom:60%;" />            <img src="https://user-images.githubusercontent.com/53211781/90470985-daf33e00-e157-11ea-9c23-5f41a79e39fe.png" alt="signup" style="zoom:60%;" />       
 
 이메일 인증을 거쳐 가입이 가능합니다.
 
 소셜 회원의 경우, 이메일을 제외한 정보를 입력하시면 됩니다.
 
-<br/>
-<br/>
-<br/>
 
-
-<center>
-![selectSkills](../Discussion/selectSkills.png)
-</center>
-
-가입 시 관심있는 기술분야를 추가할 수 있습니다
-<br/>
-<br/>
-<br/>
 
 
 ### 1. :pencil2: 마크다운 에디터 CRUD
@@ -186,3 +146,5 @@ DIAMOND : 600 이상
 1-5. Social Login
 
 ### 2. BackEnd
+
+2-1. <a href="Discussion/Update Login-JWT-Google.md">로그인</a>
