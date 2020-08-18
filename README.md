@@ -38,11 +38,58 @@ http://i3a407.p.ssafy.io/
 
 ### 0. :key: 사용자 인증
 
-#### - 구글 로그인
+<br/>
 
-#### - 이메일 로그인
+:key: 로그인
 
-### 1. :pencil2:마크다운 에디터 CRUD
+<br/><br/>
+
+<center>
+![mainlogin](../Discussion/mainLogin.png)
+![login](../Discussion/login.png)
+</center>
+<br/>
+<br/>
+<br/>
+
+--- 
+
+<br/>
+<br/>
+
+
+:page\_with\_curl: 회원가입
+
+<br/>
+<br/>
+
+
+<center>
+![singup](../Discussion/signup.png)
+![socialSignup](../Discussion/socialSignup.png)
+</center>
+
+
+이메일 인증을 거쳐 가입이 가능합니다.
+
+소셜 회원의 경우, 이메일을 제외한 정보를 입력하시면 됩니다.
+
+<br/>
+<br/>
+<br/>
+
+
+<center>
+![selectSkills](../Discussion/selectSkills.png)
+</center>
+
+가입 시 관심있는 기술분야를 추가할 수 있습니다
+<br/>
+<br/>
+<br/>
+
+
+### 1. :pencil2: 마크다운 에디터 CRUD
 
 - 게시글 작성
 
@@ -58,7 +105,7 @@ http://i3a407.p.ssafy.io/
 
 ( 중: url 복사 실제 화면 ) ( 우: 디테일 페이지 하단면, 댓글 작성란 )
 
-### 2. :mag:개인 관심사 기반 게시글 큐레이션
+### 2. :mag: 개인 관심사 기반 게시글 큐레이션
 
 - 관심사 선택
 
