@@ -40,7 +40,7 @@
         return { left: 50, right: 149, tier: 'silver' }
       } else if (this.calGrade === 4) {
         return { left: 150, right: 299, tier: 'gold' }
-      } else if (this.calcGrade === 5) {
+      } else if (this.calGrade === 5) {
         return { left: 300, right: 599, tier: 'platinum' }
       } else {
         return { left: 600, right: 10000, tier: 'diamond' }

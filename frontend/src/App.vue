@@ -83,7 +83,7 @@
   }
   @media (min-width: 1024px) {
     .top-btn {
-      top: 800px
+      top: 690px;
     }
   }
 </style>
