@@ -147,4 +147,4 @@ DIAMOND : 600 이상
 
 ### 2. BackEnd
 
-2-1. <a href="Discussion/Update Login-JWT-Google.md">로그인</a>
+2-1. <a href="../Discussion/Login-JWT-Google.md">로그인</a>
