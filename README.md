@@ -44,9 +44,10 @@ http://i3a407.p.ssafy.io/
 
 <br/><br/>
 
+<center>
 ![mainlogin](../Discussion/mainLogin.png)
 ![login](../Discussion/login.png)
-
+</center>
 <br/>
 <br/>
 <br/>
@@ -63,9 +64,11 @@ http://i3a407.p.ssafy.io/
 <br/>
 
 
-
+<center>
 ![singup](../Discussion/signup.png)
 ![socialSignup](../Discussion/socialSignup.png)
+</center>
+
 
 이메일 인증을 거쳐 가입이 가능합니다.
 
@@ -76,8 +79,9 @@ http://i3a407.p.ssafy.io/
 <br/>
 
 
-
+<center>
 ![selectSkills](../Discussion/selectSkills.png)
+</center>
 
 가입 시 관심있는 기술분야를 추가할 수 있습니다
 <br/>
