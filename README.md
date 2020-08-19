@@ -283,3 +283,5 @@ DIAMOND : 600 이상
 2-1. <a href="../Discussion/최종readme/Login-JWT-Google.md">로그인</a>
 
 2-2. <a href="../Discussion/최종readme/Notification.md">알림</a>
+
+2-3 [도커 위에 jar 파일 띄우기](https://lab.ssafy.com/s03-webmobile2-sub3/s03p13a407/blob/master/Discussion/%EC%B5%9C%EC%A2%85readme/docker_24hour_dist.md)
