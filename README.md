@@ -1,12 +1,15 @@
 # TWL: Today We Learned
-
+<br>
 <center>
 <img src="https://user-images.githubusercontent.com/53211781/90404787-d25e2180-e0dd-11ea-8212-521c37540ceb.png" alt="KakaoTalk_20200814_155111341" width="40%" />
 </center>
+<br>
+<br>
 
 ## Intro
 
 ### :thumbsup: 서비스 소개
+<br>
 
 개발자가 되고 싶은 우리들은 매일같이 **TIL**을 만들고 깃허브에 올리지만,
 
@@ -15,12 +18,16 @@
 우리들의 관심사 는 다르고 매일 공부하는 것도 다릅니다.
 
 그래서 준비했습니다. **꿈나무들의 TIL을 모두 모아볼 수 있는 커뮤니티 TWL** 지금부터 시작합니다.
+<br>
 
 #### 배포 주소
 
 http://i3a407.p.ssafy.io/
+<br>
+<br>
 
 ### **:person_frowning: 팀원 소개**
+
 
 #### Back-End
 
@@ -28,15 +35,21 @@ http://i3a407.p.ssafy.io/
 
 전혜인 -
 
+
 #### Front-End
 
 신영찬
 
 정윤환
 
+<br>
+<br>
+
 ### **:symbols: 사용한 기술**
 
 ## 서비스 주요 기술 소개
+
+<br>
 
 ### 0. :key: 사용자 인증
 
@@ -51,7 +64,10 @@ http://i3a407.p.ssafy.io/
 
 소셜 회원의 경우, 이메일을 제외한 정보를 입력하시면 됩니다.
 
+<br>
 
+<br>
+<br>
 
 
 ### 1. :pencil2: 마크다운 에디터 CRUD
@@ -64,6 +80,9 @@ http://i3a407.p.ssafy.io/
 </center>
 
 <br>
+<br>
+<br>
+
 
 - 게시글 조회
 
@@ -77,6 +96,13 @@ http://i3a407.p.ssafy.io/
 
 ( 중: url 복사 실제 화면 ) ( 우: 디테일 페이지 하단면, 댓글 작성란 )
 
+
+<br>
+<br>
+<br>
+<br>
+
+
 ### 2. :mag: 개인 관심사 기반 게시글 큐레이션
 
 - 관심사 선택
@@ -87,12 +113,23 @@ http://i3a407.p.ssafy.io/
 </center>
 
   ( 사진 좌: 회원가입 페이지 관심사 선택 | 우: 마이페이지 관심사 선택)
+  
+<br>
+<br>
+<br>
 
 * 최신글 / 팔로우 / 북마크 모아보기 탭
 
 <center>
-<img src="https://user-images.githubusercontent.com/53211781/90418241-d430e080-e0ef-11ea-8c27-6e2095532e4a.jpg" alt="follow_pin" width=200/> <img src="https://user-images.githubusercontent.com/53211781/90418471-1c500300-e0f0-11ea-8fdc-8fb258dc58a8.jpg" alt="pinlist" width="300px"/>
+<img src="https://user-images.githubusercontent.com/53211781/90418241-d430e080-e0ef-11ea-8c27-6e2095532e4a.jpg" alt="follow_pin" width="300px"/> 
+<img src="https://user-images.githubusercontent.com/53211781/90418471-1c500300-e0f0-11ea-8fdc-8fb258dc58a8.jpg" alt="pinlist" width="300px"/>
 </center>
+
+<br>
+<br>
+<br>
+<br>
+
 
 - 관심사, 좋아요 기반 관심글 추천
 
@@ -100,11 +137,23 @@ http://i3a407.p.ssafy.io/
 <img src="https://lab.ssafy.com/s03-webmobile2-sub3/s03p13a407/wikis/uploads/28b8038e7c108925243b100c7b856228/recommend.png">
 </center>
 
+<br>
+<br>
+<br>
+<br>
+
+
 * 키워드 검색 및 기타 검색기능
 
 <center>
-<img src="https://user-images.githubusercontent.com/53211781/90419097-042cb380-e0f1-11ea-93f8-c77eea705a40.jpg" alt="detail" width=200/> <img src="https://user-images.githubusercontent.com/53211781/90419145-19094700-e0f1-11ea-936a-21b4d4b71ec6.jpg" alt="search" width="300px" />
+<img src="https://user-images.githubusercontent.com/53211781/90419097-042cb380-e0f1-11ea-93f8-c77eea705a40.jpg" alt="detail" width="300px"/> 
+<img src="https://user-images.githubusercontent.com/53211781/90419145-19094700-e0f1-11ea-936a-21b4d4b71ec6.jpg" alt="search" width="300px" />
 </center>
+<br>
+<br>
+<br>
+<br>
+
 
 ### 3. 마이페이지
 
@@ -117,6 +166,9 @@ http://i3a407.p.ssafy.io/
 
 날짜를 클릭하면 해당 날짜에 작성한 글들만 모아볼 수 있다. 
 
+<br>
+<br>
+<br>
 
 #### 3.2 등급
 
@@ -138,6 +190,10 @@ PLATINUM : 600 미만
 
 DIAMOND : 600 이상
 
+<br>
+<br>
+<br>
+
 #### 3.3 회원 정보 조회 및 수정
 
 <center>
@@ -145,6 +201,10 @@ DIAMOND : 600 이상
 <img src="https://user-images.githubusercontent.com/50816217/90379113-3fa98c80-e0b5-11ea-8c8c-c62dfb8f6fed.PNG"  width="300px" style="display:inline">
 </center>
 
+<br>
+<br>
+<br>
+<br>
 
 ### 4. 🔔알림
 - notification <br/><br/>
@@ -156,10 +216,11 @@ DIAMOND : 600 이상
 
 </center>
 
-   &nbsp;&nbsp;( 사진&nbsp;&nbsp;&nbsp;&nbsp; 좌: 알림 &nbsp;&nbsp;  | &nbsp;&nbsp; 중간: 알림 확인  &nbsp;&nbsp; | &nbsp;&nbsp;  우: 읽은 알림 삭제 )
+( 사진&nbsp;&nbsp;&nbsp;&nbsp; 좌: 알림 &nbsp;&nbsp;  | &nbsp;&nbsp; 중간: 알림 확인  &nbsp;&nbsp; | &nbsp;&nbsp;  우: 읽은 알림 삭제 )
 
 <br>
-
+<br>
+<br>
 
 
 
