@@ -1,5 +1,7 @@
 
-#### 4.1 DAO
+### Notification
+
+#### 1 DAO
 ```java
    // 새로운 알림 생성
    Notification save(NotificationMultiId notification);
@@ -32,7 +34,7 @@
 ```
 
 
-#### 4.2 Controller
+#### 2 Controller
      - 댓글 작성, 좋아요, 북마크, 팔로우를 누른 경우
       -> 새로운 알림을 db에 저장
      ```java
