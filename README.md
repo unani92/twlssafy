@@ -276,6 +276,8 @@ DIAMOND : 600 이상
 
 1-5. Social Login
 
+1-6. [file Download](https://lab.ssafy.com/s03-webmobile2-sub3/s03p13a407/blob/master/Discussion/%EC%B5%9C%EC%A2%85readme/fileDownload.md)
+
 ### 2. BackEnd
 
 2-1. <a href="../Discussion/최종readme/Login-JWT-Google.md">로그인</a>
