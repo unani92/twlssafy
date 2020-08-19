@@ -45,7 +45,6 @@ http://i3a407.p.ssafy.io/
 <br>
 <br>
 
-### **:symbols: 사용한 기술**
 
 ## 서비스 주요 기술 소개
 
@@ -218,11 +217,50 @@ DIAMOND : 600 이상
 
 ( 사진&nbsp;&nbsp;&nbsp;&nbsp; 좌: 알림 &nbsp;&nbsp;  | &nbsp;&nbsp; 중간: 알림 확인  &nbsp;&nbsp; | &nbsp;&nbsp;  우: 읽은 알림 삭제 )
 
+
+<br>
+<br>
+<br>
+<br>
+
+## :symbols: 사용한 기술
+- **backend**
+  - Spring
+  - maria DB / JPA
+- **frontend**
+  - Vue.js
+  - FireBase
+- **deploy**
+  - AWS EC2
+  - nginx
+- **형상관리**
+  - Jira
+  - GitLab
+
+<br>
 <br>
 <br>
 <br>
 
 
+## :calendar: 프로젝트 진행 일정
+- 총 개발 기간 약 39일 (7/07~8/14)
+- **1주차** : 기획 및 설계
+- **2주차**: 개발환경 구축 및 데이터베이스 설계
+- **3주차 & 4주차**
+  - 백엔드 & 프론트엔드 개발
+- **5주차**
+  - 프론트엔드 개발, 서버 배포
+- **6주차** : 오류수정
+
+<center>
+<img src="https://lab.ssafy.com/s03-webmobile2-sub3/s03p13a407/wikis/uploads/cd75fe232f048594725cdc2007cb02cc/%EC%9D%BC%EC%A0%95.png">
+</center>
+
+<br>
+<br>
+<br>
+<br>
 
 ## 문제 해결 및 문서 정리
 
