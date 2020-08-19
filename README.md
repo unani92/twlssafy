@@ -274,7 +274,7 @@ DIAMOND : 600 이상
 
 1-4. AutoComplete
 
-1-5. Social Login
+1-5. [myPage component props](https://lab.ssafy.com/s03-webmobile2-sub3/s03p13a407/blob/master/Discussion/%EC%B5%9C%EC%A2%85readme/frontend.md)
 
 1-6. [file Download](https://lab.ssafy.com/s03-webmobile2-sub3/s03p13a407/blob/master/Discussion/%EC%B5%9C%EC%A2%85readme/fileDownload.md)
 
