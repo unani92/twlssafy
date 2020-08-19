@@ -270,7 +270,7 @@ DIAMOND : 600 이상
 
 1-2. [Firebase Storage](https://lab.ssafy.com/s03-webmobile2-sub3/s03p13a407/blob/master/Discussion/%EC%B5%9C%EC%A2%85readme/firebase.md)
 
-1-3. Drag & Drop
+1-3. [Drag & Drop](https://lab.ssafy.com/s03-webmobile2-sub3/s03p13a407/blob/master/Discussion/%EC%B5%9C%EC%A2%85readme/vue2dropZone.md)
 
 1-4. [AutoComplete](https://lab.ssafy.com/s03-webmobile2-sub3/s03p13a407/blob/master/Discussion/%EC%B5%9C%EC%A2%85readme/autoComplete.md)
 
