@@ -77,9 +77,7 @@ http://i3a407.p.ssafy.io/
 - 게시글 조회
 
 <center>
-<img src="https://user-images.githubusercontent.com/53211781/90413599-a21c8000-e0e9-11ea-87bb-283380c4d7e9.png" alt="detail" width="250px"/> 
-<img src="https://user-images.githubusercontent.com/53211781/90413688-c5dfc600-e0e9-11ea-9fb6-6a83193b5d47.jpg" alt="클립보드 복사" width=250px /> 
-<img src="https://user-images.githubusercontent.com/53211781/90414651-07bd3c00-e0eb-11ea-95eb-71bacebe4ae5.jpg" alt="detail_btm" width=250px />
+<img src="https://user-images.githubusercontent.com/53211781/90413599-a21c8000-e0e9-11ea-87bb-283380c4d7e9.png" alt="detail" width="250px"/> <img src="https://user-images.githubusercontent.com/53211781/90413688-c5dfc600-e0e9-11ea-9fb6-6a83193b5d47.jpg" alt="클립보드 복사" width=250px /> <img src="https://user-images.githubusercontent.com/53211781/90414651-07bd3c00-e0eb-11ea-95eb-71bacebe4ae5.jpg" alt="detail_btm" width=250px />
 </center>
 
 ( 좌: <1> 작성자 본인은 수정, 삭제, 마크다운 다운로드 가능 <2> 팔로우, 좋아요, 핀, 게시글 url 복사 )
@@ -98,8 +96,7 @@ http://i3a407.p.ssafy.io/
 - 관심사 선택
 
 <center>
-  <img src="https://user-images.githubusercontent.com/53211781/90416591-a34fac00-e0ed-11ea-9718-b084516267fb.jpg" alt="select_signup" width="250px"/>
-  <img src="https://lab.ssafy.com/s03-webmobile2-sub3/s03p13a407/wikis/uploads/0fad52f684dc1b5311e4b8ded2face2f/mypageSelectSkills.png" width="250px"/>
+  <img src="https://user-images.githubusercontent.com/53211781/90416591-a34fac00-e0ed-11ea-9718-b084516267fb.jpg" alt="select_signup" width="250px"/>.  <img src="https://lab.ssafy.com/s03-webmobile2-sub3/s03p13a407/wikis/uploads/0fad52f684dc1b5311e4b8ded2face2f/mypageSelectSkills.png" width="250px"/>
 </center>
 
   ( 사진 좌: 회원가입 페이지 관심사 선택 | 우: 마이페이지 관심사 선택)
@@ -111,8 +108,7 @@ http://i3a407.p.ssafy.io/
 * 최신글 / 팔로우 / 북마크 모아보기 탭
 
 <center>
-<img src="https://user-images.githubusercontent.com/53211781/90418241-d430e080-e0ef-11ea-8c27-6e2095532e4a.jpg" alt="follow_pin" width="300px"/> 
-<img src="https://user-images.githubusercontent.com/53211781/90418471-1c500300-e0f0-11ea-8fdc-8fb258dc58a8.jpg" alt="pinlist" width="300px"/>
+<img src="https://user-images.githubusercontent.com/53211781/90418241-d430e080-e0ef-11ea-8c27-6e2095532e4a.jpg" alt="follow_pin" width="300px"/>   <img src="https://user-images.githubusercontent.com/53211781/90418471-1c500300-e0f0-11ea-8fdc-8fb258dc58a8.jpg" alt="pinlist" width="300px"/>
 </center>
 
 <br>
@@ -136,8 +132,7 @@ http://i3a407.p.ssafy.io/
 * 키워드 검색 및 기타 검색기능
 
 <center>
-<img src="https://user-images.githubusercontent.com/53211781/90419097-042cb380-e0f1-11ea-93f8-c77eea705a40.jpg" alt="detail" width="300px"/> 
-<img src="https://user-images.githubusercontent.com/53211781/90419145-19094700-e0f1-11ea-936a-21b4d4b71ec6.jpg" alt="search" width="300px" />
+<img src="https://user-images.githubusercontent.com/53211781/90419097-042cb380-e0f1-11ea-93f8-c77eea705a40.jpg" alt="detail" width="300px"/>    <img src="https://user-images.githubusercontent.com/53211781/90419145-19094700-e0f1-11ea-936a-21b4d4b71ec6.jpg" alt="search" width="300px" />
 </center>
 <br>
 <br>
@@ -187,9 +182,7 @@ DIAMOND : 600 이상
 #### 3.3 회원 정보 조회 및 수정
 
 <center>
-<img src="https://user-images.githubusercontent.com/50816217/90379111-3e785f80-e0b5-11ea-8a46-ff187d4d4553.PNG"  width="300px" style="display:inline">
-<img src="https://user-images.githubusercontent.com/50816217/90379113-3fa98c80-e0b5-11ea-8c8c-c62dfb8f6fed.PNG"  width="300px" style="display:inline">
-<img src="https://lab.ssafy.com/s03-webmobile2-sub3/s03p13a407/wikis/uploads/305f78db86796bf62c8da13ec3447550/follow.png"  width="300px" style="display:inline">
+<img src="https://user-images.githubusercontent.com/50816217/90379111-3e785f80-e0b5-11ea-8a46-ff187d4d4553.PNG"  width="300px" style="display:inline">  <img src="https://user-images.githubusercontent.com/50816217/90379113-3fa98c80-e0b5-11ea-8c8c-c62dfb8f6fed.PNG"  width="300px" style="display:inline">  <img src="https://user-images.githubusercontent.com/50816217/90379111-3e785f80-e0b5-11ea-8a46-ff187d4d4553 .PNG"  width="300px" style="display:inline">   <img src="https://user-images.githubusercontent.com/50816217/90379111-3e785f80-e0b5-11ea-8a46-ff187d4d4553 .PNG"  width="300px" style="display:inline">. <img src="https://lab.ssafy.com/s03-webmobile2-sub3/s03p13a407/wikis/uploads/305f78db86796bf62c8da13ec3447550/follow.png"  width="300px" style="display:inline">    <img src="https://user-images.githubusercontent.com/50816217/90379111-3e785f80-e0b5-11ea-8a46-ff187d4d4553.PNG "  width="300px" style="display:inline">
 </center>
 
 
