@@ -37,11 +37,11 @@
 
 <script>
 import { Carousel3d, Slide } from "vue-carousel-3d";
-import { fetchRecommend } from "../api";
+import { fetchRecommend } from "../../api";
 import { mapGetters, mapState, mapActions } from "vuex";
 import LoadingSpinner from "@/components/common/LoadingSpinner.vue";
 import ArticleCard from "@/components/article/ArticleCard.vue";
-import Footer from "../components/Footer";
+import Footer from "../../components/navigation/Footer";
 
 export default {
   name: "ArticleRecommend",
@@ -84,11 +84,6 @@ export default {
       this.pinCntList = data.object.pinCntList;
       this.commentCntList = data.object.commentCntList;
     },
-    // flashText(text) {
-    //   const len = text.textContent.length;
-    //   text.style.width = len + "ch";
-    //   text.style.animateTimingFuntion = "steps(" + len + "), steps(1)";
-    // },
     handleResize() {
       this.window.width = window.innerWidth / 100;
       // this.window.height = window.innerHeight;

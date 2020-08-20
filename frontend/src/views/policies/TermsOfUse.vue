@@ -5,7 +5,7 @@
     </div>
 </template>
 <script>
-import Footer from "../../components/Footer.vue";
+import Footer from "../../components/navigation/Footer.vue";
 import TermsOfUse from "../../components/policies/TermsOfUse.vue";
 
 export default {

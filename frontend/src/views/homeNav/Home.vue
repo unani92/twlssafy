@@ -1,8 +1,6 @@
 <template>
   <div>
     <div class="home">
-      <div>
-      </div>
       <div class="main-wrapper">
         <div class="primary">
           <br />
@@ -16,17 +14,12 @@
   </div>
 </template>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/scrollmonitor/1.2.0/scrollMonitor.js"></script>
 <script>
-import HomeNav from "../components/HomeNav";
-import HashTag from "../components/HashTag";
-import ArticleCardList from "@/components/article/ArticleCardList.vue";
 import { mapState, mapActions } from "vuex";
+import HashTag from "../../components/homeNav/HashTag";
 export default {
   components: {
-    HomeNav,
-    HashTag,
-    ArticleCardList,
+    HashTag
   },
   computed: {
     ...mapState(["id_token"]),
@@ -53,10 +46,6 @@ export default {
 .home {
   padding-top: 60px;
 }
-.friends {
-  position: fixed;
-  width: inherit;
-}
 .primary {
   padding: 1rem;
   padding-top: 70px;
@@ -69,9 +58,6 @@ export default {
 .secondary {
   padding: 1rem;
   padding-top: 70px;
-}
-.secondary-a {
-  display: none;
 }
 .main-wrapper {
   display: flex;

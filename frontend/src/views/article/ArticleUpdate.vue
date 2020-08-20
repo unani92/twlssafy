@@ -1,7 +1,5 @@
 <template>
   <div class="article-create">
-    <!-- <h1 style="margin: 1rem 0 1rem 0;">게시글 수정</h1> -->
-
     <div class="article-title-skills">
       <div>
         <label style="padding-left : 5px;">제목</label>
@@ -76,8 +74,8 @@
 
 <script>
   import Editor from '@toast-ui/editor';
-  import skills from "../skills";
-  import { updateArticle } from "../api";
+  import skills from "../../skills";
+  import { updateArticle } from "../../api";
   import codeSyntaxHightlight from "@toast-ui/editor-plugin-code-syntax-highlight";
   import hljs from "highlight.js";
   import { validateMarkdown } from "@/utils/validation";
@@ -155,12 +153,10 @@
         }
         const id_token = this.$store.state.id_token
         updateArticle(params, id_token)
-          .then(res=> {
-            console.log(res)
+          .then(()=> {
             this.$router.push({name: "ArticleDetail", params: {id:this.id}})
           })
           .catch(err => console.log(err))
-        console.log(params)
       },
     },
     mounted() {
