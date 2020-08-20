@@ -29,18 +29,14 @@ http://i3a407.p.ssafy.io/
 ### **:person_frowning: 팀원 소개**
 
 
-#### Back-End
+| 이름   | 역할                                                         |
+| ------ | ------------------------------------------------------------ |
+| 정윤환 | 팀장, firebase storage 연동, 에디터 연동을 통한 게시글 작성 사용자 뷰 구성 |
+| 배유진 | AWS 배포, 회원 인증, 게시글 및 추천, 알림 컨트롤러 및 DB 구축 |
+| 신영찬 | UCC 제작, 회원가입, 관심사, 마이 페이지, 좋아요, 북마크 기능 구성 |
+| 전혜인 | 이메일 인증, 검색, 관심사, 댓글 컨트롤러 및 DB 구축          |
 
-배유진 - JWT / Google Login, 게시글 관리, 서버 배포
 
-전혜인 -
-
-
-#### Front-End
-
-신영찬
-
-정윤환
 
 <br>
 <br>
@@ -268,18 +264,22 @@ DIAMOND : 600 이상
 
 ### 1. FrontEnd
 
-1-1. ToastUi Editor
+1-1. [ToastUi Editor](https://lab.ssafy.com/s03-webmobile2-sub3/s03p13a407/blob/master/Discussion/%EC%B5%9C%EC%A2%85readme/toastui.md)
 
-1-2. Firebase Storage
+1-2. [Firebase Storage](https://lab.ssafy.com/s03-webmobile2-sub3/s03p13a407/blob/master/Discussion/%EC%B5%9C%EC%A2%85readme/firebase.md)
 
-1-3. Drag & Drop
+1-3. [Drag & Drop](https://lab.ssafy.com/s03-webmobile2-sub3/s03p13a407/blob/master/Discussion/%EC%B5%9C%EC%A2%85readme/vue2dropZone.md)
 
-1-4. AutoComplete
+1-4. [AutoComplete](https://lab.ssafy.com/s03-webmobile2-sub3/s03p13a407/blob/master/Discussion/%EC%B5%9C%EC%A2%85readme/autoComplete.md)
 
-1-5. Social Login
+1-5. [myPage component props](https://lab.ssafy.com/s03-webmobile2-sub3/s03p13a407/blob/master/Discussion/%EC%B5%9C%EC%A2%85readme/frontend.md)
+
+1-6. [file Download](https://lab.ssafy.com/s03-webmobile2-sub3/s03p13a407/blob/master/Discussion/%EC%B5%9C%EC%A2%85readme/fileDownload.md)
 
 ### 2. BackEnd
 
 2-1. <a href="../Discussion/최종readme/Login-JWT-Google.md">로그인</a>
 
 2-2. <a href="../Discussion/최종readme/Notification.md">알림</a>
+
+2-3 [도커 위에 jar 파일 띄우기](https://lab.ssafy.com/s03-webmobile2-sub3/s03p13a407/blob/master/Discussion/%EC%B5%9C%EC%A2%85readme/docker_24hour_dist.md)
