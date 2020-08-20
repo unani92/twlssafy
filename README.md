@@ -168,10 +168,7 @@ DIAMOND : 600 이상
 
 #### 3.3 회원 정보 조회 및 수정
 
-<center>
-<img src="https://user-images.githubusercontent.com/50816217/90379111-3e785f80-e0b5-11ea-8a46-ff187d4d4553.PNG"  width="300px" style="display:inline">      <img src="https://user-images.githubusercontent.com/50816217/90379113-3fa98c80-e0b5-11ea-8c8c-c62dfb8f6fed.PNG"  width="300px" style="display:inline">      <img src="https://user-images.githubusercontent.com/50816217/90379111-3e785f80-e0b5-11ea-8a46-ff187d4d4553 .PNG"  width="300px" style="display:inline">       <img src="https://user-images.githubusercontent.com/50816217/90379111-3e785f80-e0b5-11ea-8a46-ff187d4d4553 .PNG"  width="300px" style="display:inline">.    <img src="https://lab.ssafy.com/s03-webmobile2-sub3/s03p13a407/wikis/uploads/305f78db86796bf62c8da13ec3447550/follow.png"  width="300px" style="display:inline">       <img src="https://user-images.githubusercontent.com/50816217/90379111-3e785f80-e0b5-11ea-8a46-ff187d4d4553.PNG "  width="300px" style="display:inline">
-</center>
-
+<img src="https://user-images.githubusercontent.com/53211781/90791362-0fc3e880-e344-11ea-9b06-dc570c121071.png" width="300px">    <img src="https://user-images.githubusercontent.com/53211781/90791445-28340300-e344-11ea-8f7d-12f0245c72e9.png" width="300px">     <img src="https://user-images.githubusercontent.com/53211781/90791518-40a41d80-e344-11ea-83d9-0502e4c696f7.png" width="300px">
 
 <br>
 <br>
