@@ -28,25 +28,49 @@
       </div>
       
       <div class="text">
-        <div style="display: flex; justify-content: space-between">
-          <div
-            :style="{
-              backgroundImage:
-                'url(' +
-                require('@/assets/image/medal-' + calGrade + '.png') +
-                ')',
-            }"
-            class="grade"
-          />
-          <div
-            :style="{
-              backgroundImage:
-                'url(' +
-                require('@/assets/image/medal-' + (calGrade + 1) + '.png') +
-                ')',
-            }"
-            class="grade"
-          />
+        <div v-if="calGrade !== 6">
+          <div style="display: flex; justify-content: space-between">
+            <div
+              :style="{
+                backgroundImage:
+                  'url(' +
+                  require('@/assets/image/medal-' + calGrade + '.png') +
+                  ')',
+              }"
+              class="grade"
+            />
+            <div
+              :style="{
+                backgroundImage:
+                  'url(' +
+                  require('@/assets/image/medal-' + (calGrade + 1) + '.png') +
+                  ')',
+              }"
+              class="grade"
+            />
+          </div>
+        </div>
+        <div v-else>
+          <div style="display: flex; justify-content: space-between">
+            <div
+              :style="{
+                backgroundImage:
+                  'url(' +
+                  require('@/assets/image/medal-' + calGrade + '.png') +
+                  ')',
+              }"
+              class="grade"
+            />
+            <div
+              :style="{
+                backgroundImage:
+                  'url(' +
+                  require('@/assets/image/medal-' + calGrade + '.png') +
+                  ')',
+              }"
+              class="grade"
+            />
+          </div>
         </div>
         <div v-if="userInfo">
           <ProgressBar v-if="userInfo" :calGrade="calGrade" :score="userInfo.userInfo.score" />
