@@ -68,7 +68,7 @@
 
 
 <script>
-import Editor from "@/components/Editor.vue";
+import Editor from "../../components/article/Editor";
 import skills from "../../skills";
 import { createArticle } from "../../api";
 import { validateMarkdown } from "@/utils/validation";

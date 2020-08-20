@@ -29,8 +29,8 @@
 </template>
 
 <script>
-import skills from "../skills.js";
-import { selectSkills, deleteSkill } from "../api";
+import skills from "../../skills.js";
+import { selectSkills, deleteSkill } from "../../api";
 
 export default {
   name: "SelectSkills",

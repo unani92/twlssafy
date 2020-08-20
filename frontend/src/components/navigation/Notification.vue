@@ -32,7 +32,7 @@
 </template>
 
 <script>
-  import { submitNotiRead, submitNotiDelete } from "../api";
+  import { submitNotiRead, submitNotiDelete } from "../../api";
   import { mapGetters } from 'vuex'
   export default {
     name: "Notification",

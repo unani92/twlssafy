@@ -60,7 +60,7 @@
 </template>
 
 <script>
-import GoogleLogin from '../components/GoogleLogin';
+import GoogleLogin from './GoogleLogin';
 import { validateEmail, validatePassword } from '@/utils/validation';
 import { login } from '@/api/index';
 import { mapActions } from 'vuex';

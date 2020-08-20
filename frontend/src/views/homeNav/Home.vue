@@ -16,7 +16,7 @@
 
 <script>
 import { mapState, mapActions } from "vuex";
-import HashTag from "../components/HashTag";
+import HashTag from "../../components/homeNav/HashTag";
 export default {
   components: {
     HashTag

@@ -159,7 +159,7 @@
 </template>
 
 <script>
-import GoogleLogin from '../components/GoogleLogin';
+import GoogleLogin from './GoogleLogin';
 import { validateEmail, validatePassword } from '@/utils/validation';
 import { checkEmail, checkNickname, registerUser } from '@/api/index';
 import PrivacyPolicy from '@/components/policies/PrivacyPolicy.vue';

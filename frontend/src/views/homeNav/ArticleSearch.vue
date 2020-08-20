@@ -55,7 +55,7 @@
 </template>
 
 <script>
-import ArticleSearchCard from "../../components/article/ArticleSearchCard";
+import ArticleSearchCard from "../../components/homeNav/ArticleSearchCard";
 import { searchArticle } from "../../api";
 import scrollMonitor from "scrollmonitor";
 import skills from "../../skills.js";

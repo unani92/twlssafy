@@ -281,7 +281,7 @@
 </template>
 
 <script>
-import SelectSkills from "@/views/SelectSkills.vue";
+import SelectSkills from "../../views/profile/SelectSkills";
 import {
   requestFollow,
   changeImg,
@@ -300,7 +300,7 @@ import Swal from 'sweetalert2/dist/sweetalert2.js'
 import 'sweetalert2/src/sweetalert2.scss'
 
 // progressbar
-import ProgressBar from "../ProgressBar";
+import ProgressBar from "./ProgressBar";
 let uuid = require("uuid");
 
 export default {

@@ -41,7 +41,7 @@ import { fetchRecommend } from "../../api";
 import { mapGetters, mapState, mapActions } from "vuex";
 import LoadingSpinner from "@/components/common/LoadingSpinner.vue";
 import ArticleCard from "@/components/article/ArticleCard.vue";
-import Footer from "../../components/Footer";
+import Footer from "../../components/navigation/Footer";
 
 export default {
   name: "ArticleRecommend",
