@@ -198,7 +198,9 @@ DIAMOND : 600 이상
 <center>
 <img src="https://user-images.githubusercontent.com/50816217/90379111-3e785f80-e0b5-11ea-8a46-ff187d4d4553.PNG"  width="300px" style="display:inline">
 <img src="https://user-images.githubusercontent.com/50816217/90379113-3fa98c80-e0b5-11ea-8c8c-c62dfb8f6fed.PNG"  width="300px" style="display:inline">
+<img src="https://lab.ssafy.com/s03-webmobile2-sub3/s03p13a407/wikis/uploads/305f78db86796bf62c8da13ec3447550/follow.png"  width="300px" style="display:inline">
 </center>
+
 
 <br>
 <br>
