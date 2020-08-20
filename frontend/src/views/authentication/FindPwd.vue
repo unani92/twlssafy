@@ -49,7 +49,7 @@
 </template>
 
 <script>
-import { submitValidationMail } from "../api";
+import { submitValidationMail } from "../../api";
 
 export default {
   name: "ChangePwd",
@@ -74,7 +74,6 @@ export default {
           this.logMessage.validationNumber = "인증번호를 발송했습니다.";
 
           this.validationNumberFromBE = res.data.object.code;
-          console.log(this.validationNumberFromBE);
         } else {
           this.logMessage.validationNumber =
             "\n인증번호가 오지 않으면 입력하신 정보가 정확한지 확인하여 주세요.";

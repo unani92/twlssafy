@@ -5,7 +5,7 @@
 </template>
 
 <script>
-  import LoadingSpinner from "../components/common/LoadingSpinner";
+  import LoadingSpinner from "../../components/common/LoadingSpinner";
   export default {
     name: "LoginLoading",
     components: {

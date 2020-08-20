@@ -82,12 +82,10 @@ export default {
         const id_token = this.$store.state.id_token;
         createComment(params, id_token)
           .then((res) => {
-            console.log(res.data.object);
             const now = new Date();
             const comment = { ...res.data.object, now };
             this.commentList = [comment, ...this.commentList];
             this.content = null;
-            console.log(this.content)
           })
           .catch((err) => console.log(err));
     }

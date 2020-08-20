@@ -109,7 +109,6 @@ export default {
           this.likesCnt--
         }
         this.$store.commit("setLikeList", likeList);
-        console.log("현재 상태는", this.$store.state.likeList);
       } else {
         Swal.fire({
           text:"로그인이 필요한 서비스입니다.",
@@ -136,7 +135,6 @@ export default {
         };
         const token = this.$store.state.id_token;
         const { data } = await pinArticle(params,token);
-        console.log(data);
         //프런트에서 스토어 값 갱신
         const pinList = this.$store.state.pinList;
         if (data.data === "pin 설정") {
@@ -153,7 +151,6 @@ export default {
         this.pinCnt--
         }
         this.$store.commit("setPinList", pinList);
-        console.log("현재 상태는", this.$store.state.pinList);
       } else {
         Swal.fire({
           text:"로그인이 필요한 서비스입니다.",

@@ -6,8 +6,8 @@
   </div>
 </template>
 <script>
-  import NavBar from "./components/NavBar";
-  import HomeNav from "./components/HomeNav";
+  import NavBar from "./components/navigation/NavBar";
+  import HomeNav from "./components/navigation/HomeNav";
   export default {
     components: {
       NavBar,

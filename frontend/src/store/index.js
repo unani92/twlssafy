@@ -2,8 +2,6 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import cookies from 'vue-cookies';
 import { getInfo, registerUser } from '../api';
-// import axios from 'axios';
-// import http from '../api/http-common.js'
 
 Vue.use(Vuex);
 

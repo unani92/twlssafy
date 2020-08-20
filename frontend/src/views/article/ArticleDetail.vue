@@ -86,15 +86,15 @@
 </template>
 
 <script>
-import { fetchArticle, deleteArticle } from '../api';
+import { fetchArticle, deleteArticle } from '../../api';
 import '@toast-ui/editor/dist/toastui-editor-viewer.css';
 import 'highlight.js/styles/github.css';
 import Viewer from '@toast-ui/editor/dist/toastui-editor-viewer';
 import codeSyntaxHightlight from '@toast-ui/editor-plugin-code-syntax-highlight';
 import hljs from 'highlight.js';
-import ArticleDetailSideMenu from '../components/article/ArticleDetailSideMenu';
-import ArticleDetailProfile from '../components/article/ArticleDetailProfile';
-import CommentCreate from '../components/article/CommentCreate';
+import ArticleDetailSideMenu from '../../components/article/ArticleDetailSideMenu';
+import ArticleDetailProfile from '../../components/article/ArticleDetailProfile';
+import CommentCreate from '../../components/article/CommentCreate';
 export default {
   name: 'ArticleDetail',
   components: {
