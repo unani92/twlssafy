@@ -113,7 +113,7 @@ http://i3a407.p.ssafy.io/
 
 - 관심사, 좋아요 기반 관심글 추천
 
-![image](https://user-images.githubusercontent.com/53211781/90789328-c2467c00-e341-11ea-911b-6c3e70d1b823.png)
+<img src="https://user-images.githubusercontent.com/53211781/90789328-c2467c00-e341-11ea-911b-6c3e70d1b823.png" width="300px">
 
 <br>
 <br>
@@ -180,8 +180,7 @@ DIAMOND : 600 이상
 
 ### 4. 🔔알림
 - notification <br/><br/>
-
-![image](https://user-images.githubusercontent.com/53211781/90789698-29fcc700-e342-11ea-85f7-0489b3184139.png width="300px").   ![image](https://user-images.githubusercontent.com/53211781/90789750-3d0f9700-e342-11ea-94f8-5d83d9d1c092.png width="300px").   ![image](https://user-images.githubusercontent.com/53211781/90789818-4e58a380-e342-11ea-8a7b-f39ee2637a87.png width="300px")
+<img src="https://user-images.githubusercontent.com/53211781/90789698-29fcc700-e342-11ea-85f7-0489b3184139.png" width="300px">     <img src="https://user-images.githubusercontent.com/53211781/90789750-3d0f9700-e342-11ea-94f8-5d83d9d1c092.png" width="300px">     <img src="https://user-images.githubusercontent.com/53211781/90789818-4e58a380-e342-11ea-8a7b-f39ee2637a87.png" width="300px">
 
 ( 사진&nbsp;&nbsp;&nbsp;&nbsp; 좌: 알림 &nbsp;&nbsp;  | &nbsp;&nbsp; 중간: 알림 확인  &nbsp;&nbsp; | &nbsp;&nbsp;  우: 읽은 알림 삭제 )
 
