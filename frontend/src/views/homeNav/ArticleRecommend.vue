@@ -37,11 +37,11 @@
 
 <script>
 import { Carousel3d, Slide } from "vue-carousel-3d";
-import { fetchRecommend } from "../api";
+import { fetchRecommend } from "../../api";
 import { mapGetters, mapState, mapActions } from "vuex";
 import LoadingSpinner from "@/components/common/LoadingSpinner.vue";
 import ArticleCard from "@/components/article/ArticleCard.vue";
-import Footer from "../components/Footer";
+import Footer from "../../components/Footer";
 
 export default {
   name: "ArticleRecommend",

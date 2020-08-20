@@ -76,8 +76,8 @@
 
 <script>
   import Editor from '@toast-ui/editor';
-  import skills from "../skills";
-  import { updateArticle } from "../api";
+  import skills from "../../skills";
+  import { updateArticle } from "../../api";
   import codeSyntaxHightlight from "@toast-ui/editor-plugin-code-syntax-highlight";
   import hljs from "highlight.js";
   import { validateMarkdown } from "@/utils/validation";

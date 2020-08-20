@@ -49,7 +49,7 @@
 </template>
 
 <script>
-import { submitValidationMail } from "../api";
+import { submitValidationMail } from "../../api";
 
 export default {
   name: "ChangePwd",

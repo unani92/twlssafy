@@ -69,8 +69,8 @@
 
 <script>
 import Editor from "@/components/Editor.vue";
-import skills from "../skills";
-import { createArticle } from "../api";
+import skills from "../../skills";
+import { createArticle } from "../../api";
 import { validateMarkdown } from "@/utils/validation";
 import Swal from 'sweetalert2/dist/sweetalert2.js'
 import 'sweetalert2/src/sweetalert2.scss'
