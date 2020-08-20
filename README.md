@@ -168,7 +168,7 @@ DIAMOND : 600 이상
 
 #### 3.3 회원 정보 조회 및 수정
 
-<img src="https://user-images.githubusercontent.com/53211781/90791362-0fc3e880-e344-11ea-9b06-dc570c121071.png" width="200px">    <img src="https://user-images.githubusercontent.com/53211781/90791445-28340300-e344-11ea-8f7d-12f0245c72e9.png" width="200px">     <img src="https://user-images.githubusercontent.com/53211781/90791518-40a41d80-e344-11ea-83d9-0502e4c696f7.png" width="200px">
+<img src="https://user-images.githubusercontent.com/53211781/90791362-0fc3e880-e344-11ea-9b06-dc570c121071.png" width="250px">    <img src="https://user-images.githubusercontent.com/53211781/90791445-28340300-e344-11ea-8f7d-12f0245c72e9.png" width="250px">     <img src="https://user-images.githubusercontent.com/53211781/90791518-40a41d80-e344-11ea-83d9-0502e4c696f7.png" width="250px">
 
 <br>
 <br>
@@ -177,7 +177,7 @@ DIAMOND : 600 이상
 
 ### 4. 🔔알림
 - notification <br/><br/>
-<img src="https://user-images.githubusercontent.com/53211781/90789698-29fcc700-e342-11ea-85f7-0489b3184139.png" width="200px">     <img src="https://user-images.githubusercontent.com/53211781/90789750-3d0f9700-e342-11ea-94f8-5d83d9d1c092.png" width="200px">     <img src="https://user-images.githubusercontent.com/53211781/90789818-4e58a380-e342-11ea-8a7b-f39ee2637a87.png" width="200px">
+<img src="https://user-images.githubusercontent.com/53211781/90789698-29fcc700-e342-11ea-85f7-0489b3184139.png" width="250px">     <img src="https://user-images.githubusercontent.com/53211781/90789750-3d0f9700-e342-11ea-94f8-5d83d9d1c092.png" width="250px">     <img src="https://user-images.githubusercontent.com/53211781/90789818-4e58a380-e342-11ea-8a7b-f39ee2637a87.png" width="250px">
 
 ( 사진&nbsp;&nbsp;&nbsp;&nbsp; 좌: 알림 &nbsp;&nbsp;  | &nbsp;&nbsp; 중간: 알림 확인  &nbsp;&nbsp; | &nbsp;&nbsp;  우: 읽은 알림 삭제 )
 
