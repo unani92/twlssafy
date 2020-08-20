@@ -5,7 +5,7 @@
         <div class="logo">
           <div
             :style="{
-              backgroundImage: 'url(' + require('../assets/logo.gif') + ')',
+              backgroundImage: 'url(' + require('../../assets/logo.gif') + ')',
             }"
             class="logo-gif"
             @click="gotoMain"
@@ -93,7 +93,7 @@
 </template>
 
 <script>
-import GoogleLogin from "./GoogleLogin";
+import GoogleLogin from "../authentication/GoogleLogin";
 import Notification from "./Notification";
 import { getGrade } from "@/utils/calcGrade";
 export default {

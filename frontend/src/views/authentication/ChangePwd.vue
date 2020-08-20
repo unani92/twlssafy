@@ -46,7 +46,7 @@
 
 <script>
 import { validatePassword } from "@/utils/validation";
-import { submitChangePwd } from "../api";
+import { submitChangePwd } from "../../api";
 import Swal from "sweetalert2/dist/sweetalert2.js";
 import "sweetalert2/src/sweetalert2.scss";
 

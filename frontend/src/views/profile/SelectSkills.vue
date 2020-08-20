@@ -1,13 +1,5 @@
 <template>
   <div class="selectskills">
-    <!-- <div class="selectskills-main">
-      <div class="hotskills">
-        <div v-for="skill in hotSkills" :key="skill" :id="skill" class="skill-badge">
-          <span>{{ skill }}</span>
-          <i @click="addStack" style="cursor:pointer;" class="fas fa-plus"></i>
-        </div>
-      </div>
-    </div> -->
     <div class="selectskills-search">
       <h2 style="margin : 20px;">관심 있는 기술을 검색하여 등록해보세요 !</h2>
       <!-- <h4 style="margin-top : 30px;">기술 검색</h4> -->
@@ -37,8 +29,8 @@
 </template>
 
 <script>
-import skills from "../skills.js";
-import { selectSkills, deleteSkill } from "../api";
+import skills from "../../skills.js";
+import { selectSkills, deleteSkill } from "../../api";
 
 export default {
   name: "SelectSkills",
@@ -126,8 +118,6 @@ export default {
         skill: this.userSkill,
       };
       selectSkills(params)
-        .then((res) => console.log(res))
-        .catch((err) => console.log(err));
     },
   },
 };

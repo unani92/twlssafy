@@ -159,7 +159,7 @@
 </template>
 
 <script>
-import GoogleLogin from '../components/GoogleLogin';
+import GoogleLogin from './GoogleLogin';
 import { validateEmail, validatePassword } from '@/utils/validation';
 import { checkEmail, checkNickname, registerUser } from '@/api/index';
 import PrivacyPolicy from '@/components/policies/PrivacyPolicy.vue';
@@ -265,7 +265,6 @@ export default {
             '인증번호를 발송했습니다. \n인증번호가 오지 않으면 입력하신 정보가 정확한지 확인하여 주세요. \n이미 가입된 메일은 가상전화번호는 인증번호를 받을 수 없습니다.';
           this.validationNumberFromBE = res.data.object.code;
           this.confirmedEmail = true;
-          console.log(this.validationNumberFromBE);
         } else {
           this.logMessage.email = '이미 가입된 메일입니다.';
         }
@@ -324,7 +323,6 @@ export default {
 
       const { data } = await registerUser(userData);
       // 토큰 보내주세요.... 셀렉스킬에 넘겨줄예정
-      console.log(data.data);
       this.$store.commit('setUsername', userData.email);
       this.$store.commit('setNickname', userData.nickname);
       this.$store.commit('setToken', data.data);

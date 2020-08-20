@@ -9,12 +9,11 @@
       >Google Login</GoogleLogin
     >
   </div>
-  <!-- <GoogleLogin :params="params" :logoutButton=true>Logout</GoogleLogin> -->
 </template>
 
 <script>
 import GoogleLogin from 'vue-google-login';
-import { socialLogin } from '../api';
+import { socialLogin } from '../../api';
 import { mapActions } from 'vuex';
 export default {
   // name: "GoogleLogin",
@@ -51,13 +50,6 @@ export default {
           } else {
             id_token = res.data.object.id_token;
             this.getGoogleUserInfo(id_token);
-            // if (this.$route.query.redirect) {
-            //   const redirect = this.$route.query.redirect;
-            //   this.$router.push({
-            //     name: 'ArticleDetail',
-            //     params: { id: Number(redirect) },
-            //   });
-            // } else this.$router.push('/');
           }
         })
         .catch((err) => alert('Error : ', err));

@@ -50,15 +50,15 @@
       <br>
       <br>
     </div>
-    <div id="searchBottomSensor"></div>
+    <div id="bottomSensor"></div>
   </div>
 </template>
 
 <script>
-import ArticleSearchCard from "../components/article/ArticleSearchCard";
-import { searchArticle } from "../api";
+import ArticleSearchCard from "../../components/homeNav/ArticleSearchCard";
+import { searchArticle } from "../../api";
 import scrollMonitor from "scrollmonitor";
-import skills from "../skills.js";
+import skills from "../../skills.js";
 
 export default {
   name: "ArticleSearch",
@@ -193,14 +193,10 @@ export default {
       }
     },
     addScrollWatcher() {
-      const bottomSensor = document.querySelector("#searchBottomSensor");
+      const bottomSensor = document.querySelector("#bottomSensor");
       const watcher = scrollMonitor.create(bottomSensor);
       watcher.enterViewport(() => {
-        try {
-          this.fetchSearchData();
-        } catch (e) {
-          console.log('error')
-        }
+        this.fetchSearchData()
       });
     },
     init() {
@@ -214,7 +210,7 @@ export default {
     },
   },
   mounted() {
-    setTimeout(() => this.addScrollWatcher(), 500);
+    setTimeout(() => this.addScrollWatcher(), 1000);
   },
   updated() {
     //autocomplete가 켜져 있을 때 esc 누르면 닫힘

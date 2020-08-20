@@ -1,4 +1,3 @@
-
 <template>
   <div class="profile">
     <ProfileInfo :userInfo="userinfo"></ProfileInfo>

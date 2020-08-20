@@ -6,8 +6,8 @@
 </template>
 
 <script>
-import SignupForm from "@/components/SignupForm.vue";
-import Footer from "@/components/Footer.vue";
+import SignupForm from "../../components/authentication/SignupForm";
+import Footer from "../../components/navigation/Footer";
 
 export default {
   components: {

@@ -48,7 +48,7 @@
 import Swal from "sweetalert2/dist/sweetalert2.js";
 import "sweetalert2/src/sweetalert2.scss";
 import { mapActions } from "vuex";
-import { submitChangePwdLogin } from "../api";
+import { submitChangePwdLogin } from "../../api";
 import { validatePassword } from "@/utils/validation";
 
 export default {

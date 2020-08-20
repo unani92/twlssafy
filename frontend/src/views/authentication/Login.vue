@@ -7,8 +7,8 @@
 </template>
 
 <script>
-import LoginForm from '@/components/LoginForm';
-import Footer from '@/components/Footer';
+import LoginForm from "../../components/authentication/LoginForm";
+import Footer from "../../components/navigation/Footer";
 
 export default {
   components: {

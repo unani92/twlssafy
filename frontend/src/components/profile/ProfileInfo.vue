@@ -281,7 +281,7 @@
 </template>
 
 <script>
-import SelectSkills from "@/views/SelectSkills.vue";
+import SelectSkills from "../../views/profile/SelectSkills";
 import {
   requestFollow,
   changeImg,
@@ -300,7 +300,7 @@ import Swal from 'sweetalert2/dist/sweetalert2.js'
 import 'sweetalert2/src/sweetalert2.scss'
 
 // progressbar
-import ProgressBar from "../../views/ProgressBar";
+import ProgressBar from "./ProgressBar";
 let uuid = require("uuid");
 
 export default {
@@ -511,7 +511,7 @@ export default {
         const dropZone = document.querySelector(".dropZone");
         dropZone.classList.toggle("dropZoneDisabled");
         this.openDropZone = !this.openDropZone;
-      } else console.log(false);
+      }
     },
     async afterComplete(upload) {
       let imageName = uuid.v1();
@@ -531,8 +531,6 @@ export default {
         imgField.src = this.images;
         // 백앤드에 이미지 수정 요청
         changeImg(downloadURL, this.id_token)
-          .then((res) => console.log(res))
-          .catch((err) => console.log(err));
       } catch (error) {
         console.log(error);
       }

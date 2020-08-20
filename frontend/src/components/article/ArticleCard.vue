@@ -161,7 +161,6 @@ export default {
           }
         }
         this.$store.commit("setPinList", pinList);
-        console.log("현재 상태는", this.$store.state.pinList);
       } else {
           Swal.fire({
             text:"로그인이 필요한 서비스입니다.",
