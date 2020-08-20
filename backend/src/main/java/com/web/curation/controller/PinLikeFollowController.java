@@ -261,6 +261,9 @@ public class PinLikeFollowController {
         if(notificationDao.findNotification(article.getEmail(), other, type, article.getArticleid(), content, 0) != null){
             notificationDao.delete(notificationDao.findNotification(article.getEmail(), other, type, article.getArticleid(), content, 0));
         }
+        else if(notificationDao.findNotification(article.getEmail(), other, type, article.getArticleid(), content, 1) != null){
+            notificationDao.delete(notificationDao.findNotification(article.getEmail(), other, type, article.getArticleid(), content, 1));
+        }
 
         Notification notification = new Notification();
         notification.setContent(content);
