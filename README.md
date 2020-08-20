@@ -50,10 +50,8 @@ http://i3a407.p.ssafy.io/
 
 :key: 로그인 / 회원가입
 
-<center>
-<img src="https://user-images.githubusercontent.com/53211781/90470896-9f587400-e157-11ea-948d-d668c46de574.png" alt="mainLogin" width="200px" /> 
-<img src="https://user-images.githubusercontent.com/53211781/90470985-daf33e00-e157-11ea-9c23-5f41a79e39fe.png" alt="signup" width="200px" />       
-</center>
+<img src="https://user-images.githubusercontent.com/53211781/90470896-9f587400-e157-11ea-948d-d668c46de574.png" alt="mainLogin" width="300px" />    <img src="https://user-images.githubusercontent.com/53211781/90470985-daf33e00-e157-11ea-9c23-5f41a79e39fe.png" alt="signup" width="300px" />       
+
 
 이메일 인증을 거쳐 가입이 가능합니다.
 
