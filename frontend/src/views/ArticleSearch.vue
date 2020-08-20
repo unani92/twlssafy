@@ -199,7 +199,7 @@ export default {
         try {
           this.fetchSearchData();
         } catch (e) {
-          console.log('error')
+          return
         }
       });
     },

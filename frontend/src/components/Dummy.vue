@@ -14,7 +14,6 @@
 
     },
     created() {
-      // this.$router.push({ name: "ArticleSearchByStack", query: params })
       const params = this.$route.params
       if (params.id !== undefined) {
         this.$router.push({ name: "ArticleDetail", params: {id: params.id} })

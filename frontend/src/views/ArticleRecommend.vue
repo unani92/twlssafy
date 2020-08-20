@@ -84,11 +84,6 @@ export default {
       this.pinCntList = data.object.pinCntList;
       this.commentCntList = data.object.commentCntList;
     },
-    // flashText(text) {
-    //   const len = text.textContent.length;
-    //   text.style.width = len + "ch";
-    //   text.style.animateTimingFuntion = "steps(" + len + "), steps(1)";
-    // },
     handleResize() {
       this.window.width = window.innerWidth / 100;
       // this.window.height = window.innerHeight;

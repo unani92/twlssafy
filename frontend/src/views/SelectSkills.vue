@@ -126,8 +126,6 @@ export default {
         skill: this.userSkill,
       };
       selectSkills(params)
-        .then((res) => console.log(res))
-        .catch((err) => console.log(err));
     },
   },
 };

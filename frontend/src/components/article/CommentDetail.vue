@@ -83,7 +83,6 @@ export default {
     },
     commentUpdate() {
       this.openUpdateInput = !this.openUpdateInput;
-      console.log(this.comment.content)
     },
     // 댓글이 수정이 완료되고 나면 댓글 id를 string으로 보내지 않으면 오류 발생
     submitComment() {
@@ -92,8 +91,6 @@ export default {
         commentId: `${this.comment.commentid}`,
         content: textarea.value,
       };
-      console.log(true);
-      console.log(params)
       updateComment(params)
         .then(() => {
           // 수정 input창을 닫고 내용도 수정
