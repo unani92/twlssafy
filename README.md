@@ -67,10 +67,7 @@ http://i3a407.p.ssafy.io/
 
 - 게시글 작성
 
-
-<center>
-<img src="https://lab.ssafy.com/s03-webmobile2-sub3/s03p13a407/wikis/uploads/8db4184be1439df04e569f92368e417b/write.png">
-</center>
+![image](https://user-images.githubusercontent.com/53211781/90788727-0edd8780-e341-11ea-9a08-2f0c561a78b9.png)
 
 <br>
 <br>
